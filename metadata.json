@@ -1,0 +1,6 @@
+{
+  "name": "Ktimes Media",
+  "description": "Dark creative studio media portfolio & ordering app for Ktimes Media with audio & video showcase, dynamic admin garage, and WhatsApp inquiry.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Outer gold circle border -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFD700"
+        android:strokeWidth="3"
+        android:pathData="M54,24 A30,30 0 1,0 54,84 A30,30 0 1,0 54,24 Z" />
+    <!-- Red Accent Inner Disc -->
+    <path
+        android:fillColor="#E50914"
+        android:pathData="M54,28 A26,26 0 1,0 54,80 A26,26 0 1,0 54,28 Z" />
+    <!-- White / Gold Bold 'K' Letter -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M42,38 L48,38 L48,51 L60,38 L68,38 L55,52 L68,68 L60,68 L48,53 L48,68 L42,68 Z" />
+</vector>
