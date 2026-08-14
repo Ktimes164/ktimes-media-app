@@ -1,6 +1,6 @@
 {
   "name": "Ktimes Media",
-  "description": "Dark creative studio media portfolio & ordering app for Ktimes Media with audio & video showcase, dynamic admin garage, and WhatsApp inquiry.",
+  "description": "KTimes Media Business Club & Creative Studio with Client Portal, Advertising Marketplace, CRM Leads, Audio/Video Gallery, and Secure Admin Console.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

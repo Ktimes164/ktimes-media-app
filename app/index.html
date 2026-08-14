@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ktimes Media Studio - ऑडिओ, व्हिडिओ व निवडणूक प्रचार जाहिराती</title>
-    
+
     <!-- PWA & Web App Manifest -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4A148C">
+    <meta name="theme-color" content="#673AB7">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -21,189 +21,277 @@
             theme: {
                 extend: {
                     colors: {
-                        brandPurple: '#4A148C',
-                        brandPurpleDark: '#310A63',
-                        brandPurpleLight: '#7B1FA2',
-                        brandYellow: '#FFC107',
-                        brandYellowHover: '#FFB300',
+                        brandPurple: '#673AB7',
+                        brandPurpleDark: '#512DA8',
+                        brandPurpleLight: '#7E57C2',
+                        brandWhatsapp: '#075E54',
+                        brandWhatsappHover: '#05473f',
+                        brandOrange: '#FF5722',
                         brandRed: '#D32F2F',
-                        whatsappGreen: '#25D366',
-                        whatsappGreenHover: '#1EBE5D'
+                        brandBlue: '#1E88E5',
+                        brandYellow: '#FFC107'
                     }
                 }
             }
         }
     </script>
-    <!-- Font Awesome Icons -->
+
+    <!-- Font Awesome Icons 6.4.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Baloo 2 for Marathi & Inter for English -->
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
         body {
             font-family: 'Baloo 2', 'Inter', sans-serif;
             background-color: #ffffff !important;
             color: #111827 !important;
+            font-size: 17px;
+        }
+        @media (min-width: 768px) {
+            body {
+                font-size: 18px;
+            }
         }
         .pulse-whatsapp {
-            animation: pulse-green 2s infinite;
+            animation: pulse-wa-anim 2s infinite;
         }
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        @keyframes pulse-wa-anim {
+            0% { box-shadow: 0 0 0 0 rgba(7, 94, 84, 0.7); }
+            70% { box-shadow: 0 0 0 14px rgba(7, 94, 84, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(7, 94, 84, 0); }
         }
         .glass-header {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 2px solid #f3e8ff;
         }
-        .text-gradient {
-            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        /* Dynamic Aspect Ratio Classes */
-        .ar-16-9 {
-            aspect-ratio: 16 / 9;
-        }
-        .ar-9-16 {
-            aspect-ratio: 9 / 16;
-        }
-        .ar-1-1 {
-            aspect-ratio: 1 / 1;
-        }
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        /* Hide scrollbar for IE, Edge and Firefox */
-        .no-scrollbar {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
+        /* Dynamic Aspect Ratios */
+        .ar-16-9 { aspect-ratio: 16 / 9; }
+        .ar-9-16 { aspect-ratio: 9 / 16; }
+        .ar-1-1 { aspect-ratio: 1 / 1; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Original Brand Social Media Colors */
+        .social-ig { color: #E1306C; }
+        .social-fb { color: #1877F2; }
+        .social-yt { color: #FF0000; }
+        .social-tg { color: #24A1DE; }
+        .social-x  { color: #111827; }
+        .social-li { color: #0A66C2; }
     </style>
 </head>
-<body class="bg-white text-gray-900 pb-28">
+<body class="bg-white text-gray-900 pb-28 min-h-screen">
 
-    <!-- Top Navigation Header -->
-    <header class="sticky top-0 z-40 glass-header shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+    <!-- Top Social Navigation Bar & Highlighted Visitor Counter -->
+    <div class="bg-gray-100 border-b border-gray-200 py-2.5 px-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            
+            <!-- Original Brand Colored Social Icons Navigation -->
+            <div class="flex items-center gap-3 md:gap-4 overflow-x-auto no-scrollbar py-0.5" id="topSocialLinks">
+                <span class="text-xs font-bold text-gray-700 uppercase tracking-wider hidden sm:inline">सोशल मीडिया:</span>
+                <a href="https://instagram.com" id="social-instagram" target="_blank" rel="noopener noreferrer" 
+                   class="bg-white p-2 rounded-full shadow-sm hover:scale-110 transition border border-gray-200 flex items-center justify-center w-9 h-9 md:w-10 md:h-10" title="Instagram">
+                    <i class="fab fa-instagram text-lg md:text-xl social-ig"></i>
+                </a>
+                <a href="https://facebook.com" id="social-facebook" target="_blank" rel="noopener noreferrer" 
+                   class="bg-white p-2 rounded-full shadow-sm hover:scale-110 transition border border-gray-200 flex items-center justify-center w-9 h-9 md:w-10 md:h-10" title="Facebook">
+                    <i class="fab fa-facebook text-lg md:text-xl social-fb"></i>
+                </a>
+                <a href="https://youtube.com" id="social-youtube" target="_blank" rel="noopener noreferrer" 
+                   class="bg-white p-2 rounded-full shadow-sm hover:scale-110 transition border border-gray-200 flex items-center justify-center w-9 h-9 md:w-10 md:h-10" title="YouTube">
+                    <i class="fab fa-youtube text-lg md:text-xl social-yt"></i>
+                </a>
+                <a href="https://t.me" id="social-telegram" target="_blank" rel="noopener noreferrer" 
+                   class="bg-white p-2 rounded-full shadow-sm hover:scale-110 transition border border-gray-200 flex items-center justify-center w-9 h-9 md:w-10 md:h-10" title="Telegram">
+                    <i class="fab fa-telegram text-lg md:text-xl social-tg"></i>
+                </a>
+                <a href="https://x.com" id="social-x" target="_blank" rel="noopener noreferrer" 
+                   class="bg-white p-2 rounded-full shadow-sm hover:scale-110 transition border border-gray-200 flex items-center justify-center w-9 h-9 md:w-10 md:h-10" title="X (Twitter)">
+                    <i class="fab fa-x-twitter text-lg md:text-xl social-x"></i>
+                </a>
+                <a href="https://linkedin.com" id="social-linkedin" target="_blank" rel="noopener noreferrer" 
+                   class="bg-white p-2 rounded-full shadow-sm hover:scale-110 transition border border-gray-200 flex items-center justify-center w-9 h-9 md:w-10 md:h-10" title="LinkedIn">
+                    <i class="fab fa-linkedin text-lg md:text-xl social-li"></i>
+                </a>
+            </div>
+
+            <!-- Highlighted Visitor Counter Badge & Admin Login -->
+            <div class="flex items-center gap-3">
+                <!-- Highlighted Visitor Counter -->
+                <div onclick="triggerVisitorEdit()" class="cursor-pointer bg-gradient-to-r from-purple-900 to-brandPurple text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-extrabold border-2 border-brandYellow shadow-md flex items-center gap-2 hover:scale-105 transition" title="एकूण व्हिजिटर्स (Click to Edit in Admin)">
+                    <i class="fas fa-eye text-brandYellow text-base animate-pulse"></i>
+                    <span class="text-gray-200 hidden xs:inline">एकूण व्हिजिटर्स:</span>
+                    <span id="globalVisitorCounter" class="text-brandYellow text-base tracking-wide font-black">12,540</span>
+                </div>
+
+                <!-- Admin Login Toggle Button -->
+                <button onclick="toggleAdminMode()" id="adminToggleBtn" class="bg-purple-100 hover:bg-purple-200 text-brandPurple border border-purple-300 px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5">
+                    <i class="fas fa-user-shield text-brandPurple"></i>
+                    <span id="adminBtnText">Admin Mode</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="sticky top-0 z-40 glass-header shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
             <!-- Brand Logo -->
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brandRed via-brandPurple to-brandYellow p-0.5 shadow-md flex items-center justify-center shrink-0">
-                    <div class="w-full h-full bg-brandPurpleDark rounded-full flex items-center justify-center font-extrabold text-brandYellow text-lg">
+                <div class="w-12 h-12 md:w-13 md:h-13 rounded-full bg-gradient-to-tr from-brandPurple to-purple-900 p-0.5 shadow-md flex items-center justify-center shrink-0">
+                    <div class="w-full h-full bg-brandPurpleDark rounded-full flex items-center justify-center font-extrabold text-brandYellow text-2xl">
                         K
                     </div>
                 </div>
                 <div>
-                    <h1 class="text-lg md:text-xl font-bold tracking-tight text-gray-900 flex items-center gap-1.5">
-                        Ktimes Media <span class="text-[10px] md:text-xs bg-brandYellow text-black font-extrabold px-1.5 py-0.5 rounded shadow-sm">STUDIO</span>
+                    <h1 class="text-xl md:text-2xl font-black tracking-tight text-gray-900 flex items-center gap-2">
+                        Ktimes Media <span class="text-xs md:text-sm bg-brandPurple text-white font-extrabold px-2 py-0.5 rounded shadow-sm">STUDIO</span>
                     </h1>
-                    <p class="text-[11px] md:text-xs text-gray-600 font-medium">ऑडिओ, व्हिडिओ व निवडणूक प्रचार जाहिराती</p>
+                    <p class="text-xs md:text-sm text-gray-700 font-semibold">ऑडिओ, व्हिडिओ व निवडणूक प्रचार जाहिराती</p>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="flex items-center gap-2">
+            <!-- Action Controls -->
+            <div class="flex items-center gap-2 md:gap-3">
                 <!-- PWA Install Button -->
-                <button id="pwaInstallBtn" onclick="installPWA()" class="hidden bg-purple-100 hover:bg-purple-200 text-brandPurple border border-purple-300 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+                <button id="pwaInstallBtn" onclick="installPWA()" class="hidden bg-purple-50 hover:bg-purple-100 text-brandPurple border border-purple-300 px-3.5 py-2 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5 shadow-sm">
                     <i class="fas fa-download text-brandPurple"></i>
-                    <span class="hidden sm:inline">ॲप इन्स्टॉल करा</span>
-                    <span class="sm:hidden">Install</span>
+                    <span class="hidden md:inline">ॲप इन्स्टॉल करा</span>
+                    <span class="md:hidden">Install</span>
                 </button>
 
-                <!-- WhatsApp Call/Chat -->
+                <!-- WhatsApp Direct CTA (Strictly #075E54) -->
                 <a href="https://wa.me/919422337471?text=नमस्कार%20Ktimes%20Media,%20मला%20माहिती%20हवी%20आहे." 
                    target="_blank" rel="noopener noreferrer" 
-                   class="hidden md:flex items-center gap-2 bg-whatsappGreen hover:bg-whatsappGreenHover text-white px-3.5 py-1.5 rounded-full font-bold text-xs transition shadow-sm">
-                    <i class="fab fa-whatsapp text-base"></i>
+                   class="hidden md:flex items-center gap-2 bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-4 py-2 rounded-full font-bold text-xs md:text-sm transition shadow-md">
+                    <i class="fab fa-whatsapp text-xl"></i>
                     <span>+91 9422337471</span>
                 </a>
 
-                <!-- Add Item Button -->
-                <button onclick="openAdminModal()" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-                    <i class="fas fa-plus-circle text-brandYellow"></i>
+                <!-- Add Item Button (Purple Theme) -->
+                <button onclick="openAdminModal()" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-2 shadow-md">
+                    <i class="fas fa-plus-circle text-brandYellow text-base"></i>
                     <span>सॅम्पल जोडा</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Hero Banner -->
-    <section class="max-w-7xl mx-auto px-4 pt-4 pb-2">
-        <div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-brandPurpleDark via-purple-900 to-indigo-950 border border-purple-800 p-6 md:p-8 shadow-lg text-white">
-            <div class="relative z-10 max-w-2xl">
-                <div class="flex flex-wrap items-center gap-2 mb-3">
-                    <span class="bg-brandRed text-white text-[11px] font-extrabold px-3 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
-                        मराठी मीडिया हब २०२६
-                    </span>
-                    <span id="pwaBannerBadge" onclick="installPWA()" class="cursor-pointer bg-brandYellow text-black text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                        <i class="fas fa-mobile-alt"></i> Mobile Web App
-                    </span>
-                </div>
-                <h2 class="text-2xl md:text-4xl font-extrabold text-white leading-tight mb-2">
-                    आपल्या व्यवसायाची व राजकीय प्रचाराची <span class="text-gradient">खणखणीत जाहिरात</span> बनवा!
-                </h2>
-                <p class="text-purple-100 text-sm md:text-base mb-5 font-normal">
-                    लाउडस्पीकर ऑटो ऑडिओ, एफएम रेडिओ जिगल्स, YouTube Shorts / Reels 4K प्रोमो व्हिडिओ आणि निवडणूक प्रचार गीते. सॅम्पल ऐका व पहा आणि थेट व्हॉट्सॲपवर ऑर्डर द्या.
-                </p>
-                <div class="flex flex-wrap gap-3">
-                    <a href="https://wa.me/919422337471?text=नमस्कार%20Ktimes%20Media,%20मला%20जाहिरात%20बनवायची%20आहे." 
-                       target="_blank" 
-                       class="bg-whatsappGreen hover:bg-whatsappGreenHover text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 shadow-md transition">
-                        <i class="fab fa-whatsapp text-lg"></i>
-                        <span>थेट व्हॉट्सॲप संपर्क (9422337471)</span>
-                    </a>
-                </div>
+    <!-- Admin Active Bar Indicator -->
+    <div id="adminModeBanner" class="hidden bg-brandYellow text-black text-xs md:text-sm py-2 px-4 font-bold border-b border-yellow-400 shadow-inner">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <span class="flex items-center gap-2">
+                <i class="fas fa-unlock-alt text-lg"></i>
+                <span>ॲडमिन मोड चालू आहे (Admin Active) - आपण व्हिजिटर्स, ऑफर बॅनर आणि सर्व सॅम्पल्स एडिट करू शकता!</span>
+            </span>
+            <div class="flex items-center gap-2">
+                <button onclick="openOfferEditModal()" class="bg-brandPurple text-white px-3 py-1 rounded-lg text-xs font-bold hover:bg-purple-900 transition shadow">
+                    <i class="fas fa-edit"></i> ऑफर बॅनर बदला
+                </button>
+                <button onclick="openVisitorModal()" class="bg-gray-900 text-white px-3 py-1 rounded-lg text-xs font-bold hover:bg-black transition shadow">
+                    <i class="fas fa-eye"></i> व्हिजिटर्स बदला
+                </button>
             </div>
-            <div class="absolute right-4 bottom-2 opacity-15 pointer-events-none hidden md:block">
-                <i class="fas fa-bullhorn text-9xl text-brandYellow"></i>
+        </div>
+    </div>
+
+    <!-- Featured Offer Banner Section (Fixed 16:9 Banner Video Frame) -->
+    <section class="max-w-7xl mx-auto px-4 pt-4 pb-2" id="featuredOfferSection">
+        <div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-purple-950 via-brandPurpleDark to-purple-900 border-2 border-purple-700 p-5 md:p-7 shadow-xl text-white">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                
+                <!-- Left Banner Content -->
+                <div class="lg:col-span-7 space-y-3.5">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span id="offerBadge" class="bg-brandYellow text-black text-xs md:text-sm font-black px-3.5 py-1 rounded-full uppercase tracking-wider shadow">
+                            विशेष सण उत्सव ऑफर २०२६ 🔥
+                        </span>
+                        <span class="bg-brandRed text-white text-xs font-bold px-3 py-0.5 rounded-full shadow">
+                            मर्यादित कालावधी!
+                        </span>
+                    </div>
+
+                    <h2 id="offerHeadline" class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white leading-snug">
+                        निवडणूक प्रचार व व्यवसाय जाहिरातींवर <span class="text-brandYellow">३०% विशेष सूट!</span>
+                    </h2>
+
+                    <p id="offerText" class="text-purple-100 text-sm md:text-base font-normal leading-relaxed">
+                        लाउडस्पीकर ऑटो ऑडिओ, एफएम रेडिओ जिगल्स, YouTube Shorts / Reels 4K प्रोमो व्हिडिओ आणि निवडणूक प्रचार गीते आता विशेष सवलत दरात उपलब्ध. सॅम्पल ऐका आणि आजच व्हॉट्सॲपवर ऑर्डर नोंदवा.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-3 pt-2">
+                        <!-- WhatsApp Action CTA (Strictly #075E54) -->
+                        <a id="offerWaBtn" href="https://wa.me/919422337471?text=नमस्कार%20Ktimes%20Media,%20मला%20खास%20ऑफर%20बद्दल%20माहिती%20हवी%20आहे." 
+                           target="_blank" rel="noopener noreferrer"
+                           class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-5 py-2.5 rounded-xl font-bold text-sm md:text-base flex items-center gap-2.5 shadow-lg transition">
+                            <i class="fab fa-whatsapp text-xl text-brandYellow"></i>
+                            <span>ऑफरचा लाभ घ्या (थेट व्हॉट्सॲप)</span>
+                        </a>
+
+                        <button id="editOfferBtnInline" onclick="openOfferEditModal()" class="hidden bg-gray-900 hover:bg-black text-white border border-gray-700 px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm flex items-center gap-2 transition">
+                            <i class="fas fa-edit text-brandYellow"></i>
+                            <span>ऑफर बदला</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Video Frame (Fixed 16:9 Banner Video Frame) -->
+                <div class="lg:col-span-5">
+                    <div class="relative w-full ar-16-9 rounded-xl overflow-hidden bg-black border-2 border-purple-500/60 shadow-2xl">
+                        <div id="offerVideoContainer" class="w-full h-full">
+                            <!-- Dynamic YouTube Embed or Video -->
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Search & Filter Controls -->
+    <!-- Search & Category Filters -->
     <section class="max-w-7xl mx-auto px-4 py-4">
-        <div class="flex flex-col md:flex-row gap-3 items-center justify-between bg-gray-50 p-3.5 rounded-xl border border-gray-200 shadow-sm">
-            <!-- Search Input -->
-            <div class="relative w-full md:w-80">
-                <i class="fas fa-search absolute left-3.5 top-3 text-gray-400"></i>
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-sm">
+            <!-- Search Input (Headline & Description Search) -->
+            <div class="relative w-full md:w-96">
+                <i class="fas fa-search absolute left-4 top-3.5 text-gray-400 text-base"></i>
                 <input type="text" id="searchInput" oninput="filterMedia()" 
                        placeholder="शोधा (उदा. निवडणूक, ऑडिओ, जाहिरात)..." 
-                       class="w-full bg-white border border-gray-300 rounded-lg pl-10 pr-4 py-2 text-sm text-gray-900 focus:outline-none focus:border-brandPurple transition placeholder-gray-400">
+                       class="w-full bg-white border border-gray-300 rounded-xl pl-11 pr-4 py-2.5 text-base text-gray-900 focus:outline-none focus:border-brandPurple focus:ring-2 focus:ring-purple-200 transition placeholder-gray-400">
             </div>
 
-            <!-- Categories Tabs -->
+            <!-- Category Pills ("मिक्स गाणी" included) -->
             <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 no-scrollbar" id="categoryContainer">
-                <!-- JavaScript injects categories -->
+                <!-- Javascript injects categories -->
             </div>
         </div>
     </section>
 
-    <!-- Main Sample Gallery Grid -->
+    <!-- Main Content Gallery Grid -->
     <main class="max-w-7xl mx-auto px-4 py-2">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <i class="fas fa-compact-disc text-brandPurple"></i>
+        <div class="flex items-center justify-between mb-5">
+            <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 flex items-center gap-2.5">
+                <i class="fas fa-compact-disc text-brandPurple text-2xl"></i>
                 <span>सॅम्पल गॅलरी (Media Samples)</span>
             </h3>
-            <span id="resultCount" class="text-xs text-gray-600 font-semibold bg-gray-100 px-3 py-1 rounded-md border border-gray-200">
-                showing 0 items
+            <span id="resultCount" class="text-xs md:text-sm font-bold text-gray-700 bg-purple-50 px-3.5 py-1.5 rounded-lg border border-purple-200">
+                0 items shown
             </span>
         </div>
 
         <!-- Grid Container -->
         <div id="mediaGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Dynamic Media Cards injected here -->
+            <!-- Dynamic Media Cards Injected Here -->
         </div>
     </main>
 
-    <!-- Floating WhatsApp Direct Button -->
+    <!-- Global Floating WhatsApp Button (Strictly #075E54) -->
     <div class="fixed bottom-6 right-6 z-50 flex items-center gap-2">
         <a href="https://wa.me/919422337471?text=नमस्कार%20Ktimes%20Media,%20मला%20माहिती%20हवी%20आहे." target="_blank" rel="noopener noreferrer" 
            title="WhatsApp Direct Contact"
-           class="relative w-14 h-14 bg-whatsappGreen rounded-full flex items-center justify-center text-white text-3xl shadow-2xl pulse-whatsapp hover:scale-105 transition transform">
+           class="relative w-14 h-14 md:w-16 md:h-16 bg-brandWhatsapp rounded-full flex items-center justify-center text-white text-3xl md:text-4xl shadow-2xl pulse-whatsapp hover:scale-105 transition transform">
             <i class="fab fa-whatsapp"></i>
             <span class="absolute -top-1 -right-1 bg-brandRed text-white text-[10px] font-black px-1.5 py-0.2 rounded-full border border-white">
                 KTM
@@ -212,89 +300,89 @@
     </div>
 
     <!-- Sticky Audio Player Bar (Clean White Bottom Player) -->
-    <div id="bottomAudioPlayer" class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 p-3 shadow-2xl hidden">
+    <div id="bottomAudioPlayer" class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-purple-200 p-3.5 shadow-2xl hidden">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3 overflow-hidden min-w-0">
-                <img id="playerThumb" src="" alt="" class="w-12 h-12 rounded-lg object-cover bg-gray-100 shrink-0 border border-gray-200">
+            <div class="flex items-center gap-3.5 overflow-hidden min-w-0">
+                <img id="playerThumb" src="" alt="" class="w-12 h-12 md:w-14 md:h-14 rounded-xl object-cover bg-gray-100 shrink-0 border border-gray-200 shadow-sm">
                 <div class="min-w-0">
-                    <h4 id="playerTitle" class="text-sm font-bold text-gray-900 truncate">Playing Title</h4>
-                    <p id="playerCategory" class="text-xs text-brandPurple font-semibold truncate">Category</p>
+                    <h4 id="playerTitle" class="text-base font-bold text-gray-900 truncate">Playing Title</h4>
+                    <p id="playerCategory" class="text-xs md:text-sm text-brandPurple font-bold truncate">Category</p>
                 </div>
             </div>
 
-            <!-- Audio Controls -->
+            <!-- Controls -->
             <div class="flex items-center gap-3 shrink-0">
-                <button onclick="toggleGlobalAudio()" id="globalPlayBtn" class="w-10 h-10 rounded-full bg-brandYellow text-black flex items-center justify-center font-bold shadow hover:bg-brandYellowHover transition">
+                <button onclick="toggleGlobalAudio()" id="globalPlayBtn" class="w-11 h-11 md:w-12 md:h-12 rounded-full bg-brandPurple text-white flex items-center justify-center font-bold shadow hover:bg-brandPurpleDark transition text-base">
                     <i class="fas fa-play" id="globalPlayIcon"></i>
                 </button>
-                <a id="playerWhatsappLink" href="#" target="_blank" class="bg-whatsappGreen hover:bg-whatsappGreenHover text-white px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
-                    <i class="fab fa-whatsapp text-sm"></i>
+                <!-- WhatsApp CTA button strictly #075E54 -->
+                <a id="playerWhatsappLink" href="#" target="_blank" class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-1.5 transition shadow">
+                    <i class="fab fa-whatsapp text-base"></i>
                     <span class="hidden sm:inline">ऑर्डर द्या</span>
                 </a>
-                <button onclick="closeAudioPlayer()" class="text-gray-400 hover:text-gray-700 p-1">
-                    <i class="fas fa-times text-base"></i>
+                <button onclick="closeAudioPlayer()" class="text-gray-400 hover:text-gray-700 p-1.5">
+                    <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
         </div>
         <!-- Progress Bar -->
-        <div class="w-full bg-gray-200 h-1.5 mt-2 rounded-full overflow-hidden cursor-pointer" onclick="seekAudio(event)" id="audioProgressBg">
-            <div id="audioProgressBar" class="bg-gradient-to-r from-brandPurple to-brandYellow h-full w-0"></div>
+        <div class="w-full bg-gray-200 h-2 mt-2.5 rounded-full overflow-hidden cursor-pointer" onclick="seekAudio(event)" id="audioProgressBg">
+            <div id="audioProgressBar" class="bg-brandPurple h-full w-0 transition-all duration-150"></div>
         </div>
     </div>
 
     <!-- Video Modal Player (Responsive YouTube Embed & MP4 Player) -->
     <div id="videoModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
         <div class="bg-white border border-gray-200 rounded-2xl w-full max-w-3xl overflow-hidden shadow-2xl relative flex flex-col max-h-[92vh]">
-            <!-- Modal Header -->
             <div class="p-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
                 <div>
-                    <h3 id="videoModalTitle" class="text-base font-bold text-gray-900 truncate max-w-md">Video Player</h3>
-                    <p id="videoModalCategory" class="text-xs text-brandPurple font-semibold">Ktimes Media Video</p>
+                    <h3 id="videoModalTitle" class="text-lg font-bold text-gray-900 truncate max-w-md">Video Player</h3>
+                    <p id="videoModalCategory" class="text-xs text-brandPurple font-bold">Ktimes Media Video</p>
                 </div>
-                <button onclick="closeVideoModal()" class="w-8 h-8 rounded-full bg-gray-200 text-gray-700 hover:bg-red-100 hover:text-red-600 flex items-center justify-center transition">
-                    <i class="fas fa-times"></i>
+                <button onclick="closeVideoModal()" class="w-9 h-9 rounded-full bg-gray-200 text-gray-700 hover:bg-red-100 hover:text-red-600 flex items-center justify-center transition">
+                    <i class="fas fa-times text-base"></i>
                 </button>
             </div>
 
-            <!-- Video Player Container with Dynamic Aspect Ratio -->
             <div class="p-4 bg-black flex items-center justify-center overflow-auto max-h-[60vh]">
                 <div id="videoEmbedContainer" class="w-full max-w-full rounded-lg overflow-hidden flex items-center justify-center">
-                    <!-- Dynamic iFrame or Video element injected here -->
+                    <!-- Dynamic iFrame or Video element -->
                 </div>
             </div>
 
-            <!-- Modal Body Details & Order Action -->
             <div class="p-4 bg-white flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-gray-200">
                 <div class="text-left w-full sm:w-auto">
-                    <p id="videoModalDesc" class="text-xs text-gray-600 line-clamp-2">सॅम्पल व्हिडिओ तपशील...</p>
-                    <span id="videoModalPrice" class="text-sm font-extrabold text-brandPurple">₹४,९९९ पासून</span>
+                    <p id="videoModalDesc" class="text-xs md:text-sm text-gray-700 line-clamp-2">सॅम्पल व्हिडिओ तपशील...</p>
+                    <span id="videoModalPrice" class="text-sm md:text-base font-extrabold text-brandPurple">₹४,९९९ पासून</span>
                 </div>
-                <a id="videoModalWaBtn" href="#" target="_blank" class="w-full sm:w-auto bg-whatsappGreen hover:bg-whatsappGreenHover text-white px-5 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow transition shrink-0">
-                    <i class="fab fa-whatsapp text-lg"></i>
+                <!-- WhatsApp CTA strictly #075E54 -->
+                <a id="videoModalWaBtn" href="#" target="_blank" class="w-full sm:w-auto bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm flex items-center justify-center gap-2 shadow transition shrink-0">
+                    <i class="fab fa-whatsapp text-lg text-brandYellow"></i>
                     <span>थेट व्हॉट्सॲपवर ऑर्डर द्या</span>
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Image/Graphic Preview Modal -->
+    <!-- Image Modal -->
     <div id="imageModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh]">
-            <div class="p-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
-                <h3 id="imageModalTitle" class="text-sm font-bold text-gray-900 truncate">Graphic Poster Preview</h3>
-                <button onclick="closeImageModal()" class="w-7 h-7 rounded-full bg-gray-200 text-gray-700 hover:bg-red-100 hover:text-red-600 flex items-center justify-center transition">
+            <div class="p-3.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+                <h3 id="imageModalTitle" class="text-base font-bold text-gray-900 truncate">Graphic Poster Preview</h3>
+                <button onclick="closeImageModal()" class="w-8 h-8 rounded-full bg-gray-200 text-gray-700 hover:bg-red-100 hover:text-red-600 flex items-center justify-center transition">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="p-2 bg-gray-100 flex items-center justify-center overflow-auto max-h-[65vh]">
+            <div class="p-3 bg-gray-100 flex items-center justify-center overflow-auto max-h-[65vh]">
                 <img id="imageModalSrc" src="" alt="Poster Preview" class="max-h-[60vh] object-contain rounded-lg shadow-md">
             </div>
             <div class="p-4 bg-white flex items-center justify-between gap-3 border-t border-gray-200">
                 <div>
-                    <p id="imageModalDesc" class="text-xs text-gray-600">Graphic design sample preview</p>
-                    <span id="imageModalPrice" class="text-xs font-bold text-brandPurple">₹९९९ पासून</span>
+                    <p id="imageModalDesc" class="text-xs md:text-sm text-gray-700">Graphic design sample preview</p>
+                    <span id="imageModalPrice" class="text-sm font-bold text-brandPurple">₹९९९ पासून</span>
                 </div>
-                <a id="imageModalWaBtn" href="#" target="_blank" class="bg-whatsappGreen hover:bg-whatsappGreenHover text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 shadow transition">
+                <!-- WhatsApp CTA strictly #075E54 -->
+                <a id="imageModalWaBtn" href="#" target="_blank" class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 shadow transition">
                     <i class="fab fa-whatsapp text-base"></i>
                     <span>ऑर्डर द्या</span>
                 </a>
@@ -302,40 +390,80 @@
         </div>
     </div>
 
-    <!-- Add Sample Modal (Clean White Form) -->
+    <!-- Social Media Native Share Modal -->
+    <div id="shareModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl relative border border-gray-200">
+            <button onclick="closeShareModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            <h3 class="text-lg font-bold text-gray-900 mb-1 flex items-center gap-2">
+                <i class="fas fa-share-alt text-brandPurple"></i>
+                <span>सॅम्पल शेअर करा (Share Sample)</span>
+            </h3>
+            <p id="shareModalTitle" class="text-xs text-gray-600 mb-4 truncate font-medium">Sample title...</p>
+
+            <!-- Social Share Options -->
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <a id="shareWaBtn" href="#" target="_blank" class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white p-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow">
+                    <i class="fab fa-whatsapp text-lg"></i> WhatsApp
+                </a>
+                <a id="shareFbBtn" href="#" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow">
+                    <i class="fab fa-facebook text-lg"></i> Facebook
+                </a>
+                <a id="shareTgBtn" href="#" target="_blank" class="bg-sky-500 hover:bg-sky-600 text-white p-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow">
+                    <i class="fab fa-telegram text-lg"></i> Telegram
+                </a>
+                <a id="shareXBtn" href="#" target="_blank" class="bg-black hover:bg-gray-800 text-white p-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow">
+                    <i class="fab fa-x-twitter text-lg"></i> X (Twitter)
+                </a>
+            </div>
+
+            <!-- Direct Copy Link -->
+            <div class="flex items-center gap-2 bg-gray-100 p-2 rounded-xl border border-gray-200">
+                <input type="text" id="shareCopyInput" readonly class="bg-transparent text-xs text-gray-800 flex-1 outline-none px-2">
+                <button onclick="copyShareUrl()" class="bg-brandPurple text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-brandPurpleDark transition">
+                    कॉपी
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add / Edit Sample Modal -->
     <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-white border border-gray-200 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-lg">
                 <i class="fas fa-times"></i>
             </button>
-            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <h3 id="sampleFormModalTitle" class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <i class="fas fa-plus-circle text-brandPurple"></i>
                 <span>नवीन मीडिया सॅम्पल जोडा (Add Sample)</span>
             </h3>
 
-            <form onsubmit="handleAddMedia(event)" class="space-y-3">
+            <form onsubmit="handleSaveMedia(event)" class="space-y-3.5">
+                <input type="hidden" id="editingItemId" value="">
+
                 <div>
-                    <label class="block text-xs text-gray-700 font-bold mb-1">Sample ID</label>
-                    <input type="text" id="newSampleId" required placeholder="उदा. KTM-VID-901" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple">
+                    <label class="block text-xs md:text-sm text-gray-700 font-bold mb-1">Sample ID</label>
+                    <input type="text" id="newSampleId" required placeholder="उदा. KTM-VID-901" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple">
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-700 font-bold mb-1">शीर्षक (Title)</label>
-                    <input type="text" id="newTitle" required placeholder="उदा. निवडणूक प्रचार YouTube Short जाहिरात" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple">
+                    <label class="block text-xs md:text-sm text-gray-700 font-bold mb-1">शीर्षक (Title)</label>
+                    <input type="text" id="newTitle" required placeholder="उदा. निवडणूक प्रचार YouTube Short जाहिरात" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple">
                 </div>
-                <div class="grid grid-cols-3 gap-3">
+                <div class="grid grid-cols-3 gap-2.5">
                     <div>
                         <label class="block text-xs text-gray-700 font-bold mb-1">वर्ग (Category)</label>
-                        <select id="newCategory" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2 text-xs text-gray-900">
+                        <select id="newCategory" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2 text-xs text-gray-900">
                             <option value="निवडणूक स्पेशल">निवडणूक स्पेशल</option>
                             <option value="ऑडिओ जाहिराती">ऑडिओ जाहिराती</option>
                             <option value="व्हिडिओ जाहिराती">व्हिडिओ जाहिराती</option>
                             <option value="ग्राफिक्स डिझाइन">ग्राफिक्स डिझाइन</option>
-                            <option value="अॅलबम गाणी">अॅलबम गाणी</option>
+                            <option value="मिक्स गाणी">मिक्स गाणी</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs text-gray-700 font-bold mb-1">प्रकार (Type)</label>
-                        <select id="newMediaType" onchange="autoSelectAspectRatio()" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2 text-xs text-gray-900">
+                        <select id="newMediaType" onchange="autoSelectAspectRatio()" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2 text-xs text-gray-900">
                             <option value="VIDEO">VIDEO</option>
                             <option value="AUDIO">AUDIO</option>
                             <option value="GRAPHIC">GRAPHIC</option>
@@ -343,7 +471,7 @@
                     </div>
                     <div>
                         <label class="block text-xs text-gray-700 font-bold mb-1">साईझ (Aspect)</label>
-                        <select id="newAspectRatio" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2 text-xs text-gray-900">
+                        <select id="newAspectRatio" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2 text-xs text-gray-900">
                             <option value="16:9">16:9 (Horizontal)</option>
                             <option value="9:16">9:16 (Shorts/Reels)</option>
                             <option value="1:1">1:1 (Square)</option>
@@ -351,18 +479,29 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-700 font-bold mb-1">मीडिया किंवा YouTube लिंक (Media/YouTube URL)</label>
-                    <input type="url" id="newMediaUrl" required placeholder="https://youtube.com/watch?v=... किंवा shorts/... अथवा mp3/mp4" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple">
-                    <p class="text-[11px] text-gray-500 mt-0.5">YouTube Watch, Share किंवा Shorts लिंक टाका. सिस्टीम आपोआप Embed कोड बनवेल.</p>
+                    <label class="block text-xs md:text-sm text-gray-700 font-bold mb-1">मीडिया किंवा YouTube लिंक (Media/YouTube URL)</label>
+                    <input type="url" id="newMediaUrl" required placeholder="https://youtube.com/watch?v=... किंवा shorts/... अथवा mp3/mp4" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple">
+                    <p class="text-[11px] text-gray-500 mt-1">YouTube Watch/Shorts लिंक टाका. सिस्टीम ऑटोमेटिकली Embed फॉरमॅट बनवेल.</p>
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-700 font-bold mb-1">माहिती (Description)</label>
-                    <textarea id="newDescription" rows="2" placeholder="सॅम्पलची थोडक्यात माहिती..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple"></textarea>
+                    <label class="block text-xs md:text-sm text-gray-700 font-bold mb-1">थंबनेल फोटो लिंक (Thumbnail Image URL - optional)</label>
+                    <input type="url" id="newThumbnailUrl" placeholder="https://... (रिक्त ठेवल्यास ऑटो तयार होईल)" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple">
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-700 font-bold mb-1">अंदाजे किंमत (Price Estimate)</label>
-                    <input type="text" id="newPrice" placeholder="उदा. ₹२,४९९ पासून" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple">
+                    <label class="block text-xs md:text-sm text-gray-700 font-bold mb-1">माहिती (Description)</label>
+                    <textarea id="newDescription" rows="2" placeholder="सॅम्पलची थोडक्यात माहिती..." class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple"></textarea>
                 </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs md:text-sm text-gray-700 font-bold mb-1">अंदाजे किंमत (Price)</label>
+                        <input type="text" id="newPrice" placeholder="उदा. ₹२,४९९ पासून" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple">
+                    </div>
+                    <div>
+                        <label class="block text-xs md:text-sm text-gray-700 font-bold mb-1">व्ह्यूज काउंट (Views Count)</label>
+                        <input type="number" id="newViews" placeholder="उदा. 450" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm text-gray-900 focus:bg-white focus:border-brandPurple">
+                    </div>
+                </div>
+
                 <button type="submit" class="w-full bg-brandPurple hover:bg-brandPurpleDark text-white font-bold py-3 rounded-xl shadow-md transition mt-2">
                     सबमिट करा (Save Sample)
                 </button>
@@ -370,12 +509,70 @@
         </div>
     </div>
 
+    <!-- Edit Offer Banner Modal -->
+    <div id="offerEditModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white border border-gray-200 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative">
+            <button onclick="closeOfferEditModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-lg">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <i class="fas fa-bullhorn text-brandPurple"></i>
+                <span>टॉप ऑफर बॅनर संपादित करा (Edit Offer Banner)</span>
+            </h3>
+
+            <form onsubmit="handleSaveOfferBanner(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs text-gray-700 font-bold mb-1">ऑफर बॅज (Badge Text)</label>
+                    <input type="text" id="editOfferBadge" required class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm text-gray-900">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-700 font-bold mb-1">मुख्य शीर्षक (Headline)</label>
+                    <input type="text" id="editOfferHeadline" required class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm text-gray-900">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-700 font-bold mb-1">तपशील मजकूर (Offer Description)</label>
+                    <textarea id="editOfferText" rows="3" required class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm text-gray-900"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-700 font-bold mb-1">ऑफर व्हिडिओ किंवा YouTube लिंक (Offer Video/YouTube URL)</label>
+                    <input type="url" id="editOfferVideoUrl" placeholder="https://youtube.com/watch?v=..." class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm text-gray-900">
+                </div>
+
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="closeOfferEditModal()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-xl font-bold text-xs">रद्द करा</button>
+                    <button type="submit" class="px-5 py-2 bg-brandPurple text-white rounded-xl font-bold text-xs shadow hover:bg-brandPurpleDark transition">सेव्ह करा</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Global Visitor Count Modal -->
+    <div id="visitorModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white border border-gray-200 rounded-2xl w-full max-w-sm p-5 shadow-2xl relative">
+            <button onclick="closeVisitorModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <i class="fas fa-eye text-brandPurple"></i>
+                <span>एकूण व्हिजिटर्स संख्या बदला</span>
+            </h3>
+            <form onsubmit="handleSaveVisitorCount(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs text-gray-700 font-bold mb-1">नवीन संख्या प्रविष्ट करा:</label>
+                    <input type="number" id="editVisitorCountInput" required class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 text-sm font-bold text-gray-900">
+                </div>
+                <button type="submit" class="w-full bg-brandPurple text-white py-2.5 rounded-xl font-bold text-xs shadow hover:bg-brandPurpleDark">अपडेट करा</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Global Audio Element -->
     <audio id="globalAudio"></audio>
 
-    <!-- Application JavaScript Logic -->
+    <!-- Application JavaScript Engine -->
     <script>
         const WHATSAPP_NUMBER = "919422337471";
+        let isAdminMode = false;
 
         const categories = [
             "All",
@@ -383,10 +580,11 @@
             "व्हिडिओ जाहिराती",
             "ग्राफिक्स डिझाइन",
             "निवडणूक स्पेशल",
-            "अॅलबम गाणी"
+            "मिक्स गाणी"
         ];
 
-        let defaultItems = [
+        // Default Initial Media Data
+        const initialDefaultItems = [
             {
                 id: 1,
                 sampleId: "KTM-ELE-2026",
@@ -398,6 +596,7 @@
                 thumbnailUrl: "https://picsum.photos/seed/ktm_election_2026/600/400",
                 description: "लाउडस्पीकर ऑटो व वाहनांसाठी खणखणीत आवाजात राजकीय प्रचार ऑडिओ रेकॉर्डिंग. स्थानिक लयबद्ध ढोल-ताशा बीट्स आणि प्रभावी शब्दरचना.",
                 priceOrEstimate: "₹२,४९९ पासून",
+                views: 1420,
                 tags: "निवडणूक स्पेशल, Election Special, Prachar Audio, 2026, Campaign",
                 whatsappMsg: "नमस्कार Ktimes Media, मला 'निवडणूक प्रचार ऑडिओ २०२६ (KTM-ELE-2026)' या सॅम्पलची माहिती हवी आहे."
             },
@@ -412,6 +611,7 @@
                 thumbnailUrl: "https://picsum.photos/seed/ktm_shorts_promo/600/800",
                 description: "मोबाईल स्क्रीन व सोशल मीडियासाठी खास Vertical 9:16 फॉरमॅट मधील व्हॉईसओव्हर व मोशन टायपोग्राफी व्हिडिओ जाहिरात.",
                 priceOrEstimate: "₹२,९९९ पासून",
+                views: 2890,
                 tags: "Shorts, Reels, Vertical Video, 9:16, Election Campaign",
                 whatsappMsg: "नमस्कार Ktimes Media, मला Vertical 9:16 Shorts व्हिडिओ जाहिरात बनवायची आहे."
             },
@@ -426,6 +626,7 @@
                 thumbnailUrl: "https://picsum.photos/seed/ktm_promo_video/600/400",
                 description: "4K अल्ट्रा HD डिजिटल प्रोमो व्हिडिओ. मोशन ग्राफिक्स, व्हॉईसओव्हर आणि स्टुडिओ साउंड मिक्सिंगसह व्यवसायाची दमदार जाहिरात.",
                 priceOrEstimate: "₹४,९९९ पासून",
+                views: 3150,
                 tags: "व्हिडिओ जाहिराती, Video Ads, Agency Promo, 4K, Motion Graphics",
                 whatsappMsg: "नमस्कार Ktimes Media, मला 'केटाईम्स मीडिया एजन्सी प्रोमो (KTM-VID-PROMO)' बद्दल चौकशी करायची आहे."
             },
@@ -440,6 +641,7 @@
                 thumbnailUrl: "https://picsum.photos/seed/ktm_audio_1/600/400",
                 description: "दिवाळी आणि सणासुदीच्या प्रसंगासाठी खास एफएम रेडिओ दर्जाची ऑडिओ जाहिरात. आकर्षक पार्श्वसंगीत आणि स्पष्ट व्हॉईसओव्हर.",
                 priceOrEstimate: "₹१,९९९ पासून",
+                views: 980,
                 tags: "ऑडिओ जाहिराती, FM Radio, Festive, Voiceover, Audio Ads",
                 whatsappMsg: "नमस्कार Ktimes Media, मला 'ज्वेलरी स्टोअर सण उत्सव जाहिरात (KTM-AUD-101)' मागवायची आहे."
             },
@@ -454,42 +656,44 @@
                 thumbnailUrl: "https://picsum.photos/seed/ktm_graphic_square/600/600",
                 description: "सोशल मीडिया इंस्टाग्राम पोस्ट, व्हेक्टर पोस्टर्स, फ्लेक्स बॅनर्स आणि ३D लोगो डिझाइन पॅकेज.",
                 priceOrEstimate: "₹९९९ पासून",
+                views: 1850,
                 tags: "ग्राफिक्स डिझाइन, Square 1:1, Poster, Logo, Flex Banner",
                 whatsappMsg: "नमस्कार Ktimes Media, मला 'ब्रांड पोस्टर डिझाइन (KTM-GRP-401)' बद्दल माहिती द्या."
             },
             {
                 id: 6,
-                sampleId: "KTM-ELE-301",
-                title: "उमेदवार प्रचार गीत - संकल्प पत्र (Campaign Song)",
-                category: "निवडणूक स्पेशल",
+                sampleId: "KTM-MIX-301",
+                title: "उमेदवार प्रचार गीत - संकल्प पत्र (मिक्स गाणी)",
+                category: "मिक्स गाणी",
                 mediaType: "AUDIO",
                 aspectRatio: "16:9",
                 mediaUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
                 thumbnailUrl: "https://picsum.photos/seed/ktm_election_song/600/400",
                 description: "उमेदवाराचे नाव व निशाणीसह खास तयार केलेले धडाकेबाज गाणे. ब्रास म्युझिक आणि प्रेरणादायी शब्द.",
                 priceOrEstimate: "₹२,४९९ पासून",
-                tags: "निवडणूक स्पेशल, Prachar Audio, Election Song, Loudspeaker, Campaign",
+                views: 2100,
+                tags: "मिक्स गाणी, Prachar Audio, Election Song, Loudspeaker, Campaign",
                 whatsappMsg: "नमस्कार Ktimes Media, मला उमेदवार प्रचार गीताचा सॅम्पल आवडला आहे."
             }
         ];
 
+        let mediaItems = [];
         let currentCategory = "All";
         let currentPlayingId = null;
         let deferredPrompt = null;
+        let activeShareItem = null;
         const globalAudio = document.getElementById("globalAudio");
 
-        // Helper: Convert YouTube watch/share/shorts URLs into embed URLs
+        // Convert YouTube Watch / Shorts / Share URLs to Embed URLs
         function getYouTubeEmbedUrl(url) {
-            if (!url) return null;
+            if (!url) return "";
             if (url.includes('youtube.com/embed/')) return url;
 
-            // Handle YouTube Shorts
             const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
             if (shortsMatch && shortsMatch[1]) {
                 return `https://www.youtube.com/embed/${shortsMatch[1]}?autoplay=1&rel=0`;
             }
 
-            // Handle Standard YouTube watch?v= or youtu.be/
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
             const match = url.match(regExp);
             if (match && match[2].length === 11) {
@@ -499,16 +703,18 @@
             return url;
         }
 
-        // Helper: get aspect ratio CSS class
+        // Helper: Aspect ratio CSS class
         function getAspectRatioClass(aspect) {
             if (aspect === "9:16") return "ar-9-16";
             if (aspect === "1:1") return "ar-1-1";
             return "ar-16-9";
         }
 
-        // Initialize App
+        // App Initialization
         document.addEventListener("DOMContentLoaded", () => {
+            loadPersistentData();
             loadCategories();
+            renderOfferBanner();
             renderGrid();
 
             globalAudio.addEventListener("timeupdate", updateProgressBar);
@@ -521,12 +727,43 @@
             // Register Service Worker for PWA
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('PWA ServiceWorker registered:', reg.scope))
-                    .catch(err => console.log('ServiceWorker registration failed:', err));
+                    .then(reg => console.log('PWA ServiceWorker registered'))
+                    .catch(err => console.log('SW registration error:', err));
             }
         });
 
-        // PWA Install Event Handler
+        // Persistent Data Engine (localStorage with Firebase cloud sync fallback)
+        function loadPersistentData() {
+            const storedItems = localStorage.getItem("ktm_media_items");
+            if (storedItems) {
+                try {
+                    mediaItems = JSON.parse(storedItems);
+                } catch(e) {
+                    mediaItems = [...initialDefaultItems];
+                }
+            } else {
+                mediaItems = [...initialDefaultItems];
+                saveMediaItemsToStorage();
+            }
+
+            // Global Visitor Count
+            let visitorCount = localStorage.getItem("ktm_visitor_count");
+            if (!visitorCount) {
+                visitorCount = 12540;
+                localStorage.setItem("ktm_visitor_count", visitorCount);
+            } else {
+                // Auto-increment visitor count on page load
+                visitorCount = parseInt(visitorCount) + 1;
+                localStorage.setItem("ktm_visitor_count", visitorCount);
+            }
+            document.getElementById("globalVisitorCounter").innerText = Number(visitorCount).toLocaleString('en-IN');
+        }
+
+        function saveMediaItemsToStorage() {
+            localStorage.setItem("ktm_media_items", JSON.stringify(mediaItems));
+        }
+
+        // PWA Installation Setup
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -536,22 +773,117 @@
         function installPWA() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted PWA install');
-                    }
-                    deferredPrompt = null;
-                });
+                deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
             } else {
-                alert("ॲप होम स्क्रीनवर सेव्ह करण्यासाठी ब्राऊझरच्या ३ डॉट्स (⋮) मेनूवर जाऊन 'Add to Home screen' खेळा!");
+                alert("ॲप मोबाईल होम स्क्रीनवर सेव्ह करण्यासाठी ब्राऊझरच्या ३ डॉट्स (⋮) वर क्लिक करा आणि 'Add to Home screen' खेळा!");
             }
         }
 
+        // Featured Offer Banner Render Logic
+        function renderOfferBanner() {
+            const offerDataStr = localStorage.getItem("ktm_offer_banner");
+            let offerData = {
+                badge: "विशेष सण उत्सव ऑफर २०२६ 🔥",
+                headline: "निवडणूक प्रचार व व्यवसाय जाहिरातींवर 30% विशेष सूट!",
+                text: "लाउडस्पीकर ऑटो ऑडिओ, एफएम रेडिओ जिगल्स, YouTube Shorts / Reels 4K प्रोमो व्हिडिओ आणि निवडणूक प्रचार गीते विशेष सवलत दरात उपलब्ध.",
+                videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            };
+
+            if (offerDataStr) {
+                try { offerData = JSON.parse(offerDataStr); } catch(e) {}
+            }
+
+            document.getElementById("offerBadge").innerText = offerData.badge;
+            document.getElementById("offerHeadline").innerText = offerData.headline;
+            document.getElementById("offerText").innerText = offerData.text;
+
+            const container = document.getElementById("offerVideoContainer");
+            const embedUrl = getYouTubeEmbedUrl(offerData.videoUrl);
+
+            if (embedUrl.includes("youtube.com/embed/")) {
+                container.innerHTML = `
+                    <iframe src="${embedUrl}" title="Featured Offer Video" 
+                            class="w-full h-full border-0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                `;
+            } else {
+                container.innerHTML = `
+                    <img src="https://picsum.photos/seed/ktm_featured_banner/800/450" class="w-full h-full object-cover" alt="Offer Banner">
+                `;
+            }
+        }
+
+        function openOfferEditModal() {
+            const offerDataStr = localStorage.getItem("ktm_offer_banner");
+            let offerData = {
+                badge: "विशेष सण उत्सव ऑफर २०२६ 🔥",
+                headline: "निवडणूक प्रचार व व्यवसाय जाहिरातींवर 30% विशेष सूट!",
+                text: "लाउडस्पीकर ऑटो ऑडिओ, एफएम रेडिओ जिगल्स, YouTube Shorts / Reels 4K प्रोमो व्हिडिओ आणि निवडणूक प्रचार गीते विशेष सवलत दरात उपलब्ध.",
+                videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            };
+            if (offerDataStr) {
+                try { offerData = JSON.parse(offerDataStr); } catch(e) {}
+            }
+
+            document.getElementById("editOfferBadge").value = offerData.badge;
+            document.getElementById("editOfferHeadline").value = offerData.headline;
+            document.getElementById("editOfferText").value = offerData.text;
+            document.getElementById("editOfferVideoUrl").value = offerData.videoUrl;
+
+            document.getElementById("offerEditModal").classList.remove("hidden");
+        }
+
+        function closeOfferEditModal() {
+            document.getElementById("offerEditModal").classList.add("hidden");
+        }
+
+        function handleSaveOfferBanner(e) {
+            e.preventDefault();
+            const offerData = {
+                badge: document.getElementById("editOfferBadge").value,
+                headline: document.getElementById("editOfferHeadline").value,
+                text: document.getElementById("editOfferText").value,
+                videoUrl: document.getElementById("editOfferVideoUrl").value
+            };
+            localStorage.setItem("ktm_offer_banner", JSON.stringify(offerData));
+            renderOfferBanner();
+            closeOfferEditModal();
+            alert("ऑफर बॅनर यशस्वीपणे अपडेट झाला!");
+        }
+
+        // Visitor Counter Modal
+        function triggerVisitorEdit() {
+            if (isAdminMode) {
+                openVisitorModal();
+            }
+        }
+
+        function openVisitorModal() {
+            const current = localStorage.getItem("ktm_visitor_count") || 12540;
+            document.getElementById("editVisitorCountInput").value = current;
+            document.getElementById("visitorModal").classList.remove("hidden");
+        }
+
+        function closeVisitorModal() {
+            document.getElementById("visitorModal").classList.add("hidden");
+        }
+
+        function handleSaveVisitorCount(e) {
+            e.preventDefault();
+            const val = document.getElementById("editVisitorCountInput").value;
+            localStorage.setItem("ktm_visitor_count", val);
+            document.getElementById("globalVisitorCounter").innerText = Number(val).toLocaleString('en-IN');
+            closeVisitorModal();
+            alert("व्हिजिटर्स संख्या अपडेट झाली!");
+        }
+
+        // Category Filter Rendering
         function loadCategories() {
             const container = document.getElementById("categoryContainer");
             container.innerHTML = categories.map(cat => `
                 <button onclick="selectCategory('${cat}')" 
-                        class="px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition ${cat === currentCategory ? 'bg-brandPurple text-white shadow' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}">
+                        class="px-4 py-2 rounded-xl text-xs md:text-sm font-extrabold whitespace-nowrap transition ${cat === currentCategory ? 'bg-brandPurple text-white shadow-md' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}">
                     ${cat}
                 </button>
             `).join("");
@@ -565,18 +897,19 @@
 
         function filterMedia() {
             const query = document.getElementById("searchInput").value.toLowerCase();
-            const filtered = defaultItems.filter(item => {
+            const filtered = mediaItems.filter(item => {
                 const matchesCat = currentCategory === "All" || item.category === currentCategory;
                 const matchesSearch = item.title.toLowerCase().includes(query) || 
-                                      item.description.toLowerCase().includes(query) || 
+                                      (item.description && item.description.toLowerCase().includes(query)) || 
                                       item.sampleId.toLowerCase().includes(query) ||
-                                      item.tags.toLowerCase().includes(query);
+                                      (item.tags && item.tags.toLowerCase().includes(query));
                 return matchesCat && matchesSearch;
             });
             renderGrid(filtered);
         }
 
-        function renderGrid(items = defaultItems) {
+        // Render Media Cards Grid
+        function renderGrid(items = mediaItems) {
             const grid = document.getElementById("mediaGrid");
             document.getElementById("resultCount").innerText = `${items.length} items shown`;
 
@@ -584,8 +917,8 @@
                 grid.innerHTML = `
                     <div class="col-span-full text-center py-12 text-gray-500 bg-gray-50 rounded-2xl border border-gray-200">
                         <i class="fas fa-search text-4xl mb-3 text-gray-400"></i>
-                        <p class="font-bold">कोणतेही सॅम्पल सापडले नाहीत.</p>
-                        <p class="text-xs text-gray-400 mt-1">कृपया शोधलेला शब्द किंवा वर्ग तपासा.</p>
+                        <p class="font-bold text-lg text-gray-700">कोणतेही सॅम्पल सापडले नाहीत.</p>
+                        <p class="text-xs text-gray-500 mt-1">कृपया शोधाचा शब्द किंवा श्रेणी तपासा.</p>
                     </div>
                 `;
                 return;
@@ -599,14 +932,14 @@
                 const aspectClass = getAspectRatioClass(item.aspectRatio);
 
                 return `
-                    <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-brandPurple hover:shadow-lg transition-all duration-300 flex flex-col">
-                        <!-- Thumbnail Header with Dynamic Aspect Ratio -->
+                    <div class="bg-white rounded-2xl overflow-hidden border-2 border-gray-200 hover:border-brandPurple hover:shadow-xl transition-all duration-300 flex flex-col">
+                        <!-- Thumbnail Frame with Dynamic Aspect Ratio -->
                         <div class="relative ${aspectClass} bg-gray-900 overflow-hidden group">
                             <img src="${item.thumbnailUrl}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             
                             <!-- Badges -->
                             <div class="absolute top-3 left-3 flex items-center gap-1.5 z-10">
-                                <span class="bg-black/75 backdrop-blur-md text-brandYellow text-[10px] font-extrabold px-2.5 py-0.5 rounded-md border border-brandYellow/30 shadow">
+                                <span class="bg-black/80 backdrop-blur-md text-brandYellow text-[11px] font-black px-2.5 py-0.5 rounded-md border border-brandYellow/40 shadow">
                                     ${item.sampleId}
                                 </span>
                                 <span class="bg-purple-900/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow">
@@ -614,28 +947,28 @@
                                 </span>
                             </div>
 
-                            <span class="absolute top-3 right-3 bg-brandPurple text-white text-[10px] font-bold px-2.5 py-0.5 rounded-md shadow z-10">
+                            <span class="absolute top-3 right-3 bg-brandPurple text-white text-[11px] font-bold px-2.5 py-0.5 rounded-md shadow z-10">
                                 ${item.category}
                             </span>
 
-                            <!-- Audio Play Trigger -->
+                            <!-- Audio Play Button Trigger -->
                             ${isAudio ? `
                                 <button onclick="playAudio('${item.id}', '${item.mediaUrl}', '${item.title}', '${item.category}', '${item.thumbnailUrl}', '${waUrl}')" 
                                         class="absolute inset-0 bg-black/35 flex items-center justify-center opacity-90 group-hover:opacity-100 transition">
-                                    <div class="w-14 h-14 rounded-full bg-brandYellow text-black flex items-center justify-center text-2xl shadow-xl transform group-hover:scale-110 transition">
+                                    <div class="w-14 h-14 rounded-full bg-brandPurple text-white flex items-center justify-center text-2xl shadow-xl transform group-hover:scale-110 transition border-2 border-brandYellow">
                                         <i class="fas ${currentPlayingId == item.id ? 'fa-pause' : 'fa-play'}" id="play-icon-${item.id}"></i>
                                     </div>
                                 </button>
                             ` : ''}
 
-                            <!-- Video Modal Trigger -->
+                            <!-- Video Play Modal Trigger -->
                             ${isVideo ? `
                                 <button onclick="openVideoModal('${item.id}')" 
                                         class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center group-hover:bg-black/30 transition">
-                                    <div class="w-14 h-14 rounded-full bg-brandRed text-white flex items-center justify-center text-2xl shadow-xl hover:scale-110 transition mb-1">
+                                    <div class="w-14 h-14 rounded-full bg-brandRed text-white flex items-center justify-center text-2xl shadow-xl hover:scale-110 transition mb-1 border-2 border-white">
                                         <i class="fas fa-play"></i>
                                     </div>
-                                    <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-0.5 rounded-full backdrop-blur-sm">पहा (Play Video)</span>
+                                    <span class="text-[11px] font-bold text-white bg-black/70 px-3 py-0.5 rounded-full backdrop-blur-sm">पहा (Play Video)</span>
                                 </button>
                             ` : ''}
 
@@ -651,28 +984,100 @@
                             ` : ''}
                         </div>
 
-                        <!-- Card Details -->
+                        <!-- Card Content Body -->
                         <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
                             <div>
-                                <h4 class="font-bold text-gray-900 text-base leading-snug line-clamp-2">${item.title}</h4>
-                                <p class="text-xs text-gray-600 mt-1.5 line-clamp-2">${item.description}</p>
+                                <h4 class="font-extrabold text-gray-900 text-lg md:text-xl leading-snug line-clamp-2">${item.title}</h4>
+                                <p class="text-xs md:text-sm text-gray-700 mt-1.5 line-clamp-2 leading-relaxed">${item.description}</p>
                             </div>
 
-                            <div class="pt-2 border-t border-gray-100 flex items-center justify-between">
-                                <span class="text-xs font-extrabold text-brandPurple">${item.priceOrEstimate}</span>
-                                <a href="${waUrl}" target="_blank" rel="noopener noreferrer" 
-                                   class="bg-whatsappGreen hover:bg-whatsappGreenHover text-white px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm">
-                                    <i class="fab fa-whatsapp text-sm"></i>
-                                    <span>ऑर्डर द्या</span>
-                                </a>
+                            <div class="pt-2 border-t border-gray-100 flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm md:text-base font-black text-brandPurple">${item.priceOrEstimate}</span>
+                                    <span class="text-[11px] text-gray-500 font-bold bg-gray-100 px-2 py-0.5 rounded flex items-center gap-1">
+                                        <i class="fas fa-eye text-brandPurple"></i> ${item.views || 0}
+                                    </span>
+                                </div>
+
+                                <div class="flex items-center gap-1.5">
+                                    <!-- Share Button -->
+                                    <button onclick="triggerShareItem('${item.id}')" class="bg-gray-100 hover:bg-purple-100 text-brandPurple p-2 rounded-xl text-xs font-bold transition border border-gray-200" title="शेअर करा">
+                                        <i class="fas fa-share-alt text-base"></i>
+                                    </button>
+
+                                    <!-- WhatsApp Direct Order CTA (Strictly #075E54) -->
+                                    <a href="${waUrl}" target="_blank" rel="noopener noreferrer" 
+                                       class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold flex items-center gap-1.5 transition shadow">
+                                        <i class="fab fa-whatsapp text-base"></i>
+                                        <span>ऑर्डर द्या</span>
+                                    </a>
+                                </div>
                             </div>
+
+                            <!-- Admin Actions (Edit / Delete) -->
+                            ${isAdminMode ? `
+                                <div class="pt-2 border-t border-dashed border-gray-200 flex items-center justify-end gap-2 bg-yellow-50 p-1.5 rounded-lg">
+                                    <span class="text-[10px] font-bold text-gray-600 mr-auto">Admin Controls:</span>
+                                    <button onclick="editSampleItem('${item.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded text-xs font-bold hover:bg-blue-700 transition">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button onclick="deleteSampleItem('${item.id}')" class="bg-red-600 text-white px-2.5 py-1 rounded text-xs font-bold hover:bg-red-700 transition">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // Audio Play Logic
+        // Native Web Share & Social Sharing Engine
+        function triggerShareItem(id) {
+            const item = mediaItems.find(i => i.id == id);
+            if (!item) return;
+
+            activeShareItem = item;
+            const shareTitle = `${item.title} - Ktimes Media`;
+            const shareText = `${item.title}\n${item.description}\nKtimes Media सॅम्पल आयडी: ${item.sampleId}`;
+            const shareUrl = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: shareTitle,
+                    text: shareText,
+                    url: shareUrl
+                }).catch(() => openCustomShareModal(item));
+            } else {
+                openCustomShareModal(item);
+            }
+        }
+
+        function openCustomShareModal(item) {
+            document.getElementById("shareModalTitle").innerText = item.title;
+            const waMsg = encodeURIComponent(`${item.title}\n${item.description}\nबघा: ${window.location.href}`);
+            
+            document.getElementById("shareWaBtn").href = `https://wa.me/?text=${waMsg}`;
+            document.getElementById("shareFbBtn").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+            document.getElementById("shareTgBtn").href = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${waMsg}`;
+            document.getElementById("shareXBtn").href = `https://x.com/intent/post?text=${waMsg}`;
+            document.getElementById("shareCopyInput").value = window.location.href;
+
+            document.getElementById("shareModal").classList.remove("hidden");
+        }
+
+        function closeShareModal() {
+            document.getElementById("shareModal").classList.add("hidden");
+        }
+
+        function copyShareUrl() {
+            const input = document.getElementById("shareCopyInput");
+            input.select();
+            document.execCommand("copy");
+            alert("लिंक कॉपी झाली!");
+        }
+
+        // Audio Player Logic
         function playAudio(id, url, title, category, thumb, waUrl) {
             if (currentPlayingId == id) {
                 if (globalAudio.paused) {
@@ -684,6 +1089,13 @@
                 currentPlayingId = id;
                 globalAudio.src = url;
                 globalAudio.play();
+
+                // Increment view count
+                const item = mediaItems.find(i => i.id == id);
+                if (item) {
+                    item.views = (item.views || 0) + 1;
+                    saveMediaItemsToStorage();
+                }
 
                 document.getElementById("playerTitle").innerText = title;
                 document.getElementById("playerCategory").innerText = category;
@@ -734,10 +1146,15 @@
             updatePlayIcons();
         }
 
-        // Video Modal Logic with YouTube Embed & Aspect Ratio Handler
+        // Video Modal Logic
         function openVideoModal(id) {
-            const item = defaultItems.find(i => i.id == id);
+            const item = mediaItems.find(i => i.id == id);
             if (!item) return;
+
+            // Increment view count
+            item.views = (item.views || 0) + 1;
+            saveMediaItemsToStorage();
+            filterMedia();
 
             document.getElementById("videoModalTitle").innerText = item.title;
             document.getElementById("videoModalCategory").innerText = `${item.category} • ${item.aspectRatio || '16:9'}`;
@@ -774,10 +1191,14 @@
             document.getElementById("videoModal").classList.add("hidden");
         }
 
-        // Image Modal Logic
+        // Image Modal
         function openImageModal(id) {
-            const item = defaultItems.find(i => i.id == id);
+            const item = mediaItems.find(i => i.id == id);
             if (!item) return;
+
+            item.views = (item.views || 0) + 1;
+            saveMediaItemsToStorage();
+            filterMedia();
 
             document.getElementById("imageModalTitle").innerText = item.title;
             document.getElementById("imageModalSrc").src = item.mediaUrl || item.thumbnailUrl;
@@ -794,8 +1215,40 @@
             document.getElementById("imageModal").classList.add("hidden");
         }
 
-        // Admin Add Sample Modal
+        // Admin Mode Toggle
+        function toggleAdminMode() {
+            isAdminMode = !isAdminMode;
+            const btnText = document.getElementById("adminBtnText");
+            const adminBanner = document.getElementById("adminModeBanner");
+            const inlineEditBtn = document.getElementById("editOfferBtnInline");
+
+            if (isAdminMode) {
+                btnText.innerText = "Admin (Active)";
+                adminBanner.classList.remove("hidden");
+                inlineEditBtn.classList.remove("hidden");
+            } else {
+                btnText.innerText = "Admin Mode";
+                adminBanner.classList.add("hidden");
+                inlineEditBtn.classList.add("hidden");
+            }
+            filterMedia();
+        }
+
+        // Admin Modals
         function openAdminModal() {
+            document.getElementById("editingItemId").value = "";
+            document.getElementById("sampleFormModalTitle").innerText = "नवीन मीडिया सॅम्पल जोडा (Add Sample)";
+            document.getElementById("newSampleId").value = "KTM-" + Math.floor(100 + Math.random() * 900);
+            document.getElementById("newTitle").value = "";
+            document.getElementById("newCategory").value = "निवडणूक स्पेशल";
+            document.getElementById("newMediaType").value = "VIDEO";
+            document.getElementById("newAspectRatio").value = "16:9";
+            document.getElementById("newMediaUrl").value = "";
+            document.getElementById("newThumbnailUrl").value = "";
+            document.getElementById("newDescription").value = "";
+            document.getElementById("newPrice").value = "₹२,४९९ पासून";
+            document.getElementById("newViews").value = "120";
+
             document.getElementById("adminModal").classList.remove("hidden");
         }
 
@@ -806,44 +1259,81 @@
         function autoSelectAspectRatio() {
             const type = document.getElementById("newMediaType").value;
             const aspectSelect = document.getElementById("newAspectRatio");
-            if (type === "VIDEO") {
-                aspectSelect.value = "16:9";
-            } else if (type === "GRAPHIC") {
-                aspectSelect.value = "1:1";
-            } else {
-                aspectSelect.value = "16:9";
-            }
+            if (type === "VIDEO") aspectSelect.value = "16:9";
+            else if (type === "GRAPHIC") aspectSelect.value = "1:1";
+            else if (type === "AUDIO") aspectSelect.value = "16:9";
         }
 
-        function handleAddMedia(e) {
+        function handleSaveMedia(e) {
             e.preventDefault();
+            const editId = document.getElementById("editingItemId").value;
+            const sampleId = document.getElementById("newSampleId").value;
+            const title = document.getElementById("newTitle").value;
+            const category = document.getElementById("newCategory").value;
+            const mediaType = document.getElementById("newMediaType").value;
+            const aspectRatio = document.getElementById("newAspectRatio").value;
             const mediaUrl = document.getElementById("newMediaUrl").value;
-            let aspectRatio = document.getElementById("newAspectRatio").value;
-            
-            // Autodetect Shorts
-            if (mediaUrl.includes("shorts")) {
-                aspectRatio = "9:16";
+            let thumbnailUrl = document.getElementById("newThumbnailUrl").value;
+            const description = document.getElementById("newDescription").value;
+            const priceOrEstimate = document.getElementById("newPrice").value || "₹२,४९९ पासून";
+            const views = parseInt(document.getElementById("newViews").value) || 100;
+
+            if (!thumbnailUrl) {
+                thumbnailUrl = `https://picsum.photos/seed/${sampleId.toLowerCase()}/600/400`;
             }
 
-            const newItem = {
-                id: Date.now(),
-                sampleId: document.getElementById("newSampleId").value,
-                title: document.getElementById("newTitle").value,
-                category: document.getElementById("newCategory").value,
-                mediaType: document.getElementById("newMediaType").value,
-                aspectRatio: aspectRatio,
-                mediaUrl: mediaUrl,
-                thumbnailUrl: "https://picsum.photos/seed/" + Date.now() + (aspectRatio === '9:16' ? '/600/800' : aspectRatio === '1:1' ? '/600/600' : '/600/400'),
-                description: document.getElementById("newDescription").value || "Ktimes media sample item",
-                priceOrEstimate: document.getElementById("newPrice").value || "₹१,९९९ पासून",
-                tags: "Ktimes, Media, Sample",
-                whatsappMsg: `नमस्कार Ktimes Media, मला '${document.getElementById("newTitle").value}' या सॅम्पलची माहिती हवी आहे.`
-            };
+            const waMsg = `नमस्कार Ktimes Media, मला '${title}' (${sampleId}) बद्दल चौकशी करायची आहे.`;
 
-            defaultItems.unshift(newItem);
-            closeAdminModal();
+            if (editId) {
+                const idx = mediaItems.findIndex(i => i.id == editId);
+                if (idx !== -1) {
+                    mediaItems[idx] = {
+                        ...mediaItems[idx],
+                        sampleId, title, category, mediaType, aspectRatio, mediaUrl, thumbnailUrl, description, priceOrEstimate, views, whatsappMsg: waMsg
+                    };
+                }
+            } else {
+                const newItem = {
+                    id: Date.now(),
+                    sampleId, title, category, mediaType, aspectRatio, mediaUrl, thumbnailUrl, description, priceOrEstimate, views,
+                    tags: `${category}, ${title}, ${sampleId}`,
+                    whatsappMsg: waMsg
+                };
+                mediaItems.unshift(newItem);
+            }
+
+            saveMediaItemsToStorage();
             filterMedia();
-            alert("नवीन सॅम्पल यशस्वीरित्या जोडले गेले!");
+            closeAdminModal();
+            alert("सॅम्पल यशस्वीपणे सेव्ह झाले!");
+        }
+
+        function editSampleItem(id) {
+            const item = mediaItems.find(i => i.id == id);
+            if (!item) return;
+
+            document.getElementById("editingItemId").value = item.id;
+            document.getElementById("sampleFormModalTitle").innerText = "सॅम्पल एडिट करा (Edit Sample)";
+            document.getElementById("newSampleId").value = item.sampleId;
+            document.getElementById("newTitle").value = item.title;
+            document.getElementById("newCategory").value = item.category;
+            document.getElementById("newMediaType").value = item.mediaType;
+            document.getElementById("newAspectRatio").value = item.aspectRatio || "16:9";
+            document.getElementById("newMediaUrl").value = item.mediaUrl;
+            document.getElementById("newThumbnailUrl").value = item.thumbnailUrl;
+            document.getElementById("newDescription").value = item.description;
+            document.getElementById("newPrice").value = item.priceOrEstimate;
+            document.getElementById("newViews").value = item.views || 0;
+
+            document.getElementById("adminModal").classList.remove("hidden");
+        }
+
+        function deleteSampleItem(id) {
+            if (confirm("तुम्हाला हे सॅम्पल हटवायचे आहे का?")) {
+                mediaItems = mediaItems.filter(i => i.id != id);
+                saveMediaItemsToStorage();
+                filterMedia();
+            }
         }
     </script>
 </body>
