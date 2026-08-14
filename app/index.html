@@ -29,7 +29,8 @@
                         brandOrange: '#FF5722',
                         brandRed: '#D32F2F',
                         brandBlue: '#1E88E5',
-                        brandYellow: '#FFC107'
+                        brandYellow: '#FFC107',
+                        brandYellowHover: '#FFB300'
                     }
                 }
             }
@@ -118,20 +119,26 @@
                 </a>
             </div>
 
-            <!-- Highlighted Visitor Counter Badge & Admin Login -->
+            <!-- Highlighted Visitor Counter Badge & Admin Login Controls -->
             <div class="flex items-center gap-3">
                 <!-- Highlighted Visitor Counter -->
-                <div onclick="triggerVisitorEdit()" class="cursor-pointer bg-gradient-to-r from-purple-900 to-brandPurple text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-extrabold border-2 border-brandYellow shadow-md flex items-center gap-2 hover:scale-105 transition" title="एकूण व्हिजिटर्स (Click to Edit in Admin)">
+                <div onclick="triggerVisitorEdit()" class="cursor-pointer bg-gradient-to-r from-purple-900 to-brandPurple text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-extrabold border-2 border-brandYellow shadow-md flex items-center gap-2 hover:scale-105 transition" title="एकूण व्हिजिटर्स">
                     <i class="fas fa-eye text-brandYellow text-base animate-pulse"></i>
                     <span class="text-gray-200 hidden xs:inline">एकूण व्हिजिटर्स:</span>
                     <span id="globalVisitorCounter" class="text-brandYellow text-base tracking-wide font-black">12,540</span>
                 </div>
 
-                <!-- Admin Login Toggle Button -->
-                <button onclick="toggleAdminMode()" id="adminToggleBtn" class="bg-purple-100 hover:bg-purple-200 text-brandPurple border border-purple-300 px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5">
-                    <i class="fas fa-user-shield text-brandPurple"></i>
-                    <span id="adminBtnText">Admin Mode</span>
-                </button>
+                <!-- Admin Action Area: Shows Login when Visitor; Shows Logout when Admin -->
+                <div id="adminActionContainer">
+                    <button onclick="openPasswordModal()" id="adminLoginBtn" class="bg-purple-100 hover:bg-purple-200 text-brandPurple border border-purple-300 px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fas fa-lock text-brandPurple"></i>
+                        <span>Admin Login</span>
+                    </button>
+                    <button onclick="logoutAdmin()" id="adminLogoutBtn" class="hidden bg-red-100 hover:bg-red-200 text-brandRed border border-red-300 px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fas fa-sign-out-alt text-brandRed"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -171,8 +178,8 @@
                     <span>+91 9422337471</span>
                 </a>
 
-                <!-- Add Item Button (Purple Theme) -->
-                <button onclick="openAdminModal()" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-2 shadow-md">
+                <!-- Add Item Button (Hidden by default for visitors, visible ONLY when Admin is active) -->
+                <button id="addSampleHeaderBtn" onclick="openAdminModal()" class="hidden bg-brandPurple hover:bg-brandPurpleDark text-white px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition items-center gap-2 shadow-md">
                     <i class="fas fa-plus-circle text-brandYellow text-base"></i>
                     <span>सॅम्पल जोडा</span>
                 </button>
@@ -180,19 +187,22 @@
         </div>
     </header>
 
-    <!-- Admin Active Bar Indicator -->
+    <!-- Admin Active Bar Indicator (Hidden by default for visitors, visible ONLY when Admin is active) -->
     <div id="adminModeBanner" class="hidden bg-brandYellow text-black text-xs md:text-sm py-2 px-4 font-bold border-b border-yellow-400 shadow-inner">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
             <span class="flex items-center gap-2">
-                <i class="fas fa-unlock-alt text-lg"></i>
-                <span>ॲडमिन मोड चालू आहे (Admin Active) - आपण व्हिजिटर्स, ऑफर बॅनर आणि सर्व सॅम्पल्स एडिट करू शकता!</span>
+                <i class="fas fa-unlock-alt text-lg text-purple-900"></i>
+                <span>ॲडमिन मोड चालू आहे (Admin Active) - आपण सॅम्पल, ऑफर आणि व्हिजिटर्स एडिट करू शकता!</span>
             </span>
             <div class="flex items-center gap-2">
-                <button onclick="openOfferEditModal()" class="bg-brandPurple text-white px-3 py-1 rounded-lg text-xs font-bold hover:bg-purple-900 transition shadow">
+                <button onclick="openOfferEditModal()" class="bg-brandPurple text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-purple-900 transition shadow">
                     <i class="fas fa-edit"></i> ऑफर बॅनर बदला
                 </button>
-                <button onclick="openVisitorModal()" class="bg-gray-900 text-white px-3 py-1 rounded-lg text-xs font-bold hover:bg-black transition shadow">
+                <button onclick="openVisitorModal()" class="bg-gray-900 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-black transition shadow">
                     <i class="fas fa-eye"></i> व्हिजिटर्स बदला
+                </button>
+                <button onclick="logoutAdmin()" class="bg-brandRed text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-800 transition shadow">
+                    <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
             </div>
         </div>
@@ -231,7 +241,8 @@
                             <span>ऑफरचा लाभ घ्या (थेट व्हॉट्सॲप)</span>
                         </a>
 
-                        <button id="editOfferBtnInline" onclick="openOfferEditModal()" class="hidden bg-gray-900 hover:bg-black text-white border border-gray-700 px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm flex items-center gap-2 transition">
+                        <!-- Inline Edit Offer Button (Only shown in Admin Mode) -->
+                        <button id="editOfferBtnInline" onclick="openOfferEditModal()" class="hidden bg-gray-900 hover:bg-black text-white border border-gray-700 px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm items-center gap-2 transition">
                             <i class="fas fa-edit text-brandYellow"></i>
                             <span>ऑफर बदला</span>
                         </button>
@@ -428,6 +439,34 @@
         </div>
     </div>
 
+    <!-- Admin Password Security Prompt Modal -->
+    <div id="passwordModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white border border-gray-200 rounded-2xl w-full max-w-sm p-6 shadow-2xl relative text-center">
+            <button onclick="closePasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            <div class="w-14 h-14 bg-purple-100 text-brandPurple rounded-full flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">Admin Access Verification</h3>
+            <p class="text-xs text-gray-600 mb-4">कृपया ॲडमिन मोड चालू करण्यासाठी सीक्रेट पिन किंवा पासवर्ड प्रविष्ट करा.</p>
+            
+            <form onsubmit="handleAdminLogin(event)" class="space-y-3.5">
+                <div>
+                    <input type="password" id="adminPinInput" required placeholder="Enter Admin PIN / Password" 
+                           class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-center text-lg tracking-widest font-bold text-gray-900 focus:outline-none focus:border-brandPurple focus:ring-2 focus:ring-purple-200 transition">
+                </div>
+                <div id="passwordErrorMsg" class="text-xs font-bold text-red-600 hidden">
+                    चुकीचा पासवर्ड! कृपया पुन्हा प्रयत्न करा.
+                </div>
+                <button type="submit" class="w-full bg-brandPurple hover:bg-brandPurpleDark text-white font-bold py-2.5 rounded-xl shadow transition">
+                    लॉगिन करा (Unlock Admin)
+                </button>
+            </form>
+            <p class="text-[11px] text-gray-400 mt-3">(Default PIN: 7878)</p>
+        </div>
+    </div>
+
     <!-- Add / Edit Sample Modal -->
     <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-white border border-gray-200 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
@@ -572,7 +611,10 @@
     <!-- Application JavaScript Engine -->
     <script>
         const WHATSAPP_NUMBER = "919422337471";
-        let isAdminMode = false;
+        const ADMIN_SECRET_PIN = "7878";
+        
+        // Strict visitor default: isAdmin starts as false
+        let isAdmin = false;
 
         const categories = [
             "All",
@@ -583,7 +625,7 @@
             "मिक्स गाणी"
         ];
 
-        // Default Initial Media Data
+        // Permanent Built-in Default Media List with valid working YouTube and audio streams
         const initialDefaultItems = [
             {
                 id: 1,
@@ -593,7 +635,7 @@
                 mediaType: "AUDIO",
                 aspectRatio: "16:9",
                 mediaUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-                thumbnailUrl: "https://picsum.photos/seed/ktm_election_2026/600/400",
+                thumbnailUrl: "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=600&auto=format&fit=crop&q=80",
                 description: "लाउडस्पीकर ऑटो व वाहनांसाठी खणखणीत आवाजात राजकीय प्रचार ऑडिओ रेकॉर्डिंग. स्थानिक लयबद्ध ढोल-ताशा बीट्स आणि प्रभावी शब्दरचना.",
                 priceOrEstimate: "₹२,४९९ पासून",
                 views: 1420,
@@ -608,7 +650,7 @@
                 mediaType: "VIDEO",
                 aspectRatio: "9:16",
                 mediaUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                thumbnailUrl: "https://picsum.photos/seed/ktm_shorts_promo/600/800",
+                thumbnailUrl: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&auto=format&fit=crop&q=80",
                 description: "मोबाईल स्क्रीन व सोशल मीडियासाठी खास Vertical 9:16 फॉरमॅट मधील व्हॉईसओव्हर व मोशन टायपोग्राफी व्हिडिओ जाहिरात.",
                 priceOrEstimate: "₹२,९९९ पासून",
                 views: 2890,
@@ -622,8 +664,8 @@
                 category: "व्हिडिओ जाहिराती",
                 mediaType: "VIDEO",
                 aspectRatio: "16:9",
-                mediaUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                thumbnailUrl: "https://picsum.photos/seed/ktm_promo_video/600/400",
+                mediaUrl: "https://www.youtube.com/watch?v=L_LUpnjgPso",
+                thumbnailUrl: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&auto=format&fit=crop&q=80",
                 description: "4K अल्ट्रा HD डिजिटल प्रोमो व्हिडिओ. मोशन ग्राफिक्स, व्हॉईसओव्हर आणि स्टुडिओ साउंड मिक्सिंगसह व्यवसायाची दमदार जाहिरात.",
                 priceOrEstimate: "₹४,९९९ पासून",
                 views: 3150,
@@ -638,7 +680,7 @@
                 mediaType: "AUDIO",
                 aspectRatio: "16:9",
                 mediaUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-                thumbnailUrl: "https://picsum.photos/seed/ktm_audio_1/600/400",
+                thumbnailUrl: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&auto=format&fit=crop&q=80",
                 description: "दिवाळी आणि सणासुदीच्या प्रसंगासाठी खास एफएम रेडिओ दर्जाची ऑडिओ जाहिरात. आकर्षक पार्श्वसंगीत आणि स्पष्ट व्हॉईसओव्हर.",
                 priceOrEstimate: "₹१,९९९ पासून",
                 views: 980,
@@ -652,8 +694,8 @@
                 category: "ग्राफिक्स डिझाइन",
                 mediaType: "GRAPHIC",
                 aspectRatio: "1:1",
-                mediaUrl: "https://picsum.photos/seed/ktm_graphic_square/800/800",
-                thumbnailUrl: "https://picsum.photos/seed/ktm_graphic_square/600/600",
+                mediaUrl: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&auto=format&fit=crop&q=80",
+                thumbnailUrl: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&auto=format&fit=crop&q=80",
                 description: "सोशल मीडिया इंस्टाग्राम पोस्ट, व्हेक्टर पोस्टर्स, फ्लेक्स बॅनर्स आणि ३D लोगो डिझाइन पॅकेज.",
                 priceOrEstimate: "₹९९९ पासून",
                 views: 1850,
@@ -668,12 +710,27 @@
                 mediaType: "AUDIO",
                 aspectRatio: "16:9",
                 mediaUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-                thumbnailUrl: "https://picsum.photos/seed/ktm_election_song/600/400",
+                thumbnailUrl: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80",
                 description: "उमेदवाराचे नाव व निशाणीसह खास तयार केलेले धडाकेबाज गाणे. ब्रास म्युझिक आणि प्रेरणादायी शब्द.",
                 priceOrEstimate: "₹२,४९९ पासून",
                 views: 2100,
                 tags: "मिक्स गाणी, Prachar Audio, Election Song, Loudspeaker, Campaign",
                 whatsappMsg: "नमस्कार Ktimes Media, मला उमेदवार प्रचार गीताचा सॅम्पल आवडला आहे."
+            },
+            {
+                id: 7,
+                sampleId: "KTM-VID-AI",
+                title: "AI सिनेमॅटिक प्रॉडक्ट जाहिरात (AI Commercial)",
+                category: "व्हिडिओ जाहिराती",
+                mediaType: "VIDEO",
+                aspectRatio: "16:9",
+                mediaUrl: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+                thumbnailUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80",
+                description: "AI व्हिज्युअल जनरेशन आणि सिनेमॅटिक इफेक्ट्ससह आधुनिक प्रॉडक्ट ॲडव्हर्टायझिंग व्हिडिओ.",
+                priceOrEstimate: "₹३,९९९ पासून",
+                views: 3420,
+                tags: "व्हिडिओ जाहिराती, AI Video, Commercial, Product Promo",
+                whatsappMsg: "नमस्कार Ktimes Media, मला AI सिनेमॅटिक प्रॉडक्ट जाहिरातीबद्दल माहिती हवी आहे."
             }
         ];
 
@@ -684,16 +741,19 @@
         let activeShareItem = null;
         const globalAudio = document.getElementById("globalAudio");
 
-        // Convert YouTube Watch / Shorts / Share URLs to Embed URLs
+        // Comprehensive YouTube Watch / Shorts / Share / Live URL Parser & Auto-Embedder
         function getYouTubeEmbedUrl(url) {
             if (!url) return "";
+            url = url.trim();
             if (url.includes('youtube.com/embed/')) return url;
 
+            // Handle YouTube Shorts (e.g. youtube.com/shorts/VIDEO_ID)
             const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
             if (shortsMatch && shortsMatch[1]) {
                 return `https://www.youtube.com/embed/${shortsMatch[1]}?autoplay=1&rel=0`;
             }
 
+            // Handle youtu.be/VIDEO_ID or youtube.com/watch?v=VIDEO_ID
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
             const match = url.match(regExp);
             if (match && match[2].length === 11) {
@@ -701,6 +761,21 @@
             }
 
             return url;
+        }
+
+        // Helper: Extract YouTube ID for auto thumbnail generation
+        function getYouTubeThumbnail(url) {
+            if (!url) return "";
+            const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
+            if (shortsMatch && shortsMatch[1]) {
+                return `https://img.youtube.com/vi/${shortsMatch[1]}/hqdefault.jpg`;
+            }
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            if (match && match[2].length === 11) {
+                return `https://img.youtube.com/vi/${match[2]}/hqdefault.jpg`;
+            }
+            return "";
         }
 
         // Helper: Aspect ratio CSS class
@@ -712,9 +787,17 @@
 
         // App Initialization
         document.addEventListener("DOMContentLoaded", () => {
+            // Check session for admin status
+            if (sessionStorage.getItem("ktm_is_admin") === "true") {
+                isAdmin = true;
+            } else {
+                isAdmin = false;
+            }
+
             loadPersistentData();
             loadCategories();
             renderOfferBanner();
+            updateAdminUI();
             renderGrid();
 
             globalAudio.addEventListener("timeupdate", updateProgressBar);
@@ -727,17 +810,22 @@
             // Register Service Worker for PWA
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('PWA ServiceWorker registered'))
+                    .then(() => console.log('PWA ServiceWorker registered'))
                     .catch(err => console.log('SW registration error:', err));
             }
         });
 
-        // Persistent Data Engine (localStorage with Firebase cloud sync fallback)
+        // Load Persistent Storage Data & Merge with permanent built-ins
         function loadPersistentData() {
             const storedItems = localStorage.getItem("ktm_media_items");
             if (storedItems) {
                 try {
-                    mediaItems = JSON.parse(storedItems);
+                    const parsed = JSON.parse(storedItems);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        mediaItems = parsed;
+                    } else {
+                        mediaItems = [...initialDefaultItems];
+                    }
                 } catch(e) {
                     mediaItems = [...initialDefaultItems];
                 }
@@ -746,13 +834,20 @@
                 saveMediaItemsToStorage();
             }
 
-            // Global Visitor Count
+            // Ensure any YouTube item has thumbnail if missing
+            mediaItems.forEach(item => {
+                if (item.mediaType === "VIDEO" && (!item.thumbnailUrl || item.thumbnailUrl.includes("picsum.photos"))) {
+                    const ytThumb = getYouTubeThumbnail(item.mediaUrl);
+                    if (ytThumb) item.thumbnailUrl = ytThumb;
+                }
+            });
+
+            // Visitor Counter
             let visitorCount = localStorage.getItem("ktm_visitor_count");
             if (!visitorCount) {
                 visitorCount = 12540;
                 localStorage.setItem("ktm_visitor_count", visitorCount);
             } else {
-                // Auto-increment visitor count on page load
                 visitorCount = parseInt(visitorCount) + 1;
                 localStorage.setItem("ktm_visitor_count", visitorCount);
             }
@@ -763,7 +858,7 @@
             localStorage.setItem("ktm_media_items", JSON.stringify(mediaItems));
         }
 
-        // PWA Installation Setup
+        // PWA Prompt Logic
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -775,118 +870,62 @@
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
             } else {
-                alert("ॲप मोबाईल होम स्क्रीनवर सेव्ह करण्यासाठी ब्राऊझरच्या ३ डॉट्स (⋮) वर क्लिक करा आणि 'Add to Home screen' खेळा!");
+                alert("ॲप मोबाईल होम स्क्रीनवर सेव्ह करण्यासाठी ब्राऊझरच्या ३ डॉट्स (⋮) वर क्लिक करून 'Add to Home screen' किंवा 'Install App' निवडा!");
             }
         }
 
-        // Featured Offer Banner Render Logic
+        // Offer Banner
         function renderOfferBanner() {
             const offerDataStr = localStorage.getItem("ktm_offer_banner");
             let offerData = {
                 badge: "विशेष सण उत्सव ऑफर २०२६ 🔥",
-                headline: "निवडणूक प्रचार व व्यवसाय जाहिरातींवर 30% विशेष सूट!",
-                text: "लाउडस्पीकर ऑटो ऑडिओ, एफएम रेडिओ जिगल्स, YouTube Shorts / Reels 4K प्रोमो व्हिडिओ आणि निवडणूक प्रचार गीते विशेष सवलत दरात उपलब्ध.",
+                headline: "निवडणूक प्रचार व व्यवसाय जाहिरातींवर <span class='text-brandYellow'>३०% विशेष सूट!</span>",
+                text: "लाउडस्पीकर ऑटो ऑडिओ, एफएम रेडिओ जिगल्स, YouTube Shorts / Reels 4K प्रोमो व्हिडिओ आणि निवडणूक प्रचार गीते आता विशेष सवलत दरात उपलब्ध. सॅम्पल ऐका आणि आजच व्हॉट्सॲपवर ऑर्डर नोंदवा.",
                 videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
             };
 
             if (offerDataStr) {
-                try { offerData = JSON.parse(offerDataStr); } catch(e) {}
+                try {
+                    offerData = JSON.parse(offerDataStr);
+                } catch(e){}
             }
 
             document.getElementById("offerBadge").innerText = offerData.badge;
-            document.getElementById("offerHeadline").innerText = offerData.headline;
+            document.getElementById("offerHeadline").innerHTML = offerData.headline;
             document.getElementById("offerText").innerText = offerData.text;
 
-            const container = document.getElementById("offerVideoContainer");
             const embedUrl = getYouTubeEmbedUrl(offerData.videoUrl);
-
-            if (embedUrl.includes("youtube.com/embed/")) {
+            const container = document.getElementById("offerVideoContainer");
+            if (embedUrl) {
                 container.innerHTML = `
-                    <iframe src="${embedUrl}" title="Featured Offer Video" 
-                            class="w-full h-full border-0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    <iframe class="w-full h-full" src="${embedUrl}" title="Offer Video" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             allowfullscreen></iframe>
                 `;
             } else {
                 container.innerHTML = `
-                    <img src="https://picsum.photos/seed/ktm_featured_banner/800/450" class="w-full h-full object-cover" alt="Offer Banner">
+                    <div class="w-full h-full flex items-center justify-center bg-gray-900 text-gray-400">
+                        <i class="fas fa-play-circle text-4xl text-brandYellow"></i>
+                    </div>
                 `;
             }
         }
 
-        function openOfferEditModal() {
-            const offerDataStr = localStorage.getItem("ktm_offer_banner");
-            let offerData = {
-                badge: "विशेष सण उत्सव ऑफर २०२६ 🔥",
-                headline: "निवडणूक प्रचार व व्यवसाय जाहिरातींवर 30% विशेष सूट!",
-                text: "लाउडस्पीकर ऑटो ऑडिओ, एफएम रेडिओ जिगल्स, YouTube Shorts / Reels 4K प्रोमो व्हिडिओ आणि निवडणूक प्रचार गीते विशेष सवलत दरात उपलब्ध.",
-                videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            };
-            if (offerDataStr) {
-                try { offerData = JSON.parse(offerDataStr); } catch(e) {}
-            }
-
-            document.getElementById("editOfferBadge").value = offerData.badge;
-            document.getElementById("editOfferHeadline").value = offerData.headline;
-            document.getElementById("editOfferText").value = offerData.text;
-            document.getElementById("editOfferVideoUrl").value = offerData.videoUrl;
-
-            document.getElementById("offerEditModal").classList.remove("hidden");
-        }
-
-        function closeOfferEditModal() {
-            document.getElementById("offerEditModal").classList.add("hidden");
-        }
-
-        function handleSaveOfferBanner(e) {
-            e.preventDefault();
-            const offerData = {
-                badge: document.getElementById("editOfferBadge").value,
-                headline: document.getElementById("editOfferHeadline").value,
-                text: document.getElementById("editOfferText").value,
-                videoUrl: document.getElementById("editOfferVideoUrl").value
-            };
-            localStorage.setItem("ktm_offer_banner", JSON.stringify(offerData));
-            renderOfferBanner();
-            closeOfferEditModal();
-            alert("ऑफर बॅनर यशस्वीपणे अपडेट झाला!");
-        }
-
-        // Visitor Counter Modal
-        function triggerVisitorEdit() {
-            if (isAdminMode) {
-                openVisitorModal();
-            }
-        }
-
-        function openVisitorModal() {
-            const current = localStorage.getItem("ktm_visitor_count") || 12540;
-            document.getElementById("editVisitorCountInput").value = current;
-            document.getElementById("visitorModal").classList.remove("hidden");
-        }
-
-        function closeVisitorModal() {
-            document.getElementById("visitorModal").classList.add("hidden");
-        }
-
-        function handleSaveVisitorCount(e) {
-            e.preventDefault();
-            const val = document.getElementById("editVisitorCountInput").value;
-            localStorage.setItem("ktm_visitor_count", val);
-            document.getElementById("globalVisitorCounter").innerText = Number(val).toLocaleString('en-IN');
-            closeVisitorModal();
-            alert("व्हिजिटर्स संख्या अपडेट झाली!");
-        }
-
-        // Category Filter Rendering
+        // Categories
         function loadCategories() {
             const container = document.getElementById("categoryContainer");
-            container.innerHTML = categories.map(cat => `
-                <button onclick="selectCategory('${cat}')" 
-                        class="px-4 py-2 rounded-xl text-xs md:text-sm font-extrabold whitespace-nowrap transition ${cat === currentCategory ? 'bg-brandPurple text-white shadow-md' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}">
-                    ${cat}
-                </button>
-            `).join("");
+            container.innerHTML = "";
+            categories.forEach(cat => {
+                const btn = document.createElement("button");
+                btn.className = `px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap transition shadow-sm ${
+                    currentCategory === cat 
+                    ? "bg-brandPurple text-white shadow-md scale-105" 
+                    : "bg-white text-gray-700 hover:bg-purple-50 hover:text-brandPurple border border-gray-200"
+                }`;
+                btn.innerText = cat;
+                btn.onclick = () => selectCategory(cat);
+                container.appendChild(btn);
+            });
         }
 
         function selectCategory(cat) {
@@ -895,248 +934,213 @@
             filterMedia();
         }
 
-        function filterMedia() {
-            const query = document.getElementById("searchInput").value.toLowerCase();
-            const filtered = mediaItems.filter(item => {
-                const matchesCat = currentCategory === "All" || item.category === currentCategory;
-                const matchesSearch = item.title.toLowerCase().includes(query) || 
-                                      (item.description && item.description.toLowerCase().includes(query)) || 
-                                      item.sampleId.toLowerCase().includes(query) ||
-                                      (item.tags && item.tags.toLowerCase().includes(query));
-                return matchesCat && matchesSearch;
-            });
-            renderGrid(filtered);
-        }
-
-        // Render Media Cards Grid
-        function renderGrid(items = mediaItems) {
+        // Render Media Grid
+        function renderGrid(filteredList = null) {
+            const items = filteredList || mediaItems;
             const grid = document.getElementById("mediaGrid");
-            document.getElementById("resultCount").innerText = `${items.length} items shown`;
+            grid.innerHTML = "";
+
+            document.getElementById("resultCount").innerText = `${items.length} सॅम्पल्स उपलब्ध`;
 
             if (items.length === 0) {
                 grid.innerHTML = `
-                    <div class="col-span-full text-center py-12 text-gray-500 bg-gray-50 rounded-2xl border border-gray-200">
-                        <i class="fas fa-search text-4xl mb-3 text-gray-400"></i>
-                        <p class="font-bold text-lg text-gray-700">कोणतेही सॅम्पल सापडले नाहीत.</p>
-                        <p class="text-xs text-gray-500 mt-1">कृपया शोधाचा शब्द किंवा श्रेणी तपासा.</p>
+                    <div class="col-span-full py-12 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-300">
+                        <i class="fas fa-search text-4xl text-gray-300 mb-3"></i>
+                        <h4 class="text-lg font-bold text-gray-700">कोणतेही सॅम्पल सापडले नाही</h4>
+                        <p class="text-xs text-gray-500 mt-1">कृपया दुसरा शब्द शोधून पाहा किंवा फिल्टर बदला.</p>
                     </div>
                 `;
                 return;
             }
 
-            grid.innerHTML = items.map(item => {
-                const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(item.whatsappMsg || 'नमस्कार Ktimes Media')}`;
-                const isAudio = item.mediaType === 'AUDIO';
-                const isVideo = item.mediaType === 'VIDEO';
-                const isGraphic = item.mediaType === 'GRAPHIC';
+            items.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition flex flex-col justify-between group";
+
+                const isPlaying = (currentPlayingId === item.id);
                 const aspectClass = getAspectRatioClass(item.aspectRatio);
 
-                return `
-                    <div class="bg-white rounded-2xl overflow-hidden border-2 border-gray-200 hover:border-brandPurple hover:shadow-xl transition-all duration-300 flex flex-col">
-                        <!-- Thumbnail Frame with Dynamic Aspect Ratio -->
-                        <div class="relative ${aspectClass} bg-gray-900 overflow-hidden group">
-                            <img src="${item.thumbnailUrl}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            
-                            <!-- Badges -->
-                            <div class="absolute top-3 left-3 flex items-center gap-1.5 z-10">
-                                <span class="bg-black/80 backdrop-blur-md text-brandYellow text-[11px] font-black px-2.5 py-0.5 rounded-md border border-brandYellow/40 shadow">
-                                    ${item.sampleId}
-                                </span>
-                                <span class="bg-purple-900/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow">
-                                    ${item.aspectRatio || '16:9'}
-                                </span>
-                            </div>
+                // Admin Controls on Card (Only rendered when isAdmin is true)
+                const adminControlsHtml = isAdmin ? `
+                    <div class="flex items-center gap-1">
+                        <button onclick="editSample(${item.id})" class="p-1.5 bg-gray-100 hover:bg-purple-100 text-brandPurple rounded-lg transition" title="Edit">
+                            <i class="fas fa-edit text-xs"></i>
+                        </button>
+                        <button onclick="deleteSample(${item.id})" class="p-1.5 bg-gray-100 hover:bg-red-100 text-brandRed rounded-lg transition" title="Delete">
+                            <i class="fas fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                ` : '';
 
-                            <span class="absolute top-3 right-3 bg-brandPurple text-white text-[11px] font-bold px-2.5 py-0.5 rounded-md shadow z-10">
-                                ${item.category}
+                // Thumbnail & Play Overlay
+                let mediaVisualHtml = '';
+                const fallbackImg = item.mediaType === 'VIDEO' ? (getYouTubeThumbnail(item.mediaUrl) || 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&auto=format&fit=crop&q=80') : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80';
+
+                if (item.mediaType === "AUDIO") {
+                    mediaVisualHtml = `
+                        <div class="relative w-full ${aspectClass} bg-gradient-to-tr from-purple-950 to-brandPurple flex items-center justify-center cursor-pointer overflow-hidden" onclick="playAudioSample(${item.id})">
+                            <img src="${item.thumbnailUrl || fallbackImg}" alt="${item.title}" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-300">
+                            <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                                <div class="w-14 h-14 rounded-full bg-brandPurple text-white flex items-center justify-center text-xl shadow-xl hover:scale-110 transition">
+                                    <i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>
+                                </div>
+                            </div>
+                            <span class="absolute top-3 left-3 bg-brandPurpleDark text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow">
+                                <i class="fas fa-volume-up mr-1 text-brandYellow"></i> AUDIO
                             </span>
-
-                            <!-- Audio Play Button Trigger -->
-                            ${isAudio ? `
-                                <button onclick="playAudio('${item.id}', '${item.mediaUrl}', '${item.title}', '${item.category}', '${item.thumbnailUrl}', '${waUrl}')" 
-                                        class="absolute inset-0 bg-black/35 flex items-center justify-center opacity-90 group-hover:opacity-100 transition">
-                                    <div class="w-14 h-14 rounded-full bg-brandPurple text-white flex items-center justify-center text-2xl shadow-xl transform group-hover:scale-110 transition border-2 border-brandYellow">
-                                        <i class="fas ${currentPlayingId == item.id ? 'fa-pause' : 'fa-play'}" id="play-icon-${item.id}"></i>
-                                    </div>
-                                </button>
-                            ` : ''}
-
-                            <!-- Video Play Modal Trigger -->
-                            ${isVideo ? `
-                                <button onclick="openVideoModal('${item.id}')" 
-                                        class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center group-hover:bg-black/30 transition">
-                                    <div class="w-14 h-14 rounded-full bg-brandRed text-white flex items-center justify-center text-2xl shadow-xl hover:scale-110 transition mb-1 border-2 border-white">
-                                        <i class="fas fa-play"></i>
-                                    </div>
-                                    <span class="text-[11px] font-bold text-white bg-black/70 px-3 py-0.5 rounded-full backdrop-blur-sm">पहा (Play Video)</span>
-                                </button>
-                            ` : ''}
-
-                            <!-- Graphic Image Modal Trigger -->
-                            ${isGraphic ? `
-                                <button onclick="openImageModal('${item.id}')" 
-                                        class="absolute inset-0 bg-black/20 group-hover:bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition">
-                                    <div class="w-12 h-12 rounded-full bg-white text-brandPurple flex items-center justify-center text-xl shadow-lg mb-1">
-                                        <i class="fas fa-search-plus"></i>
-                                    </div>
-                                    <span class="text-[11px] font-bold text-white bg-black/70 px-2 py-0.5 rounded-full">बघा (Zoom)</span>
-                                </button>
-                            ` : ''}
                         </div>
-
-                        <!-- Card Content Body -->
-                        <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
-                            <div>
-                                <h4 class="font-extrabold text-gray-900 text-lg md:text-xl leading-snug line-clamp-2">${item.title}</h4>
-                                <p class="text-xs md:text-sm text-gray-700 mt-1.5 line-clamp-2 leading-relaxed">${item.description}</p>
+                    `;
+                } else if (item.mediaType === "VIDEO") {
+                    mediaVisualHtml = `
+                        <div class="relative w-full ${aspectClass} bg-black flex items-center justify-center cursor-pointer overflow-hidden" onclick="openVideoModal(${item.id})">
+                            <img src="${item.thumbnailUrl || fallbackImg}" alt="${item.title}" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition duration-300">
+                            <div class="absolute inset-0 bg-black/25 flex items-center justify-center">
+                                <div class="w-14 h-14 rounded-full bg-brandRed text-white flex items-center justify-center text-xl shadow-xl hover:scale-110 transition">
+                                    <i class="fas fa-play"></i>
+                                </div>
                             </div>
+                            <span class="absolute top-3 left-3 bg-brandRed text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow">
+                                <i class="fas fa-video mr-1 text-brandYellow"></i> VIDEO
+                            </span>
+                            <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                                ${item.aspectRatio || '16:9'}
+                            </span>
+                        </div>
+                    `;
+                } else {
+                    // GRAPHIC
+                    mediaVisualHtml = `
+                        <div class="relative w-full ${aspectClass} bg-gray-100 flex items-center justify-center cursor-pointer overflow-hidden" onclick="openImageModal(${item.id})">
+                            <img src="${item.mediaUrl || item.thumbnailUrl}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            <span class="absolute top-3 left-3 bg-brandBlue text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow">
+                                <i class="fas fa-image mr-1 text-brandYellow"></i> GRAPHIC
+                            </span>
+                        </div>
+                    `;
+                }
 
-                            <div class="pt-2 border-t border-gray-100 flex items-center justify-between gap-2">
+                const waEncodedText = encodeURIComponent(item.whatsappMsg || `नमस्कार Ktimes Media, मला '${item.title}' (${item.sampleId}) या सॅम्पलची माहिती हवी आहे.`);
+
+                card.innerHTML = `
+                    <div>
+                        ${mediaVisualHtml}
+                        <div class="p-4 space-y-2">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="font-bold text-brandPurple bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
+                                    ${item.category}
+                                </span>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-sm md:text-base font-black text-brandPurple">${item.priceOrEstimate}</span>
-                                    <span class="text-[11px] text-gray-500 font-bold bg-gray-100 px-2 py-0.5 rounded flex items-center gap-1">
-                                        <i class="fas fa-eye text-brandPurple"></i> ${item.views || 0}
-                                    </span>
-                                </div>
-
-                                <div class="flex items-center gap-1.5">
-                                    <!-- Share Button -->
-                                    <button onclick="triggerShareItem('${item.id}')" class="bg-gray-100 hover:bg-purple-100 text-brandPurple p-2 rounded-xl text-xs font-bold transition border border-gray-200" title="शेअर करा">
-                                        <i class="fas fa-share-alt text-base"></i>
-                                    </button>
-
-                                    <!-- WhatsApp Direct Order CTA (Strictly #075E54) -->
-                                    <a href="${waUrl}" target="_blank" rel="noopener noreferrer" 
-                                       class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold flex items-center gap-1.5 transition shadow">
-                                        <i class="fab fa-whatsapp text-base"></i>
-                                        <span>ऑर्डर द्या</span>
-                                    </a>
+                                    <span class="text-gray-500 font-semibold"><i class="fas fa-eye text-gray-400 mr-1"></i>${item.views || 450}</span>
+                                    ${adminControlsHtml}
                                 </div>
                             </div>
+                            <h4 class="text-base font-bold text-gray-900 leading-snug line-clamp-2" title="${item.title}">
+                                ${item.title}
+                            </h4>
+                            <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+                                ${item.description || ''}
+                            </p>
+                        </div>
+                    </div>
 
-                            <!-- Admin Actions (Edit / Delete) -->
-                            ${isAdminMode ? `
-                                <div class="pt-2 border-t border-dashed border-gray-200 flex items-center justify-end gap-2 bg-yellow-50 p-1.5 rounded-lg">
-                                    <span class="text-[10px] font-bold text-gray-600 mr-auto">Admin Controls:</span>
-                                    <button onclick="editSampleItem('${item.id}')" class="bg-blue-600 text-white px-2.5 py-1 rounded text-xs font-bold hover:bg-blue-700 transition">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </button>
-                                    <button onclick="deleteSampleItem('${item.id}')" class="bg-red-600 text-white px-2.5 py-1 rounded text-xs font-bold hover:bg-red-700 transition">
-                                        <i class="fas fa-trash"></i> Delete
-                                    </button>
-                                </div>
-                            ` : ''}
+                    <div class="p-4 pt-0 border-t border-gray-100 mt-2 flex items-center justify-between gap-2">
+                        <span class="text-sm font-black text-brandPurple">
+                            ${item.priceOrEstimate || '₹१,९९९ पासून'}
+                        </span>
+                        
+                        <div class="flex items-center gap-1.5">
+                            <!-- Share Button -->
+                            <button onclick="triggerShare(${item.id})" class="bg-gray-100 hover:bg-gray-200 text-gray-700 w-9 h-9 rounded-xl flex items-center justify-center transition" title="शेअर करा">
+                                <i class="fas fa-share-alt text-xs"></i>
+                            </button>
+
+                            <!-- WhatsApp Direct Order Button (Strictly #075E54) -->
+                            <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${waEncodedText}" target="_blank" rel="noopener noreferrer" 
+                               class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+                                <i class="fab fa-whatsapp text-sm"></i>
+                                <span>ऑर्डर द्या</span>
+                            </a>
                         </div>
                     </div>
                 `;
-            }).join('');
+
+                grid.appendChild(card);
+            });
         }
 
-        // Native Web Share & Social Sharing Engine
-        function triggerShareItem(id) {
-            const item = mediaItems.find(i => i.id == id);
+        // Filter Logic
+        function filterMedia() {
+            const query = document.getElementById("searchInput").value.toLowerCase().trim();
+            let filtered = mediaItems;
+
+            if (currentCategory !== "All") {
+                filtered = filtered.filter(item => item.category === currentCategory);
+            }
+
+            if (query) {
+                filtered = filtered.filter(item => 
+                    (item.title && item.title.toLowerCase().includes(query)) ||
+                    (item.description && item.description.toLowerCase().includes(query)) ||
+                    (item.sampleId && item.sampleId.toLowerCase().includes(query)) ||
+                    (item.tags && item.tags.toLowerCase().includes(query)) ||
+                    (item.category && item.category.toLowerCase().includes(query))
+                );
+            }
+
+            renderGrid(filtered);
+        }
+
+        // Audio Player Engine
+        function playAudioSample(id) {
+            const item = mediaItems.find(i => i.id === id);
             if (!item) return;
 
-            activeShareItem = item;
-            const shareTitle = `${item.title} - Ktimes Media`;
-            const shareText = `${item.title}\n${item.description}\nKtimes Media सॅम्पल आयडी: ${item.sampleId}`;
-            const shareUrl = window.location.href;
+            const player = document.getElementById("bottomAudioPlayer");
+            const playIcon = document.getElementById("globalPlayIcon");
 
-            if (navigator.share) {
-                navigator.share({
-                    title: shareTitle,
-                    text: shareText,
-                    url: shareUrl
-                }).catch(() => openCustomShareModal(item));
-            } else {
-                openCustomShareModal(item);
-            }
-        }
-
-        function openCustomShareModal(item) {
-            document.getElementById("shareModalTitle").innerText = item.title;
-            const waMsg = encodeURIComponent(`${item.title}\n${item.description}\nबघा: ${window.location.href}`);
-            
-            document.getElementById("shareWaBtn").href = `https://wa.me/?text=${waMsg}`;
-            document.getElementById("shareFbBtn").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-            document.getElementById("shareTgBtn").href = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${waMsg}`;
-            document.getElementById("shareXBtn").href = `https://x.com/intent/post?text=${waMsg}`;
-            document.getElementById("shareCopyInput").value = window.location.href;
-
-            document.getElementById("shareModal").classList.remove("hidden");
-        }
-
-        function closeShareModal() {
-            document.getElementById("shareModal").classList.add("hidden");
-        }
-
-        function copyShareUrl() {
-            const input = document.getElementById("shareCopyInput");
-            input.select();
-            document.execCommand("copy");
-            alert("लिंक कॉपी झाली!");
-        }
-
-        // Audio Player Logic
-        function playAudio(id, url, title, category, thumb, waUrl) {
-            if (currentPlayingId == id) {
+            if (currentPlayingId === id) {
                 if (globalAudio.paused) {
                     globalAudio.play();
+                    playIcon.className = "fas fa-pause";
                 } else {
                     globalAudio.pause();
+                    playIcon.className = "fas fa-play";
                 }
-            } else {
-                currentPlayingId = id;
-                globalAudio.src = url;
-                globalAudio.play();
-
-                // Increment view count
-                const item = mediaItems.find(i => i.id == id);
-                if (item) {
-                    item.views = (item.views || 0) + 1;
-                    saveMediaItemsToStorage();
-                }
-
-                document.getElementById("playerTitle").innerText = title;
-                document.getElementById("playerCategory").innerText = category;
-                document.getElementById("playerThumb").src = thumb;
-                document.getElementById("playerWhatsappLink").href = waUrl;
-                document.getElementById("bottomAudioPlayer").classList.remove("hidden");
+                updatePlayIcons();
+                return;
             }
+
+            currentPlayingId = id;
+            globalAudio.src = item.mediaUrl;
+            globalAudio.play().catch(e => console.log('Audio autoplay prevented:', e));
+
+            document.getElementById("playerTitle").innerText = item.title;
+            document.getElementById("playerCategory").innerText = item.category;
+            document.getElementById("playerThumb").src = item.thumbnailUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&auto=format&fit=crop&q=80';
+            
+            const waMsg = encodeURIComponent(item.whatsappMsg || `नमस्कार Ktimes Media, मला '${item.title}' ऑडिओ सॅम्पल मागवायचा आहे.`);
+            document.getElementById("playerWhatsappLink").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`;
+
+            player.classList.remove("hidden");
+            playIcon.className = "fas fa-pause";
+
+            // increment views
+            item.views = (item.views || 0) + 1;
+            saveMediaItemsToStorage();
+
             updatePlayIcons();
         }
 
         function toggleGlobalAudio() {
+            const playIcon = document.getElementById("globalPlayIcon");
             if (globalAudio.paused) {
                 globalAudio.play();
+                playIcon.className = "fas fa-pause";
             } else {
                 globalAudio.pause();
+                playIcon.className = "fas fa-play";
             }
             updatePlayIcons();
-        }
-
-        function updatePlayIcons() {
-            const globalIcon = document.getElementById("globalPlayIcon");
-            if (globalIcon) {
-                globalIcon.className = globalAudio.paused ? "fas fa-play" : "fas fa-pause";
-            }
-            filterMedia();
-        }
-
-        function updateProgressBar() {
-            if (globalAudio.duration) {
-                const pct = (globalAudio.currentTime / globalAudio.duration) * 100;
-                document.getElementById("audioProgressBar").style.width = `${pct}%`;
-            }
-        }
-
-        function seekAudio(e) {
-            const bg = document.getElementById("audioProgressBg");
-            const rect = bg.getBoundingClientRect();
-            const pos = (e.clientX - rect.left) / rect.width;
-            if (globalAudio.duration) {
-                globalAudio.currentTime = pos * globalAudio.duration;
-            }
         }
 
         function closeAudioPlayer() {
@@ -1146,42 +1150,58 @@
             updatePlayIcons();
         }
 
-        // Video Modal Logic
-        function openVideoModal(id) {
-            const item = mediaItems.find(i => i.id == id);
-            if (!item) return;
+        function updateProgressBar() {
+            if (!globalAudio.duration) return;
+            const pct = (globalAudio.currentTime / globalAudio.duration) * 100;
+            document.getElementById("audioProgressBar").style.width = pct + "%";
+        }
 
-            // Increment view count
-            item.views = (item.views || 0) + 1;
-            saveMediaItemsToStorage();
+        function seekAudio(event) {
+            const bg = document.getElementById("audioProgressBg");
+            const rect = bg.getBoundingClientRect();
+            const pos = (event.clientX - rect.left) / rect.width;
+            if (globalAudio.duration) {
+                globalAudio.currentTime = pos * globalAudio.duration;
+            }
+        }
+
+        function updatePlayIcons() {
             filterMedia();
+        }
+
+        // Video Modal Engine
+        function openVideoModal(id) {
+            const item = mediaItems.find(i => i.id === id);
+            if (!item) return;
 
             document.getElementById("videoModalTitle").innerText = item.title;
             document.getElementById("videoModalCategory").innerText = `${item.category} • ${item.aspectRatio || '16:9'}`;
-            document.getElementById("videoModalDesc").innerText = item.description;
-            document.getElementById("videoModalPrice").innerText = item.priceOrEstimate;
+            document.getElementById("videoModalDesc").innerText = item.description || '';
+            document.getElementById("videoModalPrice").innerText = item.priceOrEstimate || '₹४,९९९ पासून';
 
-            const waMsg = `नमस्कार Ktimes Media, मला '${item.title}' (${item.sampleId}) हा व्हिडिओ सॅम्पल आवडला असून मला ही जाहिरात बनवायची आहे.`;
-            document.getElementById("videoModalWaBtn").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
-
-            const embedContainer = document.getElementById("videoEmbedContainer");
             const embedUrl = getYouTubeEmbedUrl(item.mediaUrl);
+            const container = document.getElementById("videoEmbedContainer");
+
             const aspectClass = getAspectRatioClass(item.aspectRatio);
 
-            if (embedUrl.includes("youtube.com/embed/")) {
-                embedContainer.className = `w-full ${aspectClass} max-w-full rounded-lg overflow-hidden border border-gray-800 shadow-xl`;
-                embedContainer.innerHTML = `
-                    <iframe src="${embedUrl}" title="${item.title}" 
-                            class="w-full h-full" frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen></iframe>
+            if (embedUrl) {
+                container.innerHTML = `
+                    <div class="w-full ${aspectClass} max-h-[58vh]">
+                        <iframe class="w-full h-full" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
                 `;
             } else {
-                embedContainer.className = `w-full ${aspectClass} max-w-full rounded-lg overflow-hidden bg-black flex items-center justify-center`;
-                embedContainer.innerHTML = `
-                    <video src="${item.mediaUrl}" controls autoplay class="w-full h-full object-contain"></video>
+                container.innerHTML = `
+                    <video src="${item.mediaUrl}" controls autoplay class="w-full max-h-[58vh] rounded-lg"></video>
                 `;
             }
+
+            const waMsg = encodeURIComponent(item.whatsappMsg || `नमस्कार Ktimes Media, मला '${item.title}' (${item.sampleId}) हा व्हिडिओ सॅम्पल आवडला असून ऑर्डर द्यायची आहे.`);
+            document.getElementById("videoModalWaBtn").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`;
+
+            // increment views
+            item.views = (item.views || 0) + 1;
+            saveMediaItemsToStorage();
 
             document.getElementById("videoModal").classList.remove("hidden");
         }
@@ -1193,20 +1213,20 @@
 
         // Image Modal
         function openImageModal(id) {
-            const item = mediaItems.find(i => i.id == id);
+            const item = mediaItems.find(i => i.id === id);
             if (!item) return;
-
-            item.views = (item.views || 0) + 1;
-            saveMediaItemsToStorage();
-            filterMedia();
 
             document.getElementById("imageModalTitle").innerText = item.title;
             document.getElementById("imageModalSrc").src = item.mediaUrl || item.thumbnailUrl;
-            document.getElementById("imageModalDesc").innerText = item.description;
-            document.getElementById("imageModalPrice").innerText = item.priceOrEstimate;
+            document.getElementById("imageModalDesc").innerText = item.description || '';
+            document.getElementById("imageModalPrice").innerText = item.priceOrEstimate || '₹९९९ पासून';
 
-            const waMsg = `नमस्कार Ktimes Media, मला '${item.title}' (${item.sampleId}) हा ग्राफिक्स पोस्टर सॅम्पल आवडला आहे.`;
-            document.getElementById("imageModalWaBtn").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
+            const waMsg = encodeURIComponent(item.whatsappMsg || `नमस्कार Ktimes Media, मला '${item.title}' (${item.sampleId}) हे ग्राफिक डिझाइन बनवायचे आहे.`);
+            document.getElementById("imageModalWaBtn").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`;
+
+            // increment views
+            item.views = (item.views || 0) + 1;
+            saveMediaItemsToStorage();
 
             document.getElementById("imageModal").classList.remove("hidden");
         }
@@ -1215,30 +1235,146 @@
             document.getElementById("imageModal").classList.add("hidden");
         }
 
-        // Admin Mode Toggle
-        function toggleAdminMode() {
-            isAdminMode = !isAdminMode;
-            const btnText = document.getElementById("adminBtnText");
-            const adminBanner = document.getElementById("adminModeBanner");
-            const inlineEditBtn = document.getElementById("editOfferBtnInline");
+        // Social Share Engine
+        function triggerShare(id) {
+            const item = mediaItems.find(i => i.id === id);
+            if (!item) return;
 
-            if (isAdminMode) {
-                btnText.innerText = "Admin (Active)";
-                adminBanner.classList.remove("hidden");
-                inlineEditBtn.classList.remove("hidden");
+            activeShareItem = item;
+            const currentUrl = window.location.href.split('#')[0];
+            const shareText = `*${item.title}*\n${item.description || ''}\nKtimes Media Studio - सॅम्पल पहा:`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: item.title,
+                    text: shareText,
+                    url: currentUrl
+                }).catch(e => console.log('Web share canceled:', e));
             } else {
-                btnText.innerText = "Admin Mode";
-                adminBanner.classList.add("hidden");
-                inlineEditBtn.classList.add("hidden");
+                openShareModal(item, currentUrl);
             }
-            filterMedia();
         }
 
-        // Admin Modals
+        function openShareModal(item, url) {
+            document.getElementById("shareModalTitle").innerText = item.title;
+            document.getElementById("shareCopyInput").value = url;
+
+            const text = encodeURIComponent(`*${item.title}* - Ktimes Media Studio: ${url}`);
+            document.getElementById("shareWaBtn").href = `https://api.whatsapp.com/send?text=${text}`;
+            document.getElementById("shareFbBtn").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+            document.getElementById("shareTgBtn").href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${text}`;
+            document.getElementById("shareXBtn").href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${text}`;
+
+            document.getElementById("shareModal").classList.remove("hidden");
+        }
+
+        function closeShareModal() {
+            document.getElementById("shareModal").classList.add("hidden");
+        }
+
+        function copyShareUrl() {
+            const input = document.getElementById("shareCopyInput");
+            input.select();
+            navigator.clipboard.writeText(input.value).then(() => {
+                alert("लिंक कॉपी झाली आहे!");
+            });
+        }
+
+        // ==========================================
+        // ADMIN AUTHENTICATION & SECURITY CONTROLS
+        // ==========================================
+
+        function openPasswordModal() {
+            document.getElementById("adminPinInput").value = "";
+            document.getElementById("passwordErrorMsg").classList.add("hidden");
+            document.getElementById("passwordModal").classList.remove("hidden");
+            setTimeout(() => document.getElementById("adminPinInput").focus(), 100);
+        }
+
+        function closePasswordModal() {
+            document.getElementById("passwordModal").classList.add("hidden");
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const inputPin = document.getElementById("adminPinInput").value.trim();
+
+            if (inputPin === ADMIN_SECRET_PIN) {
+                isAdmin = true;
+                sessionStorage.setItem("ktm_is_admin", "true");
+                closePasswordModal();
+                updateAdminUI();
+                renderGrid();
+                alert("अभिनंदन! ॲडमिन मोड यशस्वीरित्या अनलॉक झाला आहे.");
+            } else {
+                document.getElementById("passwordErrorMsg").classList.remove("hidden");
+            }
+        }
+
+        function logoutAdmin() {
+            isAdmin = false;
+            sessionStorage.removeItem("ktm_is_admin");
+            updateAdminUI();
+            renderGrid();
+            alert("ॲडमिन मोडमधून यशस्वीरित्या लॉगआउट झाले. आता सामान्य व्हिजिटर मोड चालू आहे.");
+        }
+
+        function updateAdminUI() {
+            const loginBtn = document.getElementById("adminLoginBtn");
+            const logoutBtn = document.getElementById("adminLogoutBtn");
+            const banner = document.getElementById("adminModeBanner");
+            const addSampleBtn = document.getElementById("addSampleHeaderBtn");
+            const editOfferInline = document.getElementById("editOfferBtnInline");
+
+            if (isAdmin) {
+                loginBtn.classList.add("hidden");
+                logoutBtn.classList.remove("hidden");
+                banner.classList.remove("hidden");
+                addSampleBtn.classList.remove("hidden");
+                addSampleBtn.classList.add("flex");
+                editOfferInline.classList.remove("hidden");
+                editOfferInline.classList.add("flex");
+            } else {
+                loginBtn.classList.remove("hidden");
+                logoutBtn.classList.add("hidden");
+                banner.classList.add("hidden");
+                addSampleBtn.classList.add("hidden");
+                addSampleBtn.classList.remove("flex");
+                editOfferInline.classList.add("hidden");
+                editOfferInline.classList.remove("flex");
+            }
+        }
+
+        function triggerVisitorEdit() {
+            if (isAdmin) {
+                openVisitorModal();
+            } else {
+                openPasswordModal();
+            }
+        }
+
+        // ==========================================
+        // ADMIN SAMPLE ADD / EDIT / DELETE OPERATIONS
+        // ==========================================
+
+        function autoSelectAspectRatio() {
+            const mediaType = document.getElementById("newMediaType").value;
+            const aspectSelect = document.getElementById("newAspectRatio");
+            if (mediaType === "AUDIO") {
+                aspectSelect.value = "16:9";
+            } else if (mediaType === "GRAPHIC") {
+                aspectSelect.value = "1:1";
+            }
+        }
+
         function openAdminModal() {
+            if (!isAdmin) {
+                openPasswordModal();
+                return;
+            }
             document.getElementById("editingItemId").value = "";
-            document.getElementById("sampleFormModalTitle").innerText = "नवीन मीडिया सॅम्पल जोडा (Add Sample)";
-            document.getElementById("newSampleId").value = "KTM-" + Math.floor(100 + Math.random() * 900);
+            document.getElementById("sampleFormModalTitle").innerHTML = '<i class="fas fa-plus-circle text-brandPurple"></i> <span>नवीन मीडिया सॅम्पल जोडा (Add Sample)</span>';
+            document.getElementById("newSampleId").value = `KTM-${Date.now().toString().slice(-4)}`;
             document.getElementById("newTitle").value = "";
             document.getElementById("newCategory").value = "निवडणूक स्पेशल";
             document.getElementById("newMediaType").value = "VIDEO";
@@ -1247,8 +1383,7 @@
             document.getElementById("newThumbnailUrl").value = "";
             document.getElementById("newDescription").value = "";
             document.getElementById("newPrice").value = "₹२,४९९ पासून";
-            document.getElementById("newViews").value = "120";
-
+            document.getElementById("newViews").value = 500;
             document.getElementById("adminModal").classList.remove("hidden");
         }
 
@@ -1256,83 +1391,160 @@
             document.getElementById("adminModal").classList.add("hidden");
         }
 
-        function autoSelectAspectRatio() {
-            const type = document.getElementById("newMediaType").value;
-            const aspectSelect = document.getElementById("newAspectRatio");
-            if (type === "VIDEO") aspectSelect.value = "16:9";
-            else if (type === "GRAPHIC") aspectSelect.value = "1:1";
-            else if (type === "AUDIO") aspectSelect.value = "16:9";
-        }
-
-        function handleSaveMedia(e) {
-            e.preventDefault();
-            const editId = document.getElementById("editingItemId").value;
-            const sampleId = document.getElementById("newSampleId").value;
-            const title = document.getElementById("newTitle").value;
-            const category = document.getElementById("newCategory").value;
-            const mediaType = document.getElementById("newMediaType").value;
-            const aspectRatio = document.getElementById("newAspectRatio").value;
-            const mediaUrl = document.getElementById("newMediaUrl").value;
-            let thumbnailUrl = document.getElementById("newThumbnailUrl").value;
-            const description = document.getElementById("newDescription").value;
-            const priceOrEstimate = document.getElementById("newPrice").value || "₹२,४९९ पासून";
-            const views = parseInt(document.getElementById("newViews").value) || 100;
-
-            if (!thumbnailUrl) {
-                thumbnailUrl = `https://picsum.photos/seed/${sampleId.toLowerCase()}/600/400`;
+        function editSample(id) {
+            if (!isAdmin) {
+                openPasswordModal();
+                return;
             }
-
-            const waMsg = `नमस्कार Ktimes Media, मला '${title}' (${sampleId}) बद्दल चौकशी करायची आहे.`;
-
-            if (editId) {
-                const idx = mediaItems.findIndex(i => i.id == editId);
-                if (idx !== -1) {
-                    mediaItems[idx] = {
-                        ...mediaItems[idx],
-                        sampleId, title, category, mediaType, aspectRatio, mediaUrl, thumbnailUrl, description, priceOrEstimate, views, whatsappMsg: waMsg
-                    };
-                }
-            } else {
-                const newItem = {
-                    id: Date.now(),
-                    sampleId, title, category, mediaType, aspectRatio, mediaUrl, thumbnailUrl, description, priceOrEstimate, views,
-                    tags: `${category}, ${title}, ${sampleId}`,
-                    whatsappMsg: waMsg
-                };
-                mediaItems.unshift(newItem);
-            }
-
-            saveMediaItemsToStorage();
-            filterMedia();
-            closeAdminModal();
-            alert("सॅम्पल यशस्वीपणे सेव्ह झाले!");
-        }
-
-        function editSampleItem(id) {
-            const item = mediaItems.find(i => i.id == id);
+            const item = mediaItems.find(i => i.id === id);
             if (!item) return;
 
             document.getElementById("editingItemId").value = item.id;
-            document.getElementById("sampleFormModalTitle").innerText = "सॅम्पल एडिट करा (Edit Sample)";
+            document.getElementById("sampleFormModalTitle").innerHTML = '<i class="fas fa-edit text-brandPurple"></i> <span>सॅम्पल संपादित करा (Edit Sample)</span>';
             document.getElementById("newSampleId").value = item.sampleId;
             document.getElementById("newTitle").value = item.title;
             document.getElementById("newCategory").value = item.category;
             document.getElementById("newMediaType").value = item.mediaType;
             document.getElementById("newAspectRatio").value = item.aspectRatio || "16:9";
             document.getElementById("newMediaUrl").value = item.mediaUrl;
-            document.getElementById("newThumbnailUrl").value = item.thumbnailUrl;
-            document.getElementById("newDescription").value = item.description;
-            document.getElementById("newPrice").value = item.priceOrEstimate;
-            document.getElementById("newViews").value = item.views || 0;
-
+            document.getElementById("newThumbnailUrl").value = item.thumbnailUrl || "";
+            document.getElementById("newDescription").value = item.description || "";
+            document.getElementById("newPrice").value = item.priceOrEstimate || "₹२,४९९ पासून";
+            document.getElementById("newViews").value = item.views || 450;
             document.getElementById("adminModal").classList.remove("hidden");
         }
 
-        function deleteSampleItem(id) {
-            if (confirm("तुम्हाला हे सॅम्पल हटवायचे आहे का?")) {
-                mediaItems = mediaItems.filter(i => i.id != id);
+        function deleteSample(id) {
+            if (!isAdmin) {
+                openPasswordModal();
+                return;
+            }
+            if (confirm("तुम्हाला खात्री आहे का हे सॅम्पल हटवायचे आहे?")) {
+                mediaItems = mediaItems.filter(i => i.id !== id);
                 saveMediaItemsToStorage();
                 filterMedia();
+            }
+        }
+
+        function handleSaveMedia(e) {
+            e.preventDefault();
+            const editingId = document.getElementById("editingItemId").value;
+            const sampleId = document.getElementById("newSampleId").value.trim();
+            const title = document.getElementById("newTitle").value.trim();
+            const category = document.getElementById("newCategory").value;
+            const mediaType = document.getElementById("newMediaType").value;
+            const aspectRatio = document.getElementById("newAspectRatio").value;
+            const mediaUrl = document.getElementById("newMediaUrl").value.trim();
+            let thumbnailUrl = document.getElementById("newThumbnailUrl").value.trim();
+
+            if (!thumbnailUrl && mediaType === "VIDEO") {
+                thumbnailUrl = getYouTubeThumbnail(mediaUrl) || `https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&auto=format&fit=crop&q=80`;
+            } else if (!thumbnailUrl) {
+                thumbnailUrl = `https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80`;
+            }
+
+            const description = document.getElementById("newDescription").value.trim();
+            const price = document.getElementById("newPrice").value.trim() || "₹२,४९९ पासून";
+            const views = parseInt(document.getElementById("newViews").value) || 300;
+
+            const whatsappMsg = `नमस्कार Ktimes Media, मला '${title}' (${sampleId}) बद्दल चौकशी करायची आहे.`;
+
+            if (editingId) {
+                const idx = mediaItems.findIndex(i => i.id == editingId);
+                if (idx !== -1) {
+                    mediaItems[idx] = {
+                        ...mediaItems[idx],
+                        sampleId, title, category, mediaType, aspectRatio, mediaUrl, thumbnailUrl, description, priceOrEstimate: price, views, whatsappMsg
+                    };
+                }
+            } else {
+                const newItem = {
+                    id: Date.now(),
+                    sampleId, title, category, mediaType, aspectRatio, mediaUrl, thumbnailUrl, description, priceOrEstimate: price, views,
+                    tags: `${category}, ${title}`,
+                    whatsappMsg
+                };
+                mediaItems.unshift(newItem);
+            }
+
+            saveMediaItemsToStorage();
+            closeAdminModal();
+            filterMedia();
+            alert("सॅम्पल यशस्वीरित्या सेव्ह झाले!");
+        }
+
+        // ==========================================
+        // OFFER BANNER EDIT
+        // ==========================================
+
+        function openOfferEditModal() {
+            if (!isAdmin) {
+                openPasswordModal();
+                return;
+            }
+            const offerDataStr = localStorage.getItem("ktm_offer_banner");
+            let offerData = {
+                badge: "विशेष सण उत्सव ऑफर २०२६ 🔥",
+                headline: "निवडणूक प्रचार व व्यवसाय जाहिरातींवर <span class='text-brandYellow'>३०% विशेष सूट!</span>",
+                text: "लाउडस्पीकर ऑटो ऑडिओ, एफएम रेडिओ जिगल्स, YouTube Shorts / Reels 4K प्रोमो व्हिडिओ आणि निवडणूक प्रचार गीते आता विशेष सवलत दरात उपलब्ध. सॅम्पल ऐका आणि आजच व्हॉट्सॲपवर ऑर्डर नोंदवा.",
+                videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            };
+            if (offerDataStr) {
+                try { offerData = JSON.parse(offerDataStr); } catch(e){}
+            }
+
+            document.getElementById("editOfferBadge").value = offerData.badge;
+            document.getElementById("editOfferHeadline").value = offerData.headline;
+            document.getElementById("editOfferText").value = offerData.text;
+            document.getElementById("editOfferVideoUrl").value = offerData.videoUrl || "";
+
+            document.getElementById("offerEditModal").classList.remove("hidden");
+        }
+
+        function closeOfferEditModal() {
+            document.getElementById("offerEditModal").classList.add("hidden");
+        }
+
+        function handleSaveOfferBanner(e) {
+            e.preventDefault();
+            const badge = document.getElementById("editOfferBadge").value.trim();
+            const headline = document.getElementById("editOfferHeadline").value.trim();
+            const text = document.getElementById("editOfferText").value.trim();
+            const videoUrl = document.getElementById("editOfferVideoUrl").value.trim();
+
+            const offerData = { badge, headline, text, videoUrl };
+            localStorage.setItem("ktm_offer_banner", JSON.stringify(offerData));
+            renderOfferBanner();
+            closeOfferEditModal();
+            alert("ऑफर बॅनर यशस्वीरित्या अपडेट झाले!");
+        }
+
+        // ==========================================
+        // VISITOR COUNT EDIT
+        // ==========================================
+
+        function openVisitorModal() {
+            if (!isAdmin) {
+                openPasswordModal();
+                return;
+            }
+            const cur = localStorage.getItem("ktm_visitor_count") || 12540;
+            document.getElementById("editVisitorCountInput").value = cur;
+            document.getElementById("visitorModal").classList.remove("hidden");
+        }
+
+        function closeVisitorModal() {
+            document.getElementById("visitorModal").classList.add("hidden");
+        }
+
+        function handleSaveVisitorCount(e) {
+            e.preventDefault();
+            const val = parseInt(document.getElementById("editVisitorCountInput").value);
+            if (!isNaN(val) && val >= 0) {
+                localStorage.setItem("ktm_visitor_count", val);
+                document.getElementById("globalVisitorCounter").innerText = Number(val).toLocaleString('en-IN');
+                closeVisitorModal();
+                alert("व्हिजिटर्स संख्या अपडेट झाली!");
             }
         }
     </script>
