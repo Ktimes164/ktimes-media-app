@@ -663,7 +663,7 @@
             <div class="flex flex-wrap items-center justify-between gap-3 bg-[#1e0b36] p-5 rounded-3xl border border-[#3b1766]">
                 <div>
                     <span class="badge-crimson text-xs px-3 py-0.5 rounded-full font-bold shadow">
-                        Admin Console & CRM 🔒 (PIN:7171)
+                        Admin Console & CRM 🔒 (PIN: 7878)
                     </span>
                     <h2 class="text-2xl font-black text-white mt-1">
                         KTimes Media Advertising CRM & Operations
@@ -1201,7 +1201,8 @@
 
     <!-- JAVASCRIPT LOGIC ENGINE -->
     <script>
-        // Global State
+        // Global State & Security Configuration
+        const ADMIN_PIN = "7171";
         let currentUserRole = 'client'; // 'client', 'staff', 'admin'
         let currentActiveTab = 'home';
         let currentLanguage = 'mr';
@@ -1434,11 +1435,11 @@
             renderNotifications();
         });
 
-        // ROLE SWITCHER (STRICT PIN 7878 PROTECTED)
+        // ROLE SWITCHER (STRICT PIN PROTECTED)
         function switchUserRole(role) {
             if (role === 'admin' || role === 'staff') {
                 const pin = prompt("🔐 कृपया KTimes Media Security PIN प्रविष्ट करा (Enter PIN):");
-                if (pin !== "7878") {
+                if (pin !== ADMIN_PIN) {
                     alert("❌ चुकीचा Security PIN! ऍक्सेस नाकारण्यात आला आहे. (Access Denied - Client Mode Active)");
                     currentUserRole = 'client';
                     updateRoleButtonsUI('client');
@@ -1481,8 +1482,8 @@
         function switchNav(tab) {
             // Guard admin/staff tabs with PIN
             if ((tab === 'admin_crm' || tab === 'staff') && currentUserRole === 'client') {
-                const pin = prompt("🔐 ही स्क्रीन उघडण्यासाठी Admin Security PIN (7878) टाका:");
-                if (pin !== "7878") {
+                const pin = prompt("🔐 ही स्क्रीन उघडण्यासाठी Admin Security PIN टाका:");
+                if (pin !== ADMIN_PIN) {
                     alert("❌ चुकीचा PIN! ऍक्सेस नाकारण्यात आला आहे.");
                     return;
                 }
@@ -2205,8 +2206,8 @@
         }
 
         function openUserMenuModal() {
-            const pin = prompt("🔐 Staff / Admin CRM मध्ये जाण्यासाठी Security PIN (7878) टाका:");
-            if (pin === "7878") {
+            const pin = prompt("🔐 Staff / Admin CRM मध्ये जाण्यासाठी Security PIN टाका:");
+            if (pin === ADMIN_PIN) {
                 const choice = confirm("Admin CRM Dashboard उघडायचे आहे का? (Staff Mode साठी Cancel दाबा)");
                 if (choice) {
                     currentUserRole = 'admin';
