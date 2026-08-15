@@ -918,18 +918,28 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">अंदाजे बजेट (Budget)</label>
-                        <select id="reqBudget" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
-                            <option value="₹1,000–₹3,000">₹1,000–₹3,000</option>
-                            <option value="₹3,000–₹5,000">₹3,000–₹5,000</option>
-                            <option value="₹5,000–₹10,000">₹5,000–₹10,000</option>
-                            <option value="₹10,000+">₹10,000+ (पॅकेज)</option>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">मुदत (Deadline) *</label>
+                        <select id="reqDeadline" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
+                            <option value="२४ तास (Fast Track)">२४ तास (Fast Track Urgent)</option>
+                            <option value="२ ते ३ दिवस" selected>२ ते ३ दिवस (Standard)</option>
+                            <option value="५ दिवस">५ दिवस (Normal)</option>
+                            <option value="सणाच्या आधी (Priority)">सणाच्या आधी (Priority)</option>
                         </select>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">जाहिरातीत काय मजकूर / माहिती हवी आहे? (Description / Brief)</label>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">अंदाजे बजेट (Budget) *</label>
+                    <select id="reqBudget" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
+                        <option value="₹१,००० ते ₹३,०००">₹१,००० ते ₹३,०००</option>
+                        <option value="₹३,००० ते ₹५,०००">₹३,००० ते ₹५,०००</option>
+                        <option value="₹५,००० ते ₹१०,०००">₹५,००० ते ₹१०,०००</option>
+                        <option value="₹१०,०००+ (पॅकेज)">₹१०,०००+ (पॅकेज)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">जाहिरातीत काय मजकूर / माहिती हवी आहे? (Details / Brief) *</label>
                     <textarea id="reqDescription" rows="3" placeholder="उदा. सोन्याच्या दागिन्यांवर मजुरीत ५०% सूट, पत्ता: मोती चौक, सातारा..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple"></textarea>
                 </div>
 
@@ -1313,19 +1323,31 @@
 
         // ROLE SWITCHER
         function switchUserRole(role) {
+            if (role === 'admin') {
+                const pin = prompt("🔐 कृपया KTimes Media Admin PIN प्रविष्ट करा (Enter Admin PIN):");
+                if (pin !== "7878") {
+                    alert("❌ चुकीचा Admin PIN! ऍक्सेस नाकारण्यात आला आहे.");
+                    return;
+                }
+            }
+
             currentUserRole = role;
             ['roleBtnClient', 'roleBtnStaff', 'roleBtnAdmin'].forEach(id => {
-                document.getElementById(id).className = "px-2.5 py-1 rounded font-bold transition text-slate-400 hover:text-white";
+                const el = document.getElementById(id);
+                if (el) el.className = "px-2.5 py-1 rounded font-bold transition text-slate-400 hover:text-white";
             });
 
             if (role === 'client') {
-                document.getElementById('roleBtnClient').className = "px-2.5 py-1 rounded font-bold transition bg-brandPurple text-white shadow-sm";
+                const el = document.getElementById('roleBtnClient');
+                if (el) el.className = "px-2.5 py-1 rounded font-bold transition bg-brandPurple text-white shadow-sm";
                 switchNav('home');
             } else if (role === 'staff') {
-                document.getElementById('roleBtnStaff').className = "px-2.5 py-1 rounded font-bold transition bg-cyan-600 text-white shadow-sm";
+                const el = document.getElementById('roleBtnStaff');
+                if (el) el.className = "px-2.5 py-1 rounded font-bold transition bg-cyan-600 text-white shadow-sm";
                 switchNav('staff');
             } else if (role === 'admin') {
-                document.getElementById('roleBtnAdmin').className = "px-2.5 py-1 rounded font-bold transition bg-red-600 text-white shadow-sm";
+                const el = document.getElementById('roleBtnAdmin');
+                if (el) el.className = "px-2.5 py-1 rounded font-bold transition bg-red-600 text-white shadow-sm";
                 switchNav('admin_crm');
             }
         }
@@ -1800,28 +1822,51 @@
 
         // FORM HANDLERS
         function handleSubmitAdRequest(e) {
-            e.preventDefault();
-            const bName = document.getElementById('reqBusinessName').value;
-            const service = document.getElementById('reqServiceType').value;
-            const location = document.getElementById('reqLocation').value;
-            const budget = document.getElementById('reqBudget').value;
+            if (e && e.preventDefault) e.preventDefault();
 
-            // Automatically create CRM Lead
-            const newLead = {
-                id: `LD-${Date.now().toString().slice(-3)}`,
-                client: bName,
-                business: 'Local Business',
-                location: location,
-                service: service,
-                budget: budget,
-                stage: 'New Lead',
-                date: 'Just now'
-            };
-            crmLeads.unshift(newLead);
-            renderAdminCRM();
+            const bName = document.getElementById('reqBusinessName') ? document.getElementById('reqBusinessName').value.trim() : '';
+            const phone = document.getElementById('reqPhone') ? document.getElementById('reqPhone').value.trim() : '';
+            const service = document.getElementById('reqServiceType') ? document.getElementById('reqServiceType').value.trim() : '';
+            const budget = document.getElementById('reqBudget') ? document.getElementById('reqBudget').value.trim() : '';
+            const deadline = document.getElementById('reqDeadline') ? document.getElementById('reqDeadline').value.trim() : '२ ते ३ दिवस';
+            const details = document.getElementById('reqDescription') ? document.getElementById('reqDescription').value.trim() : '';
+            const location = document.getElementById('reqLocation') ? document.getElementById('reqLocation').value.trim() : 'सातारा';
+
+            // Automatically create CRM Lead locally
+            try {
+                const newLead = {
+                    id: `LD-${Date.now().toString().slice(-3)}`,
+                    client: bName || 'नवीन ग्राहक',
+                    business: bName || 'Local Business',
+                    location: location || 'सातारा',
+                    service: service || 'Ad Service',
+                    budget: budget || '₹3,000–₹5,000',
+                    stage: 'New Lead',
+                    date: 'Just now'
+                };
+                if (typeof crmLeads !== 'undefined' && Array.isArray(crmLeads)) {
+                    crmLeads.unshift(newLead);
+                    if (typeof renderAdminCRM === 'function') renderAdminCRM();
+                }
+            } catch (err) {
+                console.error(err);
+            }
 
             closeAdRequestModal();
-            alert("तुमची Request KTimes Media कडे पोहोचली आहे. आमची टीम लवकरच संपर्क करेल. (CRM Lead Created Automatically!)");
+
+            // WhatsApp Message Formatting:
+            const message = `*नवीन जाहिरात मागणी - KTimes Media*
+--------------------------------
+📌 *व्यवसायाचे नाव:* ${bName || 'माहिती दिलेली नाही'}
+📞 *संपर्क क्रमांक:* ${phone || 'माहिती दिलेली नाही'}
+🎬 *हवी असलेली सेवा:* ${service || 'माहिती दिलेली नाही'}
+💰 *अंदाजे बजेट:* ${budget || 'माहिती दिलेली नाही'}
+⏳ *मुदत (Deadline):* ${deadline || 'लवकरात लवकर'}
+📝 *तपशील / माहिती:* ${details || 'माहिती दिलेली नाही'}
+--------------------------------`;
+
+            const encodedMessage = encodeURIComponent(message);
+            window.location.href = 'https://wa.me/919422337471?text=' + encodedMessage;
         }
 
         function quickOrderService(serviceName) {
