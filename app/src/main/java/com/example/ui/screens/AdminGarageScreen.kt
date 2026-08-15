@@ -3,6 +3,7 @@ package com.example.ui.screens
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,11 +23,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FileUpload
+import androidx.compose.material.icons.filled.PhoneInTalk
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Settings
@@ -42,6 +45,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -73,6 +77,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.data.DefaultData
 import com.example.data.MediaItem
+import com.example.data.models.AdOrder
 import com.example.ui.MediaViewModel
 import com.example.ui.theme.AppBackground
 import com.example.ui.theme.CardBackgroundLight
@@ -85,6 +90,7 @@ import com.example.ui.theme.StudioWhite
 import com.example.ui.theme.SurfaceVariantLight
 import com.example.ui.theme.TextMuted
 import com.example.ui.theme.VibrantOrange
+import com.example.utils.IntentUtils
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -98,7 +104,10 @@ fun AdminGarageScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val items by viewModel.filteredItems.collectAsStateWithLifecycle()
+    val orders by viewModel.ordersList.collectAsStateWithLifecycle()
     val adminMessage by viewModel.adminMessage.collectAsStateWithLifecycle()
+
+    var activeAdminTab by remember { mutableStateOf("PORTFOLIO") } // "PORTFOLIO" or "CRM"
 
     var showAddDialog by remember { mutableStateOf(false) }
     var itemToEdit by remember { mutableStateOf<MediaItem?>(null) }
@@ -121,16 +130,17 @@ fun AdminGarageScreen(
                 title = {
                     Column {
                         Text(
-                            text = "GARAGE CUSTOMIZER",
+                            text = "KTIMES ADMIN CONSOLE",
                             color = StudioWhite,
-                            fontSize = 17.sp,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 1.sp
                         )
                         Text(
-                            text = "Dynamic Data & Portfolio Manager",
+                            text = "🔥 Firebase Auth & Firestore Connected",
                             color = ElectricYellow,
-                            fontSize = 11.sp
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.SemiBold
                         )
                     }
                 },
@@ -144,59 +154,63 @@ fun AdminGarageScreen(
                     }
                 },
                 actions = {
-                    // Export JSON Action
-                    IconButton(onClick = {
-                        coroutineScope.launch {
-                            jsonText = viewModel.exportJson(items)
-                            isImportMode = false
-                            showJsonDialog = true
+                    if (activeAdminTab == "PORTFOLIO") {
+                        // Export JSON Action
+                        IconButton(onClick = {
+                            coroutineScope.launch {
+                                jsonText = viewModel.exportJson(items)
+                                isImportMode = false
+                                showJsonDialog = true
+                            }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Code,
+                                contentDescription = "Export JSON",
+                                tint = ElectricYellow
+                            )
                         }
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Code,
-                            contentDescription = "Export JSON",
-                            tint = ElectricYellow
-                        )
-                    }
 
-                    // Import JSON Action
-                    IconButton(onClick = {
-                        jsonText = ""
-                        isImportMode = true
-                        showJsonDialog = true
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.FileUpload,
-                            contentDescription = "Import JSON",
-                            tint = ElectricYellow
-                        )
-                    }
+                        // Import JSON Action
+                        IconButton(onClick = {
+                            jsonText = ""
+                            isImportMode = true
+                            showJsonDialog = true
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.FileUpload,
+                                contentDescription = "Import JSON",
+                                tint = ElectricYellow
+                            )
+                        }
 
-                    // Reset Portfolio Action
-                    IconButton(onClick = { viewModel.resetToDefaults() }) {
-                        Icon(
-                            imageVector = Icons.Default.Refresh,
-                            contentDescription = "Reset Defaults",
-                            tint = ElectricYellow
-                        )
+                        // Reset Portfolio Action
+                        IconButton(onClick = { viewModel.resetToDefaults() }) {
+                            Icon(
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = "Reset Defaults",
+                                tint = ElectricYellow
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = PrimaryPurple)
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    itemToEdit = null
-                    showAddDialog = true
-                },
-                containerColor = VibrantOrange,
-                contentColor = StudioWhite
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add New Portfolio Sample"
-                )
+            if (activeAdminTab == "PORTFOLIO") {
+                FloatingActionButton(
+                    onClick = {
+                        itemToEdit = null
+                        showAddDialog = true
+                    },
+                    containerColor = VibrantOrange,
+                    contentColor = StudioWhite
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add New Portfolio Sample"
+                    )
+                }
             }
         },
         containerColor = AppBackground
@@ -207,67 +221,308 @@ fun AdminGarageScreen(
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
         ) {
-            // Quick Status Header
-            Card(
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Admin Top Segments
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .border(1.dp, CardBorderLight, RoundedCornerShape(14.dp)),
-                colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(SurfaceVariantLight)
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                Row(
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(14.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                        .weight(1f)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(if (activeAdminTab == "PORTFOLIO") PrimaryPurple else Color.Transparent)
+                        .clickable { activeAdminTab = "PORTFOLIO" }
+                        .padding(vertical = 8.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Column {
-                        Text(
-                            text = "Active Portfolio Items: ${items.size}",
-                            color = CharcoalBlack,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "Add, edit or paste custom JSON to update live items.",
-                            color = TextMuted,
-                            fontSize = 11.sp
-                        )
-                    }
+                    Text(
+                        text = "Portfolio Manager (${items.size})",
+                        color = if (activeAdminTab == "PORTFOLIO") StudioWhite else CharcoalBlack,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp
+                    )
+                }
 
-                    Button(
-                        onClick = {
-                            itemToEdit = null
-                            showAddDialog = true
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
-                        shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Text("+ Add Sample", color = StudioWhite, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                    }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(if (activeAdminTab == "CRM") PrimaryPurple else Color.Transparent)
+                        .clickable { activeAdminTab = "CRM" }
+                        .padding(vertical = 8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "CRM & Leads (${orders.size})",
+                        color = if (activeAdminTab == "CRM") StudioWhite else CharcoalBlack,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp
+                    )
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-            // Portfolio Items Admin List
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(items, key = { it.id }) { item ->
-                    AdminItemCard(
-                        item = item,
-                        onEdit = {
-                            itemToEdit = item
-                            showAddDialog = true
-                        },
-                        onDelete = {
-                            itemToDelete = item
+            if (activeAdminTab == "PORTFOLIO") {
+                // Quick Status Header
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                        .clip(RoundedCornerShape(14.dp))
+                        .border(1.dp, CardBorderLight, RoundedCornerShape(14.dp)),
+                    colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                text = "Active Portfolio: ${items.size} Samples",
+                                color = CharcoalBlack,
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "Live synced to Room Database & Firestore",
+                                color = TextMuted,
+                                fontSize = 11.sp
+                            )
                         }
-                    )
+
+                        Button(
+                            onClick = {
+                                itemToEdit = null
+                                showAddDialog = true
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
+                            shape = RoundedCornerShape(10.dp)
+                        ) {
+                            Text("+ Add Sample", color = StudioWhite, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Portfolio Items Admin List
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(items, key = { it.id }) { item ->
+                        AdminItemCard(
+                            item = item,
+                            onEdit = {
+                                itemToEdit = item
+                                showAddDialog = true
+                            },
+                            onDelete = {
+                                itemToDelete = item
+                            }
+                        )
+                    }
+                }
+            } else {
+                // CRM & Leads Pipeline Screen (Firestore Live)
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    item {
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(containerColor = CardBackgroundLight),
+                            shape = RoundedCornerShape(14.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column {
+                                    Text(
+                                        text = "Client Leads & Orders Pipeline",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 14.sp,
+                                        color = CharcoalBlack
+                                    )
+                                    Text(
+                                        text = "Real-time sync via Firebase Firestore",
+                                        fontSize = 11.sp,
+                                        color = Color(0xFF2E7D32),
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                }
+
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(CrimsonRed)
+                                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                                ) {
+                                    Text(
+                                        text = "${orders.size} Leads",
+                                        color = StudioWhite,
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    if (orders.isEmpty()) {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(32.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("अद्याप कोणतीही नवीन लीड आलेली नाही.", color = TextMuted)
+                            }
+                        }
+                    } else {
+                        items(orders, key = { it.id }) { order ->
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(14.dp))
+                                    .border(1.dp, CardBorderLight, RoundedCornerShape(14.dp)),
+                                colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
+                            ) {
+                                Column(modifier = Modifier.padding(14.dp)) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Column {
+                                            Text(
+                                                text = order.clientName,
+                                                fontWeight = FontWeight.Black,
+                                                fontSize = 15.sp,
+                                                color = CharcoalBlack
+                                            )
+                                            Text(
+                                                text = "📱 ${order.clientPhone} • ${order.serviceType}",
+                                                fontSize = 12.sp,
+                                                color = TextMuted
+                                            )
+                                        }
+
+                                        Box(
+                                            modifier = Modifier
+                                                .clip(RoundedCornerShape(6.dp))
+                                                .background(
+                                                    when (order.status) {
+                                                        "Delivered" -> Color(0xFF2E7D32)
+                                                        "Approval" -> VibrantOrange
+                                                        "Production" -> PrimaryPurple
+                                                        else -> ElectricYellow
+                                                    }
+                                                )
+                                                .padding(horizontal = 8.dp, vertical = 3.dp)
+                                        ) {
+                                            Text(
+                                                text = order.status,
+                                                color = if (order.status == "New Lead" || order.status == "Quotation Sent") PrimaryPurple else StudioWhite,
+                                                fontSize = 11.sp,
+                                                fontWeight = FontWeight.Black
+                                            )
+                                        }
+                                    }
+
+                                    if (order.details.isNotBlank()) {
+                                        Spacer(modifier = Modifier.height(6.dp))
+                                        Text(
+                                            text = "टीप: ${order.details}",
+                                            fontSize = 12.sp,
+                                            color = CharcoalBlack
+                                        )
+                                    }
+
+                                    Spacer(modifier = Modifier.height(10.dp))
+
+                                    // Progress Bar
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Text("Pipeline Progress: ${order.progress}%", fontSize = 11.sp, color = TextMuted)
+                                        Text("Budget: ${order.budget}", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = CrimsonRed)
+                                    }
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    LinearProgressIndicator(
+                                        progress = { order.progress / 100f },
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(6.dp)
+                                            .clip(RoundedCornerShape(3.dp)),
+                                        color = PrimaryPurple,
+                                        trackColor = SurfaceVariantLight
+                                    )
+
+                                    Spacer(modifier = Modifier.height(12.dp))
+
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        // Advance Stage Button
+                                        Button(
+                                            onClick = { viewModel.advanceOrderStage(order) },
+                                            colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
+                                            shape = RoundedCornerShape(8.dp),
+                                            modifier = Modifier.weight(1.2f).height(38.dp)
+                                        ) {
+                                            Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(16.dp))
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text("Advance Stage", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                        }
+
+                                        // Call Button
+                                        Button(
+                                            onClick = { IntentUtils.makePhoneCall(context, order.clientPhone) },
+                                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32)),
+                                            shape = RoundedCornerShape(8.dp),
+                                            modifier = Modifier.weight(0.8f).height(38.dp)
+                                        ) {
+                                            Icon(Icons.Default.PhoneInTalk, contentDescription = "Call", modifier = Modifier.size(16.dp))
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text("Call", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                        }
+
+                                        // WhatsApp Button
+                                        Button(
+                                            onClick = {
+                                                val msg = "नमस्कार ${order.clientName}, मी Ktimes Media कडून तुमच्या '${order.serviceType}' च्या ऑर्डरबाबत बोलत आहे."
+                                                IntentUtils.openWhatsAppDirectMessage(context, msg, order.clientPhone)
+                                            },
+                                            colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
+                                            shape = RoundedCornerShape(8.dp),
+                                            modifier = Modifier.weight(0.9f).height(38.dp)
+                                        ) {
+                                            Text("WhatsApp", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

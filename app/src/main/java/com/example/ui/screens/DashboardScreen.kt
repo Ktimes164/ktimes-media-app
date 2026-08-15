@@ -55,6 +55,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -91,6 +92,21 @@ import com.example.ui.theme.TextMuted
 import com.example.ui.theme.VibrantOrange
 import com.example.utils.IntentUtils
 
+import com.example.data.models.AdOrder
+import com.example.data.models.AppUser
+import com.example.data.models.UserRole
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.SwapHoriz
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Login
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ListAlt
+import androidx.compose.material.icons.filled.LocalOffer
+import androidx.compose.material.icons.filled.HourglassTop
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.LinearProgressIndicator
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
@@ -104,6 +120,147 @@ fun DashboardScreen(
     val selectedType by viewModel.selectedMediaType.collectAsStateWithLifecycle()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
     val currentTab by viewModel.currentTab.collectAsStateWithLifecycle()
+
+    val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
+    val currentRole by viewModel.currentUserRole.collectAsStateWithLifecycle()
+    val authStatusMessage by viewModel.authStatusMessage.collectAsStateWithLifecycle()
+
+    var showAuthModal by remember { mutableStateOf(false) }
+
+    LaunchedEffect(authStatusMessage) {
+        authStatusMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.clearAuthStatusMessage()
+        }
+    }
+
+    if (showAuthModal) {
+        AlertDialog(
+            onDismissRequest = { showAuthModal = false },
+            title = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.AccountCircle,
+                        contentDescription = "Account",
+                        tint = PrimaryPurple,
+                        modifier = Modifier.size(28.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "User Profile & Role",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = CharcoalBlack
+                    )
+                }
+            },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = SurfaceVariantLight),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp)) {
+                            Text(
+                                text = "Current User: ${currentUser?.displayName ?: "Ganesh Jewellers"}",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp,
+                                color = CharcoalBlack
+                            )
+                            Text(
+                                text = "Active Role: ${currentRole.name}",
+                                fontSize = 12.sp,
+                                color = if (currentRole == UserRole.ADMIN) CrimsonRed else PrimaryPurple,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "🔥 Firebase Auth & Firestore Connected",
+                                fontSize = 11.sp,
+                                color = Color(0xFF2E7D32),
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                    }
+
+                    Text(
+                        text = "Switch Application Role:",
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = CharcoalBlack
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Button(
+                            onClick = {
+                                viewModel.switchUserRole(UserRole.CLIENT)
+                                showAuthModal = false
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (currentRole == UserRole.CLIENT) PrimaryPurple else Color.LightGray
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text("Client Mode", fontSize = 12.sp)
+                        }
+
+                        Button(
+                            onClick = {
+                                viewModel.switchUserRole(UserRole.ADMIN)
+                                showAuthModal = false
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (currentRole == UserRole.ADMIN) CrimsonRed else Color.LightGray
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text("Admin Mode", fontSize = 12.sp)
+                        }
+                    }
+
+                    if (currentRole == UserRole.ADMIN) {
+                        Button(
+                            onClick = {
+                                showAuthModal = false
+                                onNavigateToAdmin()
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Icon(Icons.Default.AdminPanelSettings, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("Open Admin Console", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+
+                    Button(
+                        onClick = {
+                            viewModel.signInWithGoogle(context)
+                            showAuthModal = false
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = CharcoalBlack),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Google Sign-In (Firebase)", fontSize = 12.sp)
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showAuthModal = false }) {
+                    Text("Close", color = PrimaryPurple, fontWeight = FontWeight.Bold)
+                }
+            },
+            containerColor = StudioWhite,
+            shape = RoundedCornerShape(16.dp)
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -156,6 +313,23 @@ fun DashboardScreen(
                     }
                 },
                 actions = {
+                    // Role Badge Pill
+                    Box(
+                        modifier = Modifier
+                            .padding(end = 4.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(if (currentRole == UserRole.ADMIN) CrimsonRed else ElectricYellow)
+                            .clickable { showAuthModal = true }
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                    ) {
+                        Text(
+                            text = if (currentRole == UserRole.ADMIN) "ADMIN" else "CLIENT",
+                            color = if (currentRole == UserRole.ADMIN) StudioWhite else PrimaryPurple,
+                            fontWeight = FontWeight.Black,
+                            fontSize = 10.sp
+                        )
+                    }
+
                     // Notification Bell Icon
                     IconButton(onClick = {
                         Toast.makeText(context, "Ktimes Media: नवनवीन ऑफर्स आणि अपडेट्स चालू आहेत!", Toast.LENGTH_SHORT).show()
@@ -167,18 +341,24 @@ fun DashboardScreen(
                         )
                     }
 
-                    // User profile initial 'S'
+                    // User profile initial 'S' / Admin icon
                     Box(
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .size(32.dp)
                             .clip(CircleShape)
                             .background(ElectricYellow)
-                            .clickable { onNavigateToAdmin() },
+                            .clickable {
+                                if (currentRole == UserRole.ADMIN) {
+                                    onNavigateToAdmin()
+                                } else {
+                                    showAuthModal = true
+                                }
+                            },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "S",
+                            text = if (currentRole == UserRole.ADMIN) "A" else "C",
                             color = PrimaryPurple,
                             fontWeight = FontWeight.Black,
                             fontSize = 15.sp
@@ -225,7 +405,17 @@ fun DashboardScreen(
                     }
                 )
                 "orders" -> OrdersScreenContent(
+                    viewModel = viewModel,
                     onWhatsAppOrder = { name, phone, service, details ->
+                        // Save directly to Firestore
+                        viewModel.submitAdOrder(
+                            clientName = name,
+                            clientPhone = phone,
+                            serviceType = service,
+                            budget = "₹1,499 - ₹4,999",
+                            details = details
+                        )
+
                         val message = """
                             नमस्कार Ktimes Media, मी ॲपवरून नवीन ऑर्डर नोंदवत आहे:
                             👤 *नाव*: $name
@@ -759,13 +949,18 @@ fun RatesScreenContent(
 
 @Composable
 fun OrdersScreenContent(
+    viewModel: MediaViewModel,
     onWhatsAppOrder: (name: String, phone: String, service: String, details: String) -> Unit
 ) {
     val context = LocalContext.current
-    var name by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
+    val liveOrders by viewModel.ordersList.collectAsStateWithLifecycle()
+    val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
+
+    var name by remember { mutableStateOf(currentUser?.displayName ?: "") }
+    var phone by remember { mutableStateOf(currentUser?.phoneNumber ?: "") }
     var selectedService by remember { mutableStateOf("ऑडिओ जाहिरात (Audio Ad)") }
     var details by remember { mutableStateOf("") }
+    var orderTab by remember { mutableStateOf("NEW") } // "NEW", "MY_ORDERS"
 
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
@@ -773,145 +968,322 @@ fun OrdersScreenContent(
         modifier = Modifier.fillMaxSize()
     ) {
         item {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(CrimsonRed)
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "ऑर्डर व थेट संपर्क (Direct Contact)",
-                    color = StudioWhite,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
-
-        item {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
-                    .border(1.dp, CardBorderLight, RoundedCornerShape(16.dp)),
-                colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(CrimsonRed)
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                ) {
                     Text(
-                        text = "तुमची ऑर्डर माहिती भरा:",
-                        color = CharcoalBlack,
+                        text = "ऑर्डर व थेट संपर्क (Orders & CRM)",
+                        color = StudioWhite,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold
                     )
+                }
 
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    OutlinedTextField(
-                        value = name,
-                        onValueChange = { name = it },
-                        label = { Text("तुमचे नाव (Full Name)", color = TextMuted) },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = StudioWhite,
-                            unfocusedContainerColor = SurfaceVariantLight,
-                            focusedBorderColor = PrimaryPurple,
-                            unfocusedBorderColor = CardBorderLight,
-                            focusedTextColor = CharcoalBlack,
-                            unfocusedTextColor = CharcoalBlack
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedTextField(
-                        value = phone,
-                        onValueChange = { phone = it },
-                        label = { Text("मोबाईल नंबर (Mobile Number)", color = TextMuted) },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = StudioWhite,
-                            unfocusedContainerColor = SurfaceVariantLight,
-                            focusedBorderColor = PrimaryPurple,
-                            unfocusedBorderColor = CardBorderLight,
-                            focusedTextColor = CharcoalBlack,
-                            unfocusedTextColor = CharcoalBlack
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedTextField(
-                        value = selectedService,
-                        onValueChange = { selectedService = it },
-                        label = { Text("सेवेचा प्रकार (Service Type)", color = TextMuted) },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = StudioWhite,
-                            unfocusedContainerColor = SurfaceVariantLight,
-                            focusedBorderColor = PrimaryPurple,
-                            unfocusedBorderColor = CardBorderLight,
-                            focusedTextColor = CharcoalBlack,
-                            unfocusedTextColor = CharcoalBlack
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedTextField(
-                        value = details,
-                        onValueChange = { details = it },
-                        label = { Text("संदेश / जाहिरातीची माहिती (Details / Script Notes)", color = TextMuted) },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = StudioWhite,
-                            unfocusedContainerColor = SurfaceVariantLight,
-                            focusedBorderColor = PrimaryPurple,
-                            unfocusedBorderColor = CardBorderLight,
-                            focusedTextColor = CharcoalBlack,
-                            unfocusedTextColor = CharcoalBlack
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Button(
-                        onClick = {
-                            if (name.isBlank() || phone.isBlank()) {
-                                Toast.makeText(context, "कृपया नाव आणि मोबाईल नंबर भरा", Toast.LENGTH_SHORT).show()
-                            } else {
-                                onWhatsAppOrder(name, phone, selectedService, details)
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth().height(48.dp)
+                Row(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(SurfaceVariantLight)
+                        .padding(2.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(18.dp))
+                            .background(if (orderTab == "NEW") PrimaryPurple else Color.Transparent)
+                            .clickable { orderTab = "NEW" }
+                            .padding(horizontal = 10.dp, vertical = 5.dp)
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_whatsapp),
-                            contentDescription = "WhatsApp",
-                            tint = StudioWhite,
-                            modifier = Modifier.size(20.dp)
+                        Text(
+                            text = "नवीन ऑर्डर",
+                            color = if (orderTab == "NEW") StudioWhite else CharcoalBlack,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("व्हॉट्सॲपवरून ऑर्डर पाठवा", color = StudioWhite, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                     }
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Button(
-                        onClick = { IntentUtils.makePhoneCall(context) },
-                        colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth().height(48.dp)
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(18.dp))
+                            .background(if (orderTab == "MY_ORDERS") PrimaryPurple else Color.Transparent)
+                            .clickable { orderTab = "MY_ORDERS" }
+                            .padding(horizontal = 10.dp, vertical = 5.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.PhoneInTalk,
-                            contentDescription = "Call",
-                            tint = ElectricYellow,
-                            modifier = Modifier.size(20.dp)
+                        Text(
+                            text = "माझ्या ऑर्डर्स (${liveOrders.size})",
+                            color = if (orderTab == "MY_ORDERS") StudioWhite else CharcoalBlack,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("थेट कॉल करा (+91 9876543210)", color = StudioWhite, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        }
+
+        if (orderTab == "NEW") {
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(1.dp, CardBorderLight, RoundedCornerShape(16.dp)),
+                    colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "तुमची ऑर्डर माहिती भरा:",
+                                color = CharcoalBlack,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "🔥 Live Firestore Sync",
+                                color = Color(0xFF2E7D32),
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        OutlinedTextField(
+                            value = name,
+                            onValueChange = { name = it },
+                            label = { Text("तुमचे नाव (Full Name)", color = TextMuted) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = StudioWhite,
+                                unfocusedContainerColor = SurfaceVariantLight,
+                                focusedBorderColor = PrimaryPurple,
+                                unfocusedBorderColor = CardBorderLight,
+                                focusedTextColor = CharcoalBlack,
+                                unfocusedTextColor = CharcoalBlack
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        OutlinedTextField(
+                            value = phone,
+                            onValueChange = { phone = it },
+                            label = { Text("मोबाईल नंबर (Mobile Number)", color = TextMuted) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = StudioWhite,
+                                unfocusedContainerColor = SurfaceVariantLight,
+                                focusedBorderColor = PrimaryPurple,
+                                unfocusedBorderColor = CardBorderLight,
+                                focusedTextColor = CharcoalBlack,
+                                unfocusedTextColor = CharcoalBlack
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        OutlinedTextField(
+                            value = selectedService,
+                            onValueChange = { selectedService = it },
+                            label = { Text("सेवेचा प्रकार (Service Type)", color = TextMuted) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = StudioWhite,
+                                unfocusedContainerColor = SurfaceVariantLight,
+                                focusedBorderColor = PrimaryPurple,
+                                unfocusedBorderColor = CardBorderLight,
+                                focusedTextColor = CharcoalBlack,
+                                unfocusedTextColor = CharcoalBlack
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        OutlinedTextField(
+                            value = details,
+                            onValueChange = { details = it },
+                            label = { Text("संदेश / जाहिरातीची माहिती (Details / Script Notes)", color = TextMuted) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = StudioWhite,
+                                unfocusedContainerColor = SurfaceVariantLight,
+                                focusedBorderColor = PrimaryPurple,
+                                unfocusedBorderColor = CardBorderLight,
+                                focusedTextColor = CharcoalBlack,
+                                unfocusedTextColor = CharcoalBlack
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = {
+                                if (name.isBlank() || phone.isBlank()) {
+                                    Toast.makeText(context, "कृपया नाव आणि मोबाईल नंबर भरा", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    onWhatsAppOrder(name, phone, selectedService, details)
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.fillMaxWidth().height(48.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_whatsapp),
+                                contentDescription = "WhatsApp",
+                                tint = StudioWhite,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("ऑर्डर नोंदवा व WhatsApp सुरू करा", color = StudioWhite, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Button(
+                            onClick = { IntentUtils.makePhoneCall(context) },
+                            colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.fillMaxWidth().height(48.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.PhoneInTalk,
+                                contentDescription = "Call",
+                                tint = ElectricYellow,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("थेट कॉल करा (+91 9422337471)", color = StudioWhite, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+        } else {
+            // "MY_ORDERS" Tab - Live from Firestore
+            if (liveOrders.isEmpty()) {
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = CardBackgroundLight),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(24.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ListAlt,
+                                contentDescription = null,
+                                tint = TextMuted,
+                                modifier = Modifier.size(48.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("अद्याप कोणतीही ऑर्डर नाही.", color = CharcoalBlack, fontWeight = FontWeight.Bold)
+                            Text("नवीन जाहिरात ऑर्डर नोंदवण्यासाठी 'नवीन ऑर्डर' वर क्लिक करा.", color = TextMuted, fontSize = 12.sp)
+                        }
+                    }
+                }
+            } else {
+                items(liveOrders) { order ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .border(1.dp, CardBorderLight, RoundedCornerShape(16.dp)),
+                        colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Box(
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(6.dp))
+                                            .background(
+                                                when (order.status) {
+                                                    "Delivered" -> Color(0xFF2E7D32)
+                                                    "Approval" -> VibrantOrange
+                                                    "Production" -> PrimaryPurple
+                                                    else -> ElectricYellow
+                                                }
+                                            )
+                                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                                    ) {
+                                        Text(
+                                            text = order.status,
+                                            color = if (order.status == "New Lead" || order.status == "Quotation Sent") PrimaryPurple else StudioWhite,
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Black
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = order.details.ifBlank { order.serviceType },
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 14.sp,
+                                        color = CharcoalBlack
+                                    )
+                                    Text(
+                                        text = "सेवा: ${order.serviceType} • ID: ${order.id}",
+                                        fontSize = 11.sp,
+                                        color = TextMuted
+                                    )
+                                }
+
+                                Text(
+                                    text = order.budget,
+                                    fontWeight = FontWeight.Black,
+                                    fontSize = 14.sp,
+                                    color = CrimsonRed
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            // Progress Bar
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text("प्रगती (Progress)", fontSize = 11.sp, color = TextMuted)
+                                Text("${order.progress}%", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = PrimaryPurple)
+                            }
+                            Spacer(modifier = Modifier.height(4.dp))
+                            LinearProgressIndicator(
+                                progress = { order.progress / 100f },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(6.dp)
+                                    .clip(RoundedCornerShape(3.dp)),
+                                color = PrimaryPurple,
+                                trackColor = SurfaceVariantLight
+                            )
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            Button(
+                                onClick = {
+                                    val updateMsg = "नमस्कार Ktimes Media, माझ्या ऑर्डर ID: ${order.id} (${order.serviceType}) बद्दल अपडेट हवी आहे."
+                                    IntentUtils.openWhatsAppDirectMessage(context, updateMsg)
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurpleLight),
+                                shape = RoundedCornerShape(8.dp),
+                                modifier = Modifier.fillMaxWidth().height(38.dp)
+                            ) {
+                                Text("WhatsApp वर अपडेट तपासा", color = StudioWhite, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
                     }
                 }
             }

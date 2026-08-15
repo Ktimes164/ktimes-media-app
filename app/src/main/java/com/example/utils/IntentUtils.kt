@@ -42,16 +42,19 @@ object IntentUtils {
 
     fun openWhatsAppDirectMessage(
         context: Context,
-        message: String = "नमस्कार Ktimes Media, मी ॲपवरून संपर्क साधत आहे. मला आपल्या सेवांबद्दल माहिती हवी आहे."
+        message: String = "नमस्कार Ktimes Media, मी ॲपवरून संपर्क साधत आहे. मला आपल्या सेवांबद्दल माहिती हवी आहे.",
+        phoneNumber: String = STUDIO_WHATSAPP_NUMBER
     ) {
         try {
+            val targetNumber = if (phoneNumber.startsWith("+")) phoneNumber.removePrefix("+") else phoneNumber
             val encodedMsg = Uri.encode(message)
-            val whatsappUri = Uri.parse("https://api.whatsapp.com/send?phone=$STUDIO_WHATSAPP_NUMBER&text=$encodedMsg")
+            val whatsappUri = Uri.parse("https://api.whatsapp.com/send?phone=$targetNumber&text=$encodedMsg")
             val intent = Intent(Intent.ACTION_VIEW, whatsappUri)
             context.startActivity(intent)
         } catch (e: Exception) {
             Toast.makeText(context, "WhatsApp उघडत आहे...", Toast.LENGTH_SHORT).show()
-            val webUri = Uri.parse("https://wa.me/$STUDIO_WHATSAPP_NUMBER?text=${Uri.encode(message)}")
+            val targetNumber = if (phoneNumber.startsWith("+")) phoneNumber.removePrefix("+") else phoneNumber
+            val webUri = Uri.parse("https://wa.me/$targetNumber?text=${Uri.encode(message)}")
             val webIntent = Intent(Intent.ACTION_VIEW, webUri)
             context.startActivity(webIntent)
         }
