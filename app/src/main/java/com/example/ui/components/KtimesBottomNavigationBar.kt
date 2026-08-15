@@ -20,6 +20,8 @@ import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Payments
+import androidx.compose.material.icons.filled.ShoppingBag
+import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -122,12 +124,12 @@ fun KtimesBottomNavigationBar(
                 }
             }
 
-            // 4. Rates - 'दर'
+            // 4. Marketplace - 'मार्केटप्लेस'
             NavTabItem(
-                label = "दर",
-                icon = Icons.Default.Payments,
-                isSelected = currentTab == "rates",
-                onClick = { onTabSelected("rates") }
+                label = "मार्केटप्लेस",
+                icon = Icons.Default.Storefront,
+                isSelected = currentTab == "marketplace" || currentTab == "rates",
+                onClick = { onTabSelected("marketplace") }
             )
 
             // 5. Orders - 'ऑर्डर'

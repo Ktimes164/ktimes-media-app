@@ -1,1456 +1,2015 @@
-package com.example.ui.screens
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTimes Media Business Club - तुमच्या व्यवसायाच्या जाहिरातीचं एक Digital घर</title>
 
-import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AdminPanelSettings
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Brush
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.Headphones
-import androidx.compose.material.icons.filled.HowToVote
-import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.PhoneInTalk
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Send
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Videocam
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush as GradientBrush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.R
-import com.example.data.DefaultData
-import com.example.data.MediaItem
-import com.example.ui.MediaViewModel
-import com.example.ui.components.KtimesBottomNavigationBar
-import com.example.ui.components.PortfolioItemCard
-import com.example.ui.theme.AppBackground
-import com.example.ui.theme.CardBackgroundLight
-import com.example.ui.theme.CardBorderLight
-import com.example.ui.theme.CharcoalBlack
-import com.example.ui.theme.CrimsonRed
-import com.example.ui.theme.ElectricYellow
-import com.example.ui.theme.PrimaryPurple
-import com.example.ui.theme.PrimaryPurpleLight
-import com.example.ui.theme.StudioWhite
-import com.example.ui.theme.SurfaceVariantLight
-import com.example.ui.theme.TextMuted
-import com.example.ui.theme.VibrantOrange
-import com.example.utils.IntentUtils
+    <!-- PWA & Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0B132B">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="KTimes Club">
+    <link rel="apple-touch-icon" href="https://picsum.photos/seed/ktm_logo/192/192">
 
-import com.example.data.models.AdOrder
-import com.example.data.models.AppUser
-import com.example.data.models.UserRole
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.SwapHoriz
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Login
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.ListAlt
-import androidx.compose.material.icons.filled.LocalOffer
-import androidx.compose.material.icons.filled.HourglassTop
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.LinearProgressIndicator
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DashboardScreen(
-    viewModel: MediaViewModel,
-    onNavigateToAdmin: () -> Unit,
-    onItemClick: (MediaItem) -> Unit
-) {
-    val context = LocalContext.current
-    val items by viewModel.filteredItems.collectAsStateWithLifecycle()
-    val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
-    val selectedType by viewModel.selectedMediaType.collectAsStateWithLifecycle()
-    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
-    val currentTab by viewModel.currentTab.collectAsStateWithLifecycle()
-
-    val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
-    val currentRole by viewModel.currentUserRole.collectAsStateWithLifecycle()
-    val authStatusMessage by viewModel.authStatusMessage.collectAsStateWithLifecycle()
-
-    var showAuthModal by remember { mutableStateOf(false) }
-
-    LaunchedEffect(authStatusMessage) {
-        authStatusMessage?.let {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-            viewModel.clearAuthStatusMessage()
-        }
-    }
-
-    if (showAuthModal) {
-        AlertDialog(
-            onDismissRequest = { showAuthModal = false },
-            title = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.AccountCircle,
-                        contentDescription = "Account",
-                        tint = PrimaryPurple,
-                        modifier = Modifier.size(28.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "User Profile & Role",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = CharcoalBlack
-                    )
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navyDark: '#0A1128',
+                        navyCard: '#101B3B',
+                        navyBorder: '#1C2D5A',
+                        brandPurple: '#673AB7',
+                        brandPurpleDark: '#512DA8',
+                        brandPurpleLight: '#7E57C2',
+                        brandWhatsapp: '#075E54',
+                        brandWhatsappHover: '#05473f',
+                        brandOrange: '#FF5722',
+                        brandRed: '#D32F2F',
+                        brandBlue: '#1E88E5',
+                        brandYellow: '#FFC107',
+                        brandYellowHover: '#FFB300',
+                        accentGold: '#FFD700',
+                        accentCyan: '#00F0FF'
+                    }
                 }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome Icons 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Baloo 2 for Marathi & Inter for English -->
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Baloo 2', 'Inter', sans-serif;
+            background-color: #0A1128;
+            color: #F8FAFC;
+            font-size: 16px;
+        }
+        @media (min-width: 768px) {
+            body { font-size: 17px; }
+        }
+        .pulse-whatsapp {
+            animation: pulse-wa-anim 2s infinite;
+        }
+        @keyframes pulse-wa-anim {
+            0% { box-shadow: 0 0 0 0 rgba(7, 94, 84, 0.7); }
+            70% { box-shadow: 0 0 0 14px rgba(7, 94, 84, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(7, 94, 84, 0); }
+        }
+        .glass-nav {
+            background: rgba(10, 17, 40, 0.95);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-bottom {
+            background: rgba(10, 17, 40, 0.96);
+            backdrop-filter: blur(14px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .ar-16-9 { aspect-ratio: 16 / 9; }
+        .ar-9-16 { aspect-ratio: 9 / 16; }
+        .ar-1-1 { aspect-ratio: 1 / 1; }
+
+        /* Social colors */
+        .social-ig { color: #E1306C; }
+        .social-fb { color: #1877F2; }
+        .social-yt { color: #FF0000; }
+        .social-tg { color: #24A1DE; }
+        .social-x  { color: #F8FAFC; }
+        .social-li { color: #0A66C2; }
+    </style>
+</head>
+<body class="bg-navyDark text-slate-100 pb-24 min-h-screen flex flex-col antialiased selection:bg-brandPurple selection:text-white">
+
+    <!-- Top Topbar / Sub-Header -->
+    <div class="bg-slate-950/80 border-b border-slate-800 text-xs py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3 overflow-x-auto no-scrollbar py-0.5">
+                <span class="text-slate-400 font-bold hidden sm:inline"><i class="fas fa-bullhorn text-brandYellow mr-1"></i>KTimes Business Club</span>
+                <span class="bg-brandPurple/30 text-purple-300 border border-purple-500/40 px-2 py-0.5 rounded-full text-[11px] font-semibold">
+                    सातारा • फलटण • बारामती • पुणे
+                </span>
+            </div>
+
+            <!-- Role Selector & Quick Switcher -->
+            <div class="flex items-center gap-2.5">
+                <div class="flex items-center bg-slate-900 border border-slate-700 rounded-lg p-0.5 text-xs">
+                    <span class="text-slate-400 px-2 py-0.5 font-bold hidden xs:inline">Role:</span>
+                    <button onclick="switchUserRole('client')" id="roleBtnClient" class="px-2.5 py-1 rounded font-bold transition bg-brandPurple text-white shadow-sm">
+                        Client
+                    </button>
+                    <button onclick="switchUserRole('staff')" id="roleBtnStaff" class="px-2.5 py-1 rounded font-bold transition text-slate-400 hover:text-white">
+                        Staff
+                    </button>
+                    <button onclick="switchUserRole('admin')" id="roleBtnAdmin" class="px-2.5 py-1 rounded font-bold transition text-slate-400 hover:text-white">
+                        Admin
+                    </button>
+                </div>
+
+                <!-- Language Switcher -->
+                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-lg px-2 py-1 font-bold outline-none focus:border-brandPurple">
+                    <option value="mr">मराठी</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="sticky top-0 z-40 glass-nav shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchNav('home')">
+                <div class="w-11 h-11 md:w-12 md:h-12 rounded-2xl bg-gradient-to-tr from-brandPurple to-purple-600 p-0.5 shadow-md flex items-center justify-center shrink-0">
+                    <div class="w-full h-full bg-slate-950 rounded-2xl flex items-center justify-center font-black text-brandYellow text-2xl">
+                        K
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
+                        KTimes Media <span class="text-[10px] md:text-xs bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black px-2 py-0.5 rounded shadow">BUSINESS CLUB</span>
+                    </h1>
+                    <p class="text-[11px] md:text-xs text-slate-400 font-medium">तुमच्या व्यवसायाच्या जाहिरातीचं एक Digital घर</p>
+                </div>
+            </div>
+
+            <!-- Header Quick Actions -->
+            <div class="flex items-center gap-2 md:gap-3">
+                <!-- Notifications Bell -->
+                <button onclick="openNotificationModal()" class="relative p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 transition">
+                    <i class="fas fa-bell text-lg"></i>
+                    <span id="notifBadge" class="absolute -top-1 -right-1 bg-brandRed text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900">
+                        3
+                    </span>
+                </button>
+
+                <!-- AI Assistant Trigger Button -->
+                <button onclick="openAiAssistantModal()" class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-3 py-2 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5 shadow-md">
+                    <i class="fas fa-robot text-brandYellow animate-pulse"></i>
+                    <span class="hidden md:inline">AI Marketing Assistant</span>
+                    <span class="md:hidden">AI</span>
+                </button>
+
+                <!-- Primary CTA: "जाहिरात मागवा" (Order Ad) -->
+                <button onclick="openAdRequestModal()" class="bg-gradient-to-r from-brandPurple to-purple-600 hover:from-brandPurpleDark hover:to-purple-700 text-white px-4 py-2 rounded-xl text-xs md:text-sm font-extrabold transition flex items-center gap-1.5 shadow-lg shadow-purple-900/30">
+                    <i class="fas fa-plus-circle text-brandYellow"></i>
+                    <span>जाहिरात मागवा</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- App Content Switcher Sections -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-5 space-y-6" id="mainContainer">
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 1: CLIENT HOME DASHBOARD                                             -->
+        <!-- ========================================================================= -->
+        <div id="viewClientHome" class="space-y-6">
+            
+            <!-- Greeting & Quick Status Card -->
+            <div class="bg-gradient-to-r from-slate-900 via-navyCard to-slate-900 rounded-3xl border border-slate-800 p-5 md:p-7 relative overflow-hidden shadow-2xl">
+                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-brandPurple/20 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-0.5 rounded-full text-xs font-bold flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                                Active Business Club Member
+                            </span>
+                            <span id="clientCategoryBadge" class="bg-purple-900/60 text-purple-200 text-xs px-2.5 py-0.5 rounded-full font-semibold">
+                                Jewellers • सातारा
+                            </span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-black text-white flex items-center gap-2">
+                            नमस्कार, <span id="clientBusinessNameText" class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-yellow-400">Ganesh Jewellers</span> 👋
+                        </h2>
+                        <p class="text-slate-400 text-sm mt-1 max-w-xl">
+                            तुमच्या दुकानाची व व्यवसायाची विक्री वाढवण्यासाठी KTimes Media ची क्रिएटिव्ह टीम नेहमी तत्पर आहे.
+                        </p>
+                    </div>
+
+                    <!-- Action Banner Button -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button onclick="openAdRequestModal()" class="bg-brandYellow hover:bg-brandYellowHover text-slate-950 font-black px-6 py-3 rounded-2xl text-sm md:text-base shadow-xl flex items-center gap-2 transition hover:scale-105">
+                            <i class="fas fa-paper-plane text-brandPurple"></i>
+                            <span>नवीन काम द्या / जाहिरात मागवा</span>
+                        </button>
+                        <a href="https://wa.me/919422337471?text=नमस्कार%20KTimes%20Media,%20मला%20माझ्या%20व्यवसायासाठी%20जाहिरात%20करायची%20आहे." target="_blank" class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white font-bold px-4 py-3 rounded-2xl text-sm flex items-center gap-2 transition">
+                            <i class="fab fa-whatsapp text-lg"></i>
+                            <span>WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Loyalty / Rewards Mini Banner -->
+                <div class="mt-5 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs md:text-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-amber-400/20 text-brandYellow flex items-center justify-center font-bold">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div>
+                            <span class="text-slate-300 font-semibold">KTimes Rewards Points:</span>
+                            <span class="text-brandYellow font-extrabold ml-1 text-base">450 pts</span>
+                            <span class="text-slate-500 text-xs ml-2">(१ मोफत Festival Banner साठी पात्र!)</span>
+                        </div>
+                    </div>
+                    <button onclick="switchNav('rewards')" class="text-brandYellow hover:underline font-bold">
+                        रिडीम करा व ऑफर्स पहा →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Actions Grid (Swiggy / Instagram Style Quick Tap) -->
+            <div>
+                <h3 class="text-base md:text-lg font-bold text-white mb-3 flex items-center gap-2">
+                    <i class="fas fa-bolt text-brandYellow"></i>
+                    <span>Quick Actions (झटपट मागवा)</span>
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                    <div onclick="quickOrderService('Video')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-purple-600/20 text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
+                            🎬
+                        </div>
+                        <span class="text-sm font-bold text-slate-200">जाहिरात मागवा</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5">Commercial Ad</span>
+                    </div>
+
+                    <div onclick="quickOrderService('Audio Jingle')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 group-hover:bg-amber-500 group-hover:text-slate-950 transition flex items-center justify-center text-xl mb-2">
+                            🎙️
+                        </div>
+                        <span class="text-sm font-bold text-slate-200">Audio Jingle</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5">FM व रिक्षा प्रचार</span>
+                    </div>
+
+                    <div onclick="quickOrderService('Banner')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
+                            🖼️
+                        </div>
+                        <span class="text-sm font-bold text-slate-200">Banner बनवा</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5">सण व ऑफर डिझाइन</span>
+                    </div>
+
+                    <div onclick="quickOrderService('AI Video')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
+                            🤖
+                        </div>
+                        <span class="text-sm font-bold text-slate-200">AI Video बनवा</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5">Next-Gen AI Ads</span>
+                    </div>
+
+                    <div onclick="quickOrderService('Reel')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-pink-500/20 text-pink-400 group-hover:bg-pink-500 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
+                            📱
+                        </div>
+                        <span class="text-sm font-bold text-slate-200">Social Reel</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5">Insta/FB 9:16</span>
+                    </div>
+
+                    <div onclick="quickOrderService('Festival Campaign')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
+                            📢
+                        </div>
+                        <span class="text-sm font-bold text-slate-200">Campaign सुरू करा</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5">Full 360° Package</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Projects Section (Live Tracking & Approval) -->
+            <div>
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-base md:text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fas fa-tasks text-brandPurpleLight"></i>
+                        <span>चालू प्रोजेक्ट्स (Active Projects)</span>
+                    </h3>
+                    <button onclick="switchNav('mywork')" class="text-xs text-brandPurpleLight hover:text-white font-bold">
+                        सर्व पहा (View All) →
+                    </button>
+                </div>
+
+                <div id="homeActiveProjectsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic project cards injected by JS -->
+                </div>
+            </div>
+
+            <!-- Smart Repeat Order & Festival Recommendations Engine -->
+            <div class="bg-gradient-to-r from-purple-950/60 to-slate-900 border border-purple-900/50 p-5 rounded-3xl relative overflow-hidden shadow-lg">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div class="space-y-1.5">
+                        <div class="inline-flex items-center gap-1.5 bg-amber-400/20 text-brandYellow text-xs px-3 py-0.5 rounded-full font-bold">
+                            <i class="fas fa-sparkles"></i>
+                            <span>तुमच्यासाठी Smart Recommendation</span>
+                        </div>
+                        <h4 id="smartRecTitle" class="text-lg font-extrabold text-white">
+                            गणेशोत्सव व सणासुदीसाठी नवीन ज्वेलरी व्हिडिओ आणि बॅनर पॅकेज
+                        </h4>
+                        <p id="smartRecDesc" class="text-xs md:text-sm text-slate-300 max-w-2xl">
+                            तुमची मागील जाहिरात 'अक्षय्य तृतीया प्रोमो' खूप यशस्वी ठरली होती. पुढील उत्सवासाठी आताच बुकींग केल्यास ३०% सूट आणि प्राधान्य डिलिव्हरी मिळेल.
+                        </p>
+                    </div>
+                    <button onclick="quickOrderService('Festival Campaign')" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold shrink-0 shadow-md">
+                        ऑफर मागवा
+                    </button>
+                </div>
+            </div>
+
+            <!-- Featured Offers Carousel / Grid -->
+            <div>
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-base md:text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fas fa-tags text-brandYellow"></i>
+                        <span>आजच्या Special Offers</span>
+                    </h3>
+                    <button onclick="switchNav('offers')" class="text-xs text-brandYellow hover:underline font-bold">
+                        सर्व ऑफर्स पहा →
+                    </button>
+                </div>
+
+                <div id="homeOffersContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Dynamic offers injected by JS -->
+                </div>
+            </div>
+
+            <!-- Private Community Highlights -->
+            <div>
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-base md:text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fas fa-users text-blue-400"></i>
+                        <span>KTimes Business Community (बिझनेस टिप्स व यशोगाथा)</span>
+                    </h3>
+                    <button onclick="switchNav('community')" class="text-xs text-blue-400 hover:underline font-bold">
+                        कम्युनिटीमध्ये सामील व्हा →
+                    </button>
+                </div>
+
+                <div id="homeCommunityContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic posts injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 2: ADVERTISING STORE & MARKETPLACE                                   -->
+        <!-- ========================================================================= -->
+        <div id="viewMarketplace" class="space-y-6 hidden">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-navyCard to-slate-900 p-6 rounded-3xl border border-slate-800">
+                <div class="max-w-2xl">
+                    <span class="bg-brandPurple/30 text-purple-300 text-xs px-3 py-1 rounded-full font-bold">
+                        KTimes Advertising Store
+                    </span>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">
+                        निवडा तुमची मनपसंत जाहिरात सेवा
+                    </h2>
+                    <p class="text-sm text-slate-400 mt-1">
+                        व्यवसायाचा प्रकार निवडा, सॅम्पल पहा आणि १-क्लिक मध्ये थेट ऑर्डर नोंदवा.
+                    </p>
+                </div>
+
+                <!-- Service Category Filter Pills -->
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar mt-4 pt-2" id="storeFilterContainer">
+                    <button onclick="filterStore('ALL')" class="store-pill active bg-brandPurple text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap">
+                        सर्व सेवा (All)
+                    </button>
+                    <button onclick="filterStore('VIDEO')" class="store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700">
+                        व्हिडिओ जाहिराती (Video Ads)
+                    </button>
+                    <button onclick="filterStore('AUDIO')" class="store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700">
+                        ऑडिओ जिगल्स (Audio Jingles)
+                    </button>
+                    <button onclick="filterStore('GRAPHIC')" class="store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700">
+                        ग्राफिक्स व बॅनर (Banners)
+                    </button>
+                    <button onclick="filterStore('AI')" class="store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700">
+                        AI जाहिराती (AI Ads)
+                    </button>
+                    <button onclick="filterStore('CAMPAIGN')" class="store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700">
+                        360° पॅकेजेस (Campaigns)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Store Cards Grid -->
+            <div id="storeServicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic service items injected by JS -->
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 3: OFFERS SECTION                                                    -->
+        <!-- ========================================================================= -->
+        <div id="viewOffers" class="space-y-6 hidden">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                        <i class="fas fa-percent text-brandYellow"></i>
+                        <span>सध्याच्या सर्व स्पेशल ऑफर्स (Exclusive Offers)</span>
+                    </h2>
+                    <p class="text-xs md:text-sm text-slate-400">
+                        सण, उत्सव आणि विशेष कालावधीसाठी KTimes Business Club सदस्यांसाठी खास सवलत.
+                    </p>
+                </div>
+            </div>
+
+            <div id="allOffersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 4: MY WORK / CLIENT PROJECTS & FILE DELIVERY                         -->
+        <!-- ========================================================================= -->
+        <div id="viewMyWork" class="space-y-6 hidden">
+            <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                        <i class="fas fa-folder-open text-brandPurpleLight"></i>
+                        <span>माझी कामे व प्रोजेक्ट्स (My Projects & Files)</span>
+                    </h2>
+                    <p class="text-xs md:text-sm text-slate-400">
+                        तुमच्या सर्व प्रोजेक्ट्सचे स्टेटस, ड्राफ्ट प्रिव्ह्यू, रिव्हिजन आणि फायनल फाइल्स डाउनलोड करा.
+                    </p>
+                </div>
+                <button onclick="openAdRequestModal()" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 shadow">
+                    <i class="fas fa-plus"></i> नवीन काम द्या
+                </button>
+            </div>
+
+            <!-- Project Sub Tabs: Active Projects | Delivered Files | Invoices -->
+            <div class="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto no-scrollbar">
+                <button onclick="switchWorkSubTab('projects')" id="workTabProjects" class="bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold">
+                    प्रोजेक्ट्स ट्रॅकिंग (Projects)
+                </button>
+                <button onclick="switchWorkSubTab('files')" id="workTabFiles" class="bg-slate-900 text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold">
+                    माझ्या फायली (My Files & Downloads)
+                </button>
+                <button onclick="switchWorkSubTab('invoices')" id="workTabInvoices" class="bg-slate-900 text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold">
+                    बिलिंग व पेमेंट्स (Billing & Invoices)
+                </button>
+            </div>
+
+            <!-- SubTab Content 1: Projects List -->
+            <div id="workSubProjects" class="space-y-4">
+                <div id="clientProjectsList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- SubTab Content 2: Files Delivery -->
+            <div id="workSubFiles" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="deliveredFilesGrid">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- SubTab Content 3: Invoices -->
+            <div id="workSubInvoices" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="clientInvoicesGrid">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 5: COMMUNITY (KTimes Business Community)                             -->
+        <!-- ========================================================================= -->
+        <div id="viewCommunity" class="space-y-6 hidden">
+            <div class="bg-gradient-to-r from-blue-950 to-slate-900 p-6 rounded-3xl border border-blue-900/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <span class="bg-blue-500/20 text-blue-300 text-xs px-3 py-1 rounded-full font-bold">
+                        Private Client Community
+                    </span>
+                    <h2 class="text-2xl font-black text-white mt-1">
+                        KTimes Business Community 🚀
+                    </h2>
+                    <p class="text-xs md:text-sm text-slate-300">
+                        महाराष्ट्रातील अग्रगण्य व्यावसायिकांचे मार्केटिंग ज्ञान, AI जाहिरात तंत्र आणि यशोगाथा.
+                    </p>
+                </div>
+                <button onclick="openNewPostModal()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow">
+                    <i class="fas fa-pen"></i> पोस्ट करा / प्रश्न विचारा
+                </button>
+            </div>
+
+            <!-- Feed Grid -->
+            <div id="communityFeedContainer" class="max-w-3xl mx-auto space-y-5">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 6: REWARDS & REFERRALS                                              -->
+        <!-- ========================================================================= -->
+        <div id="viewRewards" class="space-y-6 hidden">
+            <!-- Points Summary Card -->
+            <div class="bg-gradient-to-r from-amber-950/80 via-slate-900 to-amber-950/80 p-6 rounded-3xl border border-amber-500/40 text-center relative">
+                <div class="w-16 h-16 rounded-full bg-amber-400/20 text-brandYellow text-3xl flex items-center justify-center mx-auto mb-2">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h2 class="text-3xl font-black text-brandYellow">450 KTimes Points</h2>
+                <p class="text-sm text-slate-300 mt-1">प्रत्येक नवीन ऑर्डर आणि रेफरलवर पॉइंट्स मिळवा आणि मोफत सेवा रिडीम करा.</p>
+                <div class="flex justify-center gap-3 mt-4">
+                    <button onclick="claimReward('Free Banner')" class="bg-brandYellow hover:bg-brandYellowHover text-slate-950 font-extrabold px-5 py-2 rounded-xl text-xs shadow">
+                        1 Free Banner रिडीम करा (400 pts)
+                    </button>
+                    <button onclick="openReferModal()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2 rounded-xl text-xs border border-slate-700">
+                        Refer & Earn (200 pts)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Membership Tier Cards -->
+            <h3 class="text-lg font-bold text-white mt-6">KTimes Business Club Memberships</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full font-bold">BASIC</span>
+                        <h4 class="text-xl font-black text-white mt-2">वार्षिक सभासद</h4>
+                        <div class="text-2xl font-black text-brandYellow my-2">₹४,९९९ <span class="text-xs text-slate-400 font-normal">/ वर्ष</span></div>
+                        <ul class="text-xs text-slate-300 space-y-2 mt-3">
+                            <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>५ सण-उत्सव ग्राफिक्स डिझाइन</li>
+                            <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>१ ऑडिओ जिगल (FM Style)</li>
+                            <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>कम्युनिटी अ‍ॅक्सेस</li>
+                        </ul>
+                    </div>
+                    <button onclick="quickOrderService('Basic Membership')" class="w-full mt-5 bg-slate-800 hover:bg-slate-700 text-white py-2 rounded-xl text-xs font-bold">
+                        सदस्य व्हा
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-b from-purple-950/60 to-slate-900 border-2 border-brandPurple p-5 rounded-2xl flex flex-col justify-between relative shadow-xl">
+                    <span class="absolute -top-3 right-4 bg-brandYellow text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full">POPULAR</span>
+                    <div>
+                        <span class="text-xs bg-brandPurple text-white px-2.5 py-1 rounded-full font-bold">BUSINESS PRO</span>
+                        <h4 class="text-xl font-black text-white mt-2">बिझनेस प्रो क्लब</h4>
+                        <div class="text-2xl font-black text-brandYellow my-2">₹११,९९९ <span class="text-xs text-slate-400 font-normal">/ वर्ष</span></div>
+                        <ul class="text-xs text-slate-300 space-y-2 mt-3">
+                            <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>१२ सण-उत्सव ग्राफिक्स डिझाइन</li>
+                            <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>२ व्यावसायिक प्रोमो व्हिडिओज</li>
+                            <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>२ ऑडिओ जाहिराती (पुरुष + स्त्री व्हॉईस)</li>
+                            <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>प्राधान्य ४८-तास डिलिव्हरी</li>
+                        </ul>
+                    </div>
+                    <button onclick="quickOrderService('Business Pro Membership')" class="w-full mt-5 bg-brandPurple hover:bg-brandPurpleDark text-white py-2 rounded-xl text-xs font-bold shadow-lg">
+                        हा प्लॅन घ्या
+                    </button>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs bg-amber-500/20 text-brandYellow px-2.5 py-1 rounded-full font-bold">VIP VIP</span>
+                        <h4 class="text-xl font-black text-white mt-2">360° VIP ग्रोथ</h4>
+                        <div class="text-2xl font-black text-brandYellow my-2">₹२४,९९९ <span class="text-xs text-slate-400 font-normal">/ वर्ष</span></div>
+                        <ul class="text-xs text-slate-300 space-y-2 mt-3">
+                            <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>अमर्यादित सोशल मीडिया क्रिएटिव्हज</li>
+                            <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>६ 4K सिनेमॅटिक / AI व्हिडिओज</li>
+                            <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>Meta / WhatsApp अ‍ॅड मॅनेजमेंट</li>
+                            <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>Dedicated KTimes Account Manager</li>
+                        </ul>
+                    </div>
+                    <button onclick="quickOrderService('VIP 360 Membership')" class="w-full mt-5 bg-slate-800 hover:bg-slate-700 text-white py-2 rounded-xl text-xs font-bold">
+                        VIP संपर्क करा
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 7: ADMIN CRM DASHBOARD & PIPELINE (Admin View)                       -->
+        <!-- ========================================================================= -->
+        <div id="viewAdminCRM" class="space-y-6 hidden">
+            
+            <!-- Admin Top Stats -->
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900 p-5 rounded-3xl border border-slate-800">
+                <div>
+                    <span class="bg-red-500/20 text-red-400 text-xs px-3 py-0.5 rounded-full font-bold">
+                        Admin Console & CRM
+                    </span>
+                    <h2 class="text-2xl font-black text-white mt-1">
+                        KTimes Media Advertising CRM & Operations
+                    </h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="openAddLeadModal()" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
+                        <i class="fas fa-user-plus"></i> नवीन Lead जोडा
+                    </button>
+                    <button onclick="openCampaignBlastModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
+                        <i class="fas fa-bullhorn"></i> Campaign Blast
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI Metric Cards Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                    <span class="text-xs text-slate-400 font-semibold">आजचे नवीन Leads</span>
+                    <div class="text-2xl font-black text-white mt-1" id="kpiNewLeads">8</div>
+                    <span class="text-[10px] text-emerald-400">↑ 25% this week</span>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                    <span class="text-xs text-slate-400 font-semibold">Active Projects</span>
+                    <div class="text-2xl font-black text-purple-400 mt-1" id="kpiActiveProjects">14</div>
+                    <span class="text-[10px] text-slate-400">4 awaiting review</span>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                    <span class="text-xs text-slate-400 font-semibold">Approval Pending</span>
+                    <div class="text-2xl font-black text-amber-400 mt-1" id="kpiPendingApproval">3</div>
+                    <span class="text-[10px] text-amber-400">Client Action req</span>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                    <span class="text-xs text-slate-400 font-semibold">या महिन्याची विक्री</span>
+                    <div class="text-2xl font-black text-emerald-400 mt-1">₹1,84,500</div>
+                    <span class="text-[10px] text-emerald-400">Target: ₹2.5L</span>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                    <span class="text-xs text-slate-400 font-semibold">Repeat Client Rate</span>
+                    <div class="text-2xl font-black text-cyan-400 mt-1">68.4%</div>
+                    <span class="text-[10px] text-cyan-400">High Loyalty</span>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                    <span class="text-xs text-slate-400 font-semibold">Inactive (90+ Days)</span>
+                    <div class="text-2xl font-black text-red-400 mt-1" id="kpiInactiveClients">12</div>
+                    <button onclick="triggerReactivationBlast()" class="text-[10px] text-brandYellow hover:underline font-bold">Reactivate →</button>
+                </div>
+            </div>
+
+            <!-- CRM Sub Navigation: Kanban Pipeline | Clients Segmentation | Campaigns | Analytics -->
+            <div class="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto no-scrollbar">
+                <button onclick="switchAdminSubTab('kanban')" id="admTabKanban" class="bg-brandPurple text-white px-4 py-1.5 rounded-xl text-xs font-bold">
+                    Leads Pipeline (Kanban)
+                </button>
+                <button onclick="switchAdminSubTab('clients')" id="admTabClients" class="bg-slate-900 text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold">
+                    Client Segmentation
+                </button>
+                <button onclick="switchAdminSubTab('projects_all')" id="admTabProjects" class="bg-slate-900 text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold">
+                    All Projects Control
+                </button>
+                <button onclick="switchAdminSubTab('analytics')" id="admTabAnalytics" class="bg-slate-900 text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold">
+                    Analytics & Revenue
+                </button>
+            </div>
+
+            <!-- Admin SubView 1: Kanban Pipeline -->
+            <div id="admSubKanban" class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-bold text-white">Leads Pipeline (14 Stages Simplified)</h3>
+                    <span class="text-xs text-slate-400">Drag or click stage to move lead forward</span>
+                </div>
+
+                <div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar" id="kanbanBoardContainer">
+                    <!-- Columns injected via JS: New Lead, Requirement Received, Quotation Sent, Production, Approval, Delivered -->
+                </div>
+            </div>
+
+            <!-- Admin SubView 2: Clients Segmentation -->
+            <div id="admSubClients" class="space-y-4 hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900 p-4 rounded-2xl border border-slate-800">
+                    <div class="flex flex-wrap items-center gap-2 text-xs">
+                        <span class="text-slate-400 font-bold">Filter By:</span>
+                        <select id="clientSegmentCategory" onchange="filterAdminClients()" class="bg-slate-800 text-white rounded-lg p-1.5 border border-slate-700 outline-none">
+                            <option value="ALL">All Categories</option>
+                            <option value="Jewellers">Jewellers (ज्वेलर्स)</option>
+                            <option value="Textile / Saree">Textile / Saree (कापड दुकान)</option>
+                            <option value="Hotel / Restaurant">Hotel / Restaurant (हॉटेल)</option>
+                            <option value="Automobile">Automobile (ऑटोमोबाईल)</option>
+                            <option value="Political">Political (राजकीय)</option>
+                        </select>
+                        <select id="clientSegmentStatus" onchange="filterAdminClients()" class="bg-slate-800 text-white rounded-lg p-1.5 border border-slate-700 outline-none">
+                            <option value="ALL">All Status</option>
+                            <option value="Active">Active Clients</option>
+                            <option value="Inactive">Inactive (60+ Days)</option>
+                            <option value="HighValue">VIP High Value (> ₹25k)</option>
+                        </select>
+                    </div>
+                    <button onclick="exportClientsCsv()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 font-bold">
+                        <i class="fas fa-file-export mr-1"></i> Export Data
+                    </button>
+                </div>
+
+                <div id="adminClientsTableContainer" class="overflow-x-auto bg-slate-900 border border-slate-800 rounded-2xl">
+                    <!-- Client Table injected via JS -->
+                </div>
+            </div>
+
+            <!-- Admin SubView 3: Projects Control -->
+            <div id="admSubProjects" class="space-y-4 hidden">
+                <div id="adminAllProjectsList" class="space-y-3">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- Admin SubView 4: Analytics -->
+            <div id="admSubAnalytics" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+                        <h4 class="text-sm font-bold text-white mb-3">Top Services by Revenue</h4>
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <div class="flex justify-between text-slate-300 mb-1">
+                                    <span>Commercial & AI Video Ads</span>
+                                    <span class="font-bold text-white">₹84,000 (45%)</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-brandPurple h-full w-[45%]"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-slate-300 mb-1">
+                                    <span>Audio Jingles & Voiceovers</span>
+                                    <span class="font-bold text-white">₹48,500 (26%)</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-amber-400 h-full w-[26%]"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-slate-300 mb-1">
+                                    <span>Festival Banners & Social Creatives</span>
+                                    <span class="font-bold text-white">₹32,000 (18%)</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-blue-400 h-full w-[18%]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+                        <h4 class="text-sm font-bold text-white mb-3">Regional Growth (Top Cities)</h4>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between p-2 rounded bg-slate-800/60">
+                                <span class="font-bold text-white">1. Satara (सातारा)</span>
+                                <span class="text-emerald-400 font-bold">42 Clients • ₹95,000</span>
+                            </div>
+                            <div class="flex justify-between p-2 rounded bg-slate-800/60">
+                                <span class="font-bold text-white">2. Phaltan (फलटण)</span>
+                                <span class="text-emerald-400 font-bold">28 Clients • ₹54,000</span>
+                            </div>
+                            <div class="flex justify-between p-2 rounded bg-slate-800/60">
+                                <span class="font-bold text-white">3. Baramati (बारामती)</span>
+                                <span class="text-emerald-400 font-bold">19 Clients • ₹42,000</span>
+                            </div>
+                            <div class="flex justify-between p-2 rounded bg-slate-800/60">
+                                <span class="font-bold text-white">4. Pune & Surrounding</span>
+                                <span class="text-emerald-400 font-bold">15 Clients • ₹38,000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 8: STAFF / PRODUCTION TEAM DASHBOARD (Staff View)                   -->
+        <!-- ========================================================================= -->
+        <div id="viewStaff" class="space-y-6 hidden">
+            <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 flex items-center justify-between">
+                <div>
+                    <span class="bg-cyan-500/20 text-cyan-400 text-xs px-3 py-0.5 rounded-full font-bold">
+                        Production & Creative Team
+                    </span>
+                    <h2 class="text-2xl font-black text-white mt-1">
+                        Assigned Production Tasks & Draft Uploads
+                    </h2>
+                    <p class="text-xs text-slate-400">Brief वाचा, ड्राफ्ट अपलोड करा आणि Approval ची विनंती पाठवा.</p>
+                </div>
+            </div>
+
+            <div id="staffAssignedProjectsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bottom Navigation Bar (WhatsApp + Swiggy Mobile-First Style) -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 glass-bottom py-2 px-3 shadow-2xl">
+        <div class="max-w-md mx-auto flex items-center justify-around">
+            
+            <button onclick="switchNav('home')" id="bnavHome" class="flex flex-col items-center gap-1 text-brandPurpleLight hover:text-white transition">
+                <i class="fas fa-home text-lg"></i>
+                <span class="text-[11px] font-bold">Home</span>
+            </button>
+
+            <button onclick="switchNav('marketplace')" id="bnavMarketplace" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
+                <i class="fas fa-store text-lg"></i>
+                <span class="text-[11px] font-bold">Store</span>
+            </button>
+
+            <!-- Center Primary CTA Floating Action -->
+            <button onclick="openAdRequestModal()" class="flex flex-col items-center -mt-6">
+                <div class="w-13 h-13 rounded-full bg-gradient-to-tr from-brandYellow via-amber-400 to-amber-500 text-slate-950 flex items-center justify-center text-xl font-black shadow-xl border-4 border-slate-950 hover:scale-110 transition">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <span class="text-[10px] font-extrabold text-brandYellow mt-1">मागवा</span>
+            </button>
+
+            <button onclick="switchNav('mywork')" id="bnavMyWork" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
+                <i class="fas fa-briefcase text-lg"></i>
+                <span class="text-[11px] font-bold">माझी कामे</span>
+            </button>
+
+            <button onclick="switchNav('community')" id="bnavCommunity" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
+                <i class="fas fa-comments text-lg"></i>
+                <span class="text-[11px] font-bold">Community</span>
+            </button>
+
+            <!-- Admin / Staff Shortcut for quick switching -->
+            <button onclick="openUserMenuModal()" id="bnavProfile" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
+                <i class="fas fa-user-circle text-lg"></i>
+                <span class="text-[11px] font-bold">Menu</span>
+            </button>
+
+        </div>
+    </nav>
+
+    <!-- Floating WhatsApp Action Bubble -->
+    <div class="fixed bottom-20 right-5 z-40">
+        <a href="https://wa.me/919422337471?text=नमस्कार%20KTimes%20Media,%20मला%20माहिती%20हवी%20आहे." target="_blank" rel="noopener noreferrer"
+           title="WhatsApp Direct Contact"
+           class="w-13 h-13 bg-brandWhatsapp rounded-full flex items-center justify-center text-white text-3xl shadow-2xl pulse-whatsapp hover:scale-105 transition">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 1: AD REQUEST FORM (जाहिरात मागणी अर्ज)                             -->
+    <!-- ========================================================================= -->
+    <div id="adRequestModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-xl max-h-[92vh] overflow-y-auto p-6 shadow-2xl relative">
+            <button onclick="closeAdRequestModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="flex items-center gap-2.5 mb-3">
+                <div class="w-10 h-10 rounded-2xl bg-brandPurple/30 text-brandYellow flex items-center justify-center text-lg">
+                    <i class="fas fa-ad"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-black text-white">जाहिरात मागणी अर्ज (Order / Request Ad)</h3>
+                    <p class="text-xs text-slate-400">माहिती भरा. आमची टीम लगेच CRM मध्ये प्रोजेक्ट सुरू करेल.</p>
+                </div>
+            </div>
+
+            <form onsubmit="handleSubmitAdRequest(event)" class="space-y-3.5 mt-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">व्यवसायाचे नाव (Business Name) *</label>
+                        <input type="text" id="reqBusinessName" required value="Ganesh Jewellers" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">संपर्क व्यक्ती (Contact Person) *</label>
+                        <input type="text" id="reqContactPerson" required value="गणेश कदम" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">मोबाईल / WhatsApp नंबर *</label>
+                        <input type="tel" id="reqPhone" required value="9822123456" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">शहर / तालुका (Location) *</label>
+                        <input type="text" id="reqLocation" required value="सातारा (Satara)" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">तुम्हाला काय हवे आहे? (Service Needed) *</label>
+                    <select id="reqServiceType" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
+                        <option value="AI Cinematic Video">AI Cinematic Video (Next-Gen AI)</option>
+                        <option value="Commercial Video Ad">Commercial Video Ad (व्हिडिओ जाहिरात)</option>
+                        <option value="Audio Jingle">FM Radio Style Audio Jingle (ऑडिओ जिगल)</option>
+                        <option value="Voice Over">Voice Over (व्हॉईस ओव्हर)</option>
+                        <option value="Festival Banner">Festival Banner Package (सण-उत्सव बॅनर)</option>
+                        <option value="Social Media Reel">Social Media Reel (Instagram / Facebook 9:16)</option>
+                        <option value="Product Photography">Product Photography / AI Creative</option>
+                        <option value="Festival Campaign">Complete 360° Festival Campaign</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">सण / प्रसंग (Campaign / Event)</label>
+                        <select id="reqEvent" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
+                            <option value="Ganeshotsav">Ganeshotsav (गणेशोत्सव)</option>
+                            <option value="Diwali">Diwali / Dhanteras (दिवाळी / धनत्रयोदशी)</option>
+                            <option value="Raksha Bandhan">Raksha Bandhan (रक्षाबंधन)</option>
+                            <option value="Dussehra">Dussehra (दसरा)</option>
+                            <option value="Wedding Season">Wedding Season (लग्नसराई)</option>
+                            <option value="Monsoon Sale">Monsoon Sale (पावसाळी ऑफर)</option>
+                            <option value="Shop Opening">Shop Opening / Anniversary</option>
+                            <option value="General Regular">General Regular Promo</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">अंदाजे बजेट (Budget)</label>
+                        <select id="reqBudget" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
+                            <option value="₹1,000–₹3,000">₹1,000–₹3,000</option>
+                            <option value="₹3,000–₹5,000">₹3,000–₹5,000</option>
+                            <option value="₹5,000–₹10,000">₹5,000–₹10,000</option>
+                            <option value="₹10,000+">₹10,000+ (पॅकेज)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">जाहिरातीत काय मजकूर / माहिती हवी आहे? (Description / Brief)</label>
+                    <textarea id="reqDescription" rows="3" placeholder="उदा. सोन्याच्या दागिन्यांवर मजुरीत ५०% सूट, पत्ता: मोती चौक, सातारा..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple"></textarea>
+                </div>
+
+                <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700 text-xs">
+                    <span class="font-bold text-slate-300"><i class="fas fa-paperclip mr-1 text-brandYellow"></i> फोटो किंवा लोगो जोडायचा आहे?</span>
+                    <p class="text-slate-400 text-[11px] mt-0.5">फॉर्म सबमिट केल्यावर आपण WhatsApp वरही थेट फोटो पाठवू शकता.</p>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-brandPurple to-purple-600 hover:from-brandPurpleDark hover:to-purple-700 text-white font-extrabold py-3 rounded-2xl shadow-xl transition flex items-center justify-center gap-2">
+                    <i class="fas fa-paper-plane text-brandYellow"></i>
+                    <span>KTimes कडे Request पाठवा</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 2: AI MARKETING ASSISTANT (KTimes AI)                               -->
+    <!-- ========================================================================= -->
+    <div id="aiAssistantModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg max-h-[85vh] flex flex-col shadow-2xl relative">
+            <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white">KTimes AI Marketing Assistant</h3>
+                        <p class="text-[11px] text-slate-400">जाहिरात आयडिया, मराठी स्लोगन व कॅम्पेन सल्ला</p>
+                    </div>
+                </div>
+                <button onclick="closeAiAssistantModal()" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Chat History -->
+            <div id="aiChatHistory" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
+                <div class="flex gap-2.5">
+                    <div class="w-7 h-7 rounded-full bg-cyan-600 text-white flex items-center justify-center shrink-0 text-xs">AI</div>
+                    <div class="bg-slate-800 p-3 rounded-2xl rounded-tl-none text-slate-200 leading-relaxed border border-slate-700">
+                        नमस्कार! मी KTimes चा AI असिस्टंट आहे. तुमच्या व्यवसायासाठी सणासुदीच्या जाहिरातीचे प्लॅनिंग करायचे आहे का? मला विचारा!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Suggestions -->
+            <div class="px-4 py-2 border-t border-slate-800/80 flex gap-2 overflow-x-auto no-scrollbar text-[11px]">
+                <button onclick="askAiQuestion('गणेशोत्सवात ज्वेलरी दुकानाची विक्री कशी वाढवावी?')" class="bg-slate-800 text-slate-300 hover:text-white px-2.5 py-1 rounded-full whitespace-nowrap border border-slate-700">
+                    💍 ज्वेलरी गणेशोत्सव प्लॅन
+                </button>
+                <button onclick="askAiQuestion('कापड दुकानासाठी 15 सेकंदाचा Reel स्क्रिप्ट द्या.')" class="bg-slate-800 text-slate-300 hover:text-white px-2.5 py-1 rounded-full whitespace-nowrap border border-slate-700">
+                    👗 कापड दुकान Reel Script
+                </button>
+                <button onclick="askAiQuestion('हॉटेलसाठी वीकेंड ऑफरची ऑडिओ जाहिरात कशी करावी?')" class="bg-slate-800 text-slate-300 hover:text-white px-2.5 py-1 rounded-full whitespace-nowrap border border-slate-700">
+                    🍽️ हॉटेल जाहिरात स्लोगन
+                </button>
+            </div>
+
+            <!-- Chat Input -->
+            <form onsubmit="handleSendAiMessage(event)" class="p-3 border-t border-slate-800 flex gap-2">
+                <input type="text" id="aiUserInput" placeholder="येथे विचारा (उदा. दुकानाची जाहिरात कशी करावी?)..." class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-cyan-400">
+                <button type="submit" class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-xl text-xs font-bold">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 3: PROJECT PREVIEW & CLIENT APPROVAL SYSTEM                         -->
+    <!-- ========================================================================= -->
+    <div id="projectApprovalModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl relative">
+            <button onclick="closeProjectApprovalModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="flex items-center gap-2 mb-3">
+                <span id="projModalBadge" class="bg-amber-400/20 text-brandYellow text-xs px-3 py-0.5 rounded-full font-bold">
+                    Draft Ready for Approval
+                </span>
+            </div>
+
+            <h3 id="projModalTitle" class="text-xl font-black text-white">Ganeshotsav 4K Promo Video</h3>
+            <p id="projModalService" class="text-xs text-brandPurpleLight font-bold">AI Commercial Video • Deadline: 28 Aug 2026</p>
+
+            <!-- Video / Image Preview Area -->
+            <div class="my-4 bg-black rounded-2xl overflow-hidden border border-slate-800 aspect-video flex items-center justify-center" id="projModalMediaContainer">
+                <!-- Preview Embed or Placeholder -->
+            </div>
+
+            <!-- Approval / Revision Form -->
+            <div class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700 space-y-3">
+                <h4 class="text-xs font-bold text-slate-200">तुमचा अभिप्राय (Client Decision):</h4>
+                <div class="flex gap-3">
+                    <button onclick="handleClientApprove()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow">
+                        <i class="fas fa-check-circle"></i> APPROVE (काम पसंत आहे)
+                    </button>
+                    <button onclick="toggleRevisionBox()" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow">
+                        <i class="fas fa-redo"></i> REQUEST REVISION (बदल सांगा)
+                    </button>
+                </div>
+
+                <div id="revisionInputContainer" class="hidden pt-3 border-t border-slate-700 space-y-2">
+                    <label class="block text-[11px] font-bold text-slate-300">कोणते बदल हवे आहेत ते लिहा (उदा. दुकानाचे नाव मोठे करा):</label>
+                    <textarea id="revisionNotesInput" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white outline-none focus:border-amber-400"></textarea>
+                    <button onclick="handleSendRevision()" class="w-full bg-amber-500 text-slate-950 font-bold py-2 rounded-xl text-xs">
+                        रिव्हिजन सबमिट करा
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 4: NOTIFICATIONS MODAL                                              -->
+    <!-- ========================================================================= -->
+    <div id="notificationModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-5 shadow-2xl relative">
+            <button onclick="closeNotificationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-lg font-black text-white mb-3 flex items-center gap-2">
+                <i class="fas fa-bell text-brandYellow"></i>
+                <span>सूचना केंद्र (Notifications)</span>
+            </h3>
+            <div id="notifListContainer" class="space-y-2.5 max-h-[60vh] overflow-y-auto pr-1">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 5: REFER & GROW MODAL                                               -->
+    <!-- ========================================================================= -->
+    <div id="referModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl relative text-center">
+            <button onclick="closeReferModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="w-14 h-14 bg-amber-500/20 text-brandYellow rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                <i class="fas fa-gift"></i>
+            </div>
+            <h3 class="text-lg font-black text-white">Refer & Grow</h3>
+            <p class="text-xs text-slate-300 mt-1">तुमच्या ओळखीच्या दुकानदारांना व मित्रांना KTimes Media Business Club ची लिंक पाठवा आणि २०० Reward Points मिळवा!</p>
+
+            <div class="my-4 bg-slate-800 p-2.5 rounded-xl border border-slate-700 flex items-center justify-between">
+                <span class="text-xs text-slate-300 truncate font-mono">https://ktimes.in/club?ref=GANESH77</span>
+                <button onclick="copyReferralLink()" class="bg-brandPurple text-white px-3 py-1 rounded-lg text-xs font-bold shrink-0 ml-2">
+                    कॉपी
+                </button>
+            </div>
+
+            <a href="https://wa.me/?text=नमस्कार,%20मी%20माझ्या%20व्यवसायाच्या%20जाहिरातीसाठी%20KTimes%20Media%20Business%20Club%20वापरत%20आहे.%20तुम्हीही%20जॉईन%20करा:%20https://ktimes.in/club?ref=GANESH77" target="_blank" class="w-full bg-brandWhatsapp hover:bg-brandWhatsappHover text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow">
+                <i class="fab fa-whatsapp text-base"></i> WhatsApp वर शेअर करा
+            </a>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC ENGINE -->
+    <script>
+        // Global State
+        let currentUserRole = 'client'; // 'client', 'staff', 'admin'
+        let currentActiveTab = 'home';
+        let currentLanguage = 'mr';
+
+        // Sample Persistent Data Models
+        const servicesData = [
+            {
+                id: 'srv_1',
+                title: 'AI Cinematic Video Advertisement',
+                type: 'AI',
+                tagline: 'तुमच्या दुकानासाठी Next-Gen AI 4K व्हिडिओ',
+                startingPrice: '₹२,९९९',
+                badge: 'TRENDING AI',
+                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80',
+                description: 'सिनेमॅटिक व्हिज्युअल्स, AI व्हॉईसओव्हर, मोशन टायपोग्राफी आणि पार्श्वसंगीतासह हाय-इम्पॅक्ट जाहिरात.'
             },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = SurfaceVariantLight),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(modifier = Modifier.padding(12.dp)) {
-                            Text(
-                                text = "Current User: ${currentUser?.displayName ?: "Ganesh Jewellers"}",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 14.sp,
-                                color = CharcoalBlack
-                            )
-                            Text(
-                                text = "Active Role: ${currentRole.name}",
-                                fontSize = 12.sp,
-                                color = if (currentRole == UserRole.ADMIN) CrimsonRed else PrimaryPurple,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "🔥 Firebase Auth & Firestore Connected",
-                                fontSize = 11.sp,
-                                color = Color(0xFF2E7D32),
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
-                    }
-
-                    Text(
-                        text = "Switch Application Role:",
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = CharcoalBlack
-                    )
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Button(
-                            onClick = {
-                                viewModel.switchUserRole(UserRole.CLIENT)
-                                showAuthModal = false
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (currentRole == UserRole.CLIENT) PrimaryPurple else Color.LightGray
-                            ),
-                            shape = RoundedCornerShape(8.dp),
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Text("Client Mode", fontSize = 12.sp)
-                        }
-
-                        Button(
-                            onClick = {
-                                viewModel.switchUserRole(UserRole.ADMIN)
-                                showAuthModal = false
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (currentRole == UserRole.ADMIN) CrimsonRed else Color.LightGray
-                            ),
-                            shape = RoundedCornerShape(8.dp),
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Text("Admin Mode", fontSize = 12.sp)
-                        }
-                    }
-
-                    if (currentRole == UserRole.ADMIN) {
-                        Button(
-                            onClick = {
-                                showAuthModal = false
-                                onNavigateToAdmin()
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
-                            shape = RoundedCornerShape(8.dp),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Icon(Icons.Default.AdminPanelSettings, contentDescription = null, modifier = Modifier.size(16.dp))
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text("Open Admin Console", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                        }
-                    }
-
-                    Button(
-                        onClick = {
-                            viewModel.signInWithGoogle(context)
-                            showAuthModal = false
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = CharcoalBlack),
-                        shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Google Sign-In (Firebase)", fontSize = 12.sp)
-                    }
-                }
+            {
+                id: 'srv_2',
+                title: 'FM Radio Style Audio Jingle',
+                type: 'AUDIO',
+                tagline: 'पुरुष + स्त्री व्हॉईसओव्हर व ढोल-ताशा बीट्स',
+                startingPrice: '₹१,९९९',
+                badge: 'POPULAR',
+                image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&auto=format&fit=crop&q=80',
+                description: 'लाउडस्पीकर रिक्षा प्रचार, एफएम रेडिओ व व्हॉट्सॲप मार्केटिंगसाठी खणखणीत आवाजातील ऑडिओ जिगल.'
             },
-            confirmButton = {
-                TextButton(onClick = { showAuthModal = false }) {
-                    Text("Close", color = PrimaryPurple, fontWeight = FontWeight.Bold)
-                }
+            {
+                id: 'srv_3',
+                title: 'Festival Banner & Creative Package',
+                type: 'GRAPHIC',
+                tagline: 'सणानुसार आकर्षक सोशल मीडिया डिझाइन्स',
+                startingPrice: '₹९९९',
+                badge: 'FESTIVAL',
+                image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&auto=format&fit=crop&q=80',
+                description: 'गणेशोत्सव, दिवाळी, दसरा व सवलत ऑफर्ससाठी हाय-रिझोल्यूशन सोशल मीडिया व प्रिंट रेडी बॅनर डिझाइन्स.'
             },
-            containerColor = StudioWhite,
-            shape = RoundedCornerShape(16.dp)
-        )
-    }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        // Ktimes Media Stylized Logo Emblem
-                        Box(
-                            modifier = Modifier
-                                .size(38.dp)
-                                .clip(CircleShape)
-                                .background(CrimsonRed)
-                                .border(1.dp, ElectricYellow, CircleShape),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "K",
-                                color = StudioWhite,
-                                fontWeight = FontWeight.Black,
-                                fontSize = 22.sp
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.width(10.dp))
-
-                        Column {
-                            // Red Crimson Pill with Title
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(6.dp))
-                                    .background(CrimsonRed)
-                                    .padding(horizontal = 8.dp, vertical = 2.dp)
-                            ) {
-                                Text(
-                                    text = "Ktimes Media",
-                                    color = StudioWhite,
-                                    fontSize = 15.sp,
-                                    fontWeight = FontWeight.Black,
-                                    letterSpacing = 0.5.sp
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = "हमेशा समय के साथ..!",
-                                color = ElectricYellow,
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        }
-                    }
-                },
-                actions = {
-                    // Role Badge Pill
-                    Box(
-                        modifier = Modifier
-                            .padding(end = 4.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(if (currentRole == UserRole.ADMIN) CrimsonRed else ElectricYellow)
-                            .clickable { showAuthModal = true }
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
-                    ) {
-                        Text(
-                            text = if (currentRole == UserRole.ADMIN) "ADMIN" else "CLIENT",
-                            color = if (currentRole == UserRole.ADMIN) StudioWhite else PrimaryPurple,
-                            fontWeight = FontWeight.Black,
-                            fontSize = 10.sp
-                        )
-                    }
-
-                    // Notification Bell Icon
-                    IconButton(onClick = {
-                        Toast.makeText(context, "Ktimes Media: नवनवीन ऑफर्स आणि अपडेट्स चालू आहेत!", Toast.LENGTH_SHORT).show()
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Notifications,
-                            contentDescription = "Notification Bell",
-                            tint = ElectricYellow
-                        )
-                    }
-
-                    // User profile initial 'S' / Admin icon
-                    Box(
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .size(32.dp)
-                            .clip(CircleShape)
-                            .background(ElectricYellow)
-                            .clickable {
-                                if (currentRole == UserRole.ADMIN) {
-                                    onNavigateToAdmin()
-                                } else {
-                                    showAuthModal = true
-                                }
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = if (currentRole == UserRole.ADMIN) "A" else "C",
-                            color = PrimaryPurple,
-                            fontWeight = FontWeight.Black,
-                            fontSize = 15.sp
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = PrimaryPurple
-                )
-            )
-        },
-        bottomBar = {
-            KtimesBottomNavigationBar(
-                currentTab = currentTab,
-                onTabSelected = { tab -> viewModel.onTabSelected(tab) }
-            )
-        },
-        containerColor = AppBackground
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            when (currentTab) {
-                "home" -> HomeScreenContent(
-                    viewModel = viewModel,
-                    onItemClick = onItemClick
-                )
-                "portfolio" -> PortfolioScreenContent(
-                    viewModel = viewModel,
-                    items = items,
-                    selectedCategory = selectedCategory,
-                    selectedType = selectedType,
-                    searchQuery = searchQuery,
-                    onItemClick = onItemClick
-                )
-                "rates" -> RatesScreenContent(
-                    onSelectPackage = { pkgName ->
-                        viewModel.createLeadFromPackage(pkgName, "₹१,९९९ - ₹४,९९९")
-                        IntentUtils.openWhatsAppDirectMessage(
-                            context,
-                            "नमस्कार Ktimes Media, मला '$pkgName' या पॅकेजची ऑर्डर करायची आहे. कृपया अधिक माहिती पाठवा."
-                        )
-                    }
-                )
-                "orders" -> OrdersScreenContent(
-                    viewModel = viewModel,
-                    onWhatsAppOrder = { name, phone, service, details ->
-                        // Save directly to Firestore
-                        viewModel.submitAdOrder(
-                            clientName = name,
-                            clientPhone = phone,
-                            serviceType = service,
-                            budget = "₹1,499 - ₹4,999",
-                            details = details
-                        )
-
-                        val message = """
-                            नमस्कार Ktimes Media, मी ॲपवरून नवीन ऑर्डर नोंदवत आहे:
-                            👤 *नाव*: $name
-                            📱 *मोबाईल*: $phone
-                            🎯 *सेवा*: $service
-                            📝 *माहिती/संदेश*: $details
-                        """.trimIndent()
-                        IntentUtils.openWhatsAppDirectMessage(context, message)
-                    }
-                )
-                else -> HomeScreenContent(
-                    viewModel = viewModel,
-                    onItemClick = onItemClick
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun HomeScreenContent(
-    viewModel: MediaViewModel,
-    onItemClick: (MediaItem) -> Unit
-) {
-    val items by viewModel.filteredItems.collectAsStateWithLifecycle()
-    val context = LocalContext.current
-
-    LazyColumn(
-        contentPadding = PaddingValues(bottom = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize()
-    ) {
-        // Main Visual Banner
-        item {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 12.dp)
-                    .clip(RoundedCornerShape(18.dp))
-                    .border(1.dp, PrimaryPurpleLight, RoundedCornerShape(18.dp)),
-                colors = CardDefaults.cardColors(containerColor = PrimaryPurple)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            GradientBrush.horizontalGradient(
-                                colors = listOf(PrimaryPurple, PrimaryPurpleLight)
-                            )
-                        )
-                        .padding(16.dp)
-                ) {
-                    Column {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .background(CrimsonRed)
-                                    .padding(horizontal = 10.dp, vertical = 4.dp)
-                            ) {
-                                Text(
-                                    text = "विशेष ऑफर",
-                                    color = StudioWhite,
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-
-                            Text(
-                                text = "२४/७ डिजिटल स्टुडिओ",
-                                color = ElectricYellow,
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        Text(
-                            text = "तुमच्या जाहिरातीला 'Ktimes Media' ची जोड! जबरदस्त ऑडिओ आणि व्हिडिओ जाहिराती बनवा.",
-                            color = StudioWhite,
-                            fontSize = 17.sp,
-                            fontWeight = FontWeight.Black,
-                            lineHeight = 24.sp
-                        )
-
-                        Spacer(modifier = Modifier.height(14.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "ऑडिओ जाहिराती • टीव्हीसी • निवडणूक जिंन्गल्स",
-                                color = ElectricYellow,
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-
-                            Button(
-                                onClick = {
-                                    viewModel.createLeadFromBanner("२४/७ डिजिटल स्टुडिओ विशेष ऑफर")
-                                    IntentUtils.openWhatsAppDirectMessage(
-                                        context,
-                                        "नमस्कार Ktimes Media, मी ॲपवरून संपर्क साधत आहे. मला आपल्या सेवांबद्दल माहिती हवी आहे."
-                                    )
-                                },
-                                colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
-                                shape = RoundedCornerShape(20.dp),
-                                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_whatsapp),
-                                    contentDescription = "WhatsApp",
-                                    tint = StudioWhite,
-                                    modifier = Modifier.size(16.dp)
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text("ऑर्डर करा", color = StudioWhite, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Category Horizontal Scroll (Four Circular Categories)
-        item {
-            Column(modifier = Modifier.padding(top = 4.dp)) {
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 4.dp)
-                        .clip(RoundedCornerShape(6.dp))
-                        .background(CrimsonRed)
-                        .padding(horizontal = 10.dp, vertical = 3.dp)
-                ) {
-                    Text(
-                        text = "मुख्य वर्गवारी (Categories)",
-                        color = StudioWhite,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    CircularCategoryItem(
-                        title = "ऑडिओ जाहिराती",
-                        icon = Icons.Default.Headphones,
-                        onClick = { viewModel.navigateToCategoryInPortfolio("ऑडिओ जाहिराती", "AUDIO") }
-                    )
-
-                    CircularCategoryItem(
-                        title = "व्हिडिओ जाहिराती",
-                        icon = Icons.Default.Videocam,
-                        onClick = { viewModel.navigateToCategoryInPortfolio("व्हिडिओ जाहिराती", "VIDEO") }
-                    )
-
-                    CircularCategoryItem(
-                        title = "ग्राफिक्स डिझाइन",
-                        icon = Icons.Default.Brush,
-                        onClick = { viewModel.navigateToCategoryInPortfolio("ग्राफिक्स डिझाइन", "GRAPHIC") }
-                    )
-
-                    CircularCategoryItem(
-                        title = "निवडणूक स्पेशल",
-                        icon = Icons.Default.HowToVote,
-                        onClick = { viewModel.navigateToCategoryInPortfolio("निवडणूक स्पेशल", "AUDIO") }
-                    )
-                }
-            }
-        }
-
-        // Featured Hot Spots Header
-        item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(6.dp))
-                        .background(CrimsonRed)
-                        .padding(horizontal = 10.dp, vertical = 4.dp)
-                ) {
-                    Text(
-                        text = "हॉट स्पॉट्स / टॉप नमुने",
-                        color = StudioWhite,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                Text(
-                    text = "सर्व पहा →",
-                    color = PrimaryPurple,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable { viewModel.onTabSelected("portfolio") }
-                )
-            }
-        }
-
-        // Featured Media Items List
-        val featuredList = items.filter { it.isFeatured }
-        items(if (featuredList.isNotEmpty()) featuredList else items, key = { it.id }) { item ->
-            Box(modifier = Modifier.padding(horizontal = 16.dp)) {
-                PortfolioItemCard(
-                    item = item,
-                    onItemClick = onItemClick,
-                    onOrderClick = { orderItem -> viewModel.createLeadFromItem(orderItem) }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun CircularCategoryItem(
-    title: String,
-    icon: ImageVector,
-    onClick: () -> Unit
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .padding(2.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .size(68.dp)
-                .clip(CircleShape)
-                .background(PrimaryPurple)
-                .border(2.dp, ElectricYellow, CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                tint = ElectricYellow,
-                modifier = Modifier.size(32.dp)
-            )
-        }
-        Spacer(modifier = Modifier.height(6.dp))
-        Text(
-            text = title,
-            color = CharcoalBlack,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-@Composable
-fun PortfolioScreenContent(
-    viewModel: MediaViewModel,
-    items: List<MediaItem>,
-    selectedCategory: String,
-    selectedType: String,
-    searchQuery: String,
-    onItemClick: (MediaItem) -> Unit
-) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        // Search Input Bar
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { viewModel.onSearchQueryChanged(it) },
-            placeholder = {
-                Text("ऑडिओ, व्हिडिओ, जाहिरात किंवा निवडणूक स्पेशल शोधा...", color = TextMuted, fontSize = 12.sp)
+            {
+                id: 'srv_4',
+                title: 'Social Media Viral Reel (9:16)',
+                type: 'VIDEO',
+                tagline: 'Instagram व Facebook साठी Vertical Reel',
+                startingPrice: '₹१,४९९',
+                badge: 'VIRAL REEL',
+                image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&auto=format&fit=crop&q=80',
+                description: 'मोबाईल स्क्रीनवर स्क्रोल थांबवणारे फास्ट-पेस्ड व्हिडिओ एडिटिंग, ट्रेंडिंग म्युझिक आणि प्रभावी मजकूर.'
             },
-            leadingIcon = {
-                Icon(imageVector = Icons.Default.Search, contentDescription = "Search", tint = PrimaryPurple)
+            {
+                id: 'srv_5',
+                title: 'Complete 360° Festival Campaign',
+                type: 'CAMPAIGN',
+                tagline: 'Video + Audio + Banners + WhatsApp Ads',
+                startingPrice: '₹४,९९९',
+                badge: 'ALL-IN-ONE',
+                image: 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=600&auto=format&fit=crop&q=80',
+                description: 'संपूर्ण सणासुदीची जाहिरात एकाच पॅकेजमध्ये. ऑडिओ, व्हिडिओ, ५ बॅनर आणि मेटा अ‍ॅड स्ट्रॅटेजी.'
             },
-            trailingIcon = {
-                if (searchQuery.isNotEmpty()) {
-                    IconButton(onClick = { viewModel.onSearchQueryChanged("") }) {
-                        Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear", tint = TextMuted)
-                    }
-                }
+            {
+                id: 'srv_6',
+                title: 'Product Creative & Photography',
+                type: 'GRAPHIC',
+                tagline: 'दागिने, कपडे व उत्पादनांची आकर्षक फोटोग्राफी',
+                startingPrice: '₹१,२९९',
+                badge: 'STUDIO',
+                image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&auto=format&fit=crop&q=80',
+                description: 'कॅटलॉग, ई-कॉमर्स व सोशल मीडियासाठी प्रोफेशनल प्रॉडक्ट डिझाइन आणि AI बॅकग्राउंड एनहान्समेंट.'
+            }
+        ];
+
+        const offersData = [
+            {
+                id: 'off_1',
+                title: 'गणेशोत्सव विशेष कॉम्बो पॅकेज २०२६ 🔥',
+                service: 'Complete Festival Campaign',
+                discount: '३०% सूट',
+                originalPrice: '₹७,५००',
+                offerPrice: '₹४,९९९',
+                validUntil: '३० ऑगस्ट २०२६',
+                image: 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=600&auto=format&fit=crop&q=80',
+                desc: '१ AI व्हिडिओ + १ ऑडिओ जिगल + ३ सोशल मीडिया पोस्टर्स सवलत दरात.'
             },
-            singleLine = true,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = StudioWhite,
-                unfocusedContainerColor = CardBackgroundLight,
-                focusedBorderColor = PrimaryPurple,
-                unfocusedBorderColor = CardBorderLight,
-                focusedTextColor = CharcoalBlack,
-                unfocusedTextColor = CharcoalBlack
-            ),
-            shape = RoundedCornerShape(16.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 6.dp)
-        )
+            {
+                id: 'off_2',
+                title: 'ज्वेलर्स व कापड दुकान Reel Special',
+                service: 'Social Media Reel',
+                discount: '२५% सूट',
+                originalPrice: '₹२,०००',
+                offerPrice: '₹१,४९९',
+                validUntil: '१५ सप्टेंबर २०२६',
+                image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&auto=format&fit=crop&q=80',
+                desc: 'Instagram व WhatsApp स्टेटससाठी 4K व्हर्टिकल रील्स.'
+            },
+            {
+                id: 'off_3',
+                title: 'लाउडस्पीकर ऑटो ऑडिओ रेकॉर्डिंग',
+                service: 'Audio Jingle',
+                discount: '२०% सूट',
+                originalPrice: '₹२,५००',
+                offerPrice: '₹१,९९९',
+                validUntil: '१० सप्टेंबर २०२६',
+                image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&auto=format&fit=crop&q=80',
+                desc: 'गाव व शहरात फिरणाऱ्या प्रचार वाहनांसाठी खणखणीत आवाज.'
+            }
+        ];
 
-        // Media Format Filter Buttons
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 4.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(CardBackgroundLight)
-                .border(1.dp, CardBorderLight, RoundedCornerShape(12.dp))
-                .padding(4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            val mediaTypes = listOf("ALL" to "सर्व", "AUDIO" to "ऑडिओ", "VIDEO" to "व्हिडिओ", "GRAPHIC" to "ग्राफिक्स")
-            mediaTypes.forEach { (typeCode, typeLabel) ->
-                val isSelected = selectedType == typeCode
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(8.dp))
-                        .then(
-                            if (isSelected) Modifier.background(PrimaryPurple)
-                            else Modifier.background(Color.Transparent)
-                        )
-                        .clickable { viewModel.onMediaTypeSelected(typeCode) }
-                        .padding(vertical = 8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = typeLabel,
-                        color = if (isSelected) ElectricYellow else CharcoalBlack,
-                        fontSize = 12.sp,
-                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
-                    )
+        let clientProjects = [
+            {
+                id: 'PRJ-108',
+                title: 'Ganeshotsav Special Jewelry Video',
+                service: 'AI Cinematic Video',
+                status: 'Draft Ready',
+                statusColor: 'text-amber-400 bg-amber-400/20 border-amber-400/30',
+                deadline: '28 Aug 2026',
+                progress: 80,
+                assignedStaff: 'Kiran (Video Editor)',
+                mediaType: 'video',
+                previewUrl: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&auto=format&fit=crop&q=80',
+                brief: 'गणेशोत्सवासाठी सोन्याच्या दागिन्यांवर मजुरीत ५०% सूट ची जाहिरात.'
+            },
+            {
+                id: 'PRJ-102',
+                title: 'Shop Anniversary Audio Jingle',
+                service: 'FM Radio Jingle',
+                status: 'Delivered',
+                statusColor: 'text-emerald-400 bg-emerald-400/20 border-emerald-400/30',
+                deadline: '15 Aug 2026',
+                progress: 100,
+                assignedStaff: 'Sanjay (Sound Master)',
+                mediaType: 'audio',
+                previewUrl: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&auto=format&fit=crop&q=80',
+                brief: '२५ व्या वर्धापनदिनानिमित्त विशेष ऑडिओ जिगल.'
+            }
+        ];
+
+        let deliveredFiles = [
+            {
+                id: 'FIL-991',
+                title: 'Ganesh_Jewellers_Audio_Jingle_HQ.mp3',
+                type: 'AUDIO',
+                date: '15 Aug 2026',
+                size: '4.8 MB',
+                downloadUrl: '#'
+            },
+            {
+                id: 'FIL-992',
+                title: 'Anniversary_Special_Banner_HD.png',
+                type: 'IMAGE',
+                date: '14 Aug 2026',
+                size: '2.4 MB',
+                downloadUrl: '#'
+            }
+        ];
+
+        let clientInvoices = [
+            {
+                id: 'INV-2026-088',
+                title: 'Anniversary Audio Jingle & Creative Package',
+                amount: '₹२,४९९',
+                status: 'Paid',
+                statusColor: 'text-emerald-400 bg-emerald-400/20',
+                date: '15 Aug 2026'
+            },
+            {
+                id: 'INV-2026-094',
+                title: 'Ganeshotsav AI Cinematic Video (In Progress)',
+                amount: '₹२,९९९',
+                status: 'Partial (Advance Paid)',
+                statusColor: 'text-amber-400 bg-amber-400/20',
+                date: '20 Aug 2026'
+            }
+        ];
+
+        const communityPosts = [
+            {
+                id: 'post_1',
+                author: 'KTimes Media Team',
+                authorRole: 'Admin / Agency',
+                authorAvatar: 'K',
+                time: '२ तासांपूर्वी',
+                badge: '💡 MARKETING TIP',
+                title: 'गणेशोत्सवात स्थानिक दुकानांची विक्री ३ पटीने कशी वाढवावी?',
+                content: '१. सोशल मीडियावर ५ दिवस आधीपासून काऊंटडाऊन रील्स सुरू करा.\n२. ग्राहकांसाठी ‘लकी ड्रॉ’ अथवा सवलतीचे व्हॉट्सॲप स्टेटस शेअर करा.\n३. लाउडस्पीकर ऑटो ऑडिओमुळे स्थानिक ग्राहकांपर्यंत थेट आवाज पोहोचतो.',
+                likes: 42,
+                commentsCount: 8
+            },
+            {
+                id: 'post_2',
+                author: 'Ganesh Jewellers, Satara',
+                authorRole: 'Client Member',
+                authorAvatar: 'G',
+                time: 'काल',
+                badge: '🌟 SUCCESS STORY',
+                title: 'KTimes च्या AI व्हिडिओमुळे आमच्या दागिन्यांची मागणी वाढली!',
+                content: 'अक्षय्य तृतीयेला KTimes ने बनवलेल्या AI व्हिडिओमुळे आमच्या सातारा परिसरातील ग्राहकांकडून उत्तम प्रतिसाद मिळाला. धन्यवाद KTimes टीम!',
+                likes: 68,
+                commentsCount: 14
+            }
+        ];
+
+        let crmLeads = [
+            { id: 'LD-401', client: 'Shah Brothers', business: 'Textile / Saree', location: 'Phaltan', service: 'Festival Campaign', budget: '₹5,000–₹10,000', stage: 'New Lead', date: 'Today' },
+            { id: 'LD-402', client: 'Ganesh Jewellers', business: 'Jewellers', location: 'Satara', service: 'AI Cinematic Video', budget: '₹3,000–₹5,000', stage: 'Production', date: 'Yesterday' },
+            { id: 'LD-403', client: 'Samarth Auto', business: 'Automobile', location: 'Baramati', service: 'FM Radio Jingle', budget: '₹1,000–₹3,000', stage: 'Quotation Sent', date: '2 days ago' },
+            { id: 'LD-404', client: 'Hotel Rajwada', business: 'Hotel / Restaurant', location: 'Pune', service: 'Social Media Reel', budget: '₹3,000–₹5,000', stage: 'Approval', date: '3 days ago' },
+            { id: 'LD-405', client: 'Shri Laxmi Collection', business: 'Textile / Saree', location: 'Satara', service: 'Festival Banner', budget: '₹1,000–₹3,000', stage: 'Delivered', date: '5 days ago' }
+        ];
+
+        // INIT APP
+        document.addEventListener('DOMContentLoaded', () => {
+            renderClientHome();
+            renderStoreServices('ALL');
+            renderOffers();
+            renderCommunity();
+            renderMyWork();
+            renderAdminCRM();
+            renderStaffView();
+            renderNotifications();
+        });
+
+        // ROLE SWITCHER
+        function switchUserRole(role) {
+            currentUserRole = role;
+            ['roleBtnClient', 'roleBtnStaff', 'roleBtnAdmin'].forEach(id => {
+                document.getElementById(id).className = "px-2.5 py-1 rounded font-bold transition text-slate-400 hover:text-white";
+            });
+
+            if (role === 'client') {
+                document.getElementById('roleBtnClient').className = "px-2.5 py-1 rounded font-bold transition bg-brandPurple text-white shadow-sm";
+                switchNav('home');
+            } else if (role === 'staff') {
+                document.getElementById('roleBtnStaff').className = "px-2.5 py-1 rounded font-bold transition bg-cyan-600 text-white shadow-sm";
+                switchNav('staff');
+            } else if (role === 'admin') {
+                document.getElementById('roleBtnAdmin').className = "px-2.5 py-1 rounded font-bold transition bg-red-600 text-white shadow-sm";
+                switchNav('admin_crm');
+            }
+        }
+
+        // VIEW NAVIGATION
+        function switchNav(tab) {
+            currentActiveTab = tab;
+            const views = {
+                home: 'viewClientHome',
+                marketplace: 'viewMarketplace',
+                offers: 'viewOffers',
+                mywork: 'viewMyWork',
+                community: 'viewCommunity',
+                rewards: 'viewRewards',
+                admin_crm: 'viewAdminCRM',
+                staff: 'viewStaff'
+            };
+
+            Object.values(views).forEach(viewId => {
+                const el = document.getElementById(viewId);
+                if (el) el.classList.add('hidden');
+            });
+
+            if (views[tab]) {
+                document.getElementById(views[tab]).classList.remove('hidden');
+            }
+
+            // Update bottom nav active state
+            const navMap = {
+                home: 'bnavHome',
+                marketplace: 'bnavMarketplace',
+                mywork: 'bnavMyWork',
+                community: 'bnavCommunity'
+            };
+
+            Object.entries(navMap).forEach(([k, btnId]) => {
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    if (k === tab) {
+                        btn.classList.add('text-brandPurpleLight');
+                        btn.classList.remove('text-slate-400');
+                    } else {
+                        btn.classList.remove('text-brandPurpleLight');
+                        btn.classList.add('text-slate-400');
+                    }
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // RENDER: CLIENT HOME
+        function renderClientHome() {
+            // Render Active Projects in Home
+            const activeProjectsEl = document.getElementById('homeActiveProjectsContainer');
+            activeProjectsEl.innerHTML = clientProjects.map(p => `
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-col justify-between space-y-3 shadow-md">
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border ${p.statusColor}">${p.status}</span>
+                            <h4 class="text-base font-extrabold text-white mt-1.5">${p.title}</h4>
+                            <p class="text-xs text-brandPurpleLight font-semibold">${p.service}</p>
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-bold">Deadline: ${p.deadline}</span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[11px] text-slate-300">
+                            <span>Progress</span>
+                            <span class="font-bold text-white">${p.progress}%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div class="bg-gradient-to-r from-brandPurple to-emerald-400 h-full rounded-full" style="width: ${p.progress}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1 border-t border-slate-800 text-xs">
+                        <span class="text-slate-400 text-[11px]">Staff: ${p.assignedStaff}</span>
+                        <button onclick="openProjectApproval('${p.id}')" class="bg-brandPurple/30 hover:bg-brandPurple text-purple-200 hover:text-white px-3 py-1.5 rounded-lg font-bold transition">
+                            Project पहा व Approval द्या →
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Home Offers
+            const homeOffersEl = document.getElementById('homeOffersContainer');
+            homeOffersEl.innerHTML = offersData.map(o => `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
+                    <div class="relative h-36">
+                        <img src="${o.image}" alt="${o.title}" class="w-full h-full object-cover">
+                        <span class="absolute top-2 left-2 bg-brandRed text-white text-[10px] font-black px-2.5 py-0.5 rounded-full">${o.discount}</span>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-sm font-bold text-white line-clamp-1">${o.title}</h4>
+                            <p class="text-xs text-slate-400 mt-1 line-clamp-2">${o.desc}</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-3 pt-2 border-t border-slate-800">
+                            <div>
+                                <span class="text-xs text-slate-500 line-through">${o.originalPrice}</span>
+                                <span class="text-sm font-black text-brandYellow ml-1">${o.offerPrice}</span>
+                            </div>
+                            <button onclick="quickOrderService('${o.service}')" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-3 py-1 rounded-lg text-xs font-bold shadow">
+                                Offer घ्या
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Home Community Highlights
+            const homeCommEl = document.getElementById('homeCommunityContainer');
+            homeCommEl.innerHTML = communityPosts.map(post => `
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">${post.authorAvatar}</div>
+                            <div>
+                                <h5 class="text-xs font-bold text-white">${post.author}</h5>
+                                <span class="text-[10px] text-slate-400">${post.time}</span>
+                            </div>
+                        </div>
+                        <span class="text-[10px] bg-slate-800 text-blue-300 px-2 py-0.5 rounded-full font-bold">${post.badge}</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-white">${post.title}</h4>
+                    <p class="text-xs text-slate-300 line-clamp-2">${post.content}</p>
+                    <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
+                        <button onclick="likePost('${post.id}')" class="hover:text-red-400 font-bold"><i class="fas fa-heart mr-1"></i>${post.likes} Likes</button>
+                        <button onclick="switchNav('community')" class="hover:text-white"><i class="fas fa-comment mr-1"></i>${post.commentsCount} Comments</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // RENDER: ADVERTISING STORE
+        function renderStoreServices(type) {
+            const grid = document.getElementById('storeServicesGrid');
+            const filtered = type === 'ALL' ? servicesData : servicesData.filter(s => s.type === type);
+            
+            grid.innerHTML = filtered.map(s => `
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl flex flex-col justify-between hover:border-purple-500/40 transition">
+                    <div class="relative h-44">
+                        <img src="${s.image}" alt="${s.title}" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-brandPurple text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow">
+                            ${s.badge}
+                        </span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+                        <div>
+                            <h3 class="text-base font-extrabold text-white">${s.title}</h3>
+                            <p class="text-xs text-brandPurpleLight font-bold mt-0.5">${s.tagline}</p>
+                            <p class="text-xs text-slate-400 mt-2 line-clamp-2">${s.description}</p>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-800">
+                            <div>
+                                <span class="text-[10px] text-slate-400 block font-semibold">Starting from</span>
+                                <span class="text-lg font-black text-brandYellow">${s.startingPrice}</span>
+                            </div>
+                            <button onclick="quickOrderService('${s.title}')" class="bg-gradient-to-r from-brandPurple to-purple-600 hover:from-brandPurpleDark hover:to-purple-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg transition">
+                                मला हे पाहिजे →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterStore(type) {
+            document.querySelectorAll('.store-pill').forEach(btn => {
+                btn.className = "store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700";
+            });
+            event.target.className = "store-pill active bg-brandPurple text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap";
+            renderStoreServices(type);
+        }
+
+        // RENDER: OFFERS
+        function renderOffers() {
+            const grid = document.getElementById('allOffersGrid');
+            grid.innerHTML = offersData.map(o => `
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-brandRed text-white text-xs font-bold px-2.5 py-0.5 rounded-full">${o.discount}</span>
+                            <span class="text-[11px] text-slate-400 font-semibold">Valid till: ${o.validUntil}</span>
+                        </div>
+                        <h3 class="text-lg font-extrabold text-white mt-1">${o.title}</h3>
+                        <p class="text-xs text-slate-400 mt-1">${o.desc}</p>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-800">
+                        <div>
+                            <span class="text-xs text-slate-500 line-through">${o.originalPrice}</span>
+                            <span class="text-lg font-black text-brandYellow ml-1">${o.offerPrice}</span>
+                        </div>
+                        <button onclick="quickOrderService('${o.service}')" class="bg-brandYellow hover:bg-brandYellowHover text-slate-950 px-4 py-2 rounded-xl text-xs font-black shadow transition">
+                            Offer घ्या
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // RENDER: MY WORK
+        function renderMyWork() {
+            // Projects
+            const projList = document.getElementById('clientProjectsList');
+            projList.innerHTML = clientProjects.map(p => `
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-3">
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${p.statusColor}">${p.status}</span>
+                            <h4 class="text-base font-extrabold text-white mt-1">${p.title}</h4>
+                            <p class="text-xs text-brandPurpleLight">${p.service} • ID: ${p.id}</p>
+                        </div>
+                        <span class="text-xs text-slate-400 font-bold">${p.deadline}</span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs text-slate-300">
+                            <span>Status: <b>${p.status}</b></span>
+                            <span class="font-bold text-white">${p.progress}%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div class="bg-gradient-to-r from-brandPurple to-emerald-400 h-full rounded-full" style="width: ${p.progress}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 pt-2 border-t border-slate-800">
+                        <button onclick="openProjectApproval('${p.id}')" class="flex-1 bg-brandPurple hover:bg-brandPurpleDark text-white py-2 rounded-xl text-xs font-bold shadow">
+                            Preview & Approval
+                        </button>
+                        <a href="https://wa.me/919422337471?text=नमस्कार%20KTimes%20Media,%20मला%20प्रोजेक्ट%20${p.id}%20बद्दल%20अपडेट%20हवी%20आहे." target="_blank" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-xl text-xs font-bold">
+                            <i class="fab fa-whatsapp text-emerald-400"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+
+            // Files
+            const filesGrid = document.getElementById('deliveredFilesGrid');
+            filesGrid.innerHTML = deliveredFiles.map(f => `
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 truncate">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg shrink-0">
+                            <i class="fas ${f.type === 'AUDIO' ? 'fa-music' : 'fa-image'}"></i>
+                        </div>
+                        <div class="truncate">
+                            <h4 class="text-xs font-bold text-white truncate">${f.title}</h4>
+                            <span class="text-[10px] text-slate-400">${f.date} • ${f.size}</span>
+                        </div>
+                    </div>
+                    <button onclick="downloadSampleFile('${f.title}')" class="bg-brandPurple text-white px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 shadow">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            // Invoices
+            const invGrid = document.getElementById('clientInvoicesGrid');
+            invGrid.innerHTML = clientInvoices.map(inv => `
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${inv.statusColor}">${inv.status}</span>
+                        <h4 class="text-xs font-bold text-white mt-1">${inv.title}</h4>
+                        <span class="text-[10px] text-slate-400">${inv.id} • ${inv.date}</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-base font-black text-white block">${inv.amount}</span>
+                        <button onclick="alert('Invoice downloaded.')" class="text-[10px] text-brandPurpleLight hover:underline font-bold">PDF Invoice</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchWorkSubTab(tab) {
+            ['projects', 'files', 'invoices'].forEach(t => {
+                document.getElementById(`workSub${t.charAt(0).toUpperCase() + t.slice(1)}`).classList.add('hidden');
+                document.getElementById(`workTab${t.charAt(0).toUpperCase() + t.slice(1)}`).className = "bg-slate-900 text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold";
+            });
+
+            document.getElementById(`workSub${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.remove('hidden');
+            document.getElementById(`workTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).className = "bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold";
+        }
+
+        // RENDER: COMMUNITY
+        function renderCommunity() {
+            const container = document.getElementById('communityFeedContainer');
+            container.innerHTML = communityPosts.map(post => `
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-3 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-brandPurple to-blue-600 text-white flex items-center justify-center font-black text-sm">${post.authorAvatar}</div>
+                            <div>
+                                <h4 class="text-xs md:text-sm font-bold text-white">${post.author}</h4>
+                                <span class="text-[11px] text-slate-400">${post.authorRole} • ${post.time}</span>
+                            </div>
+                        </div>
+                        <span class="text-[10px] bg-slate-800 text-blue-300 border border-blue-500/30 px-2.5 py-0.5 rounded-full font-bold">${post.badge}</span>
+                    </div>
+
+                    <h3 class="text-base font-extrabold text-white">${post.title}</h3>
+                    <p class="text-xs md:text-sm text-slate-300 leading-relaxed whitespace-pre-line">${post.content}</p>
+
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-800 text-xs">
+                        <button onclick="likePost('${post.id}')" class="flex items-center gap-1.5 text-slate-400 hover:text-red-400 font-bold transition">
+                            <i class="fas fa-heart"></i>
+                            <span>${post.likes} Likes</span>
+                        </button>
+                        <button onclick="commentPost('${post.id}')" class="flex items-center gap-1.5 text-slate-400 hover:text-white font-bold transition">
+                            <i class="fas fa-comment"></i>
+                            <span>${post.commentsCount} Comments</span>
+                        </button>
+                        <button onclick="sharePost('${post.title}')" class="flex items-center gap-1.5 text-slate-400 hover:text-emerald-400 font-bold transition">
+                            <i class="fas fa-share-alt"></i>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // RENDER: ADMIN CRM
+        function renderAdminCRM() {
+            // Kanban Stages
+            const stages = ['New Lead', 'Requirement Received', 'Quotation Sent', 'Production', 'Approval', 'Delivered'];
+            const board = document.getElementById('kanbanBoardContainer');
+            
+            board.innerHTML = stages.map(stg => {
+                const leadsInStage = crmLeads.filter(l => l.stage === stg);
+                return `
+                    <div class="w-72 bg-slate-900/90 border border-slate-800 rounded-2xl p-3 shrink-0 flex flex-col max-h-[70vh]">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
+                            <span class="text-xs font-bold text-white">${stg}</span>
+                            <span class="bg-slate-800 text-slate-300 text-[10px] font-black px-2 py-0.5 rounded-full">${leadsInStage.length}</span>
+                        </div>
+                        <div class="flex-1 overflow-y-auto space-y-2 pr-1">
+                            ${leadsInStage.map(l => `
+                                <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 space-y-1.5 shadow">
+                                    <div class="flex justify-between items-start">
+                                        <h5 class="text-xs font-bold text-white">${l.client}</h5>
+                                        <span class="text-[10px] text-slate-400">${l.location}</span>
+                                    </div>
+                                    <p class="text-[11px] text-brandPurpleLight font-semibold">${l.service}</p>
+                                    <div class="flex justify-between items-center text-[10px] text-slate-400 pt-1 border-t border-slate-700/60">
+                                        <span>Budget: <b>${l.budget}</b></span>
+                                        <button onclick="advanceLeadStage('${l.id}')" class="text-brandYellow hover:underline font-bold">Move →</button>
+                                    </div>
+                                </div>
+                            `).join('') || '<p class="text-[11px] text-slate-500 py-3 text-center">No leads</p>'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Admin Clients Table
+            const tableContainer = document.getElementById('adminClientsTableContainer');
+            tableContainer.innerHTML = `
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-800 text-slate-400 font-bold border-b border-slate-700">
+                        <tr>
+                            <th class="p-3">Client / Business</th>
+                            <th class="p-3">Category</th>
+                            <th class="p-3">Location</th>
+                            <th class="p-3">Total Projects</th>
+                            <th class="p-3">Total Spend</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="p-3 font-bold text-white">Ganesh Jewellers</td>
+                            <td class="p-3">Jewellers</td>
+                            <td class="p-3">Satara</td>
+                            <td class="p-3 font-bold">4 Projects</td>
+                            <td class="p-3 font-bold text-emerald-400">₹32,500</td>
+                            <td class="p-3"><span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full text-[10px] font-bold">Active</span></td>
+                            <td class="p-3"><button onclick="quickOrderService('Smart Ad')" class="text-brandPurpleLight hover:underline font-bold">Offer पाठवा</button></td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="p-3 font-bold text-white">Shah Brothers</td>
+                            <td class="p-3">Textile / Saree</td>
+                            <td class="p-3">Phaltan</td>
+                            <td class="p-3 font-bold">2 Projects</td>
+                            <td class="p-3 font-bold text-emerald-400">₹14,999</td>
+                            <td class="p-3"><span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full text-[10px] font-bold">Follow-up</span></td>
+                            <td class="p-3"><button onclick="quickOrderService('Smart Ad')" class="text-brandPurpleLight hover:underline font-bold">Offer पाठवा</button></td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="p-3 font-bold text-white">Samarth Enterprise</td>
+                            <td class="p-3">Automobile</td>
+                            <td class="p-3">Baramati</td>
+                            <td class="p-3 font-bold">1 Project</td>
+                            <td class="p-3 font-bold text-emerald-400">₹4,999</td>
+                            <td class="p-3"><span class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full text-[10px] font-bold">Inactive 90d</span></td>
+                            <td class="p-3"><button onclick="triggerReactivationBlast()" class="text-brandYellow hover:underline font-bold">Reactivate</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function switchAdminSubTab(tab) {
+            ['kanban', 'clients', 'projects_all', 'analytics'].forEach(t => {
+                const el = document.getElementById(`admSub${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                if (el) el.classList.add('hidden');
+                const btn = document.getElementById(`admTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                if (btn) btn.className = "bg-slate-900 text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold";
+            });
+
+            if (tab === 'kanban') {
+                document.getElementById('admSubKanban').classList.remove('hidden');
+                document.getElementById('admTabKanban').className = "bg-brandPurple text-white px-4 py-1.5 rounded-xl text-xs font-bold";
+            } else if (tab === 'clients') {
+                document.getElementById('admSubClients').classList.remove('hidden');
+                document.getElementById('admTabClients').className = "bg-brandPurple text-white px-4 py-1.5 rounded-xl text-xs font-bold";
+            } else if (tab === 'analytics') {
+                document.getElementById('admSubAnalytics').classList.remove('hidden');
+                document.getElementById('admTabAnalytics').className = "bg-brandPurple text-white px-4 py-1.5 rounded-xl text-xs font-bold";
+            }
+        }
+
+        // RENDER: STAFF VIEW
+        function renderStaffView() {
+            const grid = document.getElementById('staffAssignedProjectsGrid');
+            grid.innerHTML = clientProjects.map(p => `
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-3">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${p.statusColor}">${p.status}</span>
+                            <h4 class="text-base font-extrabold text-white mt-1">${p.title}</h4>
+                            <p class="text-xs text-cyan-400">${p.service} • Client: Ganesh Jewellers</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800 p-3 rounded-xl text-xs text-slate-300">
+                        <span class="font-bold text-white block mb-1">Client Brief:</span>
+                        ${p.brief}
+                    </div>
+                    <div class="flex gap-2 pt-2">
+                        <button onclick="alert('Draft Upload Screen opened.')" class="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white py-2 rounded-xl text-xs font-bold shadow">
+                            <i class="fas fa-upload mr-1"></i> Draft अपलोड करा
+                        </button>
+                        <button onclick="alert('Approval Request Sent to Client via In-App & WhatsApp!')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-xs font-bold">
+                            Approval मागा
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // NOTIFICATIONS
+        function renderNotifications() {
+            const container = document.getElementById('notifListContainer');
+            const notifs = [
+                { title: 'विशेष सण ऑफर उपलब्ध!', text: 'गणेशोत्सवासाठी कॉम्बो पॅकेजवर ३०% सूट.', time: '१० मिनिटांपूर्वी', icon: 'fa-tags text-brandYellow' },
+                { title: 'प्रोजेक्ट ड्राफ्ट तयार आहे', text: 'Ganeshotsav Special Video कृपया तपासा.', time: '१ तासापूर्वी', icon: 'fa-check-circle text-emerald-400' },
+                { title: 'KTimes Rewards', text: 'आपल्या खात्यात ५० नवीन पॉइंट्स जोडले गेले आहेत.', time: 'काल', icon: 'fa-coins text-amber-400' }
+            ];
+            container.innerHTML = notifs.map(n => `
+                <div class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex gap-3 items-start">
+                    <i class="fas ${n.icon} text-base mt-0.5 shrink-0"></i>
+                    <div>
+                        <h5 class="text-xs font-bold text-white">${n.title}</h5>
+                        <p class="text-[11px] text-slate-300 mt-0.5">${n.text}</p>
+                        <span class="text-[10px] text-slate-500 mt-1 block">${n.time}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // FORM HANDLERS
+        function handleSubmitAdRequest(e) {
+            e.preventDefault();
+            const bName = document.getElementById('reqBusinessName').value;
+            const service = document.getElementById('reqServiceType').value;
+            const location = document.getElementById('reqLocation').value;
+            const budget = document.getElementById('reqBudget').value;
+
+            // Automatically create CRM Lead
+            const newLead = {
+                id: `LD-${Date.now().toString().slice(-3)}`,
+                client: bName,
+                business: 'Local Business',
+                location: location,
+                service: service,
+                budget: budget,
+                stage: 'New Lead',
+                date: 'Just now'
+            };
+            crmLeads.unshift(newLead);
+            renderAdminCRM();
+
+            closeAdRequestModal();
+            alert("तुमची Request KTimes Media कडे पोहोचली आहे. आमची टीम लवकरच संपर्क करेल. (CRM Lead Created Automatically!)");
+        }
+
+        function quickOrderService(serviceName) {
+            document.getElementById('reqServiceType').value = serviceName;
+            openAdRequestModal();
+        }
+
+        function openAdRequestModal() {
+            document.getElementById('adRequestModal').classList.remove('hidden');
+        }
+        function closeAdRequestModal() {
+            document.getElementById('adRequestModal').classList.add('hidden');
+        }
+
+        function openAiAssistantModal() {
+            document.getElementById('aiAssistantModal').classList.remove('hidden');
+        }
+        function closeAiAssistantModal() {
+            document.getElementById('aiAssistantModal').classList.add('hidden');
+        }
+
+        function openNotificationModal() {
+            document.getElementById('notificationModal').classList.remove('hidden');
+        }
+        function closeNotificationModal() {
+            document.getElementById('notificationModal').classList.add('hidden');
+        }
+
+        function openReferModal() {
+            document.getElementById('referModal').classList.remove('hidden');
+        }
+        function closeReferModal() {
+            document.getElementById('referModal').classList.add('hidden');
+        }
+
+        // APPROVAL MODAL
+        function openProjectApproval(projId) {
+            const p = clientProjects.find(item => item.id === projId) || clientProjects[0];
+            document.getElementById('projModalTitle').innerText = p.title;
+            document.getElementById('projModalService').innerText = `${p.service} • Deadline: ${p.deadline}`;
+            document.getElementById('projModalMediaContainer').innerHTML = `
+                <div class="text-center p-6 space-y-2">
+                    <i class="fas fa-play-circle text-5xl text-brandYellow cursor-pointer hover:scale-110 transition"></i>
+                    <p class="text-xs text-slate-300">Click to Play 4K Draft Video Preview</p>
+                </div>
+            `;
+            document.getElementById('projectApprovalModal').classList.remove('hidden');
+        }
+        function closeProjectApprovalModal() {
+            document.getElementById('projectApprovalModal').classList.add('hidden');
+        }
+
+        function handleClientApprove() {
+            alert("अभिनंदन! तुम्ही जाहिरात APPROVE केली आहे. अंतिम हाय-रिझोल्यूशन फाइल 'माझ्या फायली' मध्ये जोडली जाईल.");
+            closeProjectApprovalModal();
+        }
+
+        function toggleRevisionBox() {
+            document.getElementById('revisionInputContainer').classList.toggle('hidden');
+        }
+
+        function handleSendRevision() {
+            const notes = document.getElementById('revisionNotesInput').value;
+            if (!notes) {
+                alert("कृपया रिव्हिजन तपशील लिहा.");
+                return;
+            }
+            alert(`रिव्हिजन KTimes प्रोडक्शन टीमला पाठवले गेले आहे: "${notes}"`);
+            closeProjectApprovalModal();
+        }
+
+        // AI CHAT ENGINE
+        function handleSendAiMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('aiUserInput');
+            const q = input.value.trim();
+            if (!q) return;
+            askAiQuestion(q);
+            input.value = '';
+        }
+
+        function askAiQuestion(question) {
+            const chat = document.getElementById('aiChatHistory');
+            chat.innerHTML += `
+                <div class="flex gap-2.5 justify-end">
+                    <div class="bg-brandPurple text-white p-3 rounded-2xl rounded-tr-none text-slate-100 max-w-[80%]">
+                        ${question}
+                    </div>
+                </div>
+            `;
+
+            setTimeout(() => {
+                let response = "तुमच्या व्यवसायासाठी KTimes Media चा 'Complete Festival Campaign' सर्वोत्तम राहील. यामध्ये १ 4K AI व्हिडिओ, १ खणखणीत ऑडिओ जिगल आणि ५ सण-उत्सव पोस्टर्स मिळतील. आपण आजच 'जाहिरात मागवा' वरून थेट ऑर्डर नोंदवू शकता!";
+                if (question.includes("Script") || question.includes("स्क्रिप्ट")) {
+                    response = "<b>Reel Script Idea:</b><br>• Scene 1: 'सण आलाय पण खरेदी कुठून करावी असा विचार करताय?' (Hook)<br>• Scene 2: 'महाराष्ट्रातील नंबर १ कलेक्शन आता तुमच्या शहरात!'<br>• Scene 3: 'आजच भेट द्या आणि मिळवा विशेष सवलत.'<br><br>👉 KTimes कडून ही Reel बनवून घेण्यासाठी खालील बटनावर क्लिक करा.";
+                }
+                chat.innerHTML += `
+                    <div class="flex gap-2.5">
+                        <div class="w-7 h-7 rounded-full bg-cyan-600 text-white flex items-center justify-center shrink-0 text-xs">AI</div>
+                        <div class="bg-slate-800 p-3 rounded-2xl rounded-tl-none text-slate-200 leading-relaxed border border-slate-700 max-w-[85%]">
+                            ${response}
+                        </div>
+                    </div>
+                `;
+                chat.scrollTop = chat.scrollHeight;
+            }, 600);
+        }
+
+        function advanceLeadStage(leadId) {
+            const l = crmLeads.find(item => item.id === leadId);
+            if (l) {
+                const stages = ['New Lead', 'Requirement Received', 'Quotation Sent', 'Production', 'Approval', 'Delivered'];
+                const curIdx = stages.indexOf(l.stage);
+                if (curIdx < stages.length - 1) {
+                    l.stage = stages[curIdx + 1];
+                    renderAdminCRM();
                 }
             }
         }
 
-        // Category Filter Chips
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items(DefaultData.categories) { category ->
-                val isSelected = selectedCategory == category
-                FilterChip(
-                    selected = isSelected,
-                    onClick = { viewModel.onCategorySelected(category) },
-                    label = {
-                        Text(
-                            text = category,
-                            color = if (isSelected) StudioWhite else CharcoalBlack,
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                            fontSize = 11.sp
-                        )
-                    },
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = PrimaryPurple,
-                        containerColor = CardBackgroundLight
-                    ),
-                    border = FilterChipDefaults.filterChipBorder(
-                        enabled = true,
-                        selected = isSelected,
-                        borderColor = if (isSelected) PrimaryPurple else CardBorderLight,
-                        selectedBorderColor = PrimaryPurple
-                    ),
-                    shape = RoundedCornerShape(20.dp)
-                )
+        function triggerReactivationBlast() {
+            alert("Reactivation Campaign Triggered for 12 Inactive Clients with personalized WhatsApp & In-App Special Festival Offer!");
+        }
+
+        function openCampaignBlastModal() {
+            alert("Campaign Blast Wizard opened! You can target specific segments (e.g. Jewellers in Satara/Phaltan).");
+        }
+
+        function openAddLeadModal() {
+            openAdRequestModal();
+        }
+
+        function copyReferralLink() {
+            navigator.clipboard.writeText("https://ktimes.in/club?ref=GANESH77");
+            alert("Referral Link copied to clipboard!");
+        }
+
+        function claimReward(name) {
+            alert(`${name} यशस्वीरित्या रिडीम झाले! आमची टीम संपर्क करेल.`);
+        }
+
+        function downloadSampleFile(name) {
+            alert(`Downloading file: ${name}`);
+        }
+
+        function likePost(id) {
+            const p = communityPosts.find(item => item.id === id);
+            if (p) {
+                p.likes += 1;
+                renderCommunity();
+                renderClientHome();
             }
         }
 
-        // Media Portfolio List
-        if (items.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(32.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        imageVector = Icons.Default.Mic,
-                        contentDescription = "Empty",
-                        tint = PrimaryPurple,
-                        modifier = Modifier.size(48.dp)
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = "काहीही नमुने सापडले नाहीत",
-                        color = CharcoalBlack,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-        } else {
-            LazyColumn(
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(items, key = { it.id }) { item ->
-                    PortfolioItemCard(
-                        item = item,
-                        onItemClick = onItemClick,
-                        onOrderClick = { orderItem -> viewModel.createLeadFromItem(orderItem) }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun RatesScreenContent(
-    onSelectPackage: (String) -> Unit
-) {
-    val packages = listOf(
-        Triple("ऑडिओ जाहिरात (Audio Ads)", "₹१,९९९ पासून", listOf("३० सेकंद हाय-क्वालिटी व्हॉईसओव्हर", "पार्श्वसंगीत आणि साऊंड इफेक्ट्स", "एफएम रेडिओ व लाउडस्पीकर रेडी", "२४ ते ४८ तासांत डिलिव्हरी")),
-        Triple("व्हिडिओ जाहिरात (Video Ads / TVC)", "₹४,९९९ पासून", listOf("4K अल्ट्रा HD व्हिडिओ प्रोडक्शन", "३D मोशन ग्राफिक्स व लोगो अॅनिमेशन", "स्टुडिओ निवेदन आणि टायपोग्राफी", "टीव्ही व सोशल मीडिया फॉर्मॅट")),
-        Triple("निवडणूक प्रचार स्पेशल (Election Package)", "₹२,४९९ पासून", listOf("उमेदवाराच्या नावासह धडाकेबाज गाणे", "रिक्षा व लाउडस्पीकरसाठी खणखणीत ऑडिओ", "डिजिटल प्रचार पोस्टर्स बंडल")),
-        Triple("ग्राफिक्स व सोशल मीडिया (Graphics Bundle)", "₹९९९ पासून", listOf("३D धातू / गोल लोगो डिझाइन", "फ्लेक्स बॅनर्स व व्हेक्टर पोस्टर्स", "व्हॉट्सॲप व इन्स्टाग्राम पोस्ट्स"))
-    )
-
-    LazyColumn(
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize()
-    ) {
-        item {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(CrimsonRed)
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
-            ) {
-                Text(
-                    text = "रेट कार्ड आणि स्टुडिओ पॅकेजेस",
-                    color = StudioWhite,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
-
-        items(packages) { (title, price, features) ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
-                    .border(1.dp, CardBorderLight, RoundedCornerShape(16.dp)),
-                colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = title,
-                            color = CharcoalBlack,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.weight(1f)
-                        )
-
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(6.dp))
-                                .background(ElectricYellow)
-                                .padding(horizontal = 8.dp, vertical = 4.dp)
-                        ) {
-                            Text(
-                                text = price,
-                                color = PrimaryPurple,
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Black
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    features.forEach { feat ->
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(vertical = 3.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.CheckCircle,
-                                contentDescription = "Feature",
-                                tint = PrimaryPurple,
-                                modifier = Modifier.size(16.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = feat, color = CharcoalBlack, fontSize = 12.sp)
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(14.dp))
-
-                    Button(
-                        onClick = { onSelectPackage(title) },
-                        colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_whatsapp),
-                            contentDescription = "WhatsApp",
-                            tint = StudioWhite,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("ऑर्डर करा (WhatsApp)", color = StudioWhite, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun OrdersScreenContent(
-    viewModel: MediaViewModel,
-    onWhatsAppOrder: (name: String, phone: String, service: String, details: String) -> Unit
-) {
-    val context = LocalContext.current
-    val liveOrders by viewModel.ordersList.collectAsStateWithLifecycle()
-    val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
-
-    var name by remember { mutableStateOf(currentUser?.displayName ?: "") }
-    var businessName by remember { mutableStateOf(currentUser?.businessName ?: "") }
-    var phone by remember { mutableStateOf(currentUser?.phoneNumber ?: "") }
-    var selectedService by remember { mutableStateOf("ऑडिओ जाहिरात (Audio Ad)") }
-    var selectedBudget by remember { mutableStateOf("₹१,९९९") }
-    var deadline by remember { mutableStateOf("३ दिवस") }
-    var details by remember { mutableStateOf("") }
-    var orderTab by remember { mutableStateOf("NEW") } // "NEW", "MY_ORDERS"
-
-    val serviceOptions = listOf(
-        "ऑडिओ जाहिरात (Audio Ad)",
-        "व्हिडिओ जाहिरात (Video Commercial)",
-        "सोशल मीडिया पोस्टर्स (Social Graphics)",
-        "AI व्हॉइस व स्क्रिप्ट (AI Voice & Script)",
-        "३६०° डिजिटल कॅम्पेन (360 Campaign)"
-    )
-
-    val budgetOptions = listOf("₹१,४९९", "₹१,९९९", "₹२,९९९", "₹४,९९९", "₹९,९९९+")
-
-    LazyColumn(
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize()
-    ) {
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(CrimsonRed)
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
-                ) {
-                    Text(
-                        text = "जाहिरात ऑर्डर व CRM Pipeline",
-                        color = StudioWhite,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(SurfaceVariantLight)
-                        .padding(2.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(18.dp))
-                            .background(if (orderTab == "NEW") PrimaryPurple else Color.Transparent)
-                            .clickable { orderTab = "NEW" }
-                            .padding(horizontal = 10.dp, vertical = 5.dp)
-                    ) {
-                        Text(
-                            text = "नवीन ऑर्डर",
-                            color = if (orderTab == "NEW") StudioWhite else CharcoalBlack,
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(18.dp))
-                            .background(if (orderTab == "MY_ORDERS") PrimaryPurple else Color.Transparent)
-                            .clickable { orderTab = "MY_ORDERS" }
-                            .padding(horizontal = 10.dp, vertical = 5.dp)
-                    ) {
-                        Text(
-                            text = "माझ्या ऑर्डर्स (${liveOrders.size})",
-                            color = if (orderTab == "MY_ORDERS") StudioWhite else CharcoalBlack,
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+        function commentPost(id) {
+            const msg = prompt("तुमचा अभिप्राय किंवा कमेंट लिहा:");
+            if (msg) {
+                const p = communityPosts.find(item => item.id === id);
+                if (p) {
+                    p.commentsCount += 1;
+                    renderCommunity();
+                    renderClientHome();
+                    alert("कमेंट पोस्ट झाली!");
                 }
             }
         }
 
-        if (orderTab == "NEW") {
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(16.dp))
-                        .border(1.dp, CardBorderLight, RoundedCornerShape(16.dp)),
-                    colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "जाहिरात ऑर्डर फॉर्म भरा:",
-                                color = CharcoalBlack,
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "🔥 Live CRM Sync",
-                                color = Color(0xFF2E7D32),
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        OutlinedTextField(
-                            value = name,
-                            onValueChange = { name = it },
-                            label = { Text("तुमचे नाव (Full Name)*", color = TextMuted) },
-                            singleLine = true,
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedContainerColor = StudioWhite,
-                                unfocusedContainerColor = SurfaceVariantLight,
-                                focusedBorderColor = PrimaryPurple,
-                                unfocusedBorderColor = CardBorderLight,
-                                focusedTextColor = CharcoalBlack,
-                                unfocusedTextColor = CharcoalBlack
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        OutlinedTextField(
-                            value = phone,
-                            onValueChange = { phone = it },
-                            label = { Text("मोबाईल नंबर (WhatsApp Number)*", color = TextMuted) },
-                            singleLine = true,
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedContainerColor = StudioWhite,
-                                unfocusedContainerColor = SurfaceVariantLight,
-                                focusedBorderColor = PrimaryPurple,
-                                unfocusedBorderColor = CardBorderLight,
-                                focusedTextColor = CharcoalBlack,
-                                unfocusedTextColor = CharcoalBlack
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        OutlinedTextField(
-                            value = businessName,
-                            onValueChange = { businessName = it },
-                            label = { Text("फर्म / दुकानाचे नाव (Business / Firm Name)", color = TextMuted) },
-                            singleLine = true,
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedContainerColor = StudioWhite,
-                                unfocusedContainerColor = SurfaceVariantLight,
-                                focusedBorderColor = PrimaryPurple,
-                                unfocusedBorderColor = CardBorderLight,
-                                focusedTextColor = CharcoalBlack,
-                                unfocusedTextColor = CharcoalBlack
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        // Service Type Selector Chips
-                        Text(
-                            text = "सेवेचा प्रकार निवडा (Service Type):",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = CharcoalBlack
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            serviceOptions.chunked(2).forEach { rowServices ->
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                                ) {
-                                    rowServices.forEach { service ->
-                                        val isSelected = selectedService == service
-                                        Box(
-                                            modifier = Modifier
-                                                .weight(1f)
-                                                .clip(RoundedCornerShape(8.dp))
-                                                .background(if (isSelected) PrimaryPurple else SurfaceVariantLight)
-                                                .border(1.dp, if (isSelected) PrimaryPurple else CardBorderLight, RoundedCornerShape(8.dp))
-                                                .clickable { selectedService = service }
-                                                .padding(vertical = 6.dp, horizontal = 6.dp),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(
-                                                text = service,
-                                                color = if (isSelected) StudioWhite else CharcoalBlack,
-                                                fontSize = 10.sp,
-                                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        // Budget Selector Chips
-                        Text(
-                            text = "अंदाजे बजेट (Estimated Budget):",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = CharcoalBlack
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(6.dp)
-                        ) {
-                            budgetOptions.forEach { budget ->
-                                val isSelected = selectedBudget == budget
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(if (isSelected) CrimsonRed else SurfaceVariantLight)
-                                        .border(1.dp, if (isSelected) CrimsonRed else CardBorderLight, RoundedCornerShape(8.dp))
-                                    .clickable { selectedBudget = budget }
-                                    .padding(vertical = 6.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = budget,
-                                        color = if (isSelected) StudioWhite else CharcoalBlack,
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        OutlinedTextField(
-                            value = deadline,
-                            onValueChange = { deadline = it },
-                            label = { Text("अपेक्षित मुदत (Target Delivery, e.g. २४ तास, ३ दिवस)", color = TextMuted) },
-                            singleLine = true,
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedContainerColor = StudioWhite,
-                                unfocusedContainerColor = SurfaceVariantLight,
-                                focusedBorderColor = PrimaryPurple,
-                                unfocusedBorderColor = CardBorderLight,
-                                focusedTextColor = CharcoalBlack,
-                                unfocusedTextColor = CharcoalBlack
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        OutlinedTextField(
-                            value = details,
-                            onValueChange = { details = it },
-                            label = { Text("जाहिरात माहिती / स्क्रिप्ट नोट्स (Requirements)", color = TextMuted) },
-                            minLines = 2,
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedContainerColor = StudioWhite,
-                                unfocusedContainerColor = SurfaceVariantLight,
-                                focusedBorderColor = PrimaryPurple,
-                                unfocusedBorderColor = CardBorderLight,
-                                focusedTextColor = CharcoalBlack,
-                                unfocusedTextColor = CharcoalBlack
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // Submit Button - creates CRM Lead & opens WhatsApp
-                        Button(
-                            onClick = {
-                                if (name.isBlank() || phone.isBlank()) {
-                                    Toast.makeText(context, "कृपया नाव आणि मोबाईल नंबर भरा", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    viewModel.submitAdOrder(
-                                        clientName = name,
-                                        clientPhone = phone,
-                                        businessName = businessName,
-                                        serviceType = selectedService,
-                                        budget = selectedBudget,
-                                        deadline = deadline,
-                                        details = details,
-                                        onOrderCreated = { generatedOrderId ->
-                                            val whatsappMsg = """
-                                                नमस्कार Ktimes Media, मी ॲपवरून नवीन जाहिरात ऑर्डर नोंदवली आहे:
-                                                🆔 *लीड / ऑर्डर ID*: $generatedOrderId
-                                                👤 *नाव*: $name
-                                                🏢 *व्यवसाय / फर्म*: ${businessName.ifBlank { "N/A" }}
-                                                📱 *मोबाईल*: $phone
-                                                🎯 *सेवेचा प्रकार*: $selectedService
-                                                💰 *अंदाजे बजेट*: $selectedBudget
-                                                ⏳ *मुदत (Deadline)*: $deadline
-                                                📝 *माहिती / स्क्रिप्ट*: ${details.ifBlank { "N/A" }}
-
-                                                कृपया ऑर्डर तपासून CRM मध्ये पुढील प्रक्रिया सुरू करावी. धन्यवाद!
-                                            """.trimIndent()
-
-                                            IntentUtils.openWhatsAppDirectMessage(context, whatsappMsg)
-                                            Toast.makeText(context, "ऑर्डर नोंदवली! CRM लीड तयार झाली ($generatedOrderId)", Toast.LENGTH_LONG).show()
-                                            orderTab = "MY_ORDERS"
-                                        }
-                                    )
-                                }
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(50.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_whatsapp),
-                                contentDescription = "WhatsApp",
-                                tint = StudioWhite,
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("ऑर्डर नोंदवा व थेट WhatsApp सुरू करा", color = StudioWhite, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                        }
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        Button(
-                            onClick = { IntentUtils.makePhoneCall(context) },
-                            colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(46.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.PhoneInTalk,
-                                contentDescription = "Call",
-                                tint = ElectricYellow,
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("थेट कॉल करा (+91 9422337471)", color = StudioWhite, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                        }
-                    }
-                }
-            }
-        } else {
-            // "MY_ORDERS" Tab - Live from Firestore
-            if (liveOrders.isEmpty()) {
-                item {
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = CardBackgroundLight),
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(24.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ListAlt,
-                                contentDescription = null,
-                                tint = TextMuted,
-                                modifier = Modifier.size(48.dp)
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text("अद्याप कोणतीही ऑर्डर नाही.", color = CharcoalBlack, fontWeight = FontWeight.Bold)
-                            Text("नवीन जाहिरात ऑर्डर नोंदवण्यासाठी 'नवीन ऑर्डर' वर क्लिक करा.", color = TextMuted, fontSize = 12.sp)
-                        }
-                    }
-                }
+        function sharePost(title) {
+            if (navigator.share) {
+                navigator.share({ title: title, url: window.location.href });
             } else {
-                items(liveOrders) { order ->
-                    val statusColor = when (order.status) {
-                        "Delivered" -> Color(0xFF2E7D32)
-                        "Approval" -> Color(0xFFF57F17)
-                        "Production" -> PrimaryPurple
-                        "Confirmed", "Quotation Sent" -> Color(0xFF0288D1)
-                        "In Review", "Requirement Received" -> VibrantOrange
-                        else -> CrimsonRed
-                    }
-
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(16.dp))
-                            .border(1.dp, CardBorderLight, RoundedCornerShape(16.dp)),
-                        colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.Top
-                            ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Box(
-                                        modifier = Modifier
-                                            .clip(RoundedCornerShape(6.dp))
-                                            .background(statusColor)
-                                            .padding(horizontal = 8.dp, vertical = 3.dp)
-                                    ) {
-                                        Text(
-                                            text = order.status,
-                                            color = StudioWhite,
-                                            fontSize = 11.sp,
-                                            fontWeight = FontWeight.Black
-                                        )
-                                    }
-                                    Spacer(modifier = Modifier.height(6.dp))
-                                    Text(
-                                        text = order.details.ifBlank { order.serviceType },
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 14.sp,
-                                        color = CharcoalBlack
-                                    )
-                                    Text(
-                                        text = "सेवा: ${order.serviceType} • ID: ${order.id}",
-                                        fontSize = 11.sp,
-                                        color = TextMuted
-                                    )
-                                    if (order.deadline.isNotBlank()) {
-                                        Text(
-                                            text = "मुदत: ${order.deadline}",
-                                            fontSize = 11.sp,
-                                            color = CharcoalBlack,
-                                            fontWeight = FontWeight.Medium
-                                        )
-                                    }
-                                }
-
-                                Text(
-                                    text = order.budget,
-                                    fontWeight = FontWeight.Black,
-                                    fontSize = 14.sp,
-                                    color = CrimsonRed
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(12.dp))
-
-                            // Progress Bar
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text("पाईपलाईन प्रगती (Progress)", fontSize = 11.sp, color = TextMuted)
-                                Text("${order.progress}%", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = PrimaryPurple)
-                            }
-                            Spacer(modifier = Modifier.height(4.dp))
-                            LinearProgressIndicator(
-                                progress = { order.progress / 100f },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(6.dp)
-                                    .clip(RoundedCornerShape(3.dp)),
-                                color = statusColor,
-                                trackColor = SurfaceVariantLight
-                            )
-
-                            Spacer(modifier = Modifier.height(12.dp))
-
-                            Button(
-                                onClick = {
-                                    val updateMsg = "नमस्कार Ktimes Media, माझ्या ऑर्डर ID: ${order.id} (${order.serviceType}) बद्दल अपडेट हवी आहे."
-                                    IntentUtils.openWhatsAppDirectMessage(context, updateMsg)
-                                },
-                                colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurpleLight),
-                                shape = RoundedCornerShape(8.dp),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(38.dp)
-                            ) {
-                                Text("WhatsApp वर अपडेट तपासा", color = StudioWhite, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                            }
-                        }
-                    }
-                }
+                alert(`Link copied for sharing: ${title}`);
             }
         }
-    }
-}
 
+        function openUserMenuModal() {
+            const choice = confirm("Switch to Admin CRM Mode? (Click Cancel for Staff Mode)");
+            if (choice) {
+                switchUserRole('admin');
+            } else {
+                switchUserRole('staff');
+            }
+        }
 
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            alert(`भाषा बदलली: ${lang === 'mr' ? 'मराठी' : lang === 'hi' ? 'हिंदी' : 'English'}`);
+        }
+    </script>
+</body>
+</html>

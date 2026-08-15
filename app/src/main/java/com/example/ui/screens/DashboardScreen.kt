@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Clear
@@ -35,9 +36,12 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PhoneInTalk
+import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShoppingBag
+import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -95,6 +99,8 @@ import com.example.utils.IntentUtils
 
 import com.example.data.models.AdOrder
 import com.example.data.models.AppUser
+import com.example.data.models.MarketplaceCategory
+import com.example.data.models.MarketplaceService
 import com.example.data.models.UserRole
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.SwapHoriz
@@ -397,14 +403,8 @@ fun DashboardScreen(
                     searchQuery = searchQuery,
                     onItemClick = onItemClick
                 )
-                "rates" -> RatesScreenContent(
-                    onSelectPackage = { pkgName ->
-                        viewModel.createLeadFromPackage(pkgName, "₹१,९९९ - ₹४,९९९")
-                        IntentUtils.openWhatsAppDirectMessage(
-                            context,
-                            "नमस्कार Ktimes Media, मला '$pkgName' या पॅकेजची ऑर्डर करायची आहे. कृपया अधिक माहिती पाठवा."
-                        )
-                    }
+                "marketplace", "rates" -> MarketplaceScreen(
+                    viewModel = viewModel
                 )
                 "orders" -> OrdersScreenContent(
                     viewModel = viewModel,
@@ -550,55 +550,143 @@ fun HomeScreenContent(
             }
         }
 
-        // Category Horizontal Scroll (Four Circular Categories)
+        // Advertising Marketplace 5-Pillar Category Strip
         item {
             Column(modifier = Modifier.padding(top = 4.dp)) {
-                Box(
+                Row(
                     modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 4.dp)
-                        .clip(RoundedCornerShape(6.dp))
-                        .background(CrimsonRed)
-                        .padding(horizontal = 10.dp, vertical = 3.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(CrimsonRed)
+                            .padding(horizontal = 10.dp, vertical = 3.dp)
+                    ) {
+                        Text(
+                            text = "जाहिरात मार्केटप्लेस (Marketplace)",
+                            color = StudioWhite,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
                     Text(
-                        text = "मुख्य वर्गवारी (Categories)",
-                        color = StudioWhite,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold
+                        text = "सर्व सेवा →",
+                        color = PrimaryPurple,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.clickable { viewModel.onTabSelected("marketplace") }
                     )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(14.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    item {
+                        CircularCategoryItem(
+                            title = "व्हिडिओ जाहिराती",
+                            icon = Icons.Default.Videocam,
+                            badge = "4K / TVC",
+                            onClick = { viewModel.navigateToMarketplace(MarketplaceCategory.VIDEO) }
+                        )
+                    }
+                    item {
+                        CircularCategoryItem(
+                            title = "ऑडिओ व जिंन्गल्स",
+                            icon = Icons.Default.Headphones,
+                            badge = "FM / ऑटो",
+                            onClick = { viewModel.navigateToMarketplace(MarketplaceCategory.AUDIO) }
+                        )
+                    }
+                    item {
+                        CircularCategoryItem(
+                            title = "बॅनर्स व फ्लेक्स",
+                            icon = Icons.Default.Brush,
+                            badge = "3D / HD",
+                            onClick = { viewModel.navigateToMarketplace(MarketplaceCategory.BANNER) }
+                        )
+                    }
+                    item {
+                        CircularCategoryItem(
+                            title = "AI व्हिडिओ",
+                            icon = Icons.Default.AutoAwesome,
+                            badge = "न्यूज अँकर",
+                            onClick = { viewModel.navigateToMarketplace(MarketplaceCategory.AI_VIDEO) }
+                        )
+                    }
+                    item {
+                        CircularCategoryItem(
+                            title = "सोशल मीडिया",
+                            icon = Icons.Default.Public,
+                            badge = "३० दिवस",
+                            onClick = { viewModel.navigateToMarketplace(MarketplaceCategory.SOCIAL_MEDIA) }
+                        )
+                    }
+                }
+            }
+        }
+
+        // Marketplace Promo Spotlight Card
+        item {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 6.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .border(1.dp, CrimsonRed.copy(alpha = 0.4f), RoundedCornerShape(16.dp))
+                    .clickable { viewModel.onTabSelected("marketplace") },
+                colors = CardDefaults.cardColors(containerColor = PrimaryPurpleLight.copy(alpha = 0.15f))
+            ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(14.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CircularCategoryItem(
-                        title = "ऑडिओ जाहिराती",
-                        icon = Icons.Default.Headphones,
-                        onClick = { viewModel.navigateToCategoryInPortfolio("ऑडिओ जाहिराती", "AUDIO") }
-                    )
+                    Column(modifier = Modifier.weight(1f)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.Storefront,
+                                contentDescription = null,
+                                tint = PrimaryPurple,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "Ktimes Direct Marketplace",
+                                color = PrimaryPurple,
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(3.dp))
+                        Text(
+                            text = "व्हिडिओ, ऑडिओ, ३D बॅनर्स, AI व्हॉइस व सोशल मीडिया बंडल एका क्लिकवर ऑर्डर करा.",
+                            color = CharcoalBlack,
+                            fontSize = 11.sp,
+                            lineHeight = 15.sp
+                        )
+                    }
 
-                    CircularCategoryItem(
-                        title = "व्हिडिओ जाहिराती",
-                        icon = Icons.Default.Videocam,
-                        onClick = { viewModel.navigateToCategoryInPortfolio("व्हिडिओ जाहिराती", "VIDEO") }
-                    )
+                    Spacer(modifier = Modifier.width(10.dp))
 
-                    CircularCategoryItem(
-                        title = "ग्राफिक्स डिझाइन",
-                        icon = Icons.Default.Brush,
-                        onClick = { viewModel.navigateToCategoryInPortfolio("ग्राफिक्स डिझाइन", "GRAPHIC") }
-                    )
-
-                    CircularCategoryItem(
-                        title = "निवडणूक स्पेशल",
-                        icon = Icons.Default.HowToVote,
-                        onClick = { viewModel.navigateToCategoryInPortfolio("निवडणूक स्पेशल", "AUDIO") }
-                    )
+                    Button(
+                        onClick = { viewModel.onTabSelected("marketplace") },
+                        colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
+                        shape = RoundedCornerShape(12.dp),
+                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
+                    ) {
+                        Text("ऑर्डर करा", color = StudioWhite, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
         }
@@ -655,6 +743,7 @@ fun HomeScreenContent(
 fun CircularCategoryItem(
     title: String,
     icon: ImageVector,
+    badge: String = "",
     onClick: () -> Unit
 ) {
     Column(
@@ -662,10 +751,11 @@ fun CircularCategoryItem(
         modifier = Modifier
             .clickable(onClick = onClick)
             .padding(2.dp)
+            .width(76.dp)
     ) {
         Box(
             modifier = Modifier
-                .size(68.dp)
+                .size(64.dp)
                 .clip(CircleShape)
                 .background(PrimaryPurple)
                 .border(2.dp, ElectricYellow, CircleShape),
@@ -675,16 +765,33 @@ fun CircularCategoryItem(
                 imageVector = icon,
                 contentDescription = title,
                 tint = ElectricYellow,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(30.dp)
             )
         }
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = title,
             color = CharcoalBlack,
             fontSize = 11.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
+        if (badge.isNotBlank()) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(CrimsonRed)
+                    .padding(horizontal = 4.dp, vertical = 1.dp)
+            ) {
+                Text(
+                    text = badge,
+                    color = StudioWhite,
+                    fontSize = 8.sp,
+                    fontWeight = FontWeight.Black
+                )
+            }
+        }
     }
 }
 

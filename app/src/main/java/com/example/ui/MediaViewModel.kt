@@ -12,6 +12,7 @@ import com.example.data.firebase.FirebaseAuthService
 import com.example.data.firebase.FirestoreService
 import com.example.data.models.AdOrder
 import com.example.data.models.AppUser
+import com.example.data.models.MarketplaceCategory
 import com.example.data.models.UserRole
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,7 +31,8 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
     val selectedCategory = MutableStateFlow("All")
     val selectedMediaType = MutableStateFlow("ALL") // "ALL", "AUDIO", "VIDEO", "GRAPHIC"
     val searchQuery = MutableStateFlow("")
-    val currentTab = MutableStateFlow("home") // "home", "portfolio", "rates", "orders"
+    val currentTab = MutableStateFlow("home") // "home", "portfolio", "marketplace", "orders"
+    val selectedMarketplaceCategory = MutableStateFlow(MarketplaceCategory.ALL)
 
     val selectedItemForDetail = MutableStateFlow<MediaItem?>(null)
     val itemToEdit = MutableStateFlow<MediaItem?>(null)
@@ -112,6 +114,11 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onTabSelected(tab: String) {
         currentTab.value = tab
+    }
+
+    fun navigateToMarketplace(category: MarketplaceCategory = MarketplaceCategory.ALL) {
+        selectedMarketplaceCategory.value = category
+        currentTab.value = "marketplace"
     }
 
     fun navigateToCategoryInPortfolio(category: String, type: String = "ALL") {
