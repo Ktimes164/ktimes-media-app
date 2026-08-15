@@ -59,6 +59,7 @@ import com.example.utils.IntentUtils
 fun PortfolioItemCard(
     item: MediaItem,
     onItemClick: (MediaItem) -> Unit,
+    onOrderClick: ((MediaItem) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -224,7 +225,10 @@ fun PortfolioItemCard(
             ) {
                 // Prominent WhatsApp Order Button (Vibrant Orange CTA)
                 Button(
-                    onClick = { IntentUtils.openWhatsAppForOrder(context, item) },
+                    onClick = {
+                        onOrderClick?.invoke(item)
+                        IntentUtils.openWhatsAppForOrder(context, item)
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = VibrantOrange,
                         contentColor = StudioWhite

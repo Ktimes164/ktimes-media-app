@@ -38,6 +38,10 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
     val adminMessage = MutableStateFlow<String?>(null)
     val authStatusMessage = MutableStateFlow<String?>(null)
 
+    // CRM Lead Pipeline Filter States
+    val crmSearchQuery = MutableStateFlow("")
+    val crmSelectedStage = MutableStateFlow("ALL") // "ALL", "New Lead", "Requirement Received", "Quotation Sent", "Production", "Approval", "Delivered"
+
     // Auth & Role states
     val currentUser: StateFlow<AppUser?> = authService.currentUserState
     val currentUserRole: StateFlow<UserRole> = authService.currentRole
@@ -49,6 +53,30 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = firestoreService.initialMockOrders
         )
+
+    val crmFilteredOrders: StateFlow<List<AdOrder>> = combine(
+        ordersList,
+        crmSearchQuery,
+        crmSelectedStage
+    ) { orders, query, stage ->
+        orders.filter { order ->
+            val matchesStage = (stage == "ALL" || order.status.equals(stage, ignoreCase = true))
+            val matchesQuery = query.isBlank() ||
+                    order.clientName.contains(query, ignoreCase = true) ||
+                    order.clientPhone.contains(query, ignoreCase = true) ||
+                    order.serviceType.contains(query, ignoreCase = true) ||
+                    order.businessName.contains(query, ignoreCase = true) ||
+                    order.id.contains(query, ignoreCase = true) ||
+                    order.details.contains(query, ignoreCase = true) ||
+                    order.location.contains(query, ignoreCase = true)
+
+            matchesStage && matchesQuery
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = firestoreService.initialMockOrders
+    )
 
     init {
         val dao = AppDatabase.getDatabase(application).mediaItemDao()
@@ -164,24 +192,135 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
             val newOrder = AdOrder(
                 id = orderId,
                 clientUid = user?.uid ?: "client_${System.currentTimeMillis()}",
-                clientName = clientName.ifBlank { user?.displayName ?: "Client" },
+                clientName = clientName.ifBlank { user?.displayName ?: "ग्राहक (App User)" },
                 clientPhone = clientPhone.ifBlank { user?.phoneNumber ?: "9422337471" },
-                businessName = user?.businessName ?: clientName,
+                businessName = user?.businessName ?: if (clientName.isNotBlank()) clientName else "Ktimes Media Client",
                 serviceType = serviceType,
                 budget = budget,
                 details = details,
                 location = location,
                 status = "New Lead",
-                progress = 10,
+                progress = 15,
                 timestamp = System.currentTimeMillis()
             )
 
             val res = firestoreService.createOrder(newOrder)
             if (res.isSuccess) {
-                adminMessage.value = "Order $orderId created & synced to Firestore!"
+                adminMessage.value = "Lead $orderId created & synced to Firestore!"
             } else {
-                adminMessage.value = "Order $orderId saved locally."
+                adminMessage.value = "Lead $orderId saved locally."
             }
+        }
+    }
+
+    // Automatically create CRM Lead from Portfolio Item Order
+    fun createLeadFromItem(item: MediaItem, customNotes: String = "") {
+        val user = currentUser.value
+        val clientName = user?.displayName ?: "ॲप वापरकर्ता"
+        val clientPhone = user?.phoneNumber ?: "9422337471"
+        val serviceType = item.category.ifBlank { item.mediaType }
+        val budget = item.priceOrEstimate.ifBlank { "₹१,९९९" }
+        val details = "नमुना: ${item.sampleId} - ${item.title}" + if (customNotes.isNotBlank()) " | टीप: $customNotes" else ""
+
+        submitAdOrder(
+            clientName = clientName,
+            clientPhone = clientPhone,
+            serviceType = serviceType,
+            budget = budget,
+            details = details,
+            location = "Satara / Online"
+        )
+    }
+
+    // Automatically create CRM Lead from Rate Card / Package selection
+    fun createLeadFromPackage(packageName: String, price: String) {
+        val user = currentUser.value
+        val clientName = user?.displayName ?: "ॲप वापरकर्ता"
+        val clientPhone = user?.phoneNumber ?: "9422337471"
+
+        submitAdOrder(
+            clientName = clientName,
+            clientPhone = clientPhone,
+            serviceType = packageName,
+            budget = price,
+            details = "रेट कार्ड पॅकेज चौकशी / ऑर्डर: $packageName ($price)",
+            location = "Satara / Online"
+        )
+    }
+
+    // Automatically create CRM Lead from Home Hero Banner
+    fun createLeadFromBanner(bannerTitle: String = "२४/७ डिजिटल स्टुडिओ विशेष ऑफर") {
+        val user = currentUser.value
+        val clientName = user?.displayName ?: "ॲप वापरकर्ता"
+        val clientPhone = user?.phoneNumber ?: "9422337471"
+
+        submitAdOrder(
+            clientName = clientName,
+            clientPhone = clientPhone,
+            serviceType = "ऑडिओ/व्हिडिओ जाहिरात पॅकेज",
+            budget = "₹१,९९९ - ₹४,९९९",
+            details = "मुख्य बॅनरवरून आलेली थेट चौकशी ($bannerTitle)",
+            location = "Satara / Online"
+        )
+    }
+
+    // Manual Lead Creation from Admin Console
+    fun createManualLead(
+        clientName: String,
+        clientPhone: String,
+        businessName: String,
+        serviceType: String,
+        budget: String,
+        deadline: String,
+        details: String,
+        location: String
+    ) {
+        viewModelScope.launch {
+            val orderId = "KTM-ORD-${System.currentTimeMillis().toString().takeLast(4)}"
+            val lead = AdOrder(
+                id = orderId,
+                clientUid = "admin_created_${System.currentTimeMillis()}",
+                clientName = clientName,
+                clientPhone = clientPhone,
+                businessName = businessName.ifBlank { clientName },
+                serviceType = serviceType,
+                budget = budget,
+                details = details,
+                location = location.ifBlank { "Satara" },
+                status = "New Lead",
+                progress = 15,
+                deadline = deadline.ifBlank { "३ दिवस" },
+                timestamp = System.currentTimeMillis()
+            )
+            firestoreService.createOrder(lead)
+            adminMessage.value = "New Lead $orderId successfully added to CRM!"
+        }
+    }
+
+    fun setOrderStage(orderId: String, newStage: String) {
+        val nextProgress = when (newStage) {
+            "New Lead" -> 15
+            "Requirement Received" -> 35
+            "Quotation Sent" -> 50
+            "Production" -> 70
+            "Approval" -> 90
+            "Delivered" -> 100
+            else -> 20
+        }
+        updateOrderStatus(orderId, newStage, nextProgress)
+    }
+
+    fun updateFullOrder(order: AdOrder) {
+        viewModelScope.launch {
+            firestoreService.updateFullOrder(order)
+            adminMessage.value = "Lead ${order.id} updated successfully."
+        }
+    }
+
+    fun deleteOrder(orderId: String) {
+        viewModelScope.launch {
+            firestoreService.deleteOrder(orderId)
+            adminMessage.value = "Lead $orderId removed from CRM."
         }
     }
 
@@ -203,7 +342,7 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
         if (curIdx >= 0 && curIdx < stages.size - 1) {
             val nextStage = stages[curIdx + 1]
             val nextProgress = when (nextStage) {
-                "Requirement Received" -> 30
+                "Requirement Received" -> 35
                 "Quotation Sent" -> 50
                 "Production" -> 70
                 "Approval" -> 90
@@ -212,6 +351,14 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
             }
             updateOrderStatus(order.id, nextStage, nextProgress)
         }
+    }
+
+    fun onCrmSearchQueryChanged(query: String) {
+        crmSearchQuery.value = query
+    }
+
+    fun onCrmStageSelected(stage: String) {
+        crmSelectedStage.value = stage
     }
 
     fun saveItem(item: MediaItem) {

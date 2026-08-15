@@ -157,6 +157,32 @@ class FirestoreService {
         }
     }
 
+    suspend fun updateFullOrder(order: AdOrder): Result<Boolean> {
+        return try {
+            firestore.collection(COLLECTION_ORDERS)
+                .document(order.id)
+                .set(order.toMap())
+                .await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Log.e("FirestoreService", "Failed to update full order: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun deleteOrder(orderId: String): Result<Boolean> {
+        return try {
+            firestore.collection(COLLECTION_ORDERS)
+                .document(orderId)
+                .delete()
+                .await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Log.e("FirestoreService", "Failed to delete order: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
     fun observePortfolioItems(): Flow<List<MediaItem>> = callbackFlow {
         try {
             val listener = firestore.collection(COLLECTION_PORTFOLIO)

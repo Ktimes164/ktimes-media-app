@@ -48,6 +48,7 @@ fun KtimesMediaApp(
     if (selectedDetailItem != null) {
         DetailScreen(
             item = selectedDetailItem!!,
+            viewModel = viewModel,
             onBack = { viewModel.closeItemDetail() }
         )
     } else {

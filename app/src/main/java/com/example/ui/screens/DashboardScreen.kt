@@ -398,6 +398,7 @@ fun DashboardScreen(
                 )
                 "rates" -> RatesScreenContent(
                     onSelectPackage = { pkgName ->
+                        viewModel.createLeadFromPackage(pkgName, "₹१,९९९ - ₹४,९९९")
                         IntentUtils.openWhatsAppDirectMessage(
                             context,
                             "नमस्कार Ktimes Media, मला '$pkgName' या पॅकेजची ऑर्डर करायची आहे. कृपया अधिक माहिती पाठवा."
@@ -523,6 +524,7 @@ fun HomeScreenContent(
 
                             Button(
                                 onClick = {
+                                    viewModel.createLeadFromBanner("२४/७ डिजिटल स्टुडिओ विशेष ऑफर")
                                     IntentUtils.openWhatsAppDirectMessage(
                                         context,
                                         "नमस्कार Ktimes Media, मी ॲपवरून संपर्क साधत आहे. मला आपल्या सेवांबद्दल माहिती हवी आहे."
@@ -640,7 +642,8 @@ fun HomeScreenContent(
             Box(modifier = Modifier.padding(horizontal = 16.dp)) {
                 PortfolioItemCard(
                     item = item,
-                    onItemClick = onItemClick
+                    onItemClick = onItemClick,
+                    onOrderClick = { orderItem -> viewModel.createLeadFromItem(orderItem) }
                 )
             }
         }
@@ -829,7 +832,8 @@ fun PortfolioScreenContent(
                 items(items, key = { it.id }) { item ->
                     PortfolioItemCard(
                         item = item,
-                        onItemClick = onItemClick
+                        onItemClick = onItemClick,
+                        onOrderClick = { orderItem -> viewModel.createLeadFromItem(orderItem) }
                     )
                 }
             }

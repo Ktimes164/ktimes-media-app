@@ -72,6 +72,7 @@ import com.example.utils.IntentUtils
 @Composable
 fun DetailScreen(
     item: MediaItem,
+    viewModel: com.example.ui.MediaViewModel? = null,
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -128,7 +129,10 @@ fun DetailScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Button(
-                        onClick = { IntentUtils.openWhatsAppForOrder(context, item) },
+                        onClick = {
+                            viewModel?.createLeadFromItem(item)
+                            IntentUtils.openWhatsAppForOrder(context, item)
+                        },
                         colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier
@@ -146,7 +150,10 @@ fun DetailScreen(
                     }
 
                     Button(
-                        onClick = { IntentUtils.makePhoneCall(context) },
+                        onClick = {
+                            viewModel?.createLeadFromItem(item, customNotes = "थेट कॉल चौकशी")
+                            IntentUtils.makePhoneCall(context)
+                        },
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = PrimaryPurple,

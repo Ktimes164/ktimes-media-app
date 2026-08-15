@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,21 +19,29 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Business
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FileUpload
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PhoneInTalk
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -42,6 +51,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -70,11 +81,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.R
 import com.example.data.DefaultData
 import com.example.data.MediaItem
 import com.example.data.models.AdOrder
@@ -104,15 +117,26 @@ fun AdminGarageScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val items by viewModel.filteredItems.collectAsStateWithLifecycle()
-    val orders by viewModel.ordersList.collectAsStateWithLifecycle()
+    val allOrders by viewModel.ordersList.collectAsStateWithLifecycle()
+    val filteredOrders by viewModel.crmFilteredOrders.collectAsStateWithLifecycle()
+    val crmSearchQuery by viewModel.crmSearchQuery.collectAsStateWithLifecycle()
+    val crmSelectedStage by viewModel.crmSelectedStage.collectAsStateWithLifecycle()
     val adminMessage by viewModel.adminMessage.collectAsStateWithLifecycle()
 
-    var activeAdminTab by remember { mutableStateOf("PORTFOLIO") } // "PORTFOLIO" or "CRM"
+    var activeAdminTab by remember { mutableStateOf("CRM") } // "PORTFOLIO" or "CRM" (defaults to CRM for client pipeline)
 
+    // Portfolio state
     var showAddDialog by remember { mutableStateOf(false) }
     var itemToEdit by remember { mutableStateOf<MediaItem?>(null) }
     var itemToDelete by remember { mutableStateOf<MediaItem?>(null) }
 
+    // CRM Lead state
+    var showAddLeadDialog by remember { mutableStateOf(false) }
+    var leadToEdit by remember { mutableStateOf<AdOrder?>(null) }
+    var leadToDelete by remember { mutableStateOf<AdOrder?>(null) }
+    var leadToChangeStage by remember { mutableStateOf<AdOrder?>(null) }
+
+    // JSON export/import state
     var showJsonDialog by remember { mutableStateOf(false) }
     var jsonText by remember { mutableStateOf("") }
     var isImportMode by remember { mutableStateOf(false) }
@@ -137,7 +161,7 @@ fun AdminGarageScreen(
                             letterSpacing = 1.sp
                         )
                         Text(
-                            text = "🔥 Firebase Auth & Firestore Connected",
+                            text = "🔥 Firebase Auth & Firestore Live",
                             color = ElectricYellow,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.SemiBold
@@ -211,6 +235,19 @@ fun AdminGarageScreen(
                         contentDescription = "Add New Portfolio Sample"
                     )
                 }
+            } else {
+                FloatingActionButton(
+                    onClick = {
+                        showAddLeadDialog = true
+                    },
+                    containerColor = VibrantOrange,
+                    contentColor = StudioWhite
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add New CRM Lead"
+                    )
+                }
             }
         },
         containerColor = AppBackground
@@ -236,14 +273,14 @@ fun AdminGarageScreen(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(if (activeAdminTab == "PORTFOLIO") PrimaryPurple else Color.Transparent)
-                        .clickable { activeAdminTab = "PORTFOLIO" }
+                        .background(if (activeAdminTab == "CRM") PrimaryPurple else Color.Transparent)
+                        .clickable { activeAdminTab = "CRM" }
                         .padding(vertical = 8.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Portfolio Manager (${items.size})",
-                        color = if (activeAdminTab == "PORTFOLIO") StudioWhite else CharcoalBlack,
+                        text = "CRM Leads Pipeline (${allOrders.size})",
+                        color = if (activeAdminTab == "CRM") StudioWhite else CharcoalBlack,
                         fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     )
@@ -253,14 +290,14 @@ fun AdminGarageScreen(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(if (activeAdminTab == "CRM") PrimaryPurple else Color.Transparent)
-                        .clickable { activeAdminTab = "CRM" }
+                        .background(if (activeAdminTab == "PORTFOLIO") PrimaryPurple else Color.Transparent)
+                        .clickable { activeAdminTab = "PORTFOLIO" }
                         .padding(vertical = 8.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "CRM & Leads (${orders.size})",
-                        color = if (activeAdminTab == "CRM") StudioWhite else CharcoalBlack,
+                        text = "Portfolio Manager (${items.size})",
+                        color = if (activeAdminTab == "PORTFOLIO") StudioWhite else CharcoalBlack,
                         fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     )
@@ -339,52 +376,166 @@ fun AdminGarageScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxSize()
                 ) {
+                    // 1. Pipeline Metrics Overview Card
                     item {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = CardBackgroundLight),
-                            shape = RoundedCornerShape(14.dp)
+                            shape = RoundedCornerShape(16.dp),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderLight)
                         ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(12.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Column {
-                                    Text(
-                                        text = "Client Leads & Orders Pipeline",
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 14.sp,
-                                        color = CharcoalBlack
-                                    )
-                                    Text(
-                                        text = "Real-time sync via Firebase Firestore",
-                                        fontSize = 11.sp,
-                                        color = Color(0xFF2E7D32),
-                                        fontWeight = FontWeight.SemiBold
-                                    )
+                            Column(modifier = Modifier.padding(14.dp)) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column {
+                                        Text(
+                                            text = "Advertising CRM Pipeline",
+                                            fontWeight = FontWeight.Black,
+                                            fontSize = 15.sp,
+                                            color = CharcoalBlack
+                                        )
+                                        Text(
+                                            text = "ऑटोमॅटिक लीड ट्रॅकिंग व ऑर्डर्स",
+                                            fontSize = 11.sp,
+                                            color = Color(0xFF2E7D32),
+                                            fontWeight = FontWeight.SemiBold
+                                        )
+                                    }
+
+                                    Button(
+                                        onClick = { showAddLeadDialog = true },
+                                        colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
+                                        shape = RoundedCornerShape(8.dp),
+                                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 4.dp)
+                                    ) {
+                                        Icon(imageVector = Icons.Default.Add, contentDescription = "Add", modifier = Modifier.size(16.dp))
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Text("New Lead", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                    }
                                 }
 
-                                Box(
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(CrimsonRed)
-                                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                // Metric Counters Grid
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
-                                    Text(
-                                        text = "${orders.size} Leads",
-                                        color = StudioWhite,
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Bold
+                                    PipelineMetricChip(
+                                        title = "नवीन लीड्स",
+                                        count = allOrders.count { it.status == "New Lead" },
+                                        bgColor = CrimsonRed,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                    PipelineMetricChip(
+                                        title = "प्रॉडक्शन",
+                                        count = allOrders.count { it.status == "Production" },
+                                        bgColor = PrimaryPurple,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                    PipelineMetricChip(
+                                        title = "मंजुरी",
+                                        count = allOrders.count { it.status == "Approval" },
+                                        bgColor = VibrantOrange,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                    PipelineMetricChip(
+                                        title = "वितरित",
+                                        count = allOrders.count { it.status == "Delivered" },
+                                        bgColor = Color(0xFF2E7D32),
+                                        modifier = Modifier.weight(1f)
                                     )
                                 }
                             }
                         }
                     }
 
-                    if (orders.isEmpty()) {
+                    // 2. Search & Stage Filter Bar
+                    item {
+                        Column {
+                            OutlinedTextField(
+                                value = crmSearchQuery,
+                                onValueChange = { viewModel.onCrmSearchQueryChanged(it) },
+                                placeholder = {
+                                    Text("क्लायंटचे नाव, मोबाईल, व्यवसाय किंवा सेवा शोधा...", color = TextMuted, fontSize = 12.sp)
+                                },
+                                leadingIcon = {
+                                    Icon(imageVector = Icons.Default.Search, contentDescription = "Search", tint = PrimaryPurple)
+                                },
+                                trailingIcon = {
+                                    if (crmSearchQuery.isNotEmpty()) {
+                                        IconButton(onClick = { viewModel.onCrmSearchQueryChanged("") }) {
+                                            Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear", tint = TextMuted)
+                                        }
+                                    }
+                                },
+                                singleLine = true,
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedContainerColor = StudioWhite,
+                                    unfocusedContainerColor = CardBackgroundLight,
+                                    focusedBorderColor = PrimaryPurple,
+                                    unfocusedBorderColor = CardBorderLight,
+                                    focusedTextColor = CharcoalBlack,
+                                    unfocusedTextColor = CharcoalBlack
+                                ),
+                                shape = RoundedCornerShape(14.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            // Stage Filter Chips
+                            val stages = listOf(
+                                "ALL" to "All (${allOrders.size})",
+                                "New Lead" to "नवीन (${allOrders.count { it.status == "New Lead" }})",
+                                "Requirement Received" to "गरजा प्राप्त (${allOrders.count { it.status == "Requirement Received" }})",
+                                "Quotation Sent" to "कोटेशन पाठवले (${allOrders.count { it.status == "Quotation Sent" }})",
+                                "Production" to "प्रॉडक्शन चालू (${allOrders.count { it.status == "Production" }})",
+                                "Approval" to "मंजुरी बाकी (${allOrders.count { it.status == "Approval" }})",
+                                "Delivered" to "पूर्ण / वितरित (${allOrders.count { it.status == "Delivered" }})"
+                            )
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .horizontalScroll(rememberScrollState()),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                stages.forEach { (stageKey, stageLabel) ->
+                                    val isSelected = crmSelectedStage == stageKey
+                                    FilterChip(
+                                        selected = isSelected,
+                                        onClick = { viewModel.onCrmStageSelected(stageKey) },
+                                        label = {
+                                            Text(
+                                                text = stageLabel,
+                                                color = if (isSelected) StudioWhite else CharcoalBlack,
+                                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                                                fontSize = 11.sp
+                                            )
+                                        },
+                                        colors = FilterChipDefaults.filterChipColors(
+                                            selectedContainerColor = PrimaryPurple,
+                                            containerColor = CardBackgroundLight
+                                        ),
+                                        border = FilterChipDefaults.filterChipBorder(
+                                            enabled = true,
+                                            selected = isSelected,
+                                            borderColor = if (isSelected) PrimaryPurple else CardBorderLight,
+                                            selectedBorderColor = PrimaryPurple
+                                        ),
+                                        shape = RoundedCornerShape(16.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    // 3. Leads List
+                    if (filteredOrders.isEmpty()) {
                         item {
                             Box(
                                 modifier = Modifier
@@ -392,135 +543,37 @@ fun AdminGarageScreen(
                                     .padding(32.dp),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("अद्याप कोणतीही नवीन लीड आलेली नाही.", color = TextMuted)
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Icon(
+                                        imageVector = Icons.Default.Business,
+                                        contentDescription = "No Leads",
+                                        tint = PrimaryPurple,
+                                        modifier = Modifier.size(44.dp)
+                                    )
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    Text(
+                                        text = "कोणत्याही लीड्स आढळल्या नाहीत",
+                                        color = CharcoalBlack,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 14.sp
+                                    )
+                                    Text(
+                                        text = "नवीन लीड नोंदवण्यासाठी '+ New Lead' वर क्लिक करा",
+                                        color = TextMuted,
+                                        fontSize = 12.sp
+                                    )
+                                }
                             }
                         }
                     } else {
-                        items(orders, key = { it.id }) { order ->
-                            Card(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(14.dp))
-                                    .border(1.dp, CardBorderLight, RoundedCornerShape(14.dp)),
-                                colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
-                            ) {
-                                Column(modifier = Modifier.padding(14.dp)) {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Column {
-                                            Text(
-                                                text = order.clientName,
-                                                fontWeight = FontWeight.Black,
-                                                fontSize = 15.sp,
-                                                color = CharcoalBlack
-                                            )
-                                            Text(
-                                                text = "📱 ${order.clientPhone} • ${order.serviceType}",
-                                                fontSize = 12.sp,
-                                                color = TextMuted
-                                            )
-                                        }
-
-                                        Box(
-                                            modifier = Modifier
-                                                .clip(RoundedCornerShape(6.dp))
-                                                .background(
-                                                    when (order.status) {
-                                                        "Delivered" -> Color(0xFF2E7D32)
-                                                        "Approval" -> VibrantOrange
-                                                        "Production" -> PrimaryPurple
-                                                        else -> ElectricYellow
-                                                    }
-                                                )
-                                                .padding(horizontal = 8.dp, vertical = 3.dp)
-                                        ) {
-                                            Text(
-                                                text = order.status,
-                                                color = if (order.status == "New Lead" || order.status == "Quotation Sent") PrimaryPurple else StudioWhite,
-                                                fontSize = 11.sp,
-                                                fontWeight = FontWeight.Black
-                                            )
-                                        }
-                                    }
-
-                                    if (order.details.isNotBlank()) {
-                                        Spacer(modifier = Modifier.height(6.dp))
-                                        Text(
-                                            text = "टीप: ${order.details}",
-                                            fontSize = 12.sp,
-                                            color = CharcoalBlack
-                                        )
-                                    }
-
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    // Progress Bar
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        Text("Pipeline Progress: ${order.progress}%", fontSize = 11.sp, color = TextMuted)
-                                        Text("Budget: ${order.budget}", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = CrimsonRed)
-                                    }
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    LinearProgressIndicator(
-                                        progress = { order.progress / 100f },
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(6.dp)
-                                            .clip(RoundedCornerShape(3.dp)),
-                                        color = PrimaryPurple,
-                                        trackColor = SurfaceVariantLight
-                                    )
-
-                                    Spacer(modifier = Modifier.height(12.dp))
-
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                    ) {
-                                        // Advance Stage Button
-                                        Button(
-                                            onClick = { viewModel.advanceOrderStage(order) },
-                                            colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
-                                            shape = RoundedCornerShape(8.dp),
-                                            modifier = Modifier.weight(1.2f).height(38.dp)
-                                        ) {
-                                            Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(16.dp))
-                                            Spacer(modifier = Modifier.width(4.dp))
-                                            Text("Advance Stage", fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                        }
-
-                                        // Call Button
-                                        Button(
-                                            onClick = { IntentUtils.makePhoneCall(context, order.clientPhone) },
-                                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32)),
-                                            shape = RoundedCornerShape(8.dp),
-                                            modifier = Modifier.weight(0.8f).height(38.dp)
-                                        ) {
-                                            Icon(Icons.Default.PhoneInTalk, contentDescription = "Call", modifier = Modifier.size(16.dp))
-                                            Spacer(modifier = Modifier.width(4.dp))
-                                            Text("Call", fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                        }
-
-                                        // WhatsApp Button
-                                        Button(
-                                            onClick = {
-                                                val msg = "नमस्कार ${order.clientName}, मी Ktimes Media कडून तुमच्या '${order.serviceType}' च्या ऑर्डरबाबत बोलत आहे."
-                                                IntentUtils.openWhatsAppDirectMessage(context, msg, order.clientPhone)
-                                            },
-                                            colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
-                                            shape = RoundedCornerShape(8.dp),
-                                            modifier = Modifier.weight(0.9f).height(38.dp)
-                                        ) {
-                                            Text("WhatsApp", fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                        }
-                                    }
-                                }
-                            }
+                        items(filteredOrders, key = { it.id }) { order ->
+                            AdminLeadCard(
+                                order = order,
+                                onAdvance = { viewModel.advanceOrderStage(order) },
+                                onChangeStage = { leadToChangeStage = order },
+                                onEdit = { leadToEdit = order },
+                                onDelete = { leadToDelete = order }
+                            )
                         }
                     }
                 }
@@ -528,7 +581,7 @@ fun AdminGarageScreen(
         }
     }
 
-    // Add / Edit Dialog Form
+    // Add / Edit Dialog Form for Portfolio Samples
     if (showAddDialog) {
         AddEditItemDialog(
             existingItem = itemToEdit,
@@ -540,7 +593,75 @@ fun AdminGarageScreen(
         )
     }
 
-    // Delete Confirmation Dialog
+    // Add Manual Lead Dialog
+    if (showAddLeadDialog) {
+        AddEditLeadDialog(
+            existingLead = null,
+            onDismiss = { showAddLeadDialog = false },
+            onSave = { lead ->
+                viewModel.createManualLead(
+                    clientName = lead.clientName,
+                    clientPhone = lead.clientPhone,
+                    serviceType = lead.serviceType,
+                    budget = lead.budget,
+                    details = lead.details,
+                    businessName = lead.businessName,
+                    deadline = lead.deadline,
+                    location = lead.location
+                )
+                showAddLeadDialog = false
+            }
+        )
+    }
+
+    // Edit Existing Lead Dialog
+    leadToEdit?.let { existing ->
+        AddEditLeadDialog(
+            existingLead = existing,
+            onDismiss = { leadToEdit = null },
+            onSave = { updatedLead ->
+                viewModel.updateFullOrder(updatedLead)
+                leadToEdit = null
+            }
+        )
+    }
+
+    // Change Stage Dialog
+    leadToChangeStage?.let { order ->
+        ChangeStageDialog(
+            currentStage = order.status,
+            onDismiss = { leadToChangeStage = null },
+            onSelectStage = { newStage, newProgress ->
+                viewModel.updateOrderStatus(order.id, newStage, newProgress)
+                leadToChangeStage = null
+            }
+        )
+    }
+
+    // Delete Lead Confirmation Dialog
+    leadToDelete?.let { order ->
+        AlertDialog(
+            onDismissRequest = { leadToDelete = null },
+            title = { Text("लीड हटवायची आहे का?", color = CrimsonRed, fontWeight = FontWeight.Bold) },
+            text = { Text("तुम्हाला '${order.clientName}' (${order.serviceType}) ची लीड डिलीट करायची आहे का?", color = CharcoalBlack) },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.deleteOrder(order.id)
+                    leadToDelete = null
+                }) {
+                    Text("Delete", color = CrimsonRed, fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { leadToDelete = null }) {
+                    Text("Cancel", color = TextMuted)
+                }
+            },
+            containerColor = CardBackgroundLight
+        )
+    }
+
+    // Delete Portfolio Sample Confirmation Dialog
     itemToDelete?.let { item ->
         AlertDialog(
             onDismissRequest = { itemToDelete = null },
@@ -641,6 +762,662 @@ fun AdminGarageScreen(
             containerColor = CardBackgroundLight
         )
     }
+}
+
+@Composable
+fun PipelineMetricChip(
+    title: String,
+    count: Int,
+    bgColor: Color,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(10.dp))
+            .background(bgColor.copy(alpha = 0.12f))
+            .border(1.dp, bgColor.copy(alpha = 0.3f), RoundedCornerShape(10.dp))
+            .padding(vertical = 8.dp, horizontal = 4.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "$count",
+                fontWeight = FontWeight.Black,
+                fontSize = 16.sp,
+                color = bgColor
+            )
+            Text(
+                text = title,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = CharcoalBlack
+            )
+        }
+    }
+}
+
+@Composable
+fun AdminLeadCard(
+    order: AdOrder,
+    onAdvance: () -> Unit,
+    onChangeStage: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
+) {
+    val context = LocalContext.current
+    val clipboardManager = LocalClipboardManager.current
+
+    val stageBgColor = when (order.status) {
+        "Delivered" -> Color(0xFF2E7D32)
+        "Approval" -> Color(0xFFF57F17)
+        "Production" -> PrimaryPurple
+        "Quotation Sent" -> Color(0xFF0288D1)
+        "Requirement Received" -> VibrantOrange
+        else -> CrimsonRed
+    }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(14.dp))
+            .border(1.dp, CardBorderLight, RoundedCornerShape(14.dp)),
+        colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
+    ) {
+        Column(modifier = Modifier.padding(14.dp)) {
+            // Header Row: Client Name, Order ID, Stage Badge
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = order.clientName.ifBlank { "अनामिक क्लायंट" },
+                            fontWeight = FontWeight.Black,
+                            fontSize = 16.sp,
+                            color = CharcoalBlack
+                        )
+                        if (order.businessName.isNotBlank()) {
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "(${order.businessName})",
+                                fontSize = 12.sp,
+                                color = TextMuted,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(top = 2.dp)
+                    ) {
+                        // Order ID Chip (Tap to copy)
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(4.dp))
+                                .background(SurfaceVariantLight)
+                                .clickable {
+                                    clipboardManager.setText(AnnotatedString(order.id))
+                                    Toast.makeText(context, "Order ID ${order.id} copied!", Toast.LENGTH_SHORT).show()
+                                }
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                text = order.id.take(12),
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = PrimaryPurple
+                            )
+                        }
+
+                        if (order.location.isNotBlank()) {
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Icon(Icons.Default.LocationOn, contentDescription = null, modifier = Modifier.size(12.dp), tint = TextMuted)
+                            Text(text = order.location, fontSize = 11.sp, color = TextMuted)
+                        }
+                    }
+                }
+
+                // Stage Badge (Clickable to change stage)
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(stageBgColor)
+                        .clickable { onChangeStage() }
+                        .padding(horizontal = 10.dp, vertical = 5.dp)
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = order.status,
+                            color = StudioWhite,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Black
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(
+                            imageVector = Icons.Default.SwapHoriz,
+                            contentDescription = "Change",
+                            tint = StudioWhite,
+                            modifier = Modifier.size(12.dp)
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Service, Budget & Deadline Info Row
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(SurfaceVariantLight.copy(alpha = 0.6f))
+                    .padding(horizontal = 10.dp, vertical = 6.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "🎯 ${order.serviceType}",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = PrimaryPurple
+                )
+                Text(
+                    text = "बजेट: ${order.budget}",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = CrimsonRed
+                )
+                if (order.deadline.isNotBlank()) {
+                    Text(
+                        text = "⏳ ${order.deadline}",
+                        fontSize = 11.sp,
+                        color = CharcoalBlack
+                    )
+                }
+            }
+
+            if (order.details.isNotBlank()) {
+                Spacer(modifier = Modifier.height(6.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(StudioWhite)
+                        .border(0.5.dp, CardBorderLight, RoundedCornerShape(8.dp))
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        text = "📝 माहिती / स्क्रिप्ट: ${order.details}",
+                        fontSize = 12.sp,
+                        color = CharcoalBlack,
+                        lineHeight = 16.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Progress Bar & Percentage
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("पायरी प्रगती (Progress): ${order.progress}%", fontSize = 11.sp, color = TextMuted)
+                Text(
+                    text = when (order.status) {
+                        "New Lead" -> "Next: गरजा प्राप्त"
+                        "Requirement Received" -> "Next: कोटेशन"
+                        "Quotation Sent" -> "Next: प्रॉडक्शन"
+                        "Production" -> "Next: मंजुरी"
+                        "Approval" -> "Next: पूर्ण डिलिव्हरी"
+                        else -> "पूर्ण झाले"
+                    },
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = PrimaryPurple
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            LinearProgressIndicator(
+                progress = { order.progress / 100f },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+                    .clip(RoundedCornerShape(3.dp)),
+                color = stageBgColor,
+                trackColor = SurfaceVariantLight
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Action Buttons Row
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Advance Stage
+                if (order.status != "Delivered") {
+                    Button(
+                        onClick = onAdvance,
+                        colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
+                        shape = RoundedCornerShape(8.dp),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp),
+                        modifier = Modifier
+                            .weight(1.3f)
+                            .height(38.dp)
+                    ) {
+                        Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(15.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Advance", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+
+                // Call
+                Button(
+                    onClick = { IntentUtils.makePhoneCall(context, order.clientPhone) },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32)),
+                    shape = RoundedCornerShape(8.dp),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 6.dp),
+                    modifier = Modifier
+                        .weight(0.8f)
+                        .height(38.dp)
+                ) {
+                    Icon(Icons.Default.PhoneInTalk, contentDescription = "Call", modifier = Modifier.size(15.dp))
+                    Spacer(modifier = Modifier.width(3.dp))
+                    Text("Call", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                }
+
+                // WhatsApp
+                Button(
+                    onClick = {
+                        val msg = """
+                            नमस्कार ${order.clientName},
+                            Ktimes Media कडून आपल्या जाहिरात ऑर्डरबाबत अपडेट:
+                            🎯 सेवा: ${order.serviceType}
+                            📋 सद्यस्थिती: *${order.status}*
+                            ⏳ प्रगती: ${order.progress}%
+                            
+                            अधिक माहितीसाठी संपर्क साधा. धन्यवाद!
+                        """.trimIndent()
+                        IntentUtils.openWhatsAppDirectMessage(context, msg, order.clientPhone)
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
+                    shape = RoundedCornerShape(8.dp),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 6.dp),
+                    modifier = Modifier
+                        .weight(0.9f)
+                        .height(38.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_whatsapp),
+                        contentDescription = "WhatsApp",
+                        tint = StudioWhite,
+                        modifier = Modifier.size(15.dp)
+                    )
+                    Spacer(modifier = Modifier.width(3.dp))
+                    Text("Chat", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                }
+
+                // Edit Button
+                IconButton(
+                    onClick = onEdit,
+                    modifier = Modifier.size(36.dp)
+                ) {
+                    Icon(Icons.Default.Edit, contentDescription = "Edit", tint = PrimaryPurple)
+                }
+
+                // Delete Button
+                IconButton(
+                    onClick = onDelete,
+                    modifier = Modifier.size(36.dp)
+                ) {
+                    Icon(Icons.Default.Delete, contentDescription = "Delete", tint = CrimsonRed)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ChangeStageDialog(
+    currentStage: String,
+    onDismiss: () -> Unit,
+    onSelectStage: (String, Int) -> Unit
+) {
+    val stages = listOf(
+        Triple("New Lead", 10, "नवीन लीड - नुकतीच विचारणा आली आहे"),
+        Triple("Requirement Received", 25, "गरजा प्राप्त - स्क्रिप्ट/माहिती मिळाली"),
+        Triple("Quotation Sent", 40, "कोटेशन पाठवले - बजेट चर्चा चालू"),
+        Triple("Production", 65, "प्रॉडक्शन चालू - रेकॉर्डिंग व एडिटिंग सुरू"),
+        Triple("Approval", 85, "मंजुरी बाकी - क्लायंटकडे सॅम्पल पाठवले"),
+        Triple("Delivered", 100, "पूर्ण / वितरित - फायनल मीडिया दिला व पेमेंट पूर्ण")
+    )
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "पायरी बदला (Change Stage)",
+                color = PrimaryPurple,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                stages.forEach { (stageName, progress, desc) ->
+                    val isSelected = currentStage == stageName
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(10.dp))
+                            .clickable { onSelectStage(stageName, progress) }
+                            .border(
+                                width = if (isSelected) 2.dp else 1.dp,
+                                color = if (isSelected) PrimaryPurple else CardBorderLight,
+                                shape = RoundedCornerShape(10.dp)
+                            ),
+                        colors = CardDefaults.cardColors(
+                            containerColor = if (isSelected) PrimaryPurple.copy(alpha = 0.1f) else StudioWhite
+                        )
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.CheckCircle,
+                                    contentDescription = "Selected",
+                                    tint = PrimaryPurple,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                            }
+
+                            Column(modifier = Modifier.weight(1f)) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(
+                                        text = stageName,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 13.sp,
+                                        color = if (isSelected) PrimaryPurple else CharcoalBlack
+                                    )
+                                    Text(
+                                        text = "$progress%",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 11.sp,
+                                        color = PrimaryPurple
+                                    )
+                                }
+                                Text(
+                                    text = desc,
+                                    fontSize = 11.sp,
+                                    color = TextMuted
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel", color = TextMuted)
+            }
+        },
+        containerColor = CardBackgroundLight
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddEditLeadDialog(
+    existingLead: AdOrder?,
+    onDismiss: () -> Unit,
+    onSave: (AdOrder) -> Unit
+) {
+    var clientName by remember { mutableStateOf(existingLead?.clientName ?: "") }
+    var clientPhone by remember { mutableStateOf(existingLead?.clientPhone ?: "") }
+    var businessName by remember { mutableStateOf(existingLead?.businessName ?: "") }
+    var serviceType by remember { mutableStateOf(existingLead?.serviceType ?: "ऑडिओ जाहिरात (Audio Ad)") }
+    var budget by remember { mutableStateOf(existingLead?.budget ?: "₹1,999") }
+    var deadline by remember { mutableStateOf(existingLead?.deadline ?: "३ दिवस") }
+    var location by remember { mutableStateOf(existingLead?.location ?: "सातारा") }
+    var details by remember { mutableStateOf(existingLead?.details ?: "") }
+    var status by remember { mutableStateOf(existingLead?.status ?: "New Lead") }
+    var progress by remember { mutableStateOf(existingLead?.progress ?: 10) }
+
+    var serviceExpanded by remember { mutableStateOf(false) }
+    val services = listOf(
+        "ऑडिओ जाहिरात (Audio Ad)",
+        "व्हिडिओ जाहिरात (Video Ad / TVC)",
+        "निवडणूक प्रचार (Election Campaign)",
+        "सोशल मीडिया ग्राफिक्स (Graphics)",
+        "पूर्ण 360° ब्रँडिंग (360 Branding)",
+        "व्हॉइसओव्हर आणि डबिंग (Voiceover)"
+    )
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = if (existingLead == null) "नवीन लीड नोंदवा (Add New Lead)" else "लीड संपादित करा (Edit Lead)",
+                color = PrimaryPurple,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                OutlinedTextField(
+                    value = clientName,
+                    onValueChange = { clientName = it },
+                    label = { Text("क्लायंटचे नाव (Client Name)*", color = TextMuted) },
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = SurfaceVariantLight,
+                        unfocusedContainerColor = SurfaceVariantLight,
+                        focusedTextColor = CharcoalBlack,
+                        unfocusedTextColor = CharcoalBlack
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                OutlinedTextField(
+                    value = clientPhone,
+                    onValueChange = { clientPhone = it },
+                    label = { Text("मोबाईल नंबर (WhatsApp/Phone)*", color = TextMuted) },
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = SurfaceVariantLight,
+                        unfocusedContainerColor = SurfaceVariantLight,
+                        focusedTextColor = CharcoalBlack,
+                        unfocusedTextColor = CharcoalBlack
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                OutlinedTextField(
+                    value = businessName,
+                    onValueChange = { businessName = it },
+                    label = { Text("व्यवसायाचे / दुकानाचे नाव (Business Name)", color = TextMuted) },
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = SurfaceVariantLight,
+                        unfocusedContainerColor = SurfaceVariantLight,
+                        focusedTextColor = CharcoalBlack,
+                        unfocusedTextColor = CharcoalBlack
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                // Service Dropdown
+                ExposedDropdownMenuBox(
+                    expanded = serviceExpanded,
+                    onExpandedChange = { serviceExpanded = !serviceExpanded }
+                ) {
+                    OutlinedTextField(
+                        value = serviceType,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("जाहिरात सेवा (Service Type)", color = TextMuted) },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = serviceExpanded) },
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = SurfaceVariantLight,
+                            unfocusedContainerColor = SurfaceVariantLight,
+                            focusedTextColor = CharcoalBlack,
+                            unfocusedTextColor = CharcoalBlack
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor()
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = serviceExpanded,
+                        onDismissRequest = { serviceExpanded = false }
+                    ) {
+                        services.forEach { srv ->
+                            DropdownMenuItem(
+                                text = { Text(srv, color = CharcoalBlack) },
+                                onClick = {
+                                    serviceType = srv
+                                    serviceExpanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    OutlinedTextField(
+                        value = budget,
+                        onValueChange = { budget = it },
+                        label = { Text("बजेट (Budget)", color = TextMuted) },
+                        singleLine = true,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = SurfaceVariantLight,
+                            unfocusedContainerColor = SurfaceVariantLight,
+                            focusedTextColor = CharcoalBlack,
+                            unfocusedTextColor = CharcoalBlack
+                        ),
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    OutlinedTextField(
+                        value = deadline,
+                        onValueChange = { deadline = it },
+                        label = { Text("मुदत (Deadline)", color = TextMuted) },
+                        singleLine = true,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = SurfaceVariantLight,
+                            unfocusedContainerColor = SurfaceVariantLight,
+                            focusedTextColor = CharcoalBlack,
+                            unfocusedTextColor = CharcoalBlack
+                        ),
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                OutlinedTextField(
+                    value = location,
+                    onValueChange = { location = it },
+                    label = { Text("गाव / शहर (Location)", color = TextMuted) },
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = SurfaceVariantLight,
+                        unfocusedContainerColor = SurfaceVariantLight,
+                        focusedTextColor = CharcoalBlack,
+                        unfocusedTextColor = CharcoalBlack
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                OutlinedTextField(
+                    value = details,
+                    onValueChange = { details = it },
+                    label = { Text("स्क्रिप्ट / जाहिरातीची माहिती (Notes)", color = TextMuted) },
+                    minLines = 3,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = SurfaceVariantLight,
+                        unfocusedContainerColor = SurfaceVariantLight,
+                        focusedTextColor = CharcoalBlack,
+                        unfocusedTextColor = CharcoalBlack
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    if (clientName.isNotBlank() && clientPhone.isNotBlank()) {
+                        val result = existingLead?.copy(
+                            clientName = clientName,
+                            clientPhone = clientPhone,
+                            businessName = businessName,
+                            serviceType = serviceType,
+                            budget = budget,
+                            deadline = deadline,
+                            location = location,
+                            details = details,
+                            status = status,
+                            progress = progress
+                        ) ?: AdOrder(
+                            id = "",
+                            clientName = clientName,
+                            clientPhone = clientPhone,
+                            businessName = businessName,
+                            serviceType = serviceType,
+                            budget = budget,
+                            deadline = deadline,
+                            location = location,
+                            details = details,
+                            status = status,
+                            progress = progress
+                        )
+                        onSave(result)
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple)
+            ) {
+                Icon(imageVector = Icons.Default.Save, contentDescription = "Save", tint = StudioWhite)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Save Lead", color = StudioWhite, fontWeight = FontWeight.Bold)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel", color = TextMuted)
+            }
+        },
+        containerColor = CardBackgroundLight
+    )
 }
 
 @Composable
@@ -813,7 +1590,7 @@ fun AddEditItemDialog(
                         expanded = categoryExpanded,
                         onDismissRequest = { categoryExpanded = false }
                     ) {
-                        DefaultData.categories.filter { it != "All" }.forEach { cat ->
+                        DefaultData.categories.filter { it != "सर्व नमुने (All)" }.forEach { cat ->
                             DropdownMenuItem(
                                 text = { Text(cat, color = CharcoalBlack) },
                                 onClick = {
@@ -991,4 +1768,3 @@ fun AddEditItemDialog(
         containerColor = CardBackgroundLight
     )
 }
-
