@@ -422,12 +422,24 @@ fun AdminGarageScreen(
                                 // Metric Counters Grid
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
                                     PipelineMetricChip(
                                         title = "नवीन लीड्स",
                                         count = allOrders.count { it.status == "New Lead" },
                                         bgColor = CrimsonRed,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                    PipelineMetricChip(
+                                        title = "तपासणी",
+                                        count = allOrders.count { it.status == "In Review" || it.status == "Requirement Received" },
+                                        bgColor = VibrantOrange,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                    PipelineMetricChip(
+                                        title = "कन्फर्म",
+                                        count = allOrders.count { it.status == "Confirmed" || it.status == "Quotation Sent" },
+                                        bgColor = Color(0xFF0288D1),
                                         modifier = Modifier.weight(1f)
                                     )
                                     PipelineMetricChip(
@@ -439,7 +451,7 @@ fun AdminGarageScreen(
                                     PipelineMetricChip(
                                         title = "मंजुरी",
                                         count = allOrders.count { it.status == "Approval" },
-                                        bgColor = VibrantOrange,
+                                        bgColor = Color(0xFFF57F17),
                                         modifier = Modifier.weight(1f)
                                     )
                                     PipelineMetricChip(
@@ -491,9 +503,9 @@ fun AdminGarageScreen(
                             val stages = listOf(
                                 "ALL" to "All (${allOrders.size})",
                                 "New Lead" to "नवीन (${allOrders.count { it.status == "New Lead" }})",
-                                "Requirement Received" to "गरजा प्राप्त (${allOrders.count { it.status == "Requirement Received" }})",
-                                "Quotation Sent" to "कोटेशन पाठवले (${allOrders.count { it.status == "Quotation Sent" }})",
-                                "Production" to "प्रॉडक्शन चालू (${allOrders.count { it.status == "Production" }})",
+                                "In Review" to "तपासणी (${allOrders.count { it.status == "In Review" || it.status == "Requirement Received" }})",
+                                "Confirmed" to "कन्फर्म (${allOrders.count { it.status == "Confirmed" || it.status == "Quotation Sent" }})",
+                                "Production" to "प्रॉडक्शन (${allOrders.count { it.status == "Production" }})",
                                 "Approval" to "मंजुरी बाकी (${allOrders.count { it.status == "Approval" }})",
                                 "Delivered" to "पूर्ण / वितरित (${allOrders.count { it.status == "Delivered" }})"
                             )
@@ -811,8 +823,8 @@ fun AdminLeadCard(
         "Delivered" -> Color(0xFF2E7D32)
         "Approval" -> Color(0xFFF57F17)
         "Production" -> PrimaryPurple
-        "Quotation Sent" -> Color(0xFF0288D1)
-        "Requirement Received" -> VibrantOrange
+        "Confirmed", "Quotation Sent" -> Color(0xFF0288D1)
+        "In Review", "Requirement Received" -> VibrantOrange
         else -> CrimsonRed
     }
 
@@ -969,12 +981,12 @@ fun AdminLeadCard(
                 Text("पायरी प्रगती (Progress): ${order.progress}%", fontSize = 11.sp, color = TextMuted)
                 Text(
                     text = when (order.status) {
-                        "New Lead" -> "Next: गरजा प्राप्त"
-                        "Requirement Received" -> "Next: कोटेशन"
-                        "Quotation Sent" -> "Next: प्रॉडक्शन"
-                        "Production" -> "Next: मंजुरी"
-                        "Approval" -> "Next: पूर्ण डिलिव्हरी"
-                        else -> "पूर्ण झाले"
+                        "New Lead" -> "Next: तपासणी (In Review)"
+                        "In Review", "Requirement Received" -> "Next: कन्फर्म (Confirmed)"
+                        "Confirmed", "Quotation Sent" -> "Next: प्रॉडक्शन (Production)"
+                        "Production" -> "Next: मंजुरी (Approval)"
+                        "Approval" -> "Next: पूर्ण डिलिव्हरी (Delivered)"
+                        else -> "पूर्ण झाले (Delivered)"
                     },
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
@@ -1090,12 +1102,12 @@ fun ChangeStageDialog(
     onSelectStage: (String, Int) -> Unit
 ) {
     val stages = listOf(
-        Triple("New Lead", 10, "नवीन लीड - नुकतीच विचारणा आली आहे"),
-        Triple("Requirement Received", 25, "गरजा प्राप्त - स्क्रिप्ट/माहिती मिळाली"),
-        Triple("Quotation Sent", 40, "कोटेशन पाठवले - बजेट चर्चा चालू"),
-        Triple("Production", 65, "प्रॉडक्शन चालू - रेकॉर्डिंग व एडिटिंग सुरू"),
-        Triple("Approval", 85, "मंजुरी बाकी - क्लायंटकडे सॅम्पल पाठवले"),
-        Triple("Delivered", 100, "पूर्ण / वितरित - फायनल मीडिया दिला व पेमेंट पूर्ण")
+        Triple("New Lead", 15, "नवीन लीड - नुकतीच विचारणा आली आहे"),
+        Triple("In Review", 35, "तपासणी सुरू (In Review) - गरजा व स्क्रिप्ट पडताळणी"),
+        Triple("Confirmed", 55, "ऑर्डर निश्चित (Confirmed) - ऑर्डर पक्की, बजेट ठरले"),
+        Triple("Production", 75, "प्रॉडक्शन चालू (Production) - व्हॉईसओव्हर/व्हिडिओ मेकिंग"),
+        Triple("Approval", 90, "मंजुरी बाकी (Approval) - सॅम्पल रिव्ह्यू व सुधारणा"),
+        Triple("Delivered", 100, "पूर्ण / वितरित (Delivered) - फायनल डिलिव्हरी व पेमेंट")
     )
 
     AlertDialog(

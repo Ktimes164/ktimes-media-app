@@ -69,6 +69,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -961,10 +962,23 @@ fun OrdersScreenContent(
     val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
 
     var name by remember { mutableStateOf(currentUser?.displayName ?: "") }
+    var businessName by remember { mutableStateOf(currentUser?.businessName ?: "") }
     var phone by remember { mutableStateOf(currentUser?.phoneNumber ?: "") }
     var selectedService by remember { mutableStateOf("ऑडिओ जाहिरात (Audio Ad)") }
+    var selectedBudget by remember { mutableStateOf("₹१,९९९") }
+    var deadline by remember { mutableStateOf("३ दिवस") }
     var details by remember { mutableStateOf("") }
     var orderTab by remember { mutableStateOf("NEW") } // "NEW", "MY_ORDERS"
+
+    val serviceOptions = listOf(
+        "ऑडिओ जाहिरात (Audio Ad)",
+        "व्हिडिओ जाहिरात (Video Commercial)",
+        "सोशल मीडिया पोस्टर्स (Social Graphics)",
+        "AI व्हॉइस व स्क्रिप्ट (AI Voice & Script)",
+        "३६०° डिजिटल कॅम्पेन (360 Campaign)"
+    )
+
+    val budgetOptions = listOf("₹१,४९९", "₹१,९९९", "₹२,९९९", "₹४,९९९", "₹९,९९९+")
 
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
@@ -984,9 +998,9 @@ fun OrdersScreenContent(
                         .padding(horizontal = 12.dp, vertical = 6.dp)
                 ) {
                     Text(
-                        text = "ऑर्डर व थेट संपर्क (Orders & CRM)",
+                        text = "जाहिरात ऑर्डर व CRM Pipeline",
                         color = StudioWhite,
-                        fontSize = 15.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -1045,13 +1059,13 @@ fun OrdersScreenContent(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "तुमची ऑर्डर माहिती भरा:",
+                                text = "जाहिरात ऑर्डर फॉर्म भरा:",
                                 color = CharcoalBlack,
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
-                                text = "🔥 Live Firestore Sync",
+                                text = "🔥 Live CRM Sync",
                                 color = Color(0xFF2E7D32),
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold
@@ -1063,7 +1077,8 @@ fun OrdersScreenContent(
                         OutlinedTextField(
                             value = name,
                             onValueChange = { name = it },
-                            label = { Text("तुमचे नाव (Full Name)", color = TextMuted) },
+                            label = { Text("तुमचे नाव (Full Name)*", color = TextMuted) },
+                            singleLine = true,
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedContainerColor = StudioWhite,
                                 unfocusedContainerColor = SurfaceVariantLight,
@@ -1080,7 +1095,8 @@ fun OrdersScreenContent(
                         OutlinedTextField(
                             value = phone,
                             onValueChange = { phone = it },
-                            label = { Text("मोबाईल नंबर (Mobile Number)", color = TextMuted) },
+                            label = { Text("मोबाईल नंबर (WhatsApp Number)*", color = TextMuted) },
+                            singleLine = true,
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedContainerColor = StudioWhite,
                                 unfocusedContainerColor = SurfaceVariantLight,
@@ -1095,9 +1111,106 @@ fun OrdersScreenContent(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         OutlinedTextField(
-                            value = selectedService,
-                            onValueChange = { selectedService = it },
-                            label = { Text("सेवेचा प्रकार (Service Type)", color = TextMuted) },
+                            value = businessName,
+                            onValueChange = { businessName = it },
+                            label = { Text("फर्म / दुकानाचे नाव (Business / Firm Name)", color = TextMuted) },
+                            singleLine = true,
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = StudioWhite,
+                                unfocusedContainerColor = SurfaceVariantLight,
+                                focusedBorderColor = PrimaryPurple,
+                                unfocusedBorderColor = CardBorderLight,
+                                focusedTextColor = CharcoalBlack,
+                                unfocusedTextColor = CharcoalBlack
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        // Service Type Selector Chips
+                        Text(
+                            text = "सेवेचा प्रकार निवडा (Service Type):",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = CharcoalBlack
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            serviceOptions.chunked(2).forEach { rowServices ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    rowServices.forEach { service ->
+                                        val isSelected = selectedService == service
+                                        Box(
+                                            modifier = Modifier
+                                                .weight(1f)
+                                                .clip(RoundedCornerShape(8.dp))
+                                                .background(if (isSelected) PrimaryPurple else SurfaceVariantLight)
+                                                .border(1.dp, if (isSelected) PrimaryPurple else CardBorderLight, RoundedCornerShape(8.dp))
+                                                .clickable { selectedService = service }
+                                                .padding(vertical = 6.dp, horizontal = 6.dp),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = service,
+                                                color = if (isSelected) StudioWhite else CharcoalBlack,
+                                                fontSize = 10.sp,
+                                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        // Budget Selector Chips
+                        Text(
+                            text = "अंदाजे बजेट (Estimated Budget):",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = CharcoalBlack
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            budgetOptions.forEach { budget ->
+                                val isSelected = selectedBudget == budget
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(if (isSelected) CrimsonRed else SurfaceVariantLight)
+                                        .border(1.dp, if (isSelected) CrimsonRed else CardBorderLight, RoundedCornerShape(8.dp))
+                                    .clickable { selectedBudget = budget }
+                                    .padding(vertical = 6.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = budget,
+                                        color = if (isSelected) StudioWhite else CharcoalBlack,
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        OutlinedTextField(
+                            value = deadline,
+                            onValueChange = { deadline = it },
+                            label = { Text("अपेक्षित मुदत (Target Delivery, e.g. २४ तास, ३ दिवस)", color = TextMuted) },
+                            singleLine = true,
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedContainerColor = StudioWhite,
                                 unfocusedContainerColor = SurfaceVariantLight,
@@ -1114,7 +1227,8 @@ fun OrdersScreenContent(
                         OutlinedTextField(
                             value = details,
                             onValueChange = { details = it },
-                            label = { Text("संदेश / जाहिरातीची माहिती (Details / Script Notes)", color = TextMuted) },
+                            label = { Text("जाहिरात माहिती / स्क्रिप्ट नोट्स (Requirements)", color = TextMuted) },
+                            minLines = 2,
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedContainerColor = StudioWhite,
                                 unfocusedContainerColor = SurfaceVariantLight,
@@ -1128,17 +1242,47 @@ fun OrdersScreenContent(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
+                        // Submit Button - creates CRM Lead & opens WhatsApp
                         Button(
                             onClick = {
                                 if (name.isBlank() || phone.isBlank()) {
                                     Toast.makeText(context, "कृपया नाव आणि मोबाईल नंबर भरा", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    onWhatsAppOrder(name, phone, selectedService, details)
+                                    viewModel.submitAdOrder(
+                                        clientName = name,
+                                        clientPhone = phone,
+                                        businessName = businessName,
+                                        serviceType = selectedService,
+                                        budget = selectedBudget,
+                                        deadline = deadline,
+                                        details = details,
+                                        onOrderCreated = { generatedOrderId ->
+                                            val whatsappMsg = """
+                                                नमस्कार Ktimes Media, मी ॲपवरून नवीन जाहिरात ऑर्डर नोंदवली आहे:
+                                                🆔 *लीड / ऑर्डर ID*: $generatedOrderId
+                                                👤 *नाव*: $name
+                                                🏢 *व्यवसाय / फर्म*: ${businessName.ifBlank { "N/A" }}
+                                                📱 *मोबाईल*: $phone
+                                                🎯 *सेवेचा प्रकार*: $selectedService
+                                                💰 *अंदाजे बजेट*: $selectedBudget
+                                                ⏳ *मुदत (Deadline)*: $deadline
+                                                📝 *माहिती / स्क्रिप्ट*: ${details.ifBlank { "N/A" }}
+
+                                                कृपया ऑर्डर तपासून CRM मध्ये पुढील प्रक्रिया सुरू करावी. धन्यवाद!
+                                            """.trimIndent()
+
+                                            IntentUtils.openWhatsAppDirectMessage(context, whatsappMsg)
+                                            Toast.makeText(context, "ऑर्डर नोंदवली! CRM लीड तयार झाली ($generatedOrderId)", Toast.LENGTH_LONG).show()
+                                            orderTab = "MY_ORDERS"
+                                        }
+                                    )
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
                             shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.fillMaxWidth().height(48.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_whatsapp),
@@ -1147,7 +1291,7 @@ fun OrdersScreenContent(
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("ऑर्डर नोंदवा व WhatsApp सुरू करा", color = StudioWhite, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                            Text("ऑर्डर नोंदवा व थेट WhatsApp सुरू करा", color = StudioWhite, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                         }
 
                         Spacer(modifier = Modifier.height(10.dp))
@@ -1156,7 +1300,9 @@ fun OrdersScreenContent(
                             onClick = { IntentUtils.makePhoneCall(context) },
                             colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
                             shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.fillMaxWidth().height(48.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(46.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.PhoneInTalk,
@@ -1165,7 +1311,7 @@ fun OrdersScreenContent(
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("थेट कॉल करा (+91 9422337471)", color = StudioWhite, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                            Text("थेट कॉल करा (+91 9422337471)", color = StudioWhite, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -1197,6 +1343,15 @@ fun OrdersScreenContent(
                 }
             } else {
                 items(liveOrders) { order ->
+                    val statusColor = when (order.status) {
+                        "Delivered" -> Color(0xFF2E7D32)
+                        "Approval" -> Color(0xFFF57F17)
+                        "Production" -> PrimaryPurple
+                        "Confirmed", "Quotation Sent" -> Color(0xFF0288D1)
+                        "In Review", "Requirement Received" -> VibrantOrange
+                        else -> CrimsonRed
+                    }
+
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1214,24 +1369,17 @@ fun OrdersScreenContent(
                                     Box(
                                         modifier = Modifier
                                             .clip(RoundedCornerShape(6.dp))
-                                            .background(
-                                                when (order.status) {
-                                                    "Delivered" -> Color(0xFF2E7D32)
-                                                    "Approval" -> VibrantOrange
-                                                    "Production" -> PrimaryPurple
-                                                    else -> ElectricYellow
-                                                }
-                                            )
-                                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                                            .background(statusColor)
+                                            .padding(horizontal = 8.dp, vertical = 3.dp)
                                     ) {
                                         Text(
                                             text = order.status,
-                                            color = if (order.status == "New Lead" || order.status == "Quotation Sent") PrimaryPurple else StudioWhite,
+                                            color = StudioWhite,
                                             fontSize = 11.sp,
                                             fontWeight = FontWeight.Black
                                         )
                                     }
-                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Spacer(modifier = Modifier.height(6.dp))
                                     Text(
                                         text = order.details.ifBlank { order.serviceType },
                                         fontWeight = FontWeight.Bold,
@@ -1243,6 +1391,14 @@ fun OrdersScreenContent(
                                         fontSize = 11.sp,
                                         color = TextMuted
                                     )
+                                    if (order.deadline.isNotBlank()) {
+                                        Text(
+                                            text = "मुदत: ${order.deadline}",
+                                            fontSize = 11.sp,
+                                            color = CharcoalBlack,
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                    }
                                 }
 
                                 Text(
@@ -1260,7 +1416,7 @@ fun OrdersScreenContent(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text("प्रगती (Progress)", fontSize = 11.sp, color = TextMuted)
+                                Text("पाईपलाईन प्रगती (Progress)", fontSize = 11.sp, color = TextMuted)
                                 Text("${order.progress}%", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = PrimaryPurple)
                             }
                             Spacer(modifier = Modifier.height(4.dp))
@@ -1270,7 +1426,7 @@ fun OrdersScreenContent(
                                     .fillMaxWidth()
                                     .height(6.dp)
                                     .clip(RoundedCornerShape(3.dp)),
-                                color = PrimaryPurple,
+                                color = statusColor,
                                 trackColor = SurfaceVariantLight
                             )
 
@@ -1283,7 +1439,9 @@ fun OrdersScreenContent(
                                 },
                                 colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurpleLight),
                                 shape = RoundedCornerShape(8.dp),
-                                modifier = Modifier.fillMaxWidth().height(38.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(38.dp)
                             ) {
                                 Text("WhatsApp वर अपडेट तपासा", color = StudioWhite, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                             }

@@ -184,7 +184,10 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
         serviceType: String,
         budget: String,
         details: String,
-        location: String = "Satara"
+        businessName: String = "",
+        deadline: String = "३ दिवस",
+        location: String = "Satara",
+        onOrderCreated: ((String) -> Unit)? = null
     ) {
         viewModelScope.launch {
             val orderId = "KTM-ORD-${System.currentTimeMillis().toString().takeLast(4)}"
@@ -194,13 +197,14 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
                 clientUid = user?.uid ?: "client_${System.currentTimeMillis()}",
                 clientName = clientName.ifBlank { user?.displayName ?: "ग्राहक (App User)" },
                 clientPhone = clientPhone.ifBlank { user?.phoneNumber ?: "9422337471" },
-                businessName = user?.businessName ?: if (clientName.isNotBlank()) clientName else "Ktimes Media Client",
+                businessName = businessName.ifBlank { user?.businessName ?: if (clientName.isNotBlank()) clientName else "Ktimes Media Client" },
                 serviceType = serviceType,
                 budget = budget,
                 details = details,
                 location = location,
                 status = "New Lead",
                 progress = 15,
+                deadline = deadline.ifBlank { "३ दिवस" },
                 timestamp = System.currentTimeMillis()
             )
 
@@ -210,6 +214,7 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
             } else {
                 adminMessage.value = "Lead $orderId saved locally."
             }
+            onOrderCreated?.invoke(orderId)
         }
     }
 
@@ -300,9 +305,9 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
     fun setOrderStage(orderId: String, newStage: String) {
         val nextProgress = when (newStage) {
             "New Lead" -> 15
-            "Requirement Received" -> 35
-            "Quotation Sent" -> 50
-            "Production" -> 70
+            "In Review", "Requirement Received" -> 35
+            "Confirmed", "Quotation Sent" -> 55
+            "Production" -> 75
             "Approval" -> 90
             "Delivered" -> 100
             else -> 20
@@ -337,14 +342,19 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun advanceOrderStage(order: AdOrder) {
-        val stages = listOf("New Lead", "Requirement Received", "Quotation Sent", "Production", "Approval", "Delivered")
-        val curIdx = stages.indexOf(order.status)
+        val stages = listOf("New Lead", "In Review", "Confirmed", "Production", "Approval", "Delivered")
+        val currentMappedStatus = when (order.status) {
+            "Requirement Received" -> "In Review"
+            "Quotation Sent" -> "Confirmed"
+            else -> order.status
+        }
+        val curIdx = stages.indexOf(currentMappedStatus)
         if (curIdx >= 0 && curIdx < stages.size - 1) {
             val nextStage = stages[curIdx + 1]
             val nextProgress = when (nextStage) {
-                "Requirement Received" -> 35
-                "Quotation Sent" -> 50
-                "Production" -> 70
+                "In Review" -> 35
+                "Confirmed" -> 55
+                "Production" -> 75
                 "Approval" -> 90
                 "Delivered" -> 100
                 else -> order.progress + 15
