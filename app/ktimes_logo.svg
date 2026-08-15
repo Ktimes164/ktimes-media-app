@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+    <linearGradient id="clockGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E50914"/>
+      <stop offset="100%" stop-color="#B8000A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Clean White Card Background with Rounded Corners -->
+  <rect x="50" y="45" width="1100" height="540" rx="90" ry="90" fill="#FFFFFF" filter="url(#shadow)"/>
+  <rect x="50" y="45" width="1100" height="540" rx="90" ry="90" fill="none" stroke="#E2E8F0" stroke-width="2"/>
+
+  <!-- Clock & K Badge (Left of KTimes.in) -->
+  <g transform="translate(360, 175)">
+    <!-- Red Clock Circle -->
+    <circle cx="0" cy="0" r="64" fill="url(#clockGrad)"/>
+    <!-- Clock Ticks around rim -->
+    <line x1="0" y1="-56" x2="0" y2="-46" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+    <line x1="0" y1="46" x2="0" y2="56" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+    <line x1="-56" y1="0" x2="-46" y2="0" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+    <line x1="46" y1="0" x2="56" y2="0" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+    <line x1="-40" y1="-40" x2="-32" y2="-32" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <line x1="32" y1="32" x2="40" y2="40" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <line x1="40" y1="-40" x2="32" y2="-32" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-32" y1="32" x2="-40" y2="40" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <!-- White Letter K -->
+    <text x="0" y="24" font-family="'Inter', 'Arial Black', sans-serif" font-weight="900" font-size="76" fill="#FFFFFF" text-anchor="middle">K</text>
+  </g>
+
+  <!-- Header Text: KTimes.in -->
+  <text x="440" y="190" font-family="'Inter', 'Arial Black', sans-serif" font-weight="900" font-size="78" fill="#D31820">KTimes<tspan fill="#111827">.in</tspan></text>
+  
+  <!-- Sub-header Tagline: keeping update all the time >>>>> -->
+  <text x="445" y="235" font-family="'Inter', Arial, sans-serif" font-weight="700" font-size="25" fill="#111827" letter-spacing="0.5">keeping update all the time<tspan fill="#D31820" font-weight="900"> »»»»</tspan></text>
+
+  <!-- Main Marathi Branding: के टाईम्स मिडिया -->
+  <text x="600" y="380" font-family="'Baloo 2', 'Yantramanav', 'Arial Black', sans-serif" font-weight="900" font-size="118" fill="#E50914" text-anchor="middle" letter-spacing="1">के टाईम्स मिडिया</text>
+
+  <!-- Slogan: हमेशा समय के साथ..! -->
+  <text x="600" y="475" font-family="'Baloo 2', 'Yantramanav', 'Arial Black', sans-serif" font-weight="800" font-size="54" fill="#111827" text-anchor="middle" letter-spacing="1">हमेशा समय के साथ..!</text>
+</svg>
