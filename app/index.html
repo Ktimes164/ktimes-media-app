@@ -202,6 +202,13 @@
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-5 space-y-6" id="mainContainer">
 
         <!-- ========================================================================= -->
+        <!-- VIEW: SINGLE SAMPLE FOCUS MODE (DEEP LINKED VIEW: ?sample=ID)             -->
+        <!-- ========================================================================= -->
+        <div id="viewFocusSample" class="max-w-3xl mx-auto space-y-6 hidden">
+            <!-- Injected dynamically via renderFocusSample() -->
+        </div>
+
+        <!-- ========================================================================= -->
         <!-- VIEW 1: CLIENT HOME DASHBOARD                                             -->
         <!-- ========================================================================= -->
         <div id="viewClientHome" class="space-y-6">
@@ -1433,6 +1440,9 @@
             renderAdminCRM();
             renderStaffView();
             renderNotifications();
+
+            // Check for Single-Item Deep Linking (?sample=SAMPLE_ID)
+            checkDeepLinkSample();
         });
 
         // ROLE SWITCHER (STRICT PIN PROTECTED)
@@ -1493,6 +1503,7 @@
 
             currentActiveTab = tab;
             const views = {
+                focus_sample: 'viewFocusSample',
                 home: 'viewClientHome',
                 marketplace: 'viewMarketplace',
                 offers: 'viewOffers',
@@ -1636,27 +1647,47 @@
             const filtered = type === 'ALL' ? servicesData : servicesData.filter(s => s.type === type);
             
             grid.innerHTML = filtered.map(s => `
-                <div class="bg-[#1a0d2e] border border-[#3b1766] rounded-3xl overflow-hidden shadow-xl flex flex-col justify-between hover:border-goldenYellow/40 transition">
-                    <div class="relative h-44">
-                        <img src="${s.image}" alt="${s.title}" class="w-full h-full object-cover">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] rounded-3xl overflow-hidden shadow-xl flex flex-col justify-between hover:border-goldenYellow/40 transition group">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="${s.image}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                         <span class="absolute top-3 left-3 badge-crimson text-[10px] font-black px-2.5 py-0.5 rounded-full shadow">
                             ${s.badge}
                         </span>
+                        <div class="absolute top-3 right-3 flex items-center gap-1.5">
+                            <button onclick="shareSample('${s.id}')" title="Share Single Sample Link" class="w-8 h-8 rounded-full bg-black/70 hover:bg-[#075E54] text-white flex items-center justify-center text-xs backdrop-blur-sm transition border border-white/20 shadow">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                         <div>
+                            <div class="flex items-center justify-between gap-1 mb-1">
+                                <span class="text-[10px] font-mono text-purple-300 bg-[#2a0845] px-2 py-0.5 rounded border border-[#3b1766]">${s.id}</span>
+                                <span class="text-[10px] text-purple-300 font-semibold">${s.type}</span>
+                            </div>
                             <h3 class="text-base font-extrabold text-white">${s.title}</h3>
                             <p class="text-xs text-brandPurpleLight font-bold mt-0.5">${s.tagline}</p>
                             <p class="text-xs text-purple-200 mt-2 line-clamp-2">${s.description}</p>
                         </div>
 
-                        <div class="flex items-center justify-between pt-3 border-t border-[#3b1766]">
-                            <div>
-                                <span class="text-[10px] text-purple-300 block font-semibold">Starting from</span>
-                                <span class="text-lg font-black text-goldenYellow">${s.startingPrice}</span>
+                        <div class="space-y-2.5 pt-3 border-t border-[#3b1766]">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-[10px] text-purple-300 block font-semibold">Starting from</span>
+                                    <span class="text-lg font-black text-goldenYellow">${s.startingPrice}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="openFocusSample('${s.id}')" title="Focus View" class="px-3 py-2 rounded-xl text-xs font-bold bg-[#2a0845] hover:bg-[#3d1263] text-purple-200 hover:text-white border border-[#3b1766] transition">
+                                        <i class="fas fa-eye mr-1"></i> Preview
+                                    </button>
+                                    <button onclick="quickOrderService('${s.title}')" class="btn-golden px-4 py-2 rounded-xl text-xs font-black shadow-lg transition">
+                                        मागवा →
+                                    </button>
+                                </div>
                             </div>
-                            <button onclick="quickOrderService('${s.title}')" class="btn-golden px-4 py-2 rounded-xl text-xs font-black shadow-lg transition">
-                                मला हे पाहिजे →
+                            <button onclick="shareSample('${s.id}')" class="w-full py-1.5 rounded-xl text-[11px] font-bold bg-[#075E54]/40 hover:bg-[#075E54] text-emerald-200 hover:text-white border border-emerald-500/30 flex items-center justify-center gap-1.5 transition">
+                                <i class="fas fa-link text-[10px]"></i>
+                                <span>Share Direct Sample Link (?sample=${s.id})</span>
                             </button>
                         </div>
                     </div>
@@ -2349,6 +2380,158 @@
                 const preText = `नमस्कार KTimes Media, मी *${clientProfile.businessName}* (${clientProfile.category}, ${clientProfile.location}) कडून बोलत आहे. मला आमच्या व्यवसायाची जाहिरात करायची आहे.`;
                 waBtn.href = `https://wa.me/919422337471?text=${encodeURIComponent(preText)}`;
             }
+        }
+
+        // =========================================================================
+        // SINGLE-ITEM DEEP LINKING & FOCUS MODE SYSTEM
+        // =========================================================================
+        function checkDeepLinkSample() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const sampleId = urlParams.get('sample');
+                if (sampleId) {
+                    openFocusSample(sampleId, false);
+                }
+            } catch (err) {
+                console.error('Error parsing sample deep link:', err);
+            }
+        }
+
+        function shareSample(sampleId) {
+            const sample = servicesData.find(s => s.id === sampleId) || { title: 'KTimes Media Sample', id: sampleId };
+            const cleanUrl = `${window.location.origin}${window.location.pathname}?sample=${encodeURIComponent(sampleId)}`;
+            const shareText = `*${sample.title}* - KTimes Media जाहिरात सॅम्पल\n\nथेट सॅम्पल पाहण्यासाठी खालील लिंक उघडा:\n${cleanUrl}`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: sample.title,
+                    text: `KTimes Media जाहिरात सॅम्पल: ${sample.title}`,
+                    url: cleanUrl
+                }).catch(() => {
+                    copyToClipboardFallback(cleanUrl, sample.title);
+                });
+            } else {
+                copyToClipboardFallback(cleanUrl, sample.title);
+            }
+        }
+
+        function copyToClipboardFallback(url, title) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert(`✅ Direct Sample URL copied to clipboard!\n\n${url}\n\nतुम्ही ही लिंक कोणत्याही क्लायंटला पाठवू शकता.`);
+                }).catch(() => {
+                    prompt("Direct Sample Link (Copy this link):", url);
+                });
+            } else {
+                prompt("Direct Sample Link (Copy this link):", url);
+            }
+        }
+
+        function openFocusSample(sampleId, updateHistory = true) {
+            const sample = servicesData.find(s => s.id === sampleId) || servicesData[0];
+            if (!sample) return;
+
+            // Update URL without full page reload if requested
+            if (updateHistory) {
+                try {
+                    const newUrl = `${window.location.origin}${window.location.pathname}?sample=${encodeURIComponent(sample.id)}`;
+                    window.history.pushState({ sampleId: sample.id }, '', newUrl);
+                } catch (e) {
+                    console.log('History state update bypassed');
+                }
+            }
+
+            const focusContainer = document.getElementById('viewFocusSample');
+            if (!focusContainer) return;
+
+            // Formatted WhatsApp message for direct ordering
+            const waOrderMsg = `*KTimes Media - सॅम्पल जाहिरात ऑर्डर मागणी*\n--------------------------------\n🎬 *सॅम्पल कोड:* ${sample.id}\n📌 *सेवा:* ${sample.title}\n🏷️ *प्रकार:* ${sample.type}\n💰 *किंमत / बजेट:* ${sample.startingPrice}\n📝 *वर्णन:* ${sample.tagline}\n--------------------------------\nनमस्कार, मला हे सॅम्पल आवडले असून आमच्या व्यवसायासाठी अशा प्रकारची जाहिरात तयार करून हवी आहे.`;
+            const waOrderUrl = `https://wa.me/919422337471?text=${encodeURIComponent(waOrderMsg)}`;
+
+            focusContainer.innerHTML = `
+                <!-- Focus Mode Header Card -->
+                <div class="bg-gradient-to-r from-[#1e0b36] via-[#2a0845] to-[#1e0b36] border border-[#431770] rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+                    <div class="flex items-center justify-between gap-3 mb-4">
+                        <span class="badge-crimson text-xs font-black px-3 py-1 rounded-full shadow">
+                            <i class="fas fa-play-circle mr-1"></i> FOCUS SAMPLE PREVIEW
+                        </span>
+                        <span class="text-xs font-mono font-bold bg-[#120724] text-goldenYellow px-3 py-1 rounded-full border border-[#3b1766]">
+                            CODE: ${sample.id}
+                        </span>
+                    </div>
+
+                    <!-- Media Preview Area -->
+                    <div class="relative rounded-2xl overflow-hidden border-2 border-goldenYellow/40 shadow-2xl aspect-video bg-black flex items-center justify-center group mb-5">
+                        <img src="${sample.image}" alt="${sample.title}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5">
+                            <span class="text-xs bg-brandPurple text-white px-2.5 py-0.5 rounded-full font-bold w-fit mb-2">
+                                ${sample.type} • 4K ULTRA HD
+                            </span>
+                            <h3 class="text-xl md:text-2xl font-black text-white drop-shadow">${sample.title}</h3>
+                            <p class="text-xs text-goldenYellow font-bold">${sample.tagline}</p>
+                        </div>
+                    </div>
+
+                    <!-- Sample Details -->
+                    <div class="space-y-4">
+                        <div class="bg-[#120724] border border-[#3b1766] p-4 rounded-2xl">
+                            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wide mb-1">सविस्तर माहिती (Sample Details):</h4>
+                            <p class="text-sm text-purple-100 leading-relaxed">${sample.description}</p>
+                        </div>
+
+                        <!-- Price Box -->
+                        <div class="flex items-center justify-between p-4 bg-[#1a0d2e] border border-goldenYellow/30 rounded-2xl">
+                            <div>
+                                <span class="text-xs text-purple-300 block font-semibold">अंदाजे सुरुवातीची किंमत (Starting Price)</span>
+                                <span class="text-2xl md:text-3xl font-black text-goldenYellow">${sample.startingPrice}</span>
+                            </div>
+                            <span class="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/30">
+                                <i class="fas fa-bolt mr-1"></i> Fast Delivery
+                            </span>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="space-y-3 pt-2">
+                            <!-- Primary WhatsApp Green Order Button -->
+                            <a href="${waOrderUrl}" target="_blank" rel="noopener noreferrer"
+                               class="w-full bg-[#075E54] hover:bg-[#128C7E] text-white py-4 px-6 rounded-2xl font-black text-base md:text-lg flex items-center justify-center gap-3 shadow-2xl hover:scale-102 transition border-2 border-[#25D366]/50">
+                                <i class="fab fa-whatsapp text-2xl text-[#25D366]"></i>
+                                <span>WhatsApp वर ऑर्डर नोंदवा (9422337471)</span>
+                            </a>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <!-- Share this Sample Button -->
+                                <button onclick="shareSample('${sample.id}')"
+                                        class="w-full bg-[#1a0d2e] hover:bg-[#2a0845] text-goldenYellow py-3 px-4 rounded-xl text-xs font-black flex items-center justify-center gap-2 border border-goldenYellow/40 shadow transition">
+                                    <i class="fas fa-share-alt"></i>
+                                    <span>हा सॅम्पल शेअर करा (Share Link)</span>
+                                </button>
+
+                                <!-- Secondary Button: Explore Full Gallery -->
+                                <button onclick="closeFocusSampleAndExplore()"
+                                        class="w-full bg-brandPurple hover:bg-purple-700 text-white py-3 px-4 rounded-xl text-xs font-black flex items-center justify-center gap-2 shadow transition">
+                                    <i class="fas fa-th-large"></i>
+                                    <span>सर्व सॅम्पल्स एक्सप्लोर करा (View Full Gallery)</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Switch view to focus_sample
+            switchNav('focus_sample');
+        }
+
+        function closeFocusSampleAndExplore() {
+            try {
+                // Clear the ?sample= parameter from URL
+                const cleanUrl = `${window.location.origin}${window.location.pathname}`;
+                window.history.pushState({}, '', cleanUrl);
+            } catch (e) {
+                console.log('History clean bypassed');
+            }
+            switchNav('marketplace');
         }
     </script>
 </body>
