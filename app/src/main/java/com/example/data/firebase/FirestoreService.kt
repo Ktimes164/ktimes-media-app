@@ -28,35 +28,42 @@ class FirestoreService {
         const val COLLECTION_USERS = "users"
     }
 
-    // Default mock orders for instant display & fallback
+    // Default mock orders with rich Project Management, Draft, Revision, Approval & Delivery data
     val initialMockOrders = listOf(
         AdOrder(
             id = "KTM-ORD-101",
             clientUid = "client_1",
             clientName = "Ganesh Jewellers",
             clientPhone = "9422337471",
-            businessName = "Ganesh Jewellers",
+            businessName = "Ganesh Jewellers Satara",
             serviceType = "Video Ads",
             budget = "₹4,999",
-            details = "गणेशोत्सव विशेष ज्वेलरी डिस्काउंट व्हिडिओ जाहिरात (4K Cinematic)",
+            details = "गणेशोत्सव विशेष ज्वेलरी डिस्काउंट व्हिडिओ जाहिरात (4K Cinematic Video)",
             location = "Satara",
             status = "Production",
             progress = 65,
-            deadline = "१६ ऑगस्ट"
+            deadline = "१६ ऑगस्ट",
+            draftNotes = "व्हिडिओ एडिटिंग व व्हॉईस मिक्सिंग सुरू आहे. लवकरच ड्राफ्ट शेअर केला जाईल.",
+            projectManager = "Ktimes Video Production Team"
         ),
         AdOrder(
             id = "KTM-ORD-102",
             clientUid = "client_1",
             clientName = "Ganesh Jewellers",
             clientPhone = "9422337471",
-            businessName = "Ganesh Jewellers",
+            businessName = "Ganesh Jewellers Satara",
             serviceType = "Audio Jingles",
             budget = "₹1,499",
-            details = "रिक्षा प्रचार व सोशल मीडिया ऑडिओ जिगल (मराठी व्हॉईस)",
+            details = "रिक्षा प्रचार व सोशल मीडिया ऑडिओ जिगल (मराठी व्हॉईस & ढोल-ताशा बीट)",
             location = "Satara",
             status = "Approval",
             progress = 90,
-            deadline = "आज सायंकाळी"
+            draftUrl = "https://raw.githubusercontent.com/google/google-api-javascript-client/master/samples/analytics/hello_analytics_api_v3.html",
+            draftNotes = "व्हर्जन १.०: मराठी व्हॉईसओव्हर + बॅकग्राउंड संगीत पूर्ण झाले आहे. कृपया ऑडिओ प्रिव्ह्यू तपासून मंजुरी द्या.",
+            draftUpdatedAt = System.currentTimeMillis() - 3600000L * 5,
+            clientApprovalStatus = "PENDING",
+            deadline = "आज सायंकाळी",
+            projectManager = "Ktimes Audio Studio"
         ),
         AdOrder(
             id = "KTM-ORD-103",
@@ -66,11 +73,19 @@ class FirestoreService {
             businessName = "Shah Brothers Saree Depot",
             serviceType = "Graphics & Banners",
             budget = "₹2,500",
-            details = "सण-उत्सव ५ सोशल मीडिया पोस्टर्स (पैठणी व सिल्क साड्या)",
+            details = "सण-उत्सव ५ सोशल मीडिया पोस्टर्स (पैठणी व सिल्क साड्या 3D डिझाइन)",
             location = "Phaltan",
             status = "Delivered",
             progress = 100,
-            deadline = "पूर्ण झाले"
+            draftUrl = "https://drive.google.com",
+            draftNotes = "पोस्टर्स ड्राफ्ट v1.2 मंजूर केले.",
+            finalFileUrl = "https://drive.google.com/drive/folders/ktimes-media-final-deliverables",
+            finalDeliveryNotes = "सर्व ५ पोस्टर्स हाय-रिझोल्यूशन (Print CMYK 300DPI + Instagram 1080x1350 + Story 1080x1920) गुगल ड्राईव्हवर उपलब्ध आहेत. धन्यवाद!",
+            deliveredAt = System.currentTimeMillis() - 3600000L * 24,
+            clientApprovalStatus = "APPROVED",
+            clientApprovedAt = System.currentTimeMillis() - 3600000L * 28,
+            deadline = "पूर्ण झाले",
+            projectManager = "Ktimes Graphics Desk"
         ),
         AdOrder(
             id = "KTM-ORD-104",
@@ -78,13 +93,19 @@ class FirestoreService {
             clientName = "Samarth Enterprise",
             clientPhone = "9850112233",
             businessName = "Samarth Enterprise Automobile",
-            serviceType = "360 Campaign",
-            budget = "₹11,999",
-            details = "ऑटोमोबाईल शोरूम नवीन फेस्टिव्ह लॉन्च कॅम्पेन",
+            serviceType = "AI Video Ads",
+            budget = "₹6,999",
+            details = "ऑटोमोबाईल शोरूम नवीन फेस्टिव्ह लॉन्च कॅम्पेन (AI News Anchor + 3D Logo)",
             location = "Baramati",
-            status = "Quotation Sent",
-            progress = 40,
-            deadline = "२० ऑगस्ट"
+            status = "Revision",
+            progress = 80,
+            draftUrl = "https://youtube.com",
+            draftNotes = "ड्राफ्ट v1.0 AI अँकर व्हिडिओ तयार केला होता.",
+            revisionNotes = "कृपया अँकरच्या मागे शोरूमचा खरा 4K बॅकग्राउंड व्हिडिओ टाका आणि शेवटी टेस्ट ड्राईव्ह बुकिंगचा QR कोड ॲड करा.",
+            revisionCount = 1,
+            clientApprovalStatus = "REVISION_REQUESTED",
+            deadline = "२० ऑगस्ट",
+            projectManager = "Ktimes AI Studio"
         )
     )
 
@@ -131,6 +152,99 @@ class FirestoreService {
             Result.success(true)
         } catch (e: Exception) {
             Log.e("FirestoreService", "Failed to create order: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun dispatchDraft(
+        orderId: String,
+        draftUrl: String,
+        draftNotes: String
+    ): Result<Boolean> {
+        return try {
+            val updates = mapOf(
+                "draftUrl" to draftUrl,
+                "draftNotes" to draftNotes,
+                "draftUpdatedAt" to System.currentTimeMillis(),
+                "status" to "Approval",
+                "progress" to 90,
+                "clientApprovalStatus" to "PENDING"
+            )
+            firestore.collection(COLLECTION_ORDERS)
+                .document(orderId)
+                .update(updates)
+                .await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Log.e("FirestoreService", "Failed to dispatch draft: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun dispatchFinalDelivery(
+        orderId: String,
+        finalFileUrl: String,
+        finalDeliveryNotes: String
+    ): Result<Boolean> {
+        return try {
+            val updates = mapOf(
+                "finalFileUrl" to finalFileUrl,
+                "finalDeliveryNotes" to finalDeliveryNotes,
+                "deliveredAt" to System.currentTimeMillis(),
+                "status" to "Delivered",
+                "progress" to 100,
+                "clientApprovalStatus" to "APPROVED"
+            )
+            firestore.collection(COLLECTION_ORDERS)
+                .document(orderId)
+                .update(updates)
+                .await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Log.e("FirestoreService", "Failed to dispatch final delivery: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun submitClientApproval(orderId: String): Result<Boolean> {
+        return try {
+            val updates = mapOf(
+                "clientApprovalStatus" to "APPROVED",
+                "clientApprovedAt" to System.currentTimeMillis(),
+                "status" to "Approval",
+                "progress" to 95
+            )
+            firestore.collection(COLLECTION_ORDERS)
+                .document(orderId)
+                .update(updates)
+                .await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Log.e("FirestoreService", "Failed to submit client approval: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun submitClientRevision(
+        orderId: String,
+        currentRevisionCount: Int,
+        revisionNotes: String
+    ): Result<Boolean> {
+        return try {
+            val updates = mapOf(
+                "revisionNotes" to revisionNotes,
+                "revisionCount" to (currentRevisionCount + 1),
+                "clientApprovalStatus" to "REVISION_REQUESTED",
+                "status" to "Revision",
+                "progress" to 80
+            )
+            firestore.collection(COLLECTION_ORDERS)
+                .document(orderId)
+                .update(updates)
+                .await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Log.e("FirestoreService", "Failed to submit client revision: ${e.message}")
             Result.failure(e)
         }
     }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -99,6 +100,7 @@ import com.example.ui.theme.CharcoalBlack
 import com.example.ui.theme.CrimsonRed
 import com.example.ui.theme.ElectricYellow
 import com.example.ui.theme.PrimaryPurple
+import com.example.ui.theme.PrimaryPurpleLight
 import com.example.ui.theme.StudioWhite
 import com.example.ui.theme.SurfaceVariantLight
 import com.example.ui.theme.TextMuted
@@ -135,6 +137,8 @@ fun AdminGarageScreen(
     var leadToEdit by remember { mutableStateOf<AdOrder?>(null) }
     var leadToDelete by remember { mutableStateOf<AdOrder?>(null) }
     var leadToChangeStage by remember { mutableStateOf<AdOrder?>(null) }
+    var leadToDispatchDraft by remember { mutableStateOf<AdOrder?>(null) }
+    var leadToDeliverFinal by remember { mutableStateOf<AdOrder?>(null) }
 
     // JSON export/import state
     var showJsonDialog by remember { mutableStateOf(false) }
@@ -583,6 +587,8 @@ fun AdminGarageScreen(
                                 order = order,
                                 onAdvance = { viewModel.advanceOrderStage(order) },
                                 onChangeStage = { leadToChangeStage = order },
+                                onDispatchDraft = { leadToDispatchDraft = order },
+                                onDeliverFinal = { leadToDeliverFinal = order },
                                 onEdit = { leadToEdit = order },
                                 onDelete = { leadToDelete = order }
                             )
@@ -646,6 +652,57 @@ fun AdminGarageScreen(
             onSelectStage = { newStage, newProgress ->
                 viewModel.updateOrderStatus(order.id, newStage, newProgress)
                 leadToChangeStage = null
+            }
+        )
+    }
+
+    // Dispatch Draft Dialog
+    leadToDispatchDraft?.let { order ->
+        DispatchDraftDialog(
+            order = order,
+            onDismiss = { leadToDispatchDraft = null },
+            onDispatch = { draftUrl, draftNotes ->
+                viewModel.dispatchDraft(order.id, draftUrl, draftNotes)
+                val msg = """
+                    नमस्कार ${order.clientName},
+                    Ktimes Media कडून आपल्या ${order.serviceType} (Order ID: ${order.id}) चा ड्राफ्ट तयार झाला आहे!
+                    
+                    🎬 ड्राफ्ट प्रिव्ह्यू लिंक:
+                    $draftUrl
+                    
+                    📝 स्टुडिओ टीप:
+                    ${draftNotes.ifBlank { "कृपया ड्राफ्ट तपासून ॲपवरून मंजूर करावा किंवा आवश्यक सुधारणा सांगाव्यात." }}
+                    
+                    धन्यवाद!
+                    - Ktimes Media Production Team
+                """.trimIndent()
+                IntentUtils.openWhatsAppDirectMessage(context, msg, order.clientPhone)
+                leadToDispatchDraft = null
+            }
+        )
+    }
+
+    // Final File Delivery Dialog
+    leadToDeliverFinal?.let { order ->
+        DeliverFinalDialog(
+            order = order,
+            onDismiss = { leadToDeliverFinal = null },
+            onDeliver = { finalUrl, finalNotes ->
+                viewModel.dispatchFinalDelivery(order.id, finalUrl, finalNotes)
+                val msg = """
+                    🎉 अभिनंदन ${order.clientName}!
+                    आपल्या ${order.serviceType} (Order ID: ${order.id}) चे सर्व अंतिम मास्टर फाईल्स तयार झाले आहेत!
+                    
+                    📥 अंतिम मास्टर फाईल डाउनलोड लिंक:
+                    $finalUrl
+                    
+                    📦 डिलिव्हरी तपशील:
+                    ${finalNotes.ifBlank { "4K Video / High Bitrate Audio / Print Ready CMYK Master फाईल्स सुरक्षितपणे सेव्ह करा." }}
+                    
+                    Ktimes Media सोबत काम केल्याबद्दल मनापासून आभार!
+                """.trimIndent()
+                IntentUtils.openWhatsAppDirectMessage(context, msg, order.clientPhone)
+                leadToDeliverFinal = null
             }
         )
     }
@@ -813,6 +870,8 @@ fun AdminLeadCard(
     order: AdOrder,
     onAdvance: () -> Unit,
     onChangeStage: () -> Unit,
+    onDispatchDraft: () -> Unit,
+    onDeliverFinal: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -970,6 +1029,156 @@ fun AdminLeadCard(
                 }
             }
 
+            // Project Management Status Alert Box
+            if (order.clientApprovalStatus == "APPROVED") {
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(0xFFE8F5E9))
+                        .border(1.dp, Color(0xFF2E7D32), RoundedCornerShape(8.dp))
+                        .padding(8.dp)
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = "Approved",
+                            tint = Color(0xFF2E7D32),
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "✅ क्लायंटने ड्राफ्ट मंजूर केला आहे (Draft Approved)! कृपया फायनल मास्टर फाईल्स पाठवा.",
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF2E7D32)
+                        )
+                    }
+                }
+            } else if (order.clientApprovalStatus == "REVISION_REQUESTED") {
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(0xFFFFF3E0))
+                        .border(1.dp, Color(0xFFF57F17), RoundedCornerShape(8.dp))
+                        .padding(8.dp)
+                ) {
+                    Column {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = "Revision",
+                                tint = Color(0xFFE65100),
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "🔄 क्लायंट दुरुस्ती विनंती #${order.revisionCount} (Revision Requested)",
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFFE65100)
+                            )
+                        }
+                        if (order.revisionNotes.isNotBlank()) {
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "सुधारणा टीप: \"${order.revisionNotes}\"",
+                                fontSize = 11.sp,
+                                color = CharcoalBlack,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                    }
+                }
+            }
+
+            // Draft info summary
+            if (order.draftUrl.isNotBlank()) {
+                Spacer(modifier = Modifier.height(6.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(0xFFEDE7F6))
+                        .border(0.5.dp, PrimaryPurple.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
+                        .padding(8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "🎬 चालू ड्राफ्ट लिंक (Draft Dispatched):",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = PrimaryPurple
+                            )
+                            Text(
+                                text = order.draftUrl,
+                                fontSize = 11.sp,
+                                color = CharcoalBlack,
+                                maxLines = 1
+                            )
+                        }
+                        Button(
+                            onClick = { IntentUtils.openUrl(context, order.draftUrl) },
+                            colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
+                            contentPadding = PaddingValues(horizontal = 8.dp),
+                            modifier = Modifier.height(30.dp)
+                        ) {
+                            Text("Open", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = StudioWhite)
+                        }
+                    }
+                }
+            }
+
+            // Final delivery info summary
+            if (order.finalFileUrl.isNotBlank()) {
+                Spacer(modifier = Modifier.height(6.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(0xFFE8F5E9))
+                        .border(0.5.dp, Color(0xFF2E7D32).copy(alpha = 0.5f), RoundedCornerShape(8.dp))
+                        .padding(8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "🎉 फायनल डिलिव्हरी मास्टर (Master Ready):",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF2E7D32)
+                            )
+                            Text(
+                                text = order.finalFileUrl,
+                                fontSize = 11.sp,
+                                color = CharcoalBlack,
+                                maxLines = 1
+                            )
+                        }
+                        Button(
+                            onClick = { IntentUtils.openUrl(context, order.finalFileUrl) },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32)),
+                            contentPadding = PaddingValues(horizontal = 8.dp),
+                            modifier = Modifier.height(30.dp)
+                        ) {
+                            Text("Download", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = StudioWhite)
+                        }
+                    }
+                }
+            }
+
             Spacer(modifier = Modifier.height(10.dp))
 
             // Progress Bar & Percentage
@@ -984,8 +1193,8 @@ fun AdminLeadCard(
                         "New Lead" -> "Next: तपासणी (In Review)"
                         "In Review", "Requirement Received" -> "Next: कन्फर्म (Confirmed)"
                         "Confirmed", "Quotation Sent" -> "Next: प्रॉडक्शन (Production)"
-                        "Production" -> "Next: मंजुरी (Approval)"
-                        "Approval" -> "Next: पूर्ण डिलिव्हरी (Delivered)"
+                        "Production" -> "Next: ड्राफ्ट / मंजुरी (Approval)"
+                        "Approval" -> "Next: अंतिम डिलीव्हरी (Delivered)"
                         else -> "पूर्ण झाले (Delivered)"
                     },
                     fontSize = 11.sp,
@@ -1004,9 +1213,43 @@ fun AdminLeadCard(
                 trackColor = SurfaceVariantLight
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-            // Action Buttons Row
+            // Project Management Fast Action Buttons Row (Draft & Final Delivery)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                // Send Draft Button
+                Button(
+                    onClick = onDispatchDraft,
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurpleLight),
+                    shape = RoundedCornerShape(8.dp),
+                    contentPadding = PaddingValues(horizontal = 6.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(34.dp)
+                ) {
+                    Text("📤 ड्राफ्ट पाठवा", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = StudioWhite)
+                }
+
+                // Deliver Final Button
+                Button(
+                    onClick = onDeliverFinal,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32)),
+                    shape = RoundedCornerShape(8.dp),
+                    contentPadding = PaddingValues(horizontal = 6.dp),
+                    modifier = Modifier
+                        .weight(1.1f)
+                        .height(34.dp)
+                ) {
+                    Text("📦 अंतिम डिलीव्हरी", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = StudioWhite)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Primary Lead Actions Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -1018,13 +1261,13 @@ fun AdminLeadCard(
                         onClick = onAdvance,
                         colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
                         shape = RoundedCornerShape(8.dp),
-                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp),
+                        contentPadding = PaddingValues(horizontal = 8.dp),
                         modifier = Modifier
-                            .weight(1.3f)
-                            .height(38.dp)
+                            .weight(1.2f)
+                            .height(36.dp)
                     ) {
-                        Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(15.dp))
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(14.dp))
+                        Spacer(modifier = Modifier.width(3.dp))
                         Text("Advance", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                     }
                 }
@@ -1034,13 +1277,13 @@ fun AdminLeadCard(
                     onClick = { IntentUtils.makePhoneCall(context, order.clientPhone) },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32)),
                     shape = RoundedCornerShape(8.dp),
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 6.dp),
+                    contentPadding = PaddingValues(horizontal = 6.dp),
                     modifier = Modifier
                         .weight(0.8f)
-                        .height(38.dp)
+                        .height(36.dp)
                 ) {
-                    Icon(Icons.Default.PhoneInTalk, contentDescription = "Call", modifier = Modifier.size(15.dp))
-                    Spacer(modifier = Modifier.width(3.dp))
+                    Icon(Icons.Default.PhoneInTalk, contentDescription = "Call", modifier = Modifier.size(14.dp))
+                    Spacer(modifier = Modifier.width(2.dp))
                     Text("Call", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
 
@@ -1060,25 +1303,25 @@ fun AdminLeadCard(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
                     shape = RoundedCornerShape(8.dp),
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 6.dp),
+                    contentPadding = PaddingValues(horizontal = 6.dp),
                     modifier = Modifier
                         .weight(0.9f)
-                        .height(38.dp)
+                        .height(36.dp)
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_whatsapp),
                         contentDescription = "WhatsApp",
                         tint = StudioWhite,
-                        modifier = Modifier.size(15.dp)
+                        modifier = Modifier.size(14.dp)
                     )
-                    Spacer(modifier = Modifier.width(3.dp))
+                    Spacer(modifier = Modifier.width(2.dp))
                     Text("Chat", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
 
                 // Edit Button
                 IconButton(
                     onClick = onEdit,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(34.dp)
                 ) {
                     Icon(Icons.Default.Edit, contentDescription = "Edit", tint = PrimaryPurple)
                 }
@@ -1086,13 +1329,177 @@ fun AdminLeadCard(
                 // Delete Button
                 IconButton(
                     onClick = onDelete,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(34.dp)
                 ) {
                     Icon(Icons.Default.Delete, contentDescription = "Delete", tint = CrimsonRed)
                 }
             }
         }
     }
+}
+
+@Composable
+fun DispatchDraftDialog(
+    order: AdOrder,
+    onDismiss: () -> Unit,
+    onDispatch: (draftUrl: String, draftNotes: String) -> Unit
+) {
+    var draftUrl by remember { mutableStateOf(order.draftUrl.ifBlank { "https://drive.google.com/ktimes-preview/draft-${order.id.take(8)}" }) }
+    var draftNotes by remember { mutableStateOf(order.draftNotes.ifBlank { "आम्ही आपला पहिला ड्राफ्ट तयार केला आहे. कृपया आवाज, उच्चार आणि पार्श्वसंगीत तपासून मंजुरी द्यावी." }) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "क्लायंटला ड्राफ्ट पाठवा (Dispatch Draft)",
+                color = PrimaryPurple,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(
+                    text = "क्लायंट: ${order.clientName} (${order.serviceType})\nड्राफ्ट पाठवल्यानंतर स्टेटस 'Approval' (90%) होईल आणि क्लायंटला मंजुरीसाठी WhatsApp संदेश जाईल.",
+                    fontSize = 12.sp,
+                    color = TextMuted
+                )
+
+                OutlinedTextField(
+                    value = draftUrl,
+                    onValueChange = { draftUrl = it },
+                    label = { Text("ड्राफ्ट फाईल / प्रिव्ह्यू लिंक (Drive/Cloud/URL)*", color = TextMuted) },
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = SurfaceVariantLight,
+                        unfocusedContainerColor = SurfaceVariantLight,
+                        focusedTextColor = CharcoalBlack,
+                        unfocusedTextColor = CharcoalBlack
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                OutlinedTextField(
+                    value = draftNotes,
+                    onValueChange = { draftNotes = it },
+                    label = { Text("स्टुडिओ संदेश / टीप (Studio Notes to Client)", color = TextMuted) },
+                    minLines = 3,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = SurfaceVariantLight,
+                        unfocusedContainerColor = SurfaceVariantLight,
+                        focusedTextColor = CharcoalBlack,
+                        unfocusedTextColor = CharcoalBlack
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    if (draftUrl.isNotBlank()) {
+                        onDispatch(draftUrl, draftNotes)
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple)
+            ) {
+                Text("ड्राफ्ट पाठवा & Notify", color = StudioWhite, fontWeight = FontWeight.Bold)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel", color = TextMuted)
+            }
+        },
+        containerColor = CardBackgroundLight
+    )
+}
+
+@Composable
+fun DeliverFinalDialog(
+    order: AdOrder,
+    onDismiss: () -> Unit,
+    onDeliver: (finalFileUrl: String, finalDeliveryNotes: String) -> Unit
+) {
+    var finalUrl by remember { mutableStateOf(order.finalFileUrl.ifBlank { "https://drive.google.com/ktimes-deliveries/master-${order.id.take(8)}.zip" }) }
+    var deliveryNotes by remember { mutableStateOf(order.finalDeliveryNotes.ifBlank { "अंतिम मास्टर फाईल पॅकेज: 4K UHD Master + 320kbps WAV Studio Master + Instagram Reel 9:16 + Print CMYK 300DPI." }) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "अंतिम मास्टर फाईल डिलीव्हरी (Final Delivery)",
+                color = Color(0xFF2E7D32),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(
+                    text = "क्लायंट: ${order.clientName} (${order.serviceType})\nडिलिव्हर केल्यानंतर स्टेटस 'Delivered' (100%) होईल आणि क्लायंटला मास्टर डाउनलोड लिंक WhatsApp द्वारे पाठवली जाईल.",
+                    fontSize = 12.sp,
+                    color = TextMuted
+                )
+
+                OutlinedTextField(
+                    value = finalUrl,
+                    onValueChange = { finalUrl = it },
+                    label = { Text("अंतिम मास्टर डाउनलोड लिंक (Drive/DropBox/Zip URL)*", color = TextMuted) },
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = SurfaceVariantLight,
+                        unfocusedContainerColor = SurfaceVariantLight,
+                        focusedTextColor = CharcoalBlack,
+                        unfocusedTextColor = CharcoalBlack
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                OutlinedTextField(
+                    value = deliveryNotes,
+                    onValueChange = { deliveryNotes = it },
+                    label = { Text("डिलिव्हरी तपशील / फॉर्मेट चेकलिस्ट", color = TextMuted) },
+                    minLines = 3,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = SurfaceVariantLight,
+                        unfocusedContainerColor = SurfaceVariantLight,
+                        focusedTextColor = CharcoalBlack,
+                        unfocusedTextColor = CharcoalBlack
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    if (finalUrl.isNotBlank()) {
+                        onDeliver(finalUrl, deliveryNotes)
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32))
+            ) {
+                Text("Deliver Master & Complete", color = StudioWhite, fontWeight = FontWeight.Bold)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel", color = TextMuted)
+            }
+        },
+        containerColor = CardBackgroundLight
+    )
 }
 
 @Composable

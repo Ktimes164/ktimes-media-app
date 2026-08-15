@@ -1075,7 +1075,10 @@ fun OrdersScreenContent(
     var selectedBudget by remember { mutableStateOf("₹१,९९९") }
     var deadline by remember { mutableStateOf("३ दिवस") }
     var details by remember { mutableStateOf("") }
-    var orderTab by remember { mutableStateOf("NEW") } // "NEW", "MY_ORDERS"
+    var orderTab by remember { mutableStateOf("MY_ORDERS") } // "NEW", "MY_ORDERS"
+
+    var orderForRevision by remember { mutableStateOf<AdOrder?>(null) }
+    var orderForApproval by remember { mutableStateOf<AdOrder?>(null) }
 
     val serviceOptions = listOf(
         "ऑडिओ जाहिरात (Audio Ad)",
@@ -1449,111 +1452,530 @@ fun OrdersScreenContent(
                     }
                 }
             } else {
-                items(liveOrders) { order ->
-                    val statusColor = when (order.status) {
-                        "Delivered" -> Color(0xFF2E7D32)
-                        "Approval" -> Color(0xFFF57F17)
-                        "Production" -> PrimaryPurple
-                        "Confirmed", "Quotation Sent" -> Color(0xFF0288D1)
-                        "In Review", "Requirement Received" -> VibrantOrange
-                        else -> CrimsonRed
+                items(liveOrders, key = { it.id }) { order ->
+                    ClientProjectCard(
+                        order = order,
+                        onApproveDraft = { orderForApproval = order },
+                        onRequestRevision = { orderForRevision = order }
+                    )
+                }
+            }
+        }
+    }
+
+    // Client Revision Request Dialog
+    orderForRevision?.let { order ->
+        var revisionNotesText by remember { mutableStateOf("") }
+        AlertDialog(
+            onDismissRequest = { orderForRevision = null },
+            title = {
+                Text(
+                    text = "बदल / सुधारणा सुचवा (Request Revision)",
+                    color = VibrantOrange,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = "ऑर्डर ID: ${order.id} (${order.serviceType})\nचालू आवृत्ती: v${order.revisionCount + 1}",
+                        fontSize = 12.sp,
+                        color = TextMuted
+                    )
+                    Text(
+                        text = "व्हॉईस, संगीत, उच्चार किंवा व्हिज्युअल्समध्ये आपल्याला जे बदल हवे आहेत ते खाली लिहा:",
+                        fontSize = 12.sp,
+                        color = CharcoalBlack
+                    )
+                    OutlinedTextField(
+                        value = revisionNotesText,
+                        onValueChange = { revisionNotesText = it },
+                        label = { Text("उदा. व्हॉईसमध्ये नाव अधिक स्पष्ट करावे, फोन नंबर हळू बोला...", color = TextMuted) },
+                        minLines = 3,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = SurfaceVariantLight,
+                            unfocusedContainerColor = SurfaceVariantLight,
+                            focusedTextColor = CharcoalBlack,
+                            unfocusedTextColor = CharcoalBlack
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (revisionNotesText.isNotBlank()) {
+                            viewModel.submitClientRevision(order, revisionNotesText) {
+                                val msg = """
+                                    नमस्कार Ktimes Media,
+                                    मी ऑर्डर ID: ${order.id} (${order.serviceType}) च्या ड्राफ्टमध्ये खालील सुधारणा सुचवल्या आहेत:
+                                    
+                                    📝 सुधारणा:
+                                    $revisionNotesText
+                                    
+                                    कृपया दुरुस्ती करून नवीन ड्राफ्ट पाठवावा.
+                                """.trimIndent()
+                                IntentUtils.openWhatsAppDirectMessage(context, msg)
+                            }
+                            orderForRevision = null
+                        } else {
+                            Toast.makeText(context, "कृपया सुधारणा तपशील लिहा", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange)
+                ) {
+                    Text("सुधारणा सबमिट करा", color = StudioWhite, fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { orderForRevision = null }) {
+                    Text("रद्द करा", color = TextMuted)
+                }
+            },
+            containerColor = CardBackgroundLight
+        )
+    }
+
+    // Client Approval Confirmation Dialog
+    orderForApproval?.let { order ->
+        AlertDialog(
+            onDismissRequest = { orderForApproval = null },
+            title = {
+                Text(
+                    text = "कामास अंतिम मंजुरी द्यायची आहे का?",
+                    color = Color(0xFF2E7D32),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(
+                        text = "ऑर्डर ID: ${order.id} (${order.serviceType})",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp,
+                        color = CharcoalBlack
+                    )
+                    Text(
+                        text = "तुम्ही हा ड्राफ्ट मंजूर केल्यानंतर Ktimes Media ची प्रॉडक्शन टीम अंतिम 4K Ultra HD / 320kbps WAV मास्टर फाईल्स तयार करून तुम्हाला डाउनलोडसाठी उपलब्ध करेल.",
+                        fontSize = 12.sp,
+                        color = TextMuted
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.submitClientApproval(order) {
+                            val msg = """
+                                नमस्कार Ktimes Media,
+                                मी ऑर्डर ID: ${order.id} (${order.serviceType}) चा ड्राफ्ट तपासून मंजूर (Approved) केला आहे! ✅
+                                
+                                कृपया अंतिम मास्टर पॅकेज (4K / WAV / Print File) तयार करून पाठवावे.
+                            """.trimIndent()
+                            IntentUtils.openWhatsAppDirectMessage(context, msg)
+                        }
+                        orderForApproval = null
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32))
+                ) {
+                    Text("होय, ड्राफ्ट मंजूर करा (Approve)", color = StudioWhite, fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { orderForApproval = null }) {
+                    Text("रद्द करा", color = TextMuted)
+                }
+            },
+            containerColor = CardBackgroundLight
+        )
+    }
+}
+
+@Composable
+fun ClientProjectCard(
+    order: AdOrder,
+    onApproveDraft: () -> Unit,
+    onRequestRevision: () -> Unit
+) {
+    val context = LocalContext.current
+
+    val statusColor = when (order.status) {
+        "Delivered" -> Color(0xFF2E7D32)
+        "Approval" -> Color(0xFFF57F17)
+        "Production" -> PrimaryPurple
+        "Confirmed", "Quotation Sent" -> Color(0xFF0288D1)
+        "In Review", "Requirement Received" -> VibrantOrange
+        else -> CrimsonRed
+    }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .border(1.dp, CardBorderLight, RoundedCornerShape(16.dp)),
+        colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            // Header
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(6.dp))
+                                .background(statusColor)
+                                .padding(horizontal = 8.dp, vertical = 3.dp)
+                        ) {
+                            Text(
+                                text = order.status,
+                                color = StudioWhite,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Black
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(6.dp))
+                                .background(SurfaceVariantLight)
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                text = "PM: ${order.projectManager.ifBlank { "Ktimes Studio" }}",
+                                fontSize = 10.sp,
+                                color = PrimaryPurple,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
                     }
 
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(16.dp))
-                            .border(1.dp, CardBorderLight, RoundedCornerShape(16.dp)),
-                        colors = CardDefaults.cardColors(containerColor = CardBackgroundLight)
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.Top
-                            ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Box(
-                                        modifier = Modifier
-                                            .clip(RoundedCornerShape(6.dp))
-                                            .background(statusColor)
-                                            .padding(horizontal = 8.dp, vertical = 3.dp)
-                                    ) {
-                                        Text(
-                                            text = order.status,
-                                            color = StudioWhite,
-                                            fontSize = 11.sp,
-                                            fontWeight = FontWeight.Black
-                                        )
-                                    }
-                                    Spacer(modifier = Modifier.height(6.dp))
-                                    Text(
-                                        text = order.details.ifBlank { order.serviceType },
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 14.sp,
-                                        color = CharcoalBlack
-                                    )
-                                    Text(
-                                        text = "सेवा: ${order.serviceType} • ID: ${order.id}",
-                                        fontSize = 11.sp,
-                                        color = TextMuted
-                                    )
-                                    if (order.deadline.isNotBlank()) {
-                                        Text(
-                                            text = "मुदत: ${order.deadline}",
-                                            fontSize = 11.sp,
-                                            color = CharcoalBlack,
-                                            fontWeight = FontWeight.Medium
-                                        )
-                                    }
-                                }
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = order.details.ifBlank { order.serviceType },
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp,
+                        color = CharcoalBlack
+                    )
+                    Text(
+                        text = "सेवा: ${order.serviceType} • ID: ${order.id}",
+                        fontSize = 11.sp,
+                        color = TextMuted
+                    )
+                    if (order.deadline.isNotBlank()) {
+                        Text(
+                            text = "अपेक्षित मुदत: ${order.deadline}",
+                            fontSize = 11.sp,
+                            color = CharcoalBlack,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
 
+                Text(
+                    text = order.budget,
+                    fontWeight = FontWeight.Black,
+                    fontSize = 15.sp,
+                    color = CrimsonRed
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Project Milestone Stepper
+            ProjectMilestoneStepper(currentStatus = order.status, progress = order.progress)
+
+            // 1. DRAFT REVIEW & CLIENT APPROVAL / REVISION BOX
+            if (order.draftUrl.isNotBlank() || order.status in listOf("Approval", "Revision")) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .border(1.dp, PrimaryPurple.copy(alpha = 0.4f), RoundedCornerShape(12.dp)),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF7F3FC))
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = Icons.Default.Videocam,
+                                    contentDescription = null,
+                                    tint = PrimaryPurple,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = order.budget,
-                                    fontWeight = FontWeight.Black,
-                                    fontSize = 14.sp,
-                                    color = CrimsonRed
+                                    text = "🎬 ड्राफ्ट आवृत्ती v${order.revisionCount + 1} (Draft Review)",
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = PrimaryPurple
                                 )
                             }
 
-                            Spacer(modifier = Modifier.height(12.dp))
-
-                            // Progress Bar
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text("पाईपलाईन प्रगती (Progress)", fontSize = 11.sp, color = TextMuted)
-                                Text("${order.progress}%", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = PrimaryPurple)
+                            if (order.draftUrl.isNotBlank()) {
+                                Button(
+                                    onClick = { IntentUtils.openUrl(context, order.draftUrl) },
+                                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple),
+                                    contentPadding = PaddingValues(horizontal = 8.dp),
+                                    modifier = Modifier.height(30.dp)
+                                ) {
+                                    Text("▶️ प्रिव्ह्यू उघडा", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = StudioWhite)
+                                }
                             }
-                            Spacer(modifier = Modifier.height(4.dp))
-                            LinearProgressIndicator(
-                                progress = { order.progress / 100f },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(6.dp)
-                                    .clip(RoundedCornerShape(3.dp)),
-                                color = statusColor,
-                                trackColor = SurfaceVariantLight
+                        }
+
+                        if (order.draftNotes.isNotBlank()) {
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(
+                                text = "स्टुडिओ टीप: \"${order.draftNotes}\"",
+                                fontSize = 11.sp,
+                                color = CharcoalBlack,
+                                lineHeight = 15.sp
                             )
+                        }
 
-                            Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
 
-                            Button(
-                                onClick = {
-                                    val updateMsg = "नमस्कार Ktimes Media, माझ्या ऑर्डर ID: ${order.id} (${order.serviceType}) बद्दल अपडेट हवी आहे."
-                                    IntentUtils.openWhatsAppDirectMessage(context, updateMsg)
-                                },
-                                colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurpleLight),
-                                shape = RoundedCornerShape(8.dp),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(38.dp)
-                            ) {
-                                Text("WhatsApp वर अपडेट तपासा", color = StudioWhite, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        // Client Approval Status and Buttons
+                        when (order.clientApprovalStatus) {
+                            "APPROVED" -> {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(Color(0xFFE8F5E9))
+                                        .padding(8.dp)
+                                ) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Color(0xFF2E7D32), modifier = Modifier.size(16.dp))
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Text(
+                                            text = "✅ तुम्ही हा ड्राफ्ट मंजूर केला आहे! अंतिम फाईल्स तयार होत आहेत.",
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color(0xFF2E7D32)
+                                        )
+                                    }
+                                }
+                            }
+                            "REVISION_REQUESTED" -> {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(Color(0xFFFFF3E0))
+                                        .padding(8.dp)
+                                ) {
+                                    Column {
+                                        Text(
+                                            text = "🔄 दुरुस्ती विनंती नोंदवली गेली आहे (Revision Underway)",
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color(0xFFE65100)
+                                        )
+                                        if (order.revisionNotes.isNotBlank()) {
+                                            Text(
+                                                text = "सुधारणा टीप: \"${order.revisionNotes}\"",
+                                                fontSize = 11.sp,
+                                                color = CharcoalBlack
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                            else -> {
+                                // Action Buttons: Approve or Revision
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    Button(
+                                        onClick = onApproveDraft,
+                                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32)),
+                                        shape = RoundedCornerShape(8.dp),
+                                        contentPadding = PaddingValues(horizontal = 6.dp),
+                                        modifier = Modifier
+                                            .weight(1.2f)
+                                            .height(36.dp)
+                                    ) {
+                                        Text("✅ काम मंजूर करा", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = StudioWhite)
+                                    }
+
+                                    Button(
+                                        onClick = onRequestRevision,
+                                        colors = ButtonDefaults.buttonColors(containerColor = VibrantOrange),
+                                        shape = RoundedCornerShape(8.dp),
+                                        contentPadding = PaddingValues(horizontal = 6.dp),
+                                        modifier = Modifier
+                                            .weight(1.1f)
+                                            .height(36.dp)
+                                    ) {
+                                        Text("✏️ बदल सुचवा", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = StudioWhite)
+                                    }
+                                }
                             }
                         }
                     }
+                }
+            }
+
+            // 2. FINAL DELIVERABLES & DOWNLOAD CARD
+            if (order.finalFileUrl.isNotBlank() || order.status == "Delivered") {
+                Spacer(modifier = Modifier.height(12.dp))
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .border(1.5.dp, Color(0xFF2E7D32), RoundedCornerShape(12.dp)),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9))
+                ) {
+                    Column(modifier = Modifier.padding(14.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "🎉 अंतिम मास्टर फाईल्स तयार आहेत!",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Black,
+                                color = Color(0xFF1B5E20)
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(6.dp))
+                                    .background(Color(0xFF2E7D32))
+                                    .padding(horizontal = 6.dp, vertical = 2.dp)
+                            ) {
+                                Text("100% Complete", color = StudioWhite, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            text = "🎬 4K UHD Master • 🔊 320kbps WAV • 📐 CMYK Print 300DPI • 📱 Vertical Reels",
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = PrimaryPurple
+                        )
+
+                        if (order.finalDeliveryNotes.isNotBlank()) {
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(
+                                text = order.finalDeliveryNotes,
+                                fontSize = 11.sp,
+                                color = CharcoalBlack
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Button(
+                            onClick = {
+                                if (order.finalFileUrl.isNotBlank()) {
+                                    IntentUtils.openUrl(context, order.finalFileUrl)
+                                } else {
+                                    Toast.makeText(context, "फाईल लिंक लवकरच अपडेट होईल", Toast.LENGTH_SHORT).show()
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32)),
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(40.dp)
+                        ) {
+                            Text("📥 अंतिम मास्टर फाईल्स डाउनलोड करा", color = StudioWhite, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Direct WhatsApp Support & Enquiry Button
+            Button(
+                onClick = {
+                    val updateMsg = "नमस्कार Ktimes Media, माझ्या प्रोजेक्ट ID: ${order.id} (${order.serviceType}) बद्दल माहिती हवी आहे."
+                    IntentUtils.openWhatsAppDirectMessage(context, updateMsg)
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurpleLight),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(36.dp)
+            ) {
+                Text("WhatsApp वर स्टुडिओशी संपर्क", color = StudioWhite, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            }
+        }
+    }
+}
+
+@Composable
+fun ProjectMilestoneStepper(
+    currentStatus: String,
+    progress: Int
+) {
+    val steps = listOf(
+        "नोंदणी" to 15,
+        "प्रॉडक्शन" to 60,
+        "ड्राफ्ट रिव्ह्यू" to 85,
+        "अंतिम डिलिव्हरी" to 100
+    )
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("प्रकल्प प्रगती (Project Pipeline)", fontSize = 11.sp, color = TextMuted)
+            Text("$progress%", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = PrimaryPurple)
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+        LinearProgressIndicator(
+            progress = { progress / 100f },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(6.dp)
+                .clip(RoundedCornerShape(3.dp)),
+            color = if (progress >= 100) Color(0xFF2E7D32) else PrimaryPurple,
+            trackColor = SurfaceVariantLight
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            steps.forEach { (label, minProg) ->
+                val isCompleted = progress >= minProg
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(10.dp)
+                            .clip(CircleShape)
+                            .background(if (isCompleted) Color(0xFF2E7D32) else TextMuted.copy(alpha = 0.4f))
+                    )
+                    Spacer(modifier = Modifier.width(3.dp))
+                    Text(
+                        text = label,
+                        fontSize = 9.sp,
+                        fontWeight = if (isCompleted) FontWeight.Bold else FontWeight.Normal,
+                        color = if (isCompleted) CharcoalBlack else TextMuted
+                    )
                 }
             }
         }

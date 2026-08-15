@@ -68,6 +68,21 @@ object IntentUtils {
         }
     }
 
+    fun openUrl(context: Context, url: String) {
+        if (url.isBlank()) return
+        try {
+            val validUrl = if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                "https://$url"
+            } else {
+                url
+            }
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(validUrl))
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(context, "लिंक उघडता आली नाही: $url", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     fun shareItem(context: Context, item: MediaItem) {
         val shareText = """
             Check out this portfolio sample from Ktimes Media:

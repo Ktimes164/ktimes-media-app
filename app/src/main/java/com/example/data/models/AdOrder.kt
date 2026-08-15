@@ -10,13 +10,21 @@ data class AdOrder(
     val budget: String = "",
     val details: String = "",
     val location: String = "Satara",
-    val status: String = "New Lead", // "New Lead", "Requirement Received", "Quotation Sent", "Production", "Approval", "Delivered"
+    val status: String = "New Lead", // "New Lead", "In Review", "Confirmed", "Production", "Approval", "Revision", "Delivered"
     val progress: Int = 15,
     val draftUrl: String = "",
+    val draftNotes: String = "",
+    val draftUpdatedAt: Long = 0L,
     val finalFileUrl: String = "",
+    val finalDeliveryNotes: String = "",
+    val deliveredAt: Long = 0L,
     val revisionNotes: String = "",
+    val revisionCount: Int = 0,
+    val clientApprovalStatus: String = "PENDING", // "PENDING", "APPROVED", "REVISION_REQUESTED"
+    val clientApprovedAt: Long = 0L,
     val timestamp: Long = System.currentTimeMillis(),
-    val deadline: String = "३ दिवस"
+    val deadline: String = "३ दिवस",
+    val projectManager: String = "Ktimes Creative Studio"
 ) {
     fun toMap(): Map<String, Any> {
         return mapOf(
@@ -32,10 +40,18 @@ data class AdOrder(
             "status" to status,
             "progress" to progress,
             "draftUrl" to draftUrl,
+            "draftNotes" to draftNotes,
+            "draftUpdatedAt" to draftUpdatedAt,
             "finalFileUrl" to finalFileUrl,
+            "finalDeliveryNotes" to finalDeliveryNotes,
+            "deliveredAt" to deliveredAt,
             "revisionNotes" to revisionNotes,
+            "revisionCount" to revisionCount,
+            "clientApprovalStatus" to clientApprovalStatus,
+            "clientApprovedAt" to clientApprovedAt,
             "timestamp" to timestamp,
-            "deadline" to deadline
+            "deadline" to deadline,
+            "projectManager" to projectManager
         )
     }
 
@@ -54,10 +70,18 @@ data class AdOrder(
                 status = map["status"] as? String ?: "New Lead",
                 progress = (map["progress"] as? Number)?.toInt() ?: 15,
                 draftUrl = map["draftUrl"] as? String ?: "",
+                draftNotes = map["draftNotes"] as? String ?: "",
+                draftUpdatedAt = (map["draftUpdatedAt"] as? Number)?.toLong() ?: 0L,
                 finalFileUrl = map["finalFileUrl"] as? String ?: "",
+                finalDeliveryNotes = map["finalDeliveryNotes"] as? String ?: "",
+                deliveredAt = (map["deliveredAt"] as? Number)?.toLong() ?: 0L,
                 revisionNotes = map["revisionNotes"] as? String ?: "",
+                revisionCount = (map["revisionCount"] as? Number)?.toInt() ?: 0,
+                clientApprovalStatus = map["clientApprovalStatus"] as? String ?: "PENDING",
+                clientApprovedAt = (map["clientApprovedAt"] as? Number)?.toLong() ?: 0L,
                 timestamp = (map["timestamp"] as? Number)?.toLong() ?: System.currentTimeMillis(),
-                deadline = map["deadline"] as? String ?: "३ दिवस"
+                deadline = map["deadline"] as? String ?: "३ दिवस",
+                projectManager = map["projectManager"] as? String ?: "Ktimes Creative Studio"
             )
         }
     }

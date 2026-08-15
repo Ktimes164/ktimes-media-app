@@ -336,6 +336,36 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun dispatchDraft(orderId: String, draftUrl: String, draftNotes: String) {
+        viewModelScope.launch {
+            firestoreService.dispatchDraft(orderId, draftUrl, draftNotes)
+            adminMessage.value = "Draft dispatched for $orderId! Client notified for approval."
+        }
+    }
+
+    fun dispatchFinalDelivery(orderId: String, finalFileUrl: String, finalDeliveryNotes: String) {
+        viewModelScope.launch {
+            firestoreService.dispatchFinalDelivery(orderId, finalFileUrl, finalDeliveryNotes)
+            adminMessage.value = "Final master package delivered for $orderId!"
+        }
+    }
+
+    fun submitClientApproval(order: AdOrder, onComplete: () -> Unit = {}) {
+        viewModelScope.launch {
+            firestoreService.submitClientApproval(order.id)
+            adminMessage.value = "Order ${order.id} approved by client! Preparing final master files."
+            onComplete()
+        }
+    }
+
+    fun submitClientRevision(order: AdOrder, revisionNotes: String, onComplete: () -> Unit = {}) {
+        viewModelScope.launch {
+            firestoreService.submitClientRevision(order.id, order.revisionCount, revisionNotes)
+            adminMessage.value = "Revision request submitted for ${order.id}."
+            onComplete()
+        }
+    }
+
     fun updateOrderStatus(
         orderId: String,
         newStatus: String,
