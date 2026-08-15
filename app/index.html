@@ -7,7 +7,7 @@
 
     <!-- PWA & Web App Manifest -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0B132B">
+    <meta name="theme-color" content="#1e0b36">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -21,21 +21,21 @@
             theme: {
                 extend: {
                     colors: {
-                        navyDark: '#0A1128',
-                        navyCard: '#101B3B',
-                        navyBorder: '#1C2D5A',
-                        brandPurple: '#673AB7',
-                        brandPurpleDark: '#512DA8',
-                        brandPurpleLight: '#7E57C2',
-                        brandWhatsapp: '#075E54',
-                        brandWhatsappHover: '#05473f',
-                        brandOrange: '#FF5722',
-                        brandRed: '#D32F2F',
-                        brandBlue: '#1E88E5',
-                        brandYellow: '#FFC107',
-                        brandYellowHover: '#FFB300',
-                        accentGold: '#FFD700',
-                        accentCyan: '#00F0FF'
+                        royalPurpleDark: '#1e0b36',
+                        royalPurple: '#2a0845',
+                        royalPurpleLight: '#3d1263',
+                        crimsonRed: '#c41e3a',
+                        crimsonDark: '#b30000',
+                        vividOrange: '#f59e0b',
+                        goldenYellow: '#fbbf24',
+                        whatsappGreen: '#25D366',
+                        whatsappDark: '#075E54',
+                        brandPurple: '#7c3aed',
+                        brandPurpleDark: '#5b21b6',
+                        brandPurpleLight: '#a78bfa',
+                        navyDark: '#120724',
+                        navyCard: '#1a0d2e',
+                        navyBorder: '#341a54'
                     }
                 }
             }
@@ -50,7 +50,7 @@
     <style>
         body {
             font-family: 'Baloo 2', 'Inter', sans-serif;
-            background-color: #0A1128;
+            background-color: #120724;
             color: #F8FAFC;
             font-size: 16px;
         }
@@ -61,19 +61,19 @@
             animation: pulse-wa-anim 2s infinite;
         }
         @keyframes pulse-wa-anim {
-            0% { box-shadow: 0 0 0 0 rgba(7, 94, 84, 0.7); }
-            70% { box-shadow: 0 0 0 14px rgba(7, 94, 84, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(7, 94, 84, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
         .glass-nav {
-            background: rgba(10, 17, 40, 0.95);
+            background: linear-gradient(135deg, rgba(30, 11, 54, 0.98) 0%, rgba(42, 8, 69, 0.98) 100%);
             backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(196, 30, 58, 0.25);
         }
         .glass-bottom {
-            background: rgba(10, 17, 40, 0.96);
+            background: linear-gradient(180deg, rgba(30, 11, 54, 0.98) 0%, rgba(18, 7, 36, 0.99) 100%);
             backdrop-filter: blur(14px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(196, 30, 58, 0.25);
         }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -82,44 +82,51 @@
         .ar-9-16 { aspect-ratio: 9 / 16; }
         .ar-1-1 { aspect-ratio: 1 / 1; }
 
-        /* Social colors */
-        .social-ig { color: #E1306C; }
-        .social-fb { color: #1877F2; }
-        .social-yt { color: #FF0000; }
-        .social-tg { color: #24A1DE; }
-        .social-x  { color: #F8FAFC; }
-        .social-li { color: #0A66C2; }
+        .badge-crimson {
+            background-color: #c41e3a;
+            color: #ffffff;
+        }
+        .btn-golden {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            color: #0f172a;
+            font-weight: 800;
+        }
+        .btn-golden:hover {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+        }
     </style>
 </head>
 <body class="bg-navyDark text-slate-100 pb-24 min-h-screen flex flex-col antialiased selection:bg-brandPurple selection:text-white">
 
-    <!-- Top Topbar / Sub-Header -->
-    <div class="bg-slate-950/80 border-b border-slate-800 text-xs py-2 px-4">
+    <!-- Top Sub-Header -->
+    <div class="bg-[#17082c] border-b border-[#2d124d] text-xs py-2 px-4">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-3 overflow-x-auto no-scrollbar py-0.5">
-                <span class="text-slate-400 font-bold hidden sm:inline"><i class="fas fa-bullhorn text-brandYellow mr-1"></i>KTimes Business Club</span>
-                <span class="bg-brandPurple/30 text-purple-300 border border-purple-500/40 px-2 py-0.5 rounded-full text-[11px] font-semibold">
+                <span class="badge-crimson px-2.5 py-0.5 rounded-full text-[11px] font-black tracking-wide flex items-center gap-1 shadow-sm">
+                    <i class="fas fa-bullhorn text-goldenYellow mr-0.5"></i> विशेष ऑफर
+                </span>
+                <span class="bg-royalPurpleLight/80 text-purple-200 border border-purple-500/30 px-2.5 py-0.5 rounded-full text-[11px] font-semibold">
                     सातारा • फलटण • बारामती • पुणे
                 </span>
             </div>
 
-            <!-- Role Selector & Quick Switcher -->
+            <!-- Role Selector & Quick Switcher (PIN Protected) -->
             <div class="flex items-center gap-2.5">
-                <div class="flex items-center bg-slate-900 border border-slate-700 rounded-lg p-0.5 text-xs">
+                <div class="flex items-center bg-[#1e0b36] border border-[#3b1766] rounded-lg p-0.5 text-xs">
                     <span class="text-slate-400 px-2 py-0.5 font-bold hidden xs:inline">Role:</span>
                     <button onclick="switchUserRole('client')" id="roleBtnClient" class="px-2.5 py-1 rounded font-bold transition bg-brandPurple text-white shadow-sm">
                         Client
                     </button>
                     <button onclick="switchUserRole('staff')" id="roleBtnStaff" class="px-2.5 py-1 rounded font-bold transition text-slate-400 hover:text-white">
-                        Staff
+                        Staff 🔒
                     </button>
                     <button onclick="switchUserRole('admin')" id="roleBtnAdmin" class="px-2.5 py-1 rounded font-bold transition text-slate-400 hover:text-white">
-                        Admin
+                        Admin 🔒
                     </button>
                 </div>
 
                 <!-- Language Switcher -->
-                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-lg px-2 py-1 font-bold outline-none focus:border-brandPurple">
+                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-[#1e0b36] border border-[#3b1766] text-slate-200 text-xs rounded-lg px-2 py-1 font-bold outline-none focus:border-brandPurple">
                     <option value="mr">मराठी</option>
                     <option value="hi">हिंदी</option>
                     <option value="en">English</option>
@@ -133,39 +140,39 @@
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
             <!-- Brand Logo -->
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchNav('home')">
-                <div class="w-11 h-11 md:w-12 md:h-12 rounded-2xl bg-gradient-to-tr from-brandPurple to-purple-600 p-0.5 shadow-md flex items-center justify-center shrink-0">
-                    <div class="w-full h-full bg-slate-950 rounded-2xl flex items-center justify-center font-black text-brandYellow text-2xl">
+                <div class="w-11 h-11 md:w-12 md:h-12 rounded-2xl bg-gradient-to-tr from-crimsonRed via-brandPurple to-goldenYellow p-0.5 shadow-md flex items-center justify-center shrink-0">
+                    <div class="w-full h-full bg-[#1e0b36] rounded-2xl flex items-center justify-center font-black text-goldenYellow text-2xl">
                         K
                     </div>
                 </div>
                 <div>
                     <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                        KTimes Media <span class="text-[10px] md:text-xs bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black px-2 py-0.5 rounded shadow">BUSINESS CLUB</span>
+                        KTimes Media <span class="text-[10px] md:text-xs bg-gradient-to-r from-goldenYellow to-vividOrange text-slate-950 font-black px-2 py-0.5 rounded shadow">BUSINESS CLUB</span>
                     </h1>
-                    <p class="text-[11px] md:text-xs text-slate-400 font-medium">तुमच्या व्यवसायाच्या जाहिरातीचं एक Digital घर</p>
+                    <p class="text-[11px] md:text-xs text-purple-200 font-medium">तुमच्या व्यवसायाच्या जाहिरातीचं एक Digital घर</p>
                 </div>
             </div>
 
             <!-- Header Quick Actions -->
             <div class="flex items-center gap-2 md:gap-3">
                 <!-- Notifications Bell -->
-                <button onclick="openNotificationModal()" class="relative p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 transition">
+                <button onclick="openNotificationModal()" class="relative p-2.5 rounded-xl bg-[#2a0845] hover:bg-[#3d1263] border border-[#4c187b] text-slate-200 transition">
                     <i class="fas fa-bell text-lg"></i>
-                    <span id="notifBadge" class="absolute -top-1 -right-1 bg-brandRed text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900">
+                    <span id="notifBadge" class="absolute -top-1 -right-1 bg-crimsonRed text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#1e0b36]">
                         3
                     </span>
                 </button>
 
                 <!-- AI Assistant Trigger Button -->
-                <button onclick="openAiAssistantModal()" class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-3 py-2 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5 shadow-md">
-                    <i class="fas fa-robot text-brandYellow animate-pulse"></i>
+                <button onclick="openAiAssistantModal()" class="bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 hover:to-indigo-600 text-white px-3 py-2 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5 shadow-md border border-purple-500/30">
+                    <i class="fas fa-robot text-goldenYellow animate-pulse"></i>
                     <span class="hidden md:inline">AI Marketing Assistant</span>
                     <span class="md:hidden">AI</span>
                 </button>
 
                 <!-- Primary CTA: "जाहिरात मागवा" (Order Ad) -->
-                <button onclick="openAdRequestModal()" class="bg-gradient-to-r from-brandPurple to-purple-600 hover:from-brandPurpleDark hover:to-purple-700 text-white px-4 py-2 rounded-xl text-xs md:text-sm font-extrabold transition flex items-center gap-1.5 shadow-lg shadow-purple-900/30">
-                    <i class="fas fa-plus-circle text-brandYellow"></i>
+                <button onclick="openAdRequestModal()" class="btn-golden px-4 py-2 rounded-xl text-xs md:text-sm font-black transition flex items-center gap-1.5 shadow-lg shadow-amber-900/30 hover:scale-105">
+                    <i class="fas fa-paper-plane text-slate-950"></i>
                     <span>जाहिरात मागवा</span>
                 </button>
             </div>
@@ -181,35 +188,38 @@
         <div id="viewClientHome" class="space-y-6">
             
             <!-- Greeting & Quick Status Card -->
-            <div class="bg-gradient-to-r from-slate-900 via-navyCard to-slate-900 rounded-3xl border border-slate-800 p-5 md:p-7 relative overflow-hidden shadow-2xl">
-                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-brandPurple/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="bg-gradient-to-r from-[#1e0b36] via-[#2a0845] to-[#1e0b36] rounded-3xl border border-[#431770] p-5 md:p-7 relative overflow-hidden shadow-2xl">
+                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-crimsonRed/15 rounded-full blur-3xl pointer-events-none"></div>
                 
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
                     <div>
-                        <div class="flex items-center gap-2 mb-2">
+                        <div class="flex flex-wrap items-center gap-2 mb-2">
                             <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-0.5 rounded-full text-xs font-bold flex items-center gap-1.5">
                                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                                 Active Business Club Member
                             </span>
-                            <span id="clientCategoryBadge" class="bg-purple-900/60 text-purple-200 text-xs px-2.5 py-0.5 rounded-full font-semibold">
+                            <span class="badge-crimson text-xs px-2.5 py-0.5 rounded-full font-bold shadow-sm">
+                                जाहिरात मार्केटप्लेस
+                            </span>
+                            <span id="clientCategoryBadge" class="bg-purple-900/60 text-purple-200 text-xs px-2.5 py-0.5 rounded-full font-semibold border border-purple-500/30">
                                 Jewellers • सातारा
                             </span>
                         </div>
                         <h2 class="text-2xl md:text-3xl font-black text-white flex items-center gap-2">
-                            नमस्कार, <span id="clientBusinessNameText" class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-yellow-400">Ganesh Jewellers</span> 👋
+                            नमस्कार, <span id="clientBusinessNameText" class="text-transparent bg-clip-text bg-gradient-to-r from-goldenYellow via-amber-300 to-goldenYellow">Ganesh Jewellers</span> 👋
                         </h2>
-                        <p class="text-slate-400 text-sm mt-1 max-w-xl">
+                        <p class="text-purple-200 text-sm mt-1 max-w-xl">
                             तुमच्या दुकानाची व व्यवसायाची विक्री वाढवण्यासाठी KTimes Media ची क्रिएटिव्ह टीम नेहमी तत्पर आहे.
                         </p>
                     </div>
 
                     <!-- Action Banner Button -->
                     <div class="flex flex-wrap items-center gap-3">
-                        <button onclick="openAdRequestModal()" class="bg-brandYellow hover:bg-brandYellowHover text-slate-950 font-black px-6 py-3 rounded-2xl text-sm md:text-base shadow-xl flex items-center gap-2 transition hover:scale-105">
-                            <i class="fas fa-paper-plane text-brandPurple"></i>
+                        <button onclick="openAdRequestModal()" class="btn-golden px-6 py-3 rounded-2xl text-sm md:text-base shadow-xl flex items-center gap-2 transition hover:scale-105">
+                            <i class="fas fa-paper-plane text-slate-950"></i>
                             <span>नवीन काम द्या / जाहिरात मागवा</span>
                         </button>
-                        <a href="https://wa.me/919422337471?text=नमस्कार%20KTimes%20Media,%20मला%20माझ्या%20व्यवसायासाठी%20जाहिरात%20करायची%20आहे." target="_blank" class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white font-bold px-4 py-3 rounded-2xl text-sm flex items-center gap-2 transition">
+                        <a href="https://wa.me/919422337471?text=नमस्कार%20KTimes%20Media,%20मला%20माझ्या%20व्यवसायासाठी%20जाहिरात%20करायची%20आहे." target="_blank" class="bg-[#25D366] hover:bg-[#1ebc59] text-slate-950 font-black px-4 py-3 rounded-2xl text-sm flex items-center gap-2 transition shadow-lg">
                             <i class="fab fa-whatsapp text-lg"></i>
                             <span>WhatsApp</span>
                         </a>
@@ -217,76 +227,81 @@
                 </div>
 
                 <!-- Loyalty / Rewards Mini Banner -->
-                <div class="mt-5 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs md:text-sm">
+                <div class="mt-5 pt-4 border-t border-[#3b1766] flex flex-wrap items-center justify-between gap-3 text-xs md:text-sm">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-amber-400/20 text-brandYellow flex items-center justify-center font-bold">
+                        <div class="w-8 h-8 rounded-full bg-goldenYellow/20 text-goldenYellow flex items-center justify-center font-bold">
                             <i class="fas fa-coins"></i>
                         </div>
                         <div>
                             <span class="text-slate-300 font-semibold">KTimes Rewards Points:</span>
-                            <span class="text-brandYellow font-extrabold ml-1 text-base">450 pts</span>
-                            <span class="text-slate-500 text-xs ml-2">(१ मोफत Festival Banner साठी पात्र!)</span>
+                            <span class="text-goldenYellow font-extrabold ml-1 text-base">450 pts</span>
+                            <span class="text-purple-300 text-xs ml-2">(१ मोफत Festival Banner साठी पात्र!)</span>
                         </div>
                     </div>
-                    <button onclick="switchNav('rewards')" class="text-brandYellow hover:underline font-bold">
+                    <button onclick="switchNav('rewards')" class="text-goldenYellow hover:underline font-bold">
                         रिडीम करा व ऑफर्स पहा →
                     </button>
                 </div>
             </div>
 
-            <!-- Quick Actions Grid (Swiggy / Instagram Style Quick Tap) -->
+            <!-- Quick Actions Grid (Marketplace Icons & Fast Order) -->
             <div>
-                <h3 class="text-base md:text-lg font-bold text-white mb-3 flex items-center gap-2">
-                    <i class="fas fa-bolt text-brandYellow"></i>
-                    <span>Quick Actions (झटपट मागवा)</span>
-                </h3>
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-base md:text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fas fa-bolt text-goldenYellow"></i>
+                        <span>Quick Actions (झटपट मागवा)</span>
+                    </h3>
+                    <span class="badge-crimson text-[11px] font-bold px-2 py-0.5 rounded-full">
+                        हॉट स्पॉट्स 🔥
+                    </span>
+                </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                    <div onclick="quickOrderService('Video')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
-                        <div class="w-12 h-12 rounded-2xl bg-purple-600/20 text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
+                    <div onclick="quickOrderService('व्हिडिओ जाहिराती (Commercial Video Ads)')" class="bg-[#1a0d2e] hover:bg-[#251342] border border-[#3b1766] hover:border-goldenYellow/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-purple-600/20 text-purple-300 group-hover:bg-brandPurple group-hover:text-white transition flex items-center justify-center text-xl mb-2">
                             🎬
                         </div>
-                        <span class="text-sm font-bold text-slate-200">जाहिरात मागवा</span>
-                        <span class="text-[11px] text-slate-400 mt-0.5">Commercial Ad</span>
+                        <span class="text-sm font-bold text-slate-100">व्हिडिओ जाहिराती</span>
+                        <span class="text-[11px] text-purple-300 mt-0.5">Commercial 4K</span>
                     </div>
 
-                    <div onclick="quickOrderService('Audio Jingle')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
-                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 group-hover:bg-amber-500 group-hover:text-slate-950 transition flex items-center justify-center text-xl mb-2">
+                    <div onclick="quickOrderService('ऑडिओ व जिगल्स (Audio Jingles & FM)')" class="bg-[#1a0d2e] hover:bg-[#251342] border border-[#3b1766] hover:border-goldenYellow/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-goldenYellow group-hover:bg-amber-500 group-hover:text-slate-950 transition flex items-center justify-center text-xl mb-2">
                             🎙️
                         </div>
-                        <span class="text-sm font-bold text-slate-200">Audio Jingle</span>
-                        <span class="text-[11px] text-slate-400 mt-0.5">FM व रिक्षा प्रचार</span>
+                        <span class="text-sm font-bold text-slate-100">ऑडिओ व जिगल्स</span>
+                        <span class="text-[11px] text-purple-300 mt-0.5">FM व रिक्षा प्रचार</span>
                     </div>
 
-                    <div onclick="quickOrderService('Banner')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
+                    <div onclick="quickOrderService('बॅनर्स व फ्लेक्स (Banners & Flex Graphics)')" class="bg-[#1a0d2e] hover:bg-[#251342] border border-[#3b1766] hover:border-goldenYellow/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-rose-600/20 text-rose-300 group-hover:bg-crimsonRed group-hover:text-white transition flex items-center justify-center text-xl mb-2">
                             🖼️
                         </div>
-                        <span class="text-sm font-bold text-slate-200">Banner बनवा</span>
-                        <span class="text-[11px] text-slate-400 mt-0.5">सण व ऑफर डिझाइन</span>
+                        <span class="text-sm font-bold text-slate-100">बॅनर्स व फ्लेक्स</span>
+                        <span class="text-[11px] text-purple-300 mt-0.5">सण व ऑफर डिझाइन</span>
                     </div>
 
-                    <div onclick="quickOrderService('AI Video')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
-                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
+                    <div onclick="quickOrderService('AI स्टुडिओ (AI Cinematic Ads & Anchor)')" class="bg-[#1a0d2e] hover:bg-[#251342] border border-[#3b1766] hover:border-goldenYellow/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-600/20 text-indigo-300 group-hover:bg-indigo-600 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
                             🤖
                         </div>
-                        <span class="text-sm font-bold text-slate-200">AI Video बनवा</span>
-                        <span class="text-[11px] text-slate-400 mt-0.5">Next-Gen AI Ads</span>
+                        <span class="text-sm font-bold text-slate-100">AI स्टुडिओ</span>
+                        <span class="text-[11px] text-purple-300 mt-0.5">Next-Gen AI Ads</span>
                     </div>
 
-                    <div onclick="quickOrderService('Reel')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
-                        <div class="w-12 h-12 rounded-2xl bg-pink-500/20 text-pink-400 group-hover:bg-pink-500 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
+                    <div onclick="quickOrderService('सोशल मीडिया रील्स (Instagram / FB 9:16)')" class="bg-[#1a0d2e] hover:bg-[#251342] border border-[#3b1766] hover:border-goldenYellow/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-pink-600/20 text-pink-300 group-hover:bg-pink-600 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
                             📱
                         </div>
-                        <span class="text-sm font-bold text-slate-200">Social Reel</span>
-                        <span class="text-[11px] text-slate-400 mt-0.5">Insta/FB 9:16</span>
+                        <span class="text-sm font-bold text-slate-100">सोशल रील्स</span>
+                        <span class="text-[11px] text-purple-300 mt-0.5">Insta/FB 9:16</span>
                     </div>
 
-                    <div onclick="quickOrderService('Festival Campaign')" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
+                    <div onclick="quickOrderService('३६०° फेस्टिव्हल कॅम्पेन (360 Campaign)')" class="bg-[#1a0d2e] hover:bg-[#251342] border border-[#3b1766] hover:border-goldenYellow/50 p-4 rounded-2xl cursor-pointer transition flex flex-col items-center text-center group shadow-md">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-600/20 text-emerald-300 group-hover:bg-emerald-600 group-hover:text-white transition flex items-center justify-center text-xl mb-2">
                             📢
                         </div>
-                        <span class="text-sm font-bold text-slate-200">Campaign सुरू करा</span>
-                        <span class="text-[11px] text-slate-400 mt-0.5">Full 360° Package</span>
+                        <span class="text-sm font-bold text-slate-100">३६०° कॅम्पेन</span>
+                        <span class="text-[11px] text-purple-300 mt-0.5">All-in-One Package</span>
                     </div>
                 </div>
             </div>
@@ -296,9 +311,9 @@
                 <div class="flex items-center justify-between mb-3">
                     <h3 class="text-base md:text-lg font-bold text-white flex items-center gap-2">
                         <i class="fas fa-tasks text-brandPurpleLight"></i>
-                        <span>चालू प्रोजेक्ट्स (Active Projects)</span>
+                        <span>चालू प्रोजेक्ट्स (Active Projects & Drafts)</span>
                     </h3>
-                    <button onclick="switchNav('mywork')" class="text-xs text-brandPurpleLight hover:text-white font-bold">
+                    <button onclick="switchNav('mywork')" class="text-xs text-goldenYellow hover:underline font-bold">
                         सर्व पहा (View All) →
                     </button>
                 </div>
@@ -308,35 +323,35 @@
                 </div>
             </div>
 
-            <!-- Smart Repeat Order & Festival Recommendations Engine -->
-            <div class="bg-gradient-to-r from-purple-950/60 to-slate-900 border border-purple-900/50 p-5 rounded-3xl relative overflow-hidden shadow-lg">
+            <!-- Smart Recommendation Banner (16:9 Banner Style) -->
+            <div class="bg-gradient-to-r from-[#2a0845] via-[#1e0b36] to-[#2a0845] border border-crimsonRed/30 p-5 rounded-3xl relative overflow-hidden shadow-lg">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div class="space-y-1.5">
-                        <div class="inline-flex items-center gap-1.5 bg-amber-400/20 text-brandYellow text-xs px-3 py-0.5 rounded-full font-bold">
-                            <i class="fas fa-sparkles"></i>
-                            <span>तुमच्यासाठी Smart Recommendation</span>
+                        <div class="inline-flex items-center gap-1.5 badge-crimson text-xs px-3 py-0.5 rounded-full font-bold shadow">
+                            <i class="fas fa-sparkles text-goldenYellow"></i>
+                            <span>विशेष ऑफर & Recommendation</span>
                         </div>
                         <h4 id="smartRecTitle" class="text-lg font-extrabold text-white">
                             गणेशोत्सव व सणासुदीसाठी नवीन ज्वेलरी व्हिडिओ आणि बॅनर पॅकेज
                         </h4>
-                        <p id="smartRecDesc" class="text-xs md:text-sm text-slate-300 max-w-2xl">
-                            तुमची मागील जाहिरात 'अक्षय्य तृतीया प्रोमो' खूप यशस्वी ठरली होती. पुढील उत्सवासाठी आताच बुकींग केल्यास ३०% सूट आणि प्राधान्य डिलिव्हरी मिळेल.
+                        <p id="smartRecDesc" class="text-xs md:text-sm text-purple-200 max-w-2xl">
+                            तुमची मागील जाहिरात खूप यशस्वी ठरली होती. आगामी सणांसाठी आताच बुकींग केल्यास ३०% सवलत आणि प्राधान्य डिलिव्हरी मिळेल.
                         </p>
                     </div>
-                    <button onclick="quickOrderService('Festival Campaign')" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold shrink-0 shadow-md">
+                    <button onclick="quickOrderService('गणेशोत्सव विशेष कॉम्बो पॅकेज')" class="btn-golden px-5 py-2.5 rounded-xl text-xs md:text-sm font-black shrink-0 shadow-md">
                         ऑफर मागवा
                     </button>
                 </div>
             </div>
 
-            <!-- Featured Offers Carousel / Grid -->
+            <!-- Featured Offers Section -->
             <div>
                 <div class="flex items-center justify-between mb-3">
                     <h3 class="text-base md:text-lg font-bold text-white flex items-center gap-2">
-                        <i class="fas fa-tags text-brandYellow"></i>
+                        <i class="fas fa-tags text-goldenYellow"></i>
                         <span>आजच्या Special Offers</span>
                     </h3>
-                    <button onclick="switchNav('offers')" class="text-xs text-brandYellow hover:underline font-bold">
+                    <button onclick="switchNav('offers')" class="text-xs text-goldenYellow hover:underline font-bold">
                         सर्व ऑफर्स पहा →
                     </button>
                 </div>
@@ -369,38 +384,38 @@
         <!-- ========================================================================= -->
         <div id="viewMarketplace" class="space-y-6 hidden">
             <!-- Header -->
-            <div class="bg-gradient-to-r from-navyCard to-slate-900 p-6 rounded-3xl border border-slate-800">
+            <div class="bg-gradient-to-r from-[#1e0b36] to-[#2a0845] p-6 rounded-3xl border border-[#3b1766]">
                 <div class="max-w-2xl">
-                    <span class="bg-brandPurple/30 text-purple-300 text-xs px-3 py-1 rounded-full font-bold">
-                        KTimes Advertising Store
+                    <span class="badge-crimson text-xs px-3 py-1 rounded-full font-bold shadow">
+                        जाहिरात मार्केटप्लेस
                     </span>
                     <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">
                         निवडा तुमची मनपसंत जाहिरात सेवा
                     </h2>
-                    <p class="text-sm text-slate-400 mt-1">
-                        व्यवसायाचा प्रकार निवडा, सॅम्पल पहा आणि १-क्लिक मध्ये थेट ऑर्डर नोंदवा.
+                    <p class="text-sm text-purple-200 mt-1">
+                        व्यवसायाचा प्रकार निवडा, सॅम्पल पहा आणि थेट WhatsApp वर ऑर्डर नोंदवा.
                     </p>
                 </div>
 
                 <!-- Service Category Filter Pills -->
                 <div class="flex items-center gap-2 overflow-x-auto no-scrollbar mt-4 pt-2" id="storeFilterContainer">
-                    <button onclick="filterStore('ALL')" class="store-pill active bg-brandPurple text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap">
+                    <button onclick="filterStore('ALL')" class="store-pill active btn-golden px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap">
                         सर्व सेवा (All)
                     </button>
-                    <button onclick="filterStore('VIDEO')" class="store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700">
-                        व्हिडिओ जाहिराती (Video Ads)
+                    <button onclick="filterStore('VIDEO')" class="store-pill bg-[#1a0d2e] hover:bg-[#251342] text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-[#3b1766]">
+                        व्हिडिओ जाहिराती
                     </button>
-                    <button onclick="filterStore('AUDIO')" class="store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700">
-                        ऑडिओ जिगल्स (Audio Jingles)
+                    <button onclick="filterStore('AUDIO')" class="store-pill bg-[#1a0d2e] hover:bg-[#251342] text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-[#3b1766]">
+                        ऑडिओ जिगल्स
                     </button>
-                    <button onclick="filterStore('GRAPHIC')" class="store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700">
-                        ग्राफिक्स व बॅनर (Banners)
+                    <button onclick="filterStore('GRAPHIC')" class="store-pill bg-[#1a0d2e] hover:bg-[#251342] text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-[#3b1766]">
+                        ग्राफिक्स व बॅनर
                     </button>
-                    <button onclick="filterStore('AI')" class="store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700">
-                        AI जाहिराती (AI Ads)
+                    <button onclick="filterStore('AI')" class="store-pill bg-[#1a0d2e] hover:bg-[#251342] text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-[#3b1766]">
+                        AI जाहिराती
                     </button>
-                    <button onclick="filterStore('CAMPAIGN')" class="store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700">
-                        360° पॅकेजेस (Campaigns)
+                    <button onclick="filterStore('CAMPAIGN')" class="store-pill bg-[#1a0d2e] hover:bg-[#251342] text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-[#3b1766]">
+                        360° पॅकेजेस
                     </button>
                 </div>
             </div>
@@ -418,10 +433,10 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h2 class="text-2xl font-black text-white flex items-center gap-2">
-                        <i class="fas fa-percent text-brandYellow"></i>
+                        <i class="fas fa-percent text-goldenYellow"></i>
                         <span>सध्याच्या सर्व स्पेशल ऑफर्स (Exclusive Offers)</span>
                     </h2>
-                    <p class="text-xs md:text-sm text-slate-400">
+                    <p class="text-xs md:text-sm text-purple-200">
                         सण, उत्सव आणि विशेष कालावधीसाठी KTimes Business Club सदस्यांसाठी खास सवलत.
                     </p>
                 </div>
@@ -436,30 +451,30 @@
         <!-- VIEW 4: MY WORK / CLIENT PROJECTS & FILE DELIVERY                         -->
         <!-- ========================================================================= -->
         <div id="viewMyWork" class="space-y-6 hidden">
-            <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="bg-[#1e0b36] p-5 rounded-3xl border border-[#3b1766] flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-2xl font-black text-white flex items-center gap-2">
-                        <i class="fas fa-folder-open text-brandPurpleLight"></i>
+                        <i class="fas fa-folder-open text-goldenYellow"></i>
                         <span>माझी कामे व प्रोजेक्ट्स (My Projects & Files)</span>
                     </h2>
-                    <p class="text-xs md:text-sm text-slate-400">
+                    <p class="text-xs md:text-sm text-purple-200">
                         तुमच्या सर्व प्रोजेक्ट्सचे स्टेटस, ड्राफ्ट प्रिव्ह्यू, रिव्हिजन आणि फायनल फाइल्स डाउनलोड करा.
                     </p>
                 </div>
-                <button onclick="openAdRequestModal()" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 shadow">
+                <button onclick="openAdRequestModal()" class="btn-golden px-5 py-2.5 rounded-xl text-xs md:text-sm font-black flex items-center gap-2 shadow">
                     <i class="fas fa-plus"></i> नवीन काम द्या
                 </button>
             </div>
 
-            <!-- Project Sub Tabs: Active Projects | Delivered Files | Invoices -->
-            <div class="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto no-scrollbar">
-                <button onclick="switchWorkSubTab('projects')" id="workTabProjects" class="bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold">
+            <!-- Project Sub Tabs -->
+            <div class="flex items-center gap-2 border-b border-[#3b1766] pb-3 overflow-x-auto no-scrollbar">
+                <button onclick="switchWorkSubTab('projects')" id="workTabProjects" class="bg-brandPurple text-white px-4 py-2 rounded-xl text-xs font-bold shadow">
                     प्रोजेक्ट्स ट्रॅकिंग (Projects)
                 </button>
-                <button onclick="switchWorkSubTab('files')" id="workTabFiles" class="bg-slate-900 text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold">
+                <button onclick="switchWorkSubTab('files')" id="workTabFiles" class="bg-[#1a0d2e] text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold border border-[#3b1766]">
                     माझ्या फायली (My Files & Downloads)
                 </button>
-                <button onclick="switchWorkSubTab('invoices')" id="workTabInvoices" class="bg-slate-900 text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold">
+                <button onclick="switchWorkSubTab('invoices')" id="workTabInvoices" class="bg-[#1a0d2e] text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold border border-[#3b1766]">
                     बिलिंग व पेमेंट्स (Billing & Invoices)
                 </button>
             </div>
@@ -490,19 +505,19 @@
         <!-- VIEW 5: COMMUNITY (KTimes Business Community)                             -->
         <!-- ========================================================================= -->
         <div id="viewCommunity" class="space-y-6 hidden">
-            <div class="bg-gradient-to-r from-blue-950 to-slate-900 p-6 rounded-3xl border border-blue-900/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div class="bg-gradient-to-r from-[#1e0b36] to-[#2a0845] p-6 rounded-3xl border border-[#3b1766] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
-                    <span class="bg-blue-500/20 text-blue-300 text-xs px-3 py-1 rounded-full font-bold">
+                    <span class="badge-crimson text-xs px-3 py-1 rounded-full font-bold shadow">
                         Private Client Community
                     </span>
                     <h2 class="text-2xl font-black text-white mt-1">
                         KTimes Business Community 🚀
                     </h2>
-                    <p class="text-xs md:text-sm text-slate-300">
+                    <p class="text-xs md:text-sm text-purple-200">
                         महाराष्ट्रातील अग्रगण्य व्यावसायिकांचे मार्केटिंग ज्ञान, AI जाहिरात तंत्र आणि यशोगाथा.
                     </p>
                 </div>
-                <button onclick="openNewPostModal()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow">
+                <button onclick="openNewPostModal()" class="btn-golden px-4 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 shadow">
                     <i class="fas fa-pen"></i> पोस्ट करा / प्रश्न विचारा
                 </button>
             </div>
@@ -518,17 +533,17 @@
         <!-- ========================================================================= -->
         <div id="viewRewards" class="space-y-6 hidden">
             <!-- Points Summary Card -->
-            <div class="bg-gradient-to-r from-amber-950/80 via-slate-900 to-amber-950/80 p-6 rounded-3xl border border-amber-500/40 text-center relative">
-                <div class="w-16 h-16 rounded-full bg-amber-400/20 text-brandYellow text-3xl flex items-center justify-center mx-auto mb-2">
+            <div class="bg-gradient-to-r from-[#2a0845] via-[#1e0b36] to-[#2a0845] p-6 rounded-3xl border border-goldenYellow/40 text-center relative shadow-xl">
+                <div class="w-16 h-16 rounded-full bg-goldenYellow/20 text-goldenYellow text-3xl flex items-center justify-center mx-auto mb-2">
                     <i class="fas fa-crown"></i>
                 </div>
-                <h2 class="text-3xl font-black text-brandYellow">450 KTimes Points</h2>
-                <p class="text-sm text-slate-300 mt-1">प्रत्येक नवीन ऑर्डर आणि रेफरलवर पॉइंट्स मिळवा आणि मोफत सेवा रिडीम करा.</p>
-                <div class="flex justify-center gap-3 mt-4">
-                    <button onclick="claimReward('Free Banner')" class="bg-brandYellow hover:bg-brandYellowHover text-slate-950 font-extrabold px-5 py-2 rounded-xl text-xs shadow">
+                <h2 class="text-3xl font-black text-goldenYellow">450 KTimes Points</h2>
+                <p class="text-sm text-purple-200 mt-1">प्रत्येक नवीन ऑर्डर आणि रेफरलवर पॉइंट्स मिळवा आणि मोफत सेवा रिडीम करा.</p>
+                <div class="flex flex-wrap justify-center gap-3 mt-4">
+                    <button onclick="claimReward('Free Banner')" class="btn-golden px-5 py-2 rounded-xl text-xs shadow">
                         1 Free Banner रिडीम करा (400 pts)
                     </button>
-                    <button onclick="openReferModal()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2 rounded-xl text-xs border border-slate-700">
+                    <button onclick="openReferModal()" class="bg-[#1a0d2e] hover:bg-[#251342] text-white font-bold px-5 py-2 rounded-xl text-xs border border-[#3b1766]">
                         Refer & Earn (200 pts)
                     </button>
                 </div>
@@ -537,53 +552,53 @@
             <!-- Membership Tier Cards -->
             <h3 class="text-lg font-bold text-white mt-6">KTimes Business Club Memberships</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] p-5 rounded-2xl flex flex-col justify-between">
                     <div>
-                        <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full font-bold">BASIC</span>
+                        <span class="text-xs bg-[#2a0845] text-purple-200 px-2.5 py-1 rounded-full font-bold">BASIC</span>
                         <h4 class="text-xl font-black text-white mt-2">वार्षिक सभासद</h4>
-                        <div class="text-2xl font-black text-brandYellow my-2">₹४,९९९ <span class="text-xs text-slate-400 font-normal">/ वर्ष</span></div>
-                        <ul class="text-xs text-slate-300 space-y-2 mt-3">
+                        <div class="text-2xl font-black text-goldenYellow my-2">₹४,९९९ <span class="text-xs text-purple-300 font-normal">/ वर्ष</span></div>
+                        <ul class="text-xs text-purple-200 space-y-2 mt-3">
                             <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>५ सण-उत्सव ग्राफिक्स डिझाइन</li>
                             <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>१ ऑडिओ जिगल (FM Style)</li>
                             <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>कम्युनिटी अ‍ॅक्सेस</li>
                         </ul>
                     </div>
-                    <button onclick="quickOrderService('Basic Membership')" class="w-full mt-5 bg-slate-800 hover:bg-slate-700 text-white py-2 rounded-xl text-xs font-bold">
+                    <button onclick="quickOrderService('Basic Membership')" class="w-full mt-5 bg-[#2a0845] hover:bg-[#3d1263] text-white py-2 rounded-xl text-xs font-bold border border-[#3b1766]">
                         सदस्य व्हा
                     </button>
                 </div>
 
-                <div class="bg-gradient-to-b from-purple-950/60 to-slate-900 border-2 border-brandPurple p-5 rounded-2xl flex flex-col justify-between relative shadow-xl">
-                    <span class="absolute -top-3 right-4 bg-brandYellow text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full">POPULAR</span>
+                <div class="bg-gradient-to-b from-[#2a0845] to-[#1a0d2e] border-2 border-goldenYellow p-5 rounded-2xl flex flex-col justify-between relative shadow-xl">
+                    <span class="absolute -top-3 right-4 badge-crimson text-[10px] font-black px-2.5 py-0.5 rounded-full shadow">POPULAR</span>
                     <div>
                         <span class="text-xs bg-brandPurple text-white px-2.5 py-1 rounded-full font-bold">BUSINESS PRO</span>
                         <h4 class="text-xl font-black text-white mt-2">बिझनेस प्रो क्लब</h4>
-                        <div class="text-2xl font-black text-brandYellow my-2">₹११,९९९ <span class="text-xs text-slate-400 font-normal">/ वर्ष</span></div>
-                        <ul class="text-xs text-slate-300 space-y-2 mt-3">
+                        <div class="text-2xl font-black text-goldenYellow my-2">₹११,९९९ <span class="text-xs text-purple-300 font-normal">/ वर्ष</span></div>
+                        <ul class="text-xs text-purple-200 space-y-2 mt-3">
                             <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>१२ सण-उत्सव ग्राफिक्स डिझाइन</li>
                             <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>२ व्यावसायिक प्रोमो व्हिडिओज</li>
                             <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>२ ऑडिओ जाहिराती (पुरुष + स्त्री व्हॉईस)</li>
                             <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>प्राधान्य ४८-तास डिलिव्हरी</li>
                         </ul>
                     </div>
-                    <button onclick="quickOrderService('Business Pro Membership')" class="w-full mt-5 bg-brandPurple hover:bg-brandPurpleDark text-white py-2 rounded-xl text-xs font-bold shadow-lg">
+                    <button onclick="quickOrderService('Business Pro Membership')" class="w-full mt-5 btn-golden py-2 rounded-xl text-xs font-black shadow-lg">
                         हा प्लॅन घ्या
                     </button>
                 </div>
 
-                <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] p-5 rounded-2xl flex flex-col justify-between">
                     <div>
-                        <span class="text-xs bg-amber-500/20 text-brandYellow px-2.5 py-1 rounded-full font-bold">VIP VIP</span>
+                        <span class="text-xs badge-crimson px-2.5 py-1 rounded-full font-bold">VIP VIP</span>
                         <h4 class="text-xl font-black text-white mt-2">360° VIP ग्रोथ</h4>
-                        <div class="text-2xl font-black text-brandYellow my-2">₹२४,९९९ <span class="text-xs text-slate-400 font-normal">/ वर्ष</span></div>
-                        <ul class="text-xs text-slate-300 space-y-2 mt-3">
+                        <div class="text-2xl font-black text-goldenYellow my-2">₹२४,९९९ <span class="text-xs text-purple-300 font-normal">/ वर्ष</span></div>
+                        <ul class="text-xs text-purple-200 space-y-2 mt-3">
                             <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>अमर्यादित सोशल मीडिया क्रिएटिव्हज</li>
                             <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>६ 4K सिनेमॅटिक / AI व्हिडिओज</li>
                             <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>Meta / WhatsApp अ‍ॅड मॅनेजमेंट</li>
                             <li><i class="fas fa-check text-emerald-400 mr-1.5"></i>Dedicated KTimes Account Manager</li>
                         </ul>
                     </div>
-                    <button onclick="quickOrderService('VIP 360 Membership')" class="w-full mt-5 bg-slate-800 hover:bg-slate-700 text-white py-2 rounded-xl text-xs font-bold">
+                    <button onclick="quickOrderService('VIP 360 Membership')" class="w-full mt-5 bg-[#2a0845] hover:bg-[#3d1263] text-white py-2 rounded-xl text-xs font-bold border border-[#3b1766]">
                         VIP संपर्क करा
                     </button>
                 </div>
@@ -591,22 +606,21 @@
         </div>
 
         <!-- ========================================================================= -->
-        <!-- VIEW 7: ADMIN CRM DASHBOARD & PIPELINE (Admin View)                       -->
+        <!-- VIEW 7: ADMIN CRM DASHBOARD (PIN 7878 Protected)                          -->
         <!-- ========================================================================= -->
         <div id="viewAdminCRM" class="space-y-6 hidden">
-            
             <!-- Admin Top Stats -->
-            <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900 p-5 rounded-3xl border border-slate-800">
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-[#1e0b36] p-5 rounded-3xl border border-[#3b1766]">
                 <div>
-                    <span class="bg-red-500/20 text-red-400 text-xs px-3 py-0.5 rounded-full font-bold">
-                        Admin Console & CRM
+                    <span class="badge-crimson text-xs px-3 py-0.5 rounded-full font-bold shadow">
+                        Admin Console & CRM 🔒 (PIN: 7878)
                     </span>
                     <h2 class="text-2xl font-black text-white mt-1">
                         KTimes Media Advertising CRM & Operations
                     </h2>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="openAddLeadModal()" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
+                    <button onclick="openAddLeadModal()" class="btn-golden px-4 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 shadow">
                         <i class="fas fa-user-plus"></i> नवीन Lead जोडा
                     </button>
                     <button onclick="openCampaignBlastModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
@@ -617,113 +631,90 @@
 
             <!-- KPI Metric Cards Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] p-4 rounded-2xl">
                     <span class="text-xs text-slate-400 font-semibold">आजचे नवीन Leads</span>
                     <div class="text-2xl font-black text-white mt-1" id="kpiNewLeads">8</div>
                     <span class="text-[10px] text-emerald-400">↑ 25% this week</span>
                 </div>
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] p-4 rounded-2xl">
                     <span class="text-xs text-slate-400 font-semibold">Active Projects</span>
-                    <div class="text-2xl font-black text-purple-400 mt-1" id="kpiActiveProjects">14</div>
-                    <span class="text-[10px] text-slate-400">4 awaiting review</span>
+                    <div class="text-2xl font-black text-goldenYellow mt-1" id="kpiActiveProjects">14</div>
+                    <span class="text-[10px] text-purple-300">4 awaiting review</span>
                 </div>
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] p-4 rounded-2xl">
                     <span class="text-xs text-slate-400 font-semibold">Approval Pending</span>
                     <div class="text-2xl font-black text-amber-400 mt-1" id="kpiPendingApproval">3</div>
                     <span class="text-[10px] text-amber-400">Client Action req</span>
                 </div>
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] p-4 rounded-2xl">
                     <span class="text-xs text-slate-400 font-semibold">या महिन्याची विक्री</span>
                     <div class="text-2xl font-black text-emerald-400 mt-1">₹1,84,500</div>
                     <span class="text-[10px] text-emerald-400">Target: ₹2.5L</span>
                 </div>
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] p-4 rounded-2xl">
                     <span class="text-xs text-slate-400 font-semibold">Repeat Client Rate</span>
                     <div class="text-2xl font-black text-cyan-400 mt-1">68.4%</div>
                     <span class="text-[10px] text-cyan-400">High Loyalty</span>
                 </div>
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] p-4 rounded-2xl">
                     <span class="text-xs text-slate-400 font-semibold">Inactive (90+ Days)</span>
                     <div class="text-2xl font-black text-red-400 mt-1" id="kpiInactiveClients">12</div>
-                    <button onclick="triggerReactivationBlast()" class="text-[10px] text-brandYellow hover:underline font-bold">Reactivate →</button>
+                    <button onclick="triggerReactivationBlast()" class="text-[10px] text-goldenYellow hover:underline font-bold">Reactivate →</button>
                 </div>
             </div>
 
-            <!-- CRM Sub Navigation: Kanban Pipeline | Clients Segmentation | Campaigns | Analytics -->
-            <div class="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto no-scrollbar">
-                <button onclick="switchAdminSubTab('kanban')" id="admTabKanban" class="bg-brandPurple text-white px-4 py-1.5 rounded-xl text-xs font-bold">
+            <!-- CRM Sub Navigation -->
+            <div class="flex items-center gap-2 border-b border-[#3b1766] pb-2 overflow-x-auto no-scrollbar">
+                <button onclick="switchAdminSubTab('kanban')" id="admTabKanban" class="btn-golden px-4 py-1.5 rounded-xl text-xs font-bold">
                     Leads Pipeline (Kanban)
                 </button>
-                <button onclick="switchAdminSubTab('clients')" id="admTabClients" class="bg-slate-900 text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold">
+                <button onclick="switchAdminSubTab('clients')" id="admTabClients" class="bg-[#1a0d2e] text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold border border-[#3b1766]">
                     Client Segmentation
                 </button>
-                <button onclick="switchAdminSubTab('projects_all')" id="admTabProjects" class="bg-slate-900 text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold">
+                <button onclick="switchAdminSubTab('projects_all')" id="admTabProjects" class="bg-[#1a0d2e] text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold border border-[#3b1766]">
                     All Projects Control
                 </button>
-                <button onclick="switchAdminSubTab('analytics')" id="admTabAnalytics" class="bg-slate-900 text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold">
+                <button onclick="switchAdminSubTab('analytics')" id="admTabAnalytics" class="bg-[#1a0d2e] text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold border border-[#3b1766]">
                     Analytics & Revenue
                 </button>
             </div>
 
-            <!-- Admin SubView 1: Kanban Pipeline -->
+            <!-- Kanban Pipeline SubView -->
             <div id="admSubKanban" class="space-y-4">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-base font-bold text-white">Leads Pipeline (14 Stages Simplified)</h3>
-                    <span class="text-xs text-slate-400">Drag or click stage to move lead forward</span>
+                    <h3 class="text-base font-bold text-white">Leads Pipeline (Live Stages)</h3>
+                    <span class="text-xs text-purple-300">Click stage to move lead forward</span>
                 </div>
 
                 <div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar" id="kanbanBoardContainer">
-                    <!-- Columns injected via JS: New Lead, Requirement Received, Quotation Sent, Production, Approval, Delivered -->
+                    <!-- Columns injected via JS -->
                 </div>
             </div>
 
-            <!-- Admin SubView 2: Clients Segmentation -->
+            <!-- Clients Segmentation SubView -->
             <div id="admSubClients" class="space-y-4 hidden">
-                <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900 p-4 rounded-2xl border border-slate-800">
-                    <div class="flex flex-wrap items-center gap-2 text-xs">
-                        <span class="text-slate-400 font-bold">Filter By:</span>
-                        <select id="clientSegmentCategory" onchange="filterAdminClients()" class="bg-slate-800 text-white rounded-lg p-1.5 border border-slate-700 outline-none">
-                            <option value="ALL">All Categories</option>
-                            <option value="Jewellers">Jewellers (ज्वेलर्स)</option>
-                            <option value="Textile / Saree">Textile / Saree (कापड दुकान)</option>
-                            <option value="Hotel / Restaurant">Hotel / Restaurant (हॉटेल)</option>
-                            <option value="Automobile">Automobile (ऑटोमोबाईल)</option>
-                            <option value="Political">Political (राजकीय)</option>
-                        </select>
-                        <select id="clientSegmentStatus" onchange="filterAdminClients()" class="bg-slate-800 text-white rounded-lg p-1.5 border border-slate-700 outline-none">
-                            <option value="ALL">All Status</option>
-                            <option value="Active">Active Clients</option>
-                            <option value="Inactive">Inactive (60+ Days)</option>
-                            <option value="HighValue">VIP High Value (> ₹25k)</option>
-                        </select>
-                    </div>
-                    <button onclick="exportClientsCsv()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 font-bold">
-                        <i class="fas fa-file-export mr-1"></i> Export Data
-                    </button>
-                </div>
-
-                <div id="adminClientsTableContainer" class="overflow-x-auto bg-slate-900 border border-slate-800 rounded-2xl">
+                <div id="adminClientsTableContainer" class="overflow-x-auto bg-[#1a0d2e] border border-[#3b1766] rounded-2xl">
                     <!-- Client Table injected via JS -->
                 </div>
             </div>
 
-            <!-- Admin SubView 3: Projects Control -->
+            <!-- Projects Control SubView -->
             <div id="admSubProjects" class="space-y-4 hidden">
                 <div id="adminAllProjectsList" class="space-y-3">
                     <!-- Injected via JS -->
                 </div>
             </div>
 
-            <!-- Admin SubView 4: Analytics -->
+            <!-- Analytics SubView -->
             <div id="admSubAnalytics" class="space-y-4 hidden">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+                    <div class="bg-[#1a0d2e] p-5 rounded-2xl border border-[#3b1766]">
                         <h4 class="text-sm font-bold text-white mb-3">Top Services by Revenue</h4>
                         <div class="space-y-3 text-xs">
                             <div>
                                 <div class="flex justify-between text-slate-300 mb-1">
                                     <span>Commercial & AI Video Ads</span>
-                                    <span class="font-bold text-white">₹84,000 (45%)</span>
+                                    <span class="font-bold text-goldenYellow">₹84,000 (45%)</span>
                                 </div>
                                 <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
                                     <div class="bg-brandPurple h-full w-[45%]"></div>
@@ -732,7 +723,7 @@
                             <div>
                                 <div class="flex justify-between text-slate-300 mb-1">
                                     <span>Audio Jingles & Voiceovers</span>
-                                    <span class="font-bold text-white">₹48,500 (26%)</span>
+                                    <span class="font-bold text-goldenYellow">₹48,500 (26%)</span>
                                 </div>
                                 <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
                                     <div class="bg-amber-400 h-full w-[26%]"></div>
@@ -741,31 +732,31 @@
                             <div>
                                 <div class="flex justify-between text-slate-300 mb-1">
                                     <span>Festival Banners & Social Creatives</span>
-                                    <span class="font-bold text-white">₹32,000 (18%)</span>
+                                    <span class="font-bold text-goldenYellow">₹32,000 (18%)</span>
                                 </div>
                                 <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-blue-400 h-full w-[18%]"></div>
+                                    <div class="bg-crimsonRed h-full w-[18%]"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+                    <div class="bg-[#1a0d2e] p-5 rounded-2xl border border-[#3b1766]">
                         <h4 class="text-sm font-bold text-white mb-3">Regional Growth (Top Cities)</h4>
                         <div class="space-y-2 text-xs">
-                            <div class="flex justify-between p-2 rounded bg-slate-800/60">
+                            <div class="flex justify-between p-2 rounded bg-[#2a0845]/60">
                                 <span class="font-bold text-white">1. Satara (सातारा)</span>
                                 <span class="text-emerald-400 font-bold">42 Clients • ₹95,000</span>
                             </div>
-                            <div class="flex justify-between p-2 rounded bg-slate-800/60">
+                            <div class="flex justify-between p-2 rounded bg-[#2a0845]/60">
                                 <span class="font-bold text-white">2. Phaltan (फलटण)</span>
                                 <span class="text-emerald-400 font-bold">28 Clients • ₹54,000</span>
                             </div>
-                            <div class="flex justify-between p-2 rounded bg-slate-800/60">
+                            <div class="flex justify-between p-2 rounded bg-[#2a0845]/60">
                                 <span class="font-bold text-white">3. Baramati (बारामती)</span>
                                 <span class="text-emerald-400 font-bold">19 Clients • ₹42,000</span>
                             </div>
-                            <div class="flex justify-between p-2 rounded bg-slate-800/60">
+                            <div class="flex justify-between p-2 rounded bg-[#2a0845]/60">
                                 <span class="font-bold text-white">4. Pune & Surrounding</span>
                                 <span class="text-emerald-400 font-bold">15 Clients • ₹38,000</span>
                             </div>
@@ -776,18 +767,18 @@
         </div>
 
         <!-- ========================================================================= -->
-        <!-- VIEW 8: STAFF / PRODUCTION TEAM DASHBOARD (Staff View)                   -->
+        <!-- VIEW 8: STAFF DASHBOARD (PIN Protected)                                  -->
         <!-- ========================================================================= -->
         <div id="viewStaff" class="space-y-6 hidden">
-            <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 flex items-center justify-between">
+            <div class="bg-[#1e0b36] p-5 rounded-3xl border border-[#3b1766] flex items-center justify-between">
                 <div>
-                    <span class="bg-cyan-500/20 text-cyan-400 text-xs px-3 py-0.5 rounded-full font-bold">
-                        Production & Creative Team
+                    <span class="badge-crimson text-xs px-3 py-0.5 rounded-full font-bold shadow">
+                        Production Team 🔒 (PIN: 7878)
                     </span>
                     <h2 class="text-2xl font-black text-white mt-1">
                         Assigned Production Tasks & Draft Uploads
                     </h2>
-                    <p class="text-xs text-slate-400">Brief वाचा, ड्राफ्ट अपलोड करा आणि Approval ची विनंती पाठवा.</p>
+                    <p class="text-xs text-purple-200">Brief वाचा, ड्राफ्ट अपलोड करा आणि Approval ची विनंती पाठवा.</p>
                 </div>
             </div>
 
@@ -798,11 +789,11 @@
 
     </main>
 
-    <!-- Bottom Navigation Bar (WhatsApp + Swiggy Mobile-First Style) -->
+    <!-- Bottom Navigation Bar (Royal Purple Glass Palette) -->
     <nav class="fixed bottom-0 left-0 right-0 z-40 glass-bottom py-2 px-3 shadow-2xl">
         <div class="max-w-md mx-auto flex items-center justify-around">
             
-            <button onclick="switchNav('home')" id="bnavHome" class="flex flex-col items-center gap-1 text-brandPurpleLight hover:text-white transition">
+            <button onclick="switchNav('home')" id="bnavHome" class="flex flex-col items-center gap-1 text-goldenYellow transition">
                 <i class="fas fa-home text-lg"></i>
                 <span class="text-[11px] font-bold">Home</span>
             </button>
@@ -814,10 +805,10 @@
 
             <!-- Center Primary CTA Floating Action -->
             <button onclick="openAdRequestModal()" class="flex flex-col items-center -mt-6">
-                <div class="w-13 h-13 rounded-full bg-gradient-to-tr from-brandYellow via-amber-400 to-amber-500 text-slate-950 flex items-center justify-center text-xl font-black shadow-xl border-4 border-slate-950 hover:scale-110 transition">
+                <div class="w-13 h-13 rounded-full btn-golden flex items-center justify-center text-xl font-black shadow-2xl border-4 border-[#120724] hover:scale-110 transition">
                     <i class="fas fa-plus"></i>
                 </div>
-                <span class="text-[10px] font-extrabold text-brandYellow mt-1">मागवा</span>
+                <span class="text-[10px] font-extrabold text-goldenYellow mt-1">मागवा</span>
             </button>
 
             <button onclick="switchNav('mywork')" id="bnavMyWork" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
@@ -830,10 +821,10 @@
                 <span class="text-[11px] font-bold">Community</span>
             </button>
 
-            <!-- Admin / Staff Shortcut for quick switching -->
+            <!-- Admin / Staff Shortcut for quick switching (PIN 7878 Protected) -->
             <button onclick="openUserMenuModal()" id="bnavProfile" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
-                <i class="fas fa-user-circle text-lg"></i>
-                <span class="text-[11px] font-bold">Menu</span>
+                <i class="fas fa-user-shield text-lg"></i>
+                <span class="text-[11px] font-bold">Admin</span>
             </button>
 
         </div>
@@ -843,166 +834,140 @@
     <div class="fixed bottom-20 right-5 z-40">
         <a href="https://wa.me/919422337471?text=नमस्कार%20KTimes%20Media,%20मला%20माहिती%20हवी%20आहे." target="_blank" rel="noopener noreferrer"
            title="WhatsApp Direct Contact"
-           class="w-13 h-13 bg-brandWhatsapp rounded-full flex items-center justify-center text-white text-3xl shadow-2xl pulse-whatsapp hover:scale-105 transition">
+           class="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center text-slate-950 text-3xl shadow-2xl pulse-whatsapp hover:scale-110 transition border-2 border-white/40">
             <i class="fab fa-whatsapp"></i>
         </a>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- MODAL 1: AD REQUEST FORM (जाहिरात मागणी अर्ज)                             -->
+    <!-- MODAL 1: AD REQUEST FORM (जाहिरात मागणी अर्ज - Instant WhatsApp Submit)    -->
     <!-- ========================================================================= -->
-    <div id="adRequestModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-xl max-h-[92vh] overflow-y-auto p-6 shadow-2xl relative">
-            <button onclick="closeAdRequestModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+    <div id="adRequestModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-[#1e0b36] border border-[#431770] rounded-3xl w-full max-w-xl max-h-[92vh] overflow-y-auto p-6 shadow-2xl relative">
+            <button onclick="closeAdRequestModal()" class="absolute top-4 right-4 text-purple-300 hover:text-white text-lg">
                 <i class="fas fa-times"></i>
             </button>
             <div class="flex items-center gap-2.5 mb-3">
-                <div class="w-10 h-10 rounded-2xl bg-brandPurple/30 text-brandYellow flex items-center justify-center text-lg">
-                    <i class="fas fa-ad"></i>
+                <div class="w-10 h-10 rounded-2xl bg-crimsonRed text-goldenYellow flex items-center justify-center text-lg shadow">
+                    <i class="fas fa-paper-plane"></i>
                 </div>
                 <div>
-                    <h3 class="text-xl font-black text-white">जाहिरात मागणी अर्ज (Order / Request Ad)</h3>
-                    <p class="text-xs text-slate-400">माहिती भरा. आमची टीम लगेच CRM मध्ये प्रोजेक्ट सुरू करेल.</p>
+                    <h3 class="text-lg font-black text-white">जाहिरात मागणी अर्ज (Order Ad Request)</h3>
+                    <p class="text-xs text-purple-200">माहिती भरा आणि थेट Ktimes Media च्या WhatsApp वर मागणी पाठवा.</p>
                 </div>
             </div>
 
-            <form onsubmit="handleSubmitAdRequest(event)" class="space-y-3.5 mt-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">व्यवसायाचे नाव (Business Name) *</label>
-                        <input type="text" id="reqBusinessName" required value="Ganesh Jewellers" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">संपर्क व्यक्ती (Contact Person) *</label>
-                        <input type="text" id="reqContactPerson" required value="गणेश कदम" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">मोबाईल / WhatsApp नंबर *</label>
-                        <input type="tel" id="reqPhone" required value="9822123456" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">शहर / तालुका (Location) *</label>
-                        <input type="text" id="reqLocation" required value="सातारा (Satara)" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
-                    </div>
-                </div>
-
+            <form id="adRequestForm" onsubmit="handleSubmitAdRequest(event)" class="space-y-3.5 pt-2">
                 <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">तुम्हाला काय हवे आहे? (Service Needed) *</label>
-                    <select id="reqServiceType" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
-                        <option value="AI Cinematic Video">AI Cinematic Video (Next-Gen AI)</option>
-                        <option value="Commercial Video Ad">Commercial Video Ad (व्हिडिओ जाहिरात)</option>
-                        <option value="Audio Jingle">FM Radio Style Audio Jingle (ऑडिओ जिगल)</option>
-                        <option value="Voice Over">Voice Over (व्हॉईस ओव्हर)</option>
-                        <option value="Festival Banner">Festival Banner Package (सण-उत्सव बॅनर)</option>
-                        <option value="Social Media Reel">Social Media Reel (Instagram / Facebook 9:16)</option>
-                        <option value="Product Photography">Product Photography / AI Creative</option>
-                        <option value="Festival Campaign">Complete 360° Festival Campaign</option>
-                    </select>
+                    <label class="block text-xs font-bold text-purple-200 mb-1">तुमच्या व्यवसायाचे / दुकानाचे नाव (Business Name) *</label>
+                    <input type="text" id="reqBusinessName" required placeholder="उदा. गणेश ज्वेलर्स सातारा" class="w-full bg-[#120724] border border-[#3b1766] rounded-xl p-2.5 text-xs text-white outline-none focus:border-goldenYellow">
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">सण / प्रसंग (Campaign / Event)</label>
-                        <select id="reqEvent" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
-                            <option value="Ganeshotsav">Ganeshotsav (गणेशोत्सव)</option>
-                            <option value="Diwali">Diwali / Dhanteras (दिवाळी / धनत्रयोदशी)</option>
-                            <option value="Raksha Bandhan">Raksha Bandhan (रक्षाबंधन)</option>
-                            <option value="Dussehra">Dussehra (दसरा)</option>
-                            <option value="Wedding Season">Wedding Season (लग्नसराई)</option>
-                            <option value="Monsoon Sale">Monsoon Sale (पावसाळी ऑफर)</option>
-                            <option value="Shop Opening">Shop Opening / Anniversary</option>
-                            <option value="General Regular">General Regular Promo</option>
+                        <label class="block text-xs font-bold text-purple-200 mb-1">WhatsApp संपर्क क्रमांक (Contact Number) *</label>
+                        <input type="tel" id="reqPhone" required placeholder="उदा. 9422337471" class="w-full bg-[#120724] border border-[#3b1766] rounded-xl p-2.5 text-xs text-white outline-none focus:border-goldenYellow">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-purple-200 mb-1">तालुका / शहर (Location) *</label>
+                        <select id="reqLocation" class="w-full bg-[#120724] border border-[#3b1766] rounded-xl p-2.5 text-xs text-white outline-none focus:border-goldenYellow">
+                            <option value="सातारा">सातारा (Satara)</option>
+                            <option value="फलटण">फलटण (Phaltan)</option>
+                            <option value="बारामती">बारामती (Baramati)</option>
+                            <option value="कराड">कराड (Karad)</option>
+                            <option value="वाई / महाबळेश्वर">वाई / महाबळेश्वर</option>
+                            <option value="पुणे">पुणे (Pune)</option>
+                            <option value="इतर शहर">इतर शहर (Other)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-purple-200 mb-1">हवी असलेली सेवा (Service Type) *</label>
+                        <select id="reqServiceType" class="w-full bg-[#120724] border border-[#3b1766] rounded-xl p-2.5 text-xs text-white outline-none focus:border-goldenYellow">
+                            <option value="व्हिडिओ जाहिराती (Commercial 4K Video)">व्हिडिओ जाहिराती (Commercial 4K Video)</option>
+                            <option value="ऑडिओ व जिगल्स (Audio Jingles & Voiceover)">ऑडिओ व जिगल्स (Audio Jingles & FM)</option>
+                            <option value="बॅनर्स व फ्लेक्स (Banners & Social Media)">बॅनर्स व फ्लेक्स (Banners & Flex)</option>
+                            <option value="AI स्टुडिओ जाहिरात (AI Anchor Promo)">AI स्टुडिओ जाहिरात (AI Anchor Promo)</option>
+                            <option value="सोशल मीडिया रील्स (Insta / FB Reels)">सोशल मीडिया रील्स (Insta / FB Reels)</option>
+                            <option value="३६०° फेस्टिव्हल कॅम्पेन (360° Package)">३६०° फेस्टिव्हल कॅम्पेन (360° Package)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">मुदत (Deadline) *</label>
-                        <select id="reqDeadline" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
-                            <option value="२४ तास (Fast Track)">२४ तास (Fast Track Urgent)</option>
-                            <option value="२ ते ३ दिवस" selected>२ ते ३ दिवस (Standard)</option>
-                            <option value="५ दिवस">५ दिवस (Normal)</option>
+                        <label class="block text-xs font-bold text-purple-200 mb-1">मुदत (Deadline) *</label>
+                        <select id="reqDeadline" class="w-full bg-[#120724] border border-[#3b1766] rounded-xl p-2.5 text-xs text-white outline-none focus:border-goldenYellow">
+                            <option value="२४ तास (Fast Track Urgent)">२४ तास (Fast Track Urgent)</option>
+                            <option value="२ ते ३ दिवस (Standard)" selected>२ ते ३ दिवस (Standard)</option>
+                            <option value="५ दिवस (Normal)">५ दिवस (Normal)</option>
                             <option value="सणाच्या आधी (Priority)">सणाच्या आधी (Priority)</option>
                         </select>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">अंदाजे बजेट (Budget) *</label>
-                    <select id="reqBudget" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple">
+                    <label class="block text-xs font-bold text-purple-200 mb-1">अंदाजे बजेट (Budget) *</label>
+                    <select id="reqBudget" class="w-full bg-[#120724] border border-[#3b1766] rounded-xl p-2.5 text-xs text-white outline-none focus:border-goldenYellow">
                         <option value="₹१,००० ते ₹३,०००">₹१,००० ते ₹३,०००</option>
-                        <option value="₹३,००० ते ₹५,०००">₹३,००० ते ₹५,०००</option>
+                        <option value="₹३,००० ते ₹५,०००" selected>₹३,००० ते ₹५,०००</option>
                         <option value="₹५,००० ते ₹१०,०००">₹५,००० ते ₹१०,०००</option>
                         <option value="₹१०,०००+ (पॅकेज)">₹१०,०००+ (पॅकेज)</option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">जाहिरातीत काय मजकूर / माहिती हवी आहे? (Details / Brief) *</label>
-                    <textarea id="reqDescription" rows="3" placeholder="उदा. सोन्याच्या दागिन्यांवर मजुरीत ५०% सूट, पत्ता: मोती चौक, सातारा..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brandPurple"></textarea>
+                    <label class="block text-xs font-bold text-purple-200 mb-1">जाहिरातीत काय मजकूर / माहिती हवी आहे? (Details / Brief) *</label>
+                    <textarea id="reqDescription" rows="3" required placeholder="उदा. सोन्याच्या दागिन्यांवर मजुरीत ५०% सूट, पत्ता: मोती चौक, सातारा..." class="w-full bg-[#120724] border border-[#3b1766] rounded-xl p-2.5 text-xs text-white outline-none focus:border-goldenYellow"></textarea>
                 </div>
 
-                <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700 text-xs">
-                    <span class="font-bold text-slate-300"><i class="fas fa-paperclip mr-1 text-brandYellow"></i> फोटो किंवा लोगो जोडायचा आहे?</span>
-                    <p class="text-slate-400 text-[11px] mt-0.5">फॉर्म सबमिट केल्यावर आपण WhatsApp वरही थेट फोटो पाठवू शकता.</p>
+                <div class="pt-2">
+                    <button type="submit" class="w-full btn-golden py-3 rounded-2xl text-sm font-black shadow-xl flex items-center justify-center gap-2 transition hover:scale-102">
+                        <i class="fab fa-whatsapp text-lg"></i>
+                        <span>मागणी पाठवा (WhatsApp Direct Submit)</span>
+                    </button>
+                    <p class="text-[11px] text-center text-purple-300 mt-2">
+                        बटण दाबताच थेट WhatsApp उघडून तुमचा संदेश KTimes Media (9422337471) कडे जाईल.
+                    </p>
                 </div>
-
-                <button type="submit" class="w-full bg-gradient-to-r from-brandPurple to-purple-600 hover:from-brandPurpleDark hover:to-purple-700 text-white font-extrabold py-3 rounded-2xl shadow-xl transition flex items-center justify-center gap-2">
-                    <i class="fas fa-paper-plane text-brandYellow"></i>
-                    <span>KTimes कडे Request पाठवा</span>
-                </button>
             </form>
         </div>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- MODAL 2: AI MARKETING ASSISTANT (KTimes AI)                               -->
+    <!-- MODAL 2: AI MARKETING ASSISTANT (मराठी AI सल्लागार)                       -->
     <!-- ========================================================================= -->
-    <div id="aiAssistantModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg max-h-[85vh] flex flex-col shadow-2xl relative">
-            <div class="p-4 border-b border-slate-800 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <div class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg">
+    <div id="aiAssistantModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-[#1e0b36] border border-[#431770] rounded-3xl w-full max-w-lg h-[80vh] flex flex-col shadow-2xl relative overflow-hidden">
+            <!-- Header -->
+            <div class="p-4 bg-gradient-to-r from-purple-900 to-[#1e0b36] border-b border-[#3b1766] flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-goldenYellow text-slate-950 flex items-center justify-center text-base font-black">
                         <i class="fas fa-robot"></i>
                     </div>
                     <div>
-                        <h3 class="text-base font-black text-white">KTimes AI Marketing Assistant</h3>
-                        <p class="text-[11px] text-slate-400">जाहिरात आयडिया, मराठी स्लोगन व कॅम्पेन सल्ला</p>
+                        <h4 class="text-sm font-extrabold text-white">KTimes AI Marketing Advisor</h4>
+                        <span class="text-[11px] text-emerald-400 flex items-center gap-1 font-semibold">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Online
+                        </span>
                     </div>
                 </div>
-                <button onclick="closeAiAssistantModal()" class="text-slate-400 hover:text-white">
-                    <i class="fas fa-times"></i>
+                <button onclick="closeAiAssistantModal()" class="text-purple-300 hover:text-white">
+                    <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
 
-            <!-- Chat History -->
-            <div id="aiChatHistory" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
-                <div class="flex gap-2.5">
-                    <div class="w-7 h-7 rounded-full bg-cyan-600 text-white flex items-center justify-center shrink-0 text-xs">AI</div>
-                    <div class="bg-slate-800 p-3 rounded-2xl rounded-tl-none text-slate-200 leading-relaxed border border-slate-700">
-                        नमस्कार! मी KTimes चा AI असिस्टंट आहे. तुमच्या व्यवसायासाठी सणासुदीच्या जाहिरातीचे प्लॅनिंग करायचे आहे का? मला विचारा!
-                    </div>
+            <!-- Chat Message List -->
+            <div id="aiChatMessages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
+                <div class="bg-[#120724] border border-[#3b1766] p-3 rounded-2xl rounded-tl-none max-w-[85%] text-slate-200">
+                    <p class="font-bold text-goldenYellow mb-1">🤖 KTimes AI Assistant:</p>
+                    नमस्कार! मी KTimes चा AI मार्केटिंग सल्लागार आहे. तुमच्या दुकानाचा किंवा व्यवसायाचा सेल वाढवण्यासाठी मी आकर्षक जाहिरात स्क्रिप्ट, ऑडिओ जिगल आयडिया आणि फेस्टिव्हल ऑफर प्लॅन्स तयार करू शकतो.
                 </div>
-            </div>
-
-            <!-- Quick Suggestions -->
-            <div class="px-4 py-2 border-t border-slate-800/80 flex gap-2 overflow-x-auto no-scrollbar text-[11px]">
-                <button onclick="askAiQuestion('गणेशोत्सवात ज्वेलरी दुकानाची विक्री कशी वाढवावी?')" class="bg-slate-800 text-slate-300 hover:text-white px-2.5 py-1 rounded-full whitespace-nowrap border border-slate-700">
-                    💍 ज्वेलरी गणेशोत्सव प्लॅन
-                </button>
-                <button onclick="askAiQuestion('कापड दुकानासाठी 15 सेकंदाचा Reel स्क्रिप्ट द्या.')" class="bg-slate-800 text-slate-300 hover:text-white px-2.5 py-1 rounded-full whitespace-nowrap border border-slate-700">
-                    👗 कापड दुकान Reel Script
-                </button>
-                <button onclick="askAiQuestion('हॉटेलसाठी वीकेंड ऑफरची ऑडिओ जाहिरात कशी करावी?')" class="bg-slate-800 text-slate-300 hover:text-white px-2.5 py-1 rounded-full whitespace-nowrap border border-slate-700">
-                    🍽️ हॉटेल जाहिरात स्लोगन
-                </button>
             </div>
 
             <!-- Chat Input -->
-            <form onsubmit="handleSendAiMessage(event)" class="p-3 border-t border-slate-800 flex gap-2">
-                <input type="text" id="aiUserInput" placeholder="येथे विचारा (उदा. दुकानाची जाहिरात कशी करावी?)..." class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-cyan-400">
-                <button type="submit" class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-xl text-xs font-bold">
+            <form onsubmit="handleSendAiMessage(event)" class="p-3 border-t border-[#3b1766] flex gap-2 bg-[#120724]">
+                <input type="text" id="aiUserInput" placeholder="येथे विचारा (उदा. दुकानाची जाहिरात कशी करावी?)..." class="flex-1 bg-[#1e0b36] border border-[#3b1766] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-goldenYellow">
+                <button type="submit" class="btn-golden px-4 py-2 rounded-xl text-xs font-black">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </form>
@@ -1012,14 +977,14 @@
     <!-- ========================================================================= -->
     <!-- MODAL 3: PROJECT PREVIEW & CLIENT APPROVAL SYSTEM                         -->
     <!-- ========================================================================= -->
-    <div id="projectApprovalModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl relative">
-            <button onclick="closeProjectApprovalModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+    <div id="projectApprovalModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-[#1e0b36] border border-[#431770] rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl relative">
+            <button onclick="closeProjectApprovalModal()" class="absolute top-4 right-4 text-purple-300 hover:text-white text-lg">
                 <i class="fas fa-times"></i>
             </button>
 
             <div class="flex items-center gap-2 mb-3">
-                <span id="projModalBadge" class="bg-amber-400/20 text-brandYellow text-xs px-3 py-0.5 rounded-full font-bold">
+                <span id="projModalBadge" class="bg-amber-400/20 text-goldenYellow text-xs px-3 py-0.5 rounded-full font-bold">
                     Draft Ready for Approval
                 </span>
             </div>
@@ -1028,12 +993,12 @@
             <p id="projModalService" class="text-xs text-brandPurpleLight font-bold">AI Commercial Video • Deadline: 28 Aug 2026</p>
 
             <!-- Video / Image Preview Area -->
-            <div class="my-4 bg-black rounded-2xl overflow-hidden border border-slate-800 aspect-video flex items-center justify-center" id="projModalMediaContainer">
+            <div class="my-4 bg-black rounded-2xl overflow-hidden border border-[#3b1766] aspect-video flex items-center justify-center" id="projModalMediaContainer">
                 <!-- Preview Embed or Placeholder -->
             </div>
 
             <!-- Approval / Revision Form -->
-            <div class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700 space-y-3">
+            <div class="bg-[#120724] p-4 rounded-2xl border border-[#3b1766] space-y-3">
                 <h4 class="text-xs font-bold text-slate-200">तुमचा अभिप्राय (Client Decision):</h4>
                 <div class="flex gap-3">
                     <button onclick="handleClientApprove()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow">
@@ -1044,10 +1009,10 @@
                     </button>
                 </div>
 
-                <div id="revisionInputContainer" class="hidden pt-3 border-t border-slate-700 space-y-2">
+                <div id="revisionInputContainer" class="hidden pt-3 border-t border-[#3b1766] space-y-2">
                     <label class="block text-[11px] font-bold text-slate-300">कोणते बदल हवे आहेत ते लिहा (उदा. दुकानाचे नाव मोठे करा):</label>
-                    <textarea id="revisionNotesInput" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white outline-none focus:border-amber-400"></textarea>
-                    <button onclick="handleSendRevision()" class="w-full bg-amber-500 text-slate-950 font-bold py-2 rounded-xl text-xs">
+                    <textarea id="revisionNotesInput" rows="2" class="w-full bg-[#1e0b36] border border-[#3b1766] rounded-xl p-2 text-xs text-white outline-none focus:border-goldenYellow"></textarea>
+                    <button onclick="handleSendRevision()" class="w-full btn-golden py-2 rounded-xl text-xs">
                         रिव्हिजन सबमिट करा
                     </button>
                 </div>
@@ -1058,13 +1023,13 @@
     <!-- ========================================================================= -->
     <!-- MODAL 4: NOTIFICATIONS MODAL                                              -->
     <!-- ========================================================================= -->
-    <div id="notificationModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-5 shadow-2xl relative">
-            <button onclick="closeNotificationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+    <div id="notificationModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-[#1e0b36] border border-[#431770] rounded-3xl w-full max-w-md p-5 shadow-2xl relative">
+            <button onclick="closeNotificationModal()" class="absolute top-4 right-4 text-purple-300 hover:text-white">
                 <i class="fas fa-times"></i>
             </button>
             <h3 class="text-lg font-black text-white mb-3 flex items-center gap-2">
-                <i class="fas fa-bell text-brandYellow"></i>
+                <i class="fas fa-bell text-goldenYellow"></i>
                 <span>सूचना केंद्र (Notifications)</span>
             </h3>
             <div id="notifListContainer" class="space-y-2.5 max-h-[60vh] overflow-y-auto pr-1">
@@ -1076,25 +1041,25 @@
     <!-- ========================================================================= -->
     <!-- MODAL 5: REFER & GROW MODAL                                               -->
     <!-- ========================================================================= -->
-    <div id="referModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl relative text-center">
-            <button onclick="closeReferModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+    <div id="referModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-[#1e0b36] border border-[#431770] rounded-3xl w-full max-w-md p-6 shadow-2xl relative text-center">
+            <button onclick="closeReferModal()" class="absolute top-4 right-4 text-purple-300 hover:text-white">
                 <i class="fas fa-times"></i>
             </button>
-            <div class="w-14 h-14 bg-amber-500/20 text-brandYellow rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+            <div class="w-14 h-14 bg-goldenYellow/20 text-goldenYellow rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
                 <i class="fas fa-gift"></i>
             </div>
             <h3 class="text-lg font-black text-white">Refer & Grow</h3>
-            <p class="text-xs text-slate-300 mt-1">तुमच्या ओळखीच्या दुकानदारांना व मित्रांना KTimes Media Business Club ची लिंक पाठवा आणि २०० Reward Points मिळवा!</p>
+            <p class="text-xs text-purple-200 mt-1">तुमच्या ओळखीच्या दुकानदारांना व मित्रांना KTimes Media Business Club ची लिंक पाठवा आणि २०० Reward Points मिळवा!</p>
 
-            <div class="my-4 bg-slate-800 p-2.5 rounded-xl border border-slate-700 flex items-center justify-between">
+            <div class="my-4 bg-[#120724] p-2.5 rounded-xl border border-[#3b1766] flex items-center justify-between">
                 <span class="text-xs text-slate-300 truncate font-mono">https://ktimes.in/club?ref=GANESH77</span>
-                <button onclick="copyReferralLink()" class="bg-brandPurple text-white px-3 py-1 rounded-lg text-xs font-bold shrink-0 ml-2">
+                <button onclick="copyReferralLink()" class="btn-golden px-3 py-1 rounded-lg text-xs font-bold shrink-0 ml-2">
                     कॉपी
                 </button>
             </div>
 
-            <a href="https://wa.me/?text=नमस्कार,%20मी%20माझ्या%20व्यवसायाच्या%20जाहिरातीसाठी%20KTimes%20Media%20Business%20Club%20वापरत%20आहे.%20तुम्हीही%20जॉईन%20करा:%20https://ktimes.in/club?ref=GANESH77" target="_blank" class="w-full bg-brandWhatsapp hover:bg-brandWhatsappHover text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow">
+            <a href="https://wa.me/?text=नमस्कार,%20मी%20माझ्या%20व्यवसायाच्या%20जाहिरातीसाठी%20KTimes%20Media%20Business%20Club%20वापरत%20आहे.%20तुम्हीही%20जॉईन%20करा:%20https://ktimes.in/club?ref=GANESH77" target="_blank" class="w-full bg-[#25D366] hover:bg-[#1ebc59] text-slate-950 font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow">
                 <i class="fab fa-whatsapp text-base"></i> WhatsApp वर शेअर करा
             </a>
         </div>
@@ -1111,17 +1076,17 @@
         const servicesData = [
             {
                 id: 'srv_1',
-                title: 'AI Cinematic Video Advertisement',
-                type: 'AI',
-                tagline: 'तुमच्या दुकानासाठी Next-Gen AI 4K व्हिडिओ',
+                title: 'व्हिडिओ जाहिराती (4K Cinematic Commercial)',
+                type: 'VIDEO',
+                tagline: 'तुमच्या दुकानासाठी Next-Gen 4K व्हिडिओ जाहिरात',
                 startingPrice: '₹२,९९९',
-                badge: 'TRENDING AI',
+                badge: 'TRENDING',
                 image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80',
                 description: 'सिनेमॅटिक व्हिज्युअल्स, AI व्हॉईसओव्हर, मोशन टायपोग्राफी आणि पार्श्वसंगीतासह हाय-इम्पॅक्ट जाहिरात.'
             },
             {
                 id: 'srv_2',
-                title: 'FM Radio Style Audio Jingle',
+                title: 'ऑडिओ व जिगल्स (FM & रिक्षा प्रचार)',
                 type: 'AUDIO',
                 tagline: 'पुरुष + स्त्री व्हॉईसओव्हर व ढोल-ताशा बीट्स',
                 startingPrice: '₹१,९९९',
@@ -1131,9 +1096,9 @@
             },
             {
                 id: 'srv_3',
-                title: 'Festival Banner & Creative Package',
+                title: 'बॅनर्स व फ्लेक्स (Festival Creatives)',
                 type: 'GRAPHIC',
-                tagline: 'सणानुसार आकर्षक सोशल मीडिया डिझाइन्स',
+                tagline: 'सणानुसार आकर्षक सोशल मीडिया व फ्लेक्स डिझाइन्स',
                 startingPrice: '₹९९९',
                 badge: 'FESTIVAL',
                 image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&auto=format&fit=crop&q=80',
@@ -1141,7 +1106,17 @@
             },
             {
                 id: 'srv_4',
-                title: 'Social Media Viral Reel (9:16)',
+                title: 'AI स्टुडिओ (AI Video Ads & Anchor)',
+                type: 'AI',
+                tagline: 'AI न्यूज अँकर व 3D व्हिज्युअल जाहिरात',
+                startingPrice: '₹३,४९९',
+                badge: 'AI SPECIAL',
+                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80',
+                description: 'अत्याधुनिक AI व्हर्च्युअल अँकर, मराठी उच्चार आणि उच्च दर्जाचे स्पेशल इफेक्ट्स.'
+            },
+            {
+                id: 'srv_5',
+                title: 'सोशल मीडिया रील्स (Insta / FB 9:16)',
                 type: 'VIDEO',
                 tagline: 'Instagram व Facebook साठी Vertical Reel',
                 startingPrice: '₹१,४९९',
@@ -1150,24 +1125,14 @@
                 description: 'मोबाईल स्क्रीनवर स्क्रोल थांबवणारे फास्ट-पेस्ड व्हिडिओ एडिटिंग, ट्रेंडिंग म्युझिक आणि प्रभावी मजकूर.'
             },
             {
-                id: 'srv_5',
-                title: 'Complete 360° Festival Campaign',
+                id: 'srv_6',
+                title: '३६०° फेस्टिव्हल कॅम्पेन (All-in-One)',
                 type: 'CAMPAIGN',
                 tagline: 'Video + Audio + Banners + WhatsApp Ads',
                 startingPrice: '₹४,९९९',
                 badge: 'ALL-IN-ONE',
                 image: 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=600&auto=format&fit=crop&q=80',
                 description: 'संपूर्ण सणासुदीची जाहिरात एकाच पॅकेजमध्ये. ऑडिओ, व्हिडिओ, ५ बॅनर आणि मेटा अ‍ॅड स्ट्रॅटेजी.'
-            },
-            {
-                id: 'srv_6',
-                title: 'Product Creative & Photography',
-                type: 'GRAPHIC',
-                tagline: 'दागिने, कपडे व उत्पादनांची आकर्षक फोटोग्राफी',
-                startingPrice: '₹१,२९९',
-                badge: 'STUDIO',
-                image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&auto=format&fit=crop&q=80',
-                description: 'कॅटलॉग, ई-कॉमर्स व सोशल मीडियासाठी प्रोफेशनल प्रॉडक्ट डिझाइन आणि AI बॅकग्राउंड एनहान्समेंट.'
             }
         ];
 
@@ -1213,7 +1178,7 @@
                 title: 'Ganeshotsav Special Jewelry Video',
                 service: 'AI Cinematic Video',
                 status: 'Draft Ready',
-                statusColor: 'text-amber-400 bg-amber-400/20 border-amber-400/30',
+                statusColor: 'text-goldenYellow bg-amber-400/20 border-goldenYellow/40',
                 deadline: '28 Aug 2026',
                 progress: 80,
                 assignedStaff: 'Kiran (Video Editor)',
@@ -1243,73 +1208,68 @@
                 type: 'AUDIO',
                 date: '15 Aug 2026',
                 size: '4.8 MB',
-                downloadUrl: '#'
+                downloadUrl: 'https://drive.google.com'
             },
             {
                 id: 'FIL-992',
                 title: 'Anniversary_Special_Banner_HD.png',
-                type: 'IMAGE',
-                date: '14 Aug 2026',
-                size: '2.4 MB',
-                downloadUrl: '#'
+                type: 'GRAPHIC',
+                date: '12 Aug 2026',
+                size: '2.3 MB',
+                downloadUrl: 'https://drive.google.com'
             }
         ];
 
         let clientInvoices = [
-            {
-                id: 'INV-2026-088',
-                title: 'Anniversary Audio Jingle & Creative Package',
-                amount: '₹२,४९९',
-                status: 'Paid',
-                statusColor: 'text-emerald-400 bg-emerald-400/20',
-                date: '15 Aug 2026'
-            },
-            {
-                id: 'INV-2026-094',
-                title: 'Ganeshotsav AI Cinematic Video (In Progress)',
-                amount: '₹२,९९९',
-                status: 'Partial (Advance Paid)',
-                statusColor: 'text-amber-400 bg-amber-400/20',
-                date: '20 Aug 2026'
-            }
+            { id: 'INV-2026-08', amount: '₹१,९९९', date: '15 Aug 2026', status: 'Paid (Online)', service: 'Audio Jingle' },
+            { id: 'INV-2026-04', amount: '₹४,९९९', date: '28 Apr 2026', status: 'Paid (UPI)', service: 'Akshaya Tritiya Promo' }
         ];
 
-        const communityPosts = [
+        let communityPosts = [
             {
                 id: 'post_1',
-                author: 'KTimes Media Team',
-                authorRole: 'Admin / Agency',
-                authorAvatar: 'K',
+                author: 'Kiran Shete (सातारा)',
+                authorAvatar: 'KS',
+                badge: 'ज्वेलरी बिझनेस',
                 time: '२ तासांपूर्वी',
-                badge: '💡 MARKETING TIP',
-                title: 'गणेशोत्सवात स्थानिक दुकानांची विक्री ३ पटीने कशी वाढवावी?',
-                content: '१. सोशल मीडियावर ५ दिवस आधीपासून काऊंटडाऊन रील्स सुरू करा.\n२. ग्राहकांसाठी ‘लकी ड्रॉ’ अथवा सवलतीचे व्हॉट्सॲप स्टेटस शेअर करा.\n३. लाउडस्पीकर ऑटो ऑडिओमुळे स्थानिक ग्राहकांपर्यंत थेट आवाज पोहोचतो.',
+                title: 'सोशल मीडिया व्हिडिओमुळे यंदाच्या उत्सवात ३ पट जास्त ग्राहक!',
+                content: 'KTimes Media कडून आम्ही बनवून घेतलेल्या 4K Instagram Reel मुळे आमच्या सातारा दुकानात परिसरातील अनेक नवीन ग्राहक आले.',
                 likes: 42,
-                commentsCount: 8
+                commentsCount: 9
             },
             {
                 id: 'post_2',
-                author: 'Ganesh Jewellers, Satara',
-                authorRole: 'Client Member',
-                authorAvatar: 'G',
+                author: 'अमोल जाधव (फलटण)',
+                authorAvatar: 'AJ',
+                badge: 'कापड दुकान',
                 time: 'काल',
-                badge: '🌟 SUCCESS STORY',
-                title: 'KTimes च्या AI व्हिडिओमुळे आमच्या दागिन्यांची मागणी वाढली!',
-                content: 'अक्षय्य तृतीयेला KTimes ने बनवलेल्या AI व्हिडिओमुळे आमच्या सातारा परिसरातील ग्राहकांकडून उत्तम प्रतिसाद मिळाला. धन्यवाद KTimes टीम!',
-                likes: 68,
-                commentsCount: 14
+                title: 'रिक्षा प्रचार ऑडिओ जिगलचा ग्रामीण भागात प्रचंड फायदा!',
+                content: 'ढोल-ताशा बीट व खणखणीत आवाजातील ऑडिओ जिगलमुळे संपूर्ण तालुक्यात सेलची चर्चा झाली.',
+                likes: 38,
+                commentsCount: 5
             }
         ];
 
         let crmLeads = [
-            { id: 'LD-401', client: 'Shah Brothers', business: 'Textile / Saree', location: 'Phaltan', service: 'Festival Campaign', budget: '₹5,000–₹10,000', stage: 'New Lead', date: 'Today' },
-            { id: 'LD-402', client: 'Ganesh Jewellers', business: 'Jewellers', location: 'Satara', service: 'AI Cinematic Video', budget: '₹3,000–₹5,000', stage: 'Production', date: 'Yesterday' },
-            { id: 'LD-403', client: 'Samarth Auto', business: 'Automobile', location: 'Baramati', service: 'FM Radio Jingle', budget: '₹1,000–₹3,000', stage: 'Quotation Sent', date: '2 days ago' },
-            { id: 'LD-404', client: 'Hotel Rajwada', business: 'Hotel / Restaurant', location: 'Pune', service: 'Social Media Reel', budget: '₹3,000–₹5,000', stage: 'Approval', date: '3 days ago' },
-            { id: 'LD-405', client: 'Shri Laxmi Collection', business: 'Textile / Saree', location: 'Satara', service: 'Festival Banner', budget: '₹1,000–₹3,000', stage: 'Delivered', date: '5 days ago' }
+            { id: 'LD-101', client: 'Ganesh Jewellers', location: 'सातारा', service: 'Video Ads', budget: '₹4,999', stage: 'Production', date: 'Today' },
+            { id: 'LD-102', client: 'Shah Saree Depot', location: 'फलटण', service: 'Graphics', budget: '₹2,500', stage: 'Delivered', date: 'Yesterday' },
+            { id: 'LD-103', client: 'Samarth Auto', location: 'बारामती', service: 'AI Video', budget: '₹6,999', stage: 'Approval', date: '3 days ago' },
+            { id: 'LD-104', client: 'Hotel Rajwada', location: 'सातारा', service: 'Audio Jingle', budget: '₹1,999', stage: 'New Lead', date: 'Just now' }
         ];
 
-        // INIT APP
+        let adminClients = [
+            { name: 'Ganesh Jewellers', contact: '9422337471', city: 'Satara', category: 'Jewellers', totalSpent: '₹28,500', ordersCount: 5, status: 'Active' },
+            { name: 'Shah Saree Depot', contact: '9822001122', city: 'Phaltan', category: 'Textile', totalSpent: '₹18,000', ordersCount: 4, status: 'Active' },
+            { name: 'Samarth Automobile', contact: '9850112233', city: 'Baramati', category: 'Automobile', totalSpent: '₹14,500', ordersCount: 2, status: 'Active' }
+        ];
+
+        let notifications = [
+            { title: 'ड्राफ्ट तयार आहे! 🎬', desc: 'तुमच्या Ganeshotsav Video चा ड्राफ्ट तयार झाला असून तपासून मंजुरी द्या.', time: '10 मिनिटांपूर्वी' },
+            { title: 'नवीन ऑफर उपलब्ध 🔥', desc: 'गणेशोत्सवासाठी कॉम्बो पॅकेजवर ३०% सूट.', time: '2 तासांपूर्वी' },
+            { title: 'Points जमा झाले 🎉', desc: 'मागील ऑर्डर पूर्ण झाल्यामुळे ५० KTimes Points खात्यात जमा झाले.', time: 'काल' }
+        ];
+
+        // INITIALIZATION
         document.addEventListener('DOMContentLoaded', () => {
             renderClientHome();
             renderStoreServices('ALL');
@@ -1321,17 +1281,32 @@
             renderNotifications();
         });
 
-        // ROLE SWITCHER
+        // ROLE SWITCHER (STRICT PIN 7878 PROTECTED)
         function switchUserRole(role) {
-            if (role === 'admin') {
-                const pin = prompt("🔐 कृपया KTimes Media Admin PIN प्रविष्ट करा (Enter Admin PIN):");
+            if (role === 'admin' || role === 'staff') {
+                const pin = prompt("🔐 कृपया KTimes Media Security PIN प्रविष्ट करा (Enter PIN):");
                 if (pin !== "7878") {
-                    alert("❌ चुकीचा Admin PIN! ऍक्सेस नाकारण्यात आला आहे.");
+                    alert("❌ चुकीचा Security PIN! ऍक्सेस नाकारण्यात आला आहे. (Access Denied - Client Mode Active)");
+                    currentUserRole = 'client';
+                    updateRoleButtonsUI('client');
+                    switchNav('home');
                     return;
                 }
             }
 
             currentUserRole = role;
+            updateRoleButtonsUI(role);
+
+            if (role === 'client') {
+                switchNav('home');
+            } else if (role === 'staff') {
+                switchNav('staff');
+            } else if (role === 'admin') {
+                switchNav('admin_crm');
+            }
+        }
+
+        function updateRoleButtonsUI(role) {
             ['roleBtnClient', 'roleBtnStaff', 'roleBtnAdmin'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.className = "px-2.5 py-1 rounded font-bold transition text-slate-400 hover:text-white";
@@ -1340,20 +1315,28 @@
             if (role === 'client') {
                 const el = document.getElementById('roleBtnClient');
                 if (el) el.className = "px-2.5 py-1 rounded font-bold transition bg-brandPurple text-white shadow-sm";
-                switchNav('home');
             } else if (role === 'staff') {
                 const el = document.getElementById('roleBtnStaff');
                 if (el) el.className = "px-2.5 py-1 rounded font-bold transition bg-cyan-600 text-white shadow-sm";
-                switchNav('staff');
             } else if (role === 'admin') {
                 const el = document.getElementById('roleBtnAdmin');
-                if (el) el.className = "px-2.5 py-1 rounded font-bold transition bg-red-600 text-white shadow-sm";
-                switchNav('admin_crm');
+                if (el) el.className = "px-2.5 py-1 rounded font-bold transition badge-crimson shadow-sm";
             }
         }
 
         // VIEW NAVIGATION
         function switchNav(tab) {
+            // Guard admin/staff tabs with PIN
+            if ((tab === 'admin_crm' || tab === 'staff') && currentUserRole === 'client') {
+                const pin = prompt("🔐 ही स्क्रीन उघडण्यासाठी Admin Security PIN (7878) टाका:");
+                if (pin !== "7878") {
+                    alert("❌ चुकीचा PIN! ऍक्सेस नाकारण्यात आला आहे.");
+                    return;
+                }
+                currentUserRole = tab === 'admin_crm' ? 'admin' : 'staff';
+                updateRoleButtonsUI(currentUserRole);
+            }
+
             currentActiveTab = tab;
             const views = {
                 home: 'viewClientHome',
@@ -1371,7 +1354,7 @@
                 if (el) el.classList.add('hidden');
             });
 
-            if (views[tab]) {
+            if (views[tab] && document.getElementById(views[tab])) {
                 document.getElementById(views[tab]).classList.remove('hidden');
             }
 
@@ -1387,10 +1370,10 @@
                 const btn = document.getElementById(btnId);
                 if (btn) {
                     if (k === tab) {
-                        btn.classList.add('text-brandPurpleLight');
+                        btn.classList.add('text-goldenYellow');
                         btn.classList.remove('text-slate-400');
                     } else {
-                        btn.classList.remove('text-brandPurpleLight');
+                        btn.classList.remove('text-goldenYellow');
                         btn.classList.add('text-slate-400');
                     }
                 }
@@ -1403,96 +1386,103 @@
         function renderClientHome() {
             // Render Active Projects in Home
             const activeProjectsEl = document.getElementById('homeActiveProjectsContainer');
-            activeProjectsEl.innerHTML = clientProjects.map(p => `
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-col justify-between space-y-3 shadow-md">
-                    <div class="flex items-start justify-between gap-2">
-                        <div>
-                            <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border ${p.statusColor}">${p.status}</span>
-                            <h4 class="text-base font-extrabold text-white mt-1.5">${p.title}</h4>
-                            <p class="text-xs text-brandPurpleLight font-semibold">${p.service}</p>
-                        </div>
-                        <span class="text-[11px] text-slate-400 font-bold">Deadline: ${p.deadline}</span>
-                    </div>
-
-                    <div class="space-y-1">
-                        <div class="flex justify-between text-[11px] text-slate-300">
-                            <span>Progress</span>
-                            <span class="font-bold text-white">${p.progress}%</span>
-                        </div>
-                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                            <div class="bg-gradient-to-r from-brandPurple to-emerald-400 h-full rounded-full" style="width: ${p.progress}%"></div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between pt-1 border-t border-slate-800 text-xs">
-                        <span class="text-slate-400 text-[11px]">Staff: ${p.assignedStaff}</span>
-                        <button onclick="openProjectApproval('${p.id}')" class="bg-brandPurple/30 hover:bg-brandPurple text-purple-200 hover:text-white px-3 py-1.5 rounded-lg font-bold transition">
-                            Project पहा व Approval द्या →
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-
-            // Render Home Offers
-            const homeOffersEl = document.getElementById('homeOffersContainer');
-            homeOffersEl.innerHTML = offersData.map(o => `
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
-                    <div class="relative h-36">
-                        <img src="${o.image}" alt="${o.title}" class="w-full h-full object-cover">
-                        <span class="absolute top-2 left-2 bg-brandRed text-white text-[10px] font-black px-2.5 py-0.5 rounded-full">${o.discount}</span>
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h4 class="text-sm font-bold text-white line-clamp-1">${o.title}</h4>
-                            <p class="text-xs text-slate-400 mt-1 line-clamp-2">${o.desc}</p>
-                        </div>
-                        <div class="flex items-center justify-between mt-3 pt-2 border-t border-slate-800">
+            if (activeProjectsEl) {
+                activeProjectsEl.innerHTML = clientProjects.map(p => `
+                    <div class="bg-[#1a0d2e] border border-[#3b1766] p-4 rounded-2xl flex flex-col justify-between space-y-3 shadow-md">
+                        <div class="flex items-start justify-between gap-2">
                             <div>
-                                <span class="text-xs text-slate-500 line-through">${o.originalPrice}</span>
-                                <span class="text-sm font-black text-brandYellow ml-1">${o.offerPrice}</span>
+                                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border ${p.statusColor}">${p.status}</span>
+                                <h4 class="text-base font-extrabold text-white mt-1.5">${p.title}</h4>
+                                <p class="text-xs text-brandPurpleLight font-semibold">${p.service}</p>
                             </div>
-                            <button onclick="quickOrderService('${o.service}')" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-3 py-1 rounded-lg text-xs font-bold shadow">
-                                Offer घ्या
+                            <span class="text-[11px] text-purple-300 font-bold">Deadline: ${p.deadline}</span>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[11px] text-purple-200">
+                                <span>Progress</span>
+                                <span class="font-bold text-goldenYellow">${p.progress}%</span>
+                            </div>
+                            <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-brandPurple to-goldenYellow h-full rounded-full" style="width: ${p.progress}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-1 border-t border-[#3b1766] text-xs">
+                            <span class="text-purple-300 text-[11px]">Staff: ${p.assignedStaff}</span>
+                            <button onclick="openProjectApproval('${p.id}')" class="bg-brandPurple/40 hover:bg-brandPurple text-purple-200 hover:text-white px-3 py-1.5 rounded-lg font-bold transition">
+                                Project पहा व Approval द्या →
                             </button>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
+
+            // Render Home Offers
+            const homeOffersEl = document.getElementById('homeOffersContainer');
+            if (homeOffersEl) {
+                homeOffersEl.innerHTML = offersData.map(o => `
+                    <div class="bg-[#1a0d2e] border border-[#3b1766] rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
+                        <div class="relative h-36">
+                            <img src="${o.image}" alt="${o.title}" class="w-full h-full object-cover">
+                            <span class="absolute top-2 left-2 badge-crimson text-[10px] font-black px-2.5 py-0.5 rounded-full shadow">${o.discount}</span>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h4 class="text-sm font-bold text-white line-clamp-1">${o.title}</h4>
+                                <p class="text-xs text-purple-200 mt-1 line-clamp-2">${o.desc}</p>
+                            </div>
+                            <div class="flex items-center justify-between mt-3 pt-2 border-t border-[#3b1766]">
+                                <div>
+                                    <span class="text-xs text-slate-500 line-through">${o.originalPrice}</span>
+                                    <span class="text-sm font-black text-goldenYellow ml-1">${o.offerPrice}</span>
+                                </div>
+                                <button onclick="quickOrderService('${o.service}')" class="btn-golden px-3 py-1 rounded-lg text-xs font-black shadow">
+                                    Offer घ्या
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
 
             // Render Home Community Highlights
             const homeCommEl = document.getElementById('homeCommunityContainer');
-            homeCommEl.innerHTML = communityPosts.map(post => `
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-2.5">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">${post.authorAvatar}</div>
-                            <div>
-                                <h5 class="text-xs font-bold text-white">${post.author}</h5>
-                                <span class="text-[10px] text-slate-400">${post.time}</span>
+            if (homeCommEl) {
+                homeCommEl.innerHTML = communityPosts.map(post => `
+                    <div class="bg-[#1a0d2e] border border-[#3b1766] p-4 rounded-2xl space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-full bg-brandPurple text-white flex items-center justify-center font-bold text-xs">${post.authorAvatar}</div>
+                                <div>
+                                    <h5 class="text-xs font-bold text-white">${post.author}</h5>
+                                    <span class="text-[10px] text-purple-300">${post.time}</span>
+                                </div>
                             </div>
+                            <span class="text-[10px] bg-[#2a0845] text-purple-200 px-2 py-0.5 rounded-full font-bold border border-[#3b1766]">${post.badge}</span>
                         </div>
-                        <span class="text-[10px] bg-slate-800 text-blue-300 px-2 py-0.5 rounded-full font-bold">${post.badge}</span>
+                        <h4 class="text-sm font-bold text-white">${post.title}</h4>
+                        <p class="text-xs text-purple-200 line-clamp-2">${post.content}</p>
+                        <div class="flex items-center justify-between text-xs text-purple-300 pt-2 border-t border-[#3b1766]">
+                            <button onclick="likePost('${post.id}')" class="hover:text-red-400 font-bold"><i class="fas fa-heart mr-1 text-crimsonRed"></i>${post.likes} Likes</button>
+                            <button onclick="switchNav('community')" class="hover:text-white"><i class="fas fa-comment mr-1"></i>${post.commentsCount} Comments</button>
+                        </div>
                     </div>
-                    <h4 class="text-sm font-bold text-white">${post.title}</h4>
-                    <p class="text-xs text-slate-300 line-clamp-2">${post.content}</p>
-                    <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
-                        <button onclick="likePost('${post.id}')" class="hover:text-red-400 font-bold"><i class="fas fa-heart mr-1"></i>${post.likes} Likes</button>
-                        <button onclick="switchNav('community')" class="hover:text-white"><i class="fas fa-comment mr-1"></i>${post.commentsCount} Comments</button>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
 
         // RENDER: ADVERTISING STORE
         function renderStoreServices(type) {
             const grid = document.getElementById('storeServicesGrid');
+            if (!grid) return;
             const filtered = type === 'ALL' ? servicesData : servicesData.filter(s => s.type === type);
             
             grid.innerHTML = filtered.map(s => `
-                <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl flex flex-col justify-between hover:border-purple-500/40 transition">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] rounded-3xl overflow-hidden shadow-xl flex flex-col justify-between hover:border-goldenYellow/40 transition">
                     <div class="relative h-44">
                         <img src="${s.image}" alt="${s.title}" class="w-full h-full object-cover">
-                        <span class="absolute top-3 left-3 bg-brandPurple text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow">
+                        <span class="absolute top-3 left-3 badge-crimson text-[10px] font-black px-2.5 py-0.5 rounded-full shadow">
                             ${s.badge}
                         </span>
                     </div>
@@ -1500,15 +1490,15 @@
                         <div>
                             <h3 class="text-base font-extrabold text-white">${s.title}</h3>
                             <p class="text-xs text-brandPurpleLight font-bold mt-0.5">${s.tagline}</p>
-                            <p class="text-xs text-slate-400 mt-2 line-clamp-2">${s.description}</p>
+                            <p class="text-xs text-purple-200 mt-2 line-clamp-2">${s.description}</p>
                         </div>
 
-                        <div class="flex items-center justify-between pt-3 border-t border-slate-800">
+                        <div class="flex items-center justify-between pt-3 border-t border-[#3b1766]">
                             <div>
-                                <span class="text-[10px] text-slate-400 block font-semibold">Starting from</span>
-                                <span class="text-lg font-black text-brandYellow">${s.startingPrice}</span>
+                                <span class="text-[10px] text-purple-300 block font-semibold">Starting from</span>
+                                <span class="text-lg font-black text-goldenYellow">${s.startingPrice}</span>
                             </div>
-                            <button onclick="quickOrderService('${s.title}')" class="bg-gradient-to-r from-brandPurple to-purple-600 hover:from-brandPurpleDark hover:to-purple-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg transition">
+                            <button onclick="quickOrderService('${s.title}')" class="btn-golden px-4 py-2 rounded-xl text-xs font-black shadow-lg transition">
                                 मला हे पाहिजे →
                             </button>
                         </div>
@@ -1519,32 +1509,35 @@
 
         function filterStore(type) {
             document.querySelectorAll('.store-pill').forEach(btn => {
-                btn.className = "store-pill bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-slate-700";
+                btn.className = "store-pill bg-[#1a0d2e] hover:bg-[#251342] text-slate-300 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border border-[#3b1766]";
             });
-            event.target.className = "store-pill active bg-brandPurple text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap";
+            if (event && event.target) {
+                event.target.className = "store-pill active btn-golden px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap";
+            }
             renderStoreServices(type);
         }
 
         // RENDER: OFFERS
         function renderOffers() {
             const grid = document.getElementById('allOffersGrid');
+            if (!grid) return;
             grid.innerHTML = offersData.map(o => `
-                <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl p-5 flex flex-col justify-between">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] rounded-3xl overflow-hidden shadow-xl p-5 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <span class="bg-brandRed text-white text-xs font-bold px-2.5 py-0.5 rounded-full">${o.discount}</span>
-                            <span class="text-[11px] text-slate-400 font-semibold">Valid till: ${o.validUntil}</span>
+                            <span class="badge-crimson text-xs font-bold px-2.5 py-0.5 rounded-full shadow">${o.discount}</span>
+                            <span class="text-[11px] text-purple-300 font-semibold">Valid till: ${o.validUntil}</span>
                         </div>
                         <h3 class="text-lg font-extrabold text-white mt-1">${o.title}</h3>
-                        <p class="text-xs text-slate-400 mt-1">${o.desc}</p>
+                        <p class="text-xs text-purple-200 mt-1">${o.desc}</p>
                     </div>
 
-                    <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-800">
+                    <div class="flex items-center justify-between mt-4 pt-3 border-t border-[#3b1766]">
                         <div>
                             <span class="text-xs text-slate-500 line-through">${o.originalPrice}</span>
-                            <span class="text-lg font-black text-brandYellow ml-1">${o.offerPrice}</span>
+                            <span class="text-lg font-black text-goldenYellow ml-1">${o.offerPrice}</span>
                         </div>
-                        <button onclick="quickOrderService('${o.service}')" class="bg-brandYellow hover:bg-brandYellowHover text-slate-950 px-4 py-2 rounded-xl text-xs font-black shadow transition">
+                        <button onclick="quickOrderService('${o.service}')" class="btn-golden px-4 py-2 rounded-xl text-xs font-black shadow transition">
                             Offer घ्या
                         </button>
                     </div>
@@ -1552,275 +1545,255 @@
             `).join('');
         }
 
-        // RENDER: MY WORK
+        // RENDER: MY WORK (PROJECTS, FILES, INVOICES)
         function renderMyWork() {
-            // Projects
-            const projList = document.getElementById('clientProjectsList');
-            projList.innerHTML = clientProjects.map(p => `
-                <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-3">
-                    <div class="flex items-start justify-between gap-2">
-                        <div>
-                            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${p.statusColor}">${p.status}</span>
-                            <h4 class="text-base font-extrabold text-white mt-1">${p.title}</h4>
-                            <p class="text-xs text-brandPurpleLight">${p.service} • ID: ${p.id}</p>
+            // Client Projects List
+            const pList = document.getElementById('clientProjectsList');
+            if (pList) {
+                pList.innerHTML = clientProjects.map(p => `
+                    <div class="bg-[#1a0d2e] border border-[#3b1766] p-5 rounded-2xl space-y-3">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${p.statusColor}">${p.status}</span>
+                                <h4 class="text-lg font-extrabold text-white mt-1">${p.title}</h4>
+                                <p class="text-xs text-brandPurpleLight">${p.service} • ID: ${p.id}</p>
+                            </div>
+                            <span class="text-xs text-purple-300 font-semibold">Deadline: ${p.deadline}</span>
                         </div>
-                        <span class="text-xs text-slate-400 font-bold">${p.deadline}</span>
-                    </div>
 
-                    <div class="space-y-1">
-                        <div class="flex justify-between text-xs text-slate-300">
-                            <span>Status: <b>${p.status}</b></span>
-                            <span class="font-bold text-white">${p.progress}%</span>
-                        </div>
-                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                            <div class="bg-gradient-to-r from-brandPurple to-emerald-400 h-full rounded-full" style="width: ${p.progress}%"></div>
+                        <p class="text-xs text-purple-200 bg-[#120724] p-2.5 rounded-xl border border-[#3b1766]">
+                            <span class="text-goldenYellow font-bold">Brief:</span> ${p.brief}
+                        </p>
+
+                        <div class="flex items-center justify-between pt-2 border-t border-[#3b1766]">
+                            <span class="text-xs text-purple-300">Staff Assigned: ${p.assignedStaff}</span>
+                            <button onclick="openProjectApproval('${p.id}')" class="btn-golden px-4 py-1.5 rounded-xl text-xs font-bold shadow">
+                                Preview & Approval →
+                            </button>
                         </div>
                     </div>
+                `).join('');
+            }
 
-                    <div class="flex gap-2 pt-2 border-t border-slate-800">
-                        <button onclick="openProjectApproval('${p.id}')" class="flex-1 bg-brandPurple hover:bg-brandPurpleDark text-white py-2 rounded-xl text-xs font-bold shadow">
-                            Preview & Approval
+            // Delivered Files Grid
+            const fGrid = document.getElementById('deliveredFilesGrid');
+            if (fGrid) {
+                fGrid.innerHTML = deliveredFiles.map(f => `
+                    <div class="bg-[#1a0d2e] border border-[#3b1766] p-4 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-purple-900/60 text-goldenYellow flex items-center justify-center text-lg">
+                                <i class="${f.type === 'AUDIO' ? 'fas fa-music' : 'fas fa-image'}"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-xs font-bold text-white truncate max-w-[180px]">${f.title}</h5>
+                                <span class="text-[10px] text-purple-300">${f.date} • ${f.size}</span>
+                            </div>
+                        </div>
+                        <button onclick="downloadSampleFile('${f.title}')" class="bg-[#2a0845] hover:bg-[#3d1263] text-goldenYellow p-2 rounded-xl text-xs border border-[#3b1766]">
+                            <i class="fas fa-download"></i>
                         </button>
-                        <a href="https://wa.me/919422337471?text=नमस्कार%20KTimes%20Media,%20मला%20प्रोजेक्ट%20${p.id}%20बद्दल%20अपडेट%20हवी%20आहे." target="_blank" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-xl text-xs font-bold">
-                            <i class="fab fa-whatsapp text-emerald-400"></i>
-                        </a>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
 
-            // Files
-            const filesGrid = document.getElementById('deliveredFilesGrid');
-            filesGrid.innerHTML = deliveredFiles.map(f => `
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-3 truncate">
-                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg shrink-0">
-                            <i class="fas ${f.type === 'AUDIO' ? 'fa-music' : 'fa-image'}"></i>
-                        </div>
-                        <div class="truncate">
-                            <h4 class="text-xs font-bold text-white truncate">${f.title}</h4>
-                            <span class="text-[10px] text-slate-400">${f.date} • ${f.size}</span>
-                        </div>
-                    </div>
-                    <button onclick="downloadSampleFile('${f.title}')" class="bg-brandPurple text-white px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 shadow">
-                        <i class="fas fa-download"></i>
-                    </button>
-                </div>
-            `).join('');
-
-            // Invoices
+            // Invoices Grid
             const invGrid = document.getElementById('clientInvoicesGrid');
-            invGrid.innerHTML = clientInvoices.map(inv => `
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center justify-between">
-                    <div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${inv.statusColor}">${inv.status}</span>
-                        <h4 class="text-xs font-bold text-white mt-1">${inv.title}</h4>
-                        <span class="text-[10px] text-slate-400">${inv.id} • ${inv.date}</span>
+            if (invGrid) {
+                invGrid.innerHTML = clientInvoices.map(inv => `
+                    <div class="bg-[#1a0d2e] border border-[#3b1766] p-4 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-mono font-bold text-white">${inv.id}</span>
+                            <h5 class="text-xs text-purple-200 mt-0.5">${inv.service}</h5>
+                            <span class="text-[10px] text-purple-300">${inv.date}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-black text-goldenYellow block">${inv.amount}</span>
+                            <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/20 px-2 py-0.5 rounded-full">${inv.status}</span>
+                        </div>
                     </div>
-                    <div class="text-right">
-                        <span class="text-base font-black text-white block">${inv.amount}</span>
-                        <button onclick="alert('Invoice downloaded.')" class="text-[10px] text-brandPurpleLight hover:underline font-bold">PDF Invoice</button>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
 
-        function switchWorkSubTab(tab) {
-            ['projects', 'files', 'invoices'].forEach(t => {
-                document.getElementById(`workSub${t.charAt(0).toUpperCase() + t.slice(1)}`).classList.add('hidden');
-                document.getElementById(`workTab${t.charAt(0).toUpperCase() + t.slice(1)}`).className = "bg-slate-900 text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold";
+        function switchWorkSubTab(sub) {
+            ['projects', 'files', 'invoices'].forEach(s => {
+                const el = document.getElementById(`workSub${s.charAt(0).toUpperCase() + s.slice(1)}`);
+                const tab = document.getElementById(`workTab${s.charAt(0).toUpperCase() + s.slice(1)}`);
+                if (el) el.classList.add('hidden');
+                if (tab) tab.className = "bg-[#1a0d2e] text-slate-400 hover:text-white px-4 py-2 rounded-xl text-xs font-bold border border-[#3b1766]";
             });
 
-            document.getElementById(`workSub${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.remove('hidden');
-            document.getElementById(`workTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).className = "bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold";
+            const activeContent = document.getElementById(`workSub${sub.charAt(0).toUpperCase() + sub.slice(1)}`);
+            const activeTab = document.getElementById(`workTab${sub.charAt(0).toUpperCase() + sub.slice(1)}`);
+            if (activeContent) activeContent.classList.remove('hidden');
+            if (activeTab) activeTab.className = "bg-brandPurple text-white px-4 py-2 rounded-xl text-xs font-bold shadow";
         }
 
         // RENDER: COMMUNITY
         function renderCommunity() {
-            const container = document.getElementById('communityFeedContainer');
-            container.innerHTML = communityPosts.map(post => `
-                <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-3 shadow-lg">
+            const feed = document.getElementById('communityFeedContainer');
+            if (!feed) return;
+            feed.innerHTML = communityPosts.map(post => `
+                <div class="bg-[#1a0d2e] border border-[#3b1766] p-5 rounded-3xl space-y-3 shadow-xl">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-brandPurple to-blue-600 text-white flex items-center justify-center font-black text-sm">${post.authorAvatar}</div>
+                            <div class="w-10 h-10 rounded-full bg-brandPurple text-white flex items-center justify-center font-bold text-sm shadow">
+                                ${post.authorAvatar}
+                            </div>
                             <div>
-                                <h4 class="text-xs md:text-sm font-bold text-white">${post.author}</h4>
-                                <span class="text-[11px] text-slate-400">${post.authorRole} • ${post.time}</span>
+                                <h4 class="text-sm font-extrabold text-white">${post.author}</h4>
+                                <span class="text-xs text-purple-300">${post.time}</span>
                             </div>
                         </div>
-                        <span class="text-[10px] bg-slate-800 text-blue-300 border border-blue-500/30 px-2.5 py-0.5 rounded-full font-bold">${post.badge}</span>
+                        <span class="badge-crimson text-xs px-3 py-1 rounded-full font-bold shadow">
+                            ${post.badge}
+                        </span>
                     </div>
 
-                    <h3 class="text-base font-extrabold text-white">${post.title}</h3>
-                    <p class="text-xs md:text-sm text-slate-300 leading-relaxed whitespace-pre-line">${post.content}</p>
+                    <div>
+                        <h3 class="text-base font-extrabold text-white">${post.title}</h3>
+                        <p class="text-xs md:text-sm text-purple-200 mt-1 leading-relaxed">${post.content}</p>
+                    </div>
 
-                    <div class="flex items-center justify-between pt-3 border-t border-slate-800 text-xs">
-                        <button onclick="likePost('${post.id}')" class="flex items-center gap-1.5 text-slate-400 hover:text-red-400 font-bold transition">
-                            <i class="fas fa-heart"></i>
-                            <span>${post.likes} Likes</span>
+                    <div class="flex items-center justify-between pt-3 border-t border-[#3b1766] text-xs text-purple-300">
+                        <button onclick="likePost('${post.id}')" class="hover:text-red-400 font-bold flex items-center gap-1.5">
+                            <i class="fas fa-heart text-crimsonRed"></i> <span>${post.likes} Likes</span>
                         </button>
-                        <button onclick="commentPost('${post.id}')" class="flex items-center gap-1.5 text-slate-400 hover:text-white font-bold transition">
-                            <i class="fas fa-comment"></i>
-                            <span>${post.commentsCount} Comments</span>
+                        <button onclick="commentPost('${post.id}')" class="hover:text-white flex items-center gap-1.5">
+                            <i class="fas fa-comment"></i> <span>${post.commentsCount} Comments</span>
                         </button>
-                        <button onclick="sharePost('${post.title}')" class="flex items-center gap-1.5 text-slate-400 hover:text-emerald-400 font-bold transition">
-                            <i class="fas fa-share-alt"></i>
-                            <span>Share</span>
+                        <button onclick="sharePost('${post.title}')" class="hover:text-goldenYellow flex items-center gap-1.5">
+                            <i class="fas fa-share-alt"></i> <span>Share</span>
                         </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // RENDER: ADMIN CRM
+        // RENDER: ADMIN CRM & LEADS
         function renderAdminCRM() {
-            // Kanban Stages
+            const container = document.getElementById('kanbanBoardContainer');
+            if (!container) return;
             const stages = ['New Lead', 'Requirement Received', 'Quotation Sent', 'Production', 'Approval', 'Delivered'];
-            const board = document.getElementById('kanbanBoardContainer');
-            
-            board.innerHTML = stages.map(stg => {
-                const leadsInStage = crmLeads.filter(l => l.stage === stg);
+
+            container.innerHTML = stages.map(st => {
+                const stageLeads = crmLeads.filter(l => l.stage === st);
                 return `
-                    <div class="w-72 bg-slate-900/90 border border-slate-800 rounded-2xl p-3 shrink-0 flex flex-col max-h-[70vh]">
-                        <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
-                            <span class="text-xs font-bold text-white">${stg}</span>
-                            <span class="bg-slate-800 text-slate-300 text-[10px] font-black px-2 py-0.5 rounded-full">${leadsInStage.length}</span>
+                    <div class="w-64 shrink-0 bg-[#120724] border border-[#3b1766] rounded-2xl p-3.5 flex flex-col space-y-3">
+                        <div class="flex items-center justify-between pb-2 border-b border-[#3b1766]">
+                            <h4 class="text-xs font-bold text-white">${st}</h4>
+                            <span class="badge-crimson text-[10px] font-bold px-2 py-0.5 rounded-full">${stageLeads.length}</span>
                         </div>
-                        <div class="flex-1 overflow-y-auto space-y-2 pr-1">
-                            ${leadsInStage.map(l => `
-                                <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 space-y-1.5 shadow">
-                                    <div class="flex justify-between items-start">
-                                        <h5 class="text-xs font-bold text-white">${l.client}</h5>
-                                        <span class="text-[10px] text-slate-400">${l.location}</span>
-                                    </div>
-                                    <p class="text-[11px] text-brandPurpleLight font-semibold">${l.service}</p>
-                                    <div class="flex justify-between items-center text-[10px] text-slate-400 pt-1 border-t border-slate-700/60">
-                                        <span>Budget: <b>${l.budget}</b></span>
-                                        <button onclick="advanceLeadStage('${l.id}')" class="text-brandYellow hover:underline font-bold">Move →</button>
+                        <div class="space-y-2.5 min-h-[140px]">
+                            ${stageLeads.map(l => `
+                                <div class="bg-[#1a0d2e] border border-[#3b1766] p-3 rounded-xl space-y-1 shadow cursor-pointer hover:border-goldenYellow/50 transition" onclick="advanceLeadStage('${l.id}')">
+                                    <h5 class="text-xs font-bold text-white">${l.client}</h5>
+                                    <p class="text-[11px] text-brandPurpleLight">${l.service} • ${l.location}</p>
+                                    <div class="flex justify-between items-center text-[10px] text-purple-300 pt-1">
+                                        <span class="text-goldenYellow font-bold">${l.budget}</span>
+                                        <span>${l.date}</span>
                                     </div>
                                 </div>
-                            `).join('') || '<p class="text-[11px] text-slate-500 py-3 text-center">No leads</p>'}
+                            `).join('')}
+                            ${stageLeads.length === 0 ? '<p class="text-[11px] text-slate-500 text-center py-4">No leads in this stage</p>' : ''}
                         </div>
                     </div>
                 `;
             }).join('');
 
-            // Admin Clients Table
-            const tableContainer = document.getElementById('adminClientsTableContainer');
-            tableContainer.innerHTML = `
-                <table class="w-full text-left text-xs text-slate-300">
-                    <thead class="bg-slate-800 text-slate-400 font-bold border-b border-slate-700">
-                        <tr>
-                            <th class="p-3">Client / Business</th>
-                            <th class="p-3">Category</th>
-                            <th class="p-3">Location</th>
-                            <th class="p-3">Total Projects</th>
-                            <th class="p-3">Total Spend</th>
-                            <th class="p-3">Status</th>
-                            <th class="p-3">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-800">
-                        <tr class="hover:bg-slate-800/40">
-                            <td class="p-3 font-bold text-white">Ganesh Jewellers</td>
-                            <td class="p-3">Jewellers</td>
-                            <td class="p-3">Satara</td>
-                            <td class="p-3 font-bold">4 Projects</td>
-                            <td class="p-3 font-bold text-emerald-400">₹32,500</td>
-                            <td class="p-3"><span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full text-[10px] font-bold">Active</span></td>
-                            <td class="p-3"><button onclick="quickOrderService('Smart Ad')" class="text-brandPurpleLight hover:underline font-bold">Offer पाठवा</button></td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/40">
-                            <td class="p-3 font-bold text-white">Shah Brothers</td>
-                            <td class="p-3">Textile / Saree</td>
-                            <td class="p-3">Phaltan</td>
-                            <td class="p-3 font-bold">2 Projects</td>
-                            <td class="p-3 font-bold text-emerald-400">₹14,999</td>
-                            <td class="p-3"><span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full text-[10px] font-bold">Follow-up</span></td>
-                            <td class="p-3"><button onclick="quickOrderService('Smart Ad')" class="text-brandPurpleLight hover:underline font-bold">Offer पाठवा</button></td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/40">
-                            <td class="p-3 font-bold text-white">Samarth Enterprise</td>
-                            <td class="p-3">Automobile</td>
-                            <td class="p-3">Baramati</td>
-                            <td class="p-3 font-bold">1 Project</td>
-                            <td class="p-3 font-bold text-emerald-400">₹4,999</td>
-                            <td class="p-3"><span class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full text-[10px] font-bold">Inactive 90d</span></td>
-                            <td class="p-3"><button onclick="triggerReactivationBlast()" class="text-brandYellow hover:underline font-bold">Reactivate</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            `;
+            // Render Clients Table
+            const tblContainer = document.getElementById('adminClientsTableContainer');
+            if (tblContainer) {
+                tblContainer.innerHTML = `
+                    <table class="w-full text-left text-xs text-purple-200">
+                        <thead class="bg-[#120724] text-slate-300 uppercase text-[10px]">
+                            <tr>
+                                <th class="p-3">Client Name</th>
+                                <th class="p-3">Contact</th>
+                                <th class="p-3">City</th>
+                                <th class="p-3">Category</th>
+                                <th class="p-3">Total Spend</th>
+                                <th class="p-3">Orders</th>
+                                <th class="p-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#3b1766]">
+                            ${adminClients.map(c => `
+                                <tr>
+                                    <td class="p-3 font-bold text-white">${c.name}</td>
+                                    <td class="p-3 font-mono">${c.contact}</td>
+                                    <td class="p-3">${c.city}</td>
+                                    <td class="p-3">${c.category}</td>
+                                    <td class="p-3 font-bold text-goldenYellow">${c.totalSpent}</td>
+                                    <td class="p-3">${c.ordersCount}</td>
+                                    <td class="p-3"><span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold text-[10px]">${c.status}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
         }
 
-        function switchAdminSubTab(tab) {
-            ['kanban', 'clients', 'projects_all', 'analytics'].forEach(t => {
-                const el = document.getElementById(`admSub${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        function switchAdminSubTab(sub) {
+            ['kanban', 'clients', 'projects_all', 'analytics'].forEach(s => {
+                const el = document.getElementById(`admSub${s === 'projects_all' ? 'Projects' : s.charAt(0).toUpperCase() + s.slice(1)}`);
+                const tab = document.getElementById(`admTab${s === 'projects_all' ? 'Projects' : s.charAt(0).toUpperCase() + s.slice(1)}`);
                 if (el) el.classList.add('hidden');
-                const btn = document.getElementById(`admTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
-                if (btn) btn.className = "bg-slate-900 text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold";
+                if (tab) tab.className = "bg-[#1a0d2e] text-slate-400 hover:text-white px-4 py-1.5 rounded-xl text-xs font-bold border border-[#3b1766]";
             });
 
-            if (tab === 'kanban') {
-                document.getElementById('admSubKanban').classList.remove('hidden');
-                document.getElementById('admTabKanban').className = "bg-brandPurple text-white px-4 py-1.5 rounded-xl text-xs font-bold";
-            } else if (tab === 'clients') {
-                document.getElementById('admSubClients').classList.remove('hidden');
-                document.getElementById('admTabClients').className = "bg-brandPurple text-white px-4 py-1.5 rounded-xl text-xs font-bold";
-            } else if (tab === 'analytics') {
-                document.getElementById('admSubAnalytics').classList.remove('hidden');
-                document.getElementById('admTabAnalytics').className = "bg-brandPurple text-white px-4 py-1.5 rounded-xl text-xs font-bold";
-            }
+            const targetContent = document.getElementById(`admSub${sub === 'projects_all' ? 'Projects' : sub.charAt(0).toUpperCase() + sub.slice(1)}`);
+            const targetTab = document.getElementById(`admTab${sub === 'projects_all' ? 'Projects' : sub.charAt(0).toUpperCase() + sub.slice(1)}`);
+            if (targetContent) targetContent.classList.remove('hidden');
+            if (targetTab) targetTab.className = "btn-golden px-4 py-1.5 rounded-xl text-xs font-bold shadow";
         }
 
         // RENDER: STAFF VIEW
         function renderStaffView() {
             const grid = document.getElementById('staffAssignedProjectsGrid');
+            if (!grid) return;
             grid.innerHTML = clientProjects.map(p => `
-                <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-3">
+                <div class="bg-[#1a0d2e] border border-[#3b1766] p-5 rounded-2xl space-y-3">
                     <div class="flex items-start justify-between">
                         <div>
-                            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${p.statusColor}">${p.status}</span>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${p.statusColor}">${p.status}</span>
                             <h4 class="text-base font-extrabold text-white mt-1">${p.title}</h4>
-                            <p class="text-xs text-cyan-400">${p.service} • Client: Ganesh Jewellers</p>
+                            <p class="text-xs text-brandPurpleLight">${p.service} • Client: Ganesh Jewellers</p>
                         </div>
+                        <span class="text-xs text-purple-300 font-bold">Deadline: ${p.deadline}</span>
                     </div>
-                    <div class="bg-slate-800 p-3 rounded-xl text-xs text-slate-300">
-                        <span class="font-bold text-white block mb-1">Client Brief:</span>
-                        ${p.brief}
-                    </div>
-                    <div class="flex gap-2 pt-2">
-                        <button onclick="alert('Draft Upload Screen opened.')" class="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white py-2 rounded-xl text-xs font-bold shadow">
-                            <i class="fas fa-upload mr-1"></i> Draft अपलोड करा
+
+                    <p class="text-xs text-purple-200 bg-[#120724] p-2.5 rounded-xl border border-[#3b1766]">
+                        <span class="text-goldenYellow font-bold">Client Brief:</span> ${p.brief}
+                    </p>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-[#3b1766]">
+                        <button onclick="alert('Upload Draft Modal for '+ '${p.id}')" class="btn-golden px-3 py-1.5 rounded-xl text-xs font-bold shadow">
+                            <i class="fas fa-upload mr-1"></i> ड्राफ्ट अपलोड करा
                         </button>
-                        <button onclick="alert('Approval Request Sent to Client via In-App & WhatsApp!')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-xs font-bold">
-                            Approval मागा
+                        <button onclick="alert('Notification sent to client for '+ '${p.id}')" class="bg-[#2a0845] hover:bg-[#3d1263] text-purple-200 px-3 py-1.5 rounded-xl text-xs font-bold border border-[#3b1766]">
+                            Approval विनंती पाठवा
                         </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // NOTIFICATIONS
+        // RENDER: NOTIFICATIONS
         function renderNotifications() {
             const container = document.getElementById('notifListContainer');
-            const notifs = [
-                { title: 'विशेष सण ऑफर उपलब्ध!', text: 'गणेशोत्सवासाठी कॉम्बो पॅकेजवर ३०% सूट.', time: '१० मिनिटांपूर्वी', icon: 'fa-tags text-brandYellow' },
-                { title: 'प्रोजेक्ट ड्राफ्ट तयार आहे', text: 'Ganeshotsav Special Video कृपया तपासा.', time: '१ तासापूर्वी', icon: 'fa-check-circle text-emerald-400' },
-                { title: 'KTimes Rewards', text: 'आपल्या खात्यात ५० नवीन पॉइंट्स जोडले गेले आहेत.', time: 'काल', icon: 'fa-coins text-amber-400' }
-            ];
-            container.innerHTML = notifs.map(n => `
-                <div class="bg-slate-800 p-3 rounded-2xl border border-slate-700 flex gap-3 items-start">
-                    <i class="fas ${n.icon} text-base mt-0.5 shrink-0"></i>
-                    <div>
-                        <h5 class="text-xs font-bold text-white">${n.title}</h5>
-                        <p class="text-[11px] text-slate-300 mt-0.5">${n.text}</p>
-                        <span class="text-[10px] text-slate-500 mt-1 block">${n.time}</span>
-                    </div>
+            if (!container) return;
+            container.innerHTML = notifications.map(n => `
+                <div class="bg-[#120724] border border-[#3b1766] p-3 rounded-2xl space-y-1">
+                    <h5 class="text-xs font-bold text-white">${n.title}</h5>
+                    <p class="text-xs text-purple-200">${n.desc}</p>
+                    <span class="text-[10px] text-purple-400 block text-right">${n.time}</span>
                 </div>
             `).join('');
         }
 
-        // FORM HANDLERS
+        // GUARANTEED INSTANT WHATSAPP ORDER SUBMISSION
         function handleSubmitAdRequest(e) {
             if (e && e.preventDefault) e.preventDefault();
 
@@ -1832,15 +1805,14 @@
             const details = document.getElementById('reqDescription') ? document.getElementById('reqDescription').value.trim() : '';
             const location = document.getElementById('reqLocation') ? document.getElementById('reqLocation').value.trim() : 'सातारा';
 
-            // Automatically create CRM Lead locally
+            // Automatically create local CRM Lead
             try {
                 const newLead = {
                     id: `LD-${Date.now().toString().slice(-3)}`,
                     client: bName || 'नवीन ग्राहक',
-                    business: bName || 'Local Business',
                     location: location || 'सातारा',
                     service: service || 'Ad Service',
-                    budget: budget || '₹3,000–₹5,000',
+                    budget: budget || '₹३,००० ते ₹५,०००',
                     stage: 'New Lead',
                     date: 'Just now'
                 };
@@ -1854,26 +1826,35 @@
 
             closeAdRequestModal();
 
-            // WhatsApp Message Formatting:
-            const message = `*नवीन जाहिरात मागणी - KTimes Media*
+            // WhatsApp Message Formatting
+            const msg = `*नवीन जाहिरात मागणी - KTimes Media*
 --------------------------------
 📌 *व्यवसायाचे नाव:* ${bName || 'माहिती दिलेली नाही'}
 📞 *संपर्क क्रमांक:* ${phone || 'माहिती दिलेली नाही'}
 🎬 *हवी असलेली सेवा:* ${service || 'माहिती दिलेली नाही'}
 💰 *अंदाजे बजेट:* ${budget || 'माहिती दिलेली नाही'}
-⏳ *मुदत (Deadline):* ${deadline || 'लवकरात लवकर'}
+⏳ *मुदत (Deadline):* ${deadline || '२ ते ३ दिवस'}
 📝 *तपशील / माहिती:* ${details || 'माहिती दिलेली नाही'}
 --------------------------------`;
 
-            const encodedMessage = encodeURIComponent(message);
+            const encodedMessage = encodeURIComponent(msg);
             window.location.href = 'https://wa.me/919422337471?text=' + encodedMessage;
         }
 
         function quickOrderService(serviceName) {
-            document.getElementById('reqServiceType').value = serviceName;
             openAdRequestModal();
+            const srvInput = document.getElementById('reqServiceType');
+            if (srvInput) {
+                for (let i = 0; i < srvInput.options.length; i++) {
+                    if (srvInput.options[i].text.includes(serviceName) || srvInput.options[i].value.includes(serviceName)) {
+                        srvInput.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
         }
 
+        // MODAL CONTROLS
         function openAdRequestModal() {
             document.getElementById('adRequestModal').classList.remove('hidden');
         }
@@ -1886,6 +1867,49 @@
         }
         function closeAiAssistantModal() {
             document.getElementById('aiAssistantModal').classList.add('hidden');
+        }
+
+        function openProjectApproval(projId) {
+            const p = clientProjects.find(item => item.id === projId) || clientProjects[0];
+            document.getElementById('projModalTitle').innerText = p.title;
+            document.getElementById('projModalService').innerText = `${p.service} • Deadline: ${p.deadline}`;
+            
+            const mediaContainer = document.getElementById('projModalMediaContainer');
+            mediaContainer.innerHTML = `
+                <div class="relative w-full h-full flex items-center justify-center bg-black">
+                    <img src="${p.previewUrl}" alt="Preview" class="w-full h-full object-cover opacity-70">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40">
+                        <div class="w-14 h-14 rounded-full btn-golden flex items-center justify-center text-xl shadow-2xl cursor-pointer">
+                            <i class="fas fa-play text-slate-950"></i>
+                        </div>
+                        <span class="text-xs font-bold text-white mt-2 bg-black/60 px-3 py-1 rounded-full">4K Draft Preview</span>
+                    </div>
+                </div>
+            `;
+            document.getElementById('projectApprovalModal').classList.remove('hidden');
+        }
+        function closeProjectApprovalModal() {
+            document.getElementById('projectApprovalModal').classList.add('hidden');
+        }
+
+        function handleClientApprove() {
+            alert("🎉 अभिनंदन! तुमचा ड्राफ्ट मंजूर (Approved) करण्यात आला आहे. अंतिम 4K मास्टर फाइल्स लवकरच 'माझ्या फायली' सेक्शनमध्ये उपलब्ध होतील.");
+            closeProjectApprovalModal();
+        }
+
+        function toggleRevisionBox() {
+            const box = document.getElementById('revisionInputContainer');
+            box.classList.toggle('hidden');
+        }
+
+        function handleSendRevision() {
+            const notes = document.getElementById('revisionNotesInput').value;
+            if (!notes) {
+                alert("कृपया आवश्यक सुधारणा किंवा बदल लिहा.");
+                return;
+            }
+            alert("✅ तुमची रिव्हिजन विनंती प्रॉडक्शन टीमकडे पाठवली आहे. सुधारित ड्राफ्ट लवकरच अपडेट केला जाईल.");
+            closeProjectApprovalModal();
         }
 
         function openNotificationModal() {
@@ -1902,73 +1926,55 @@
             document.getElementById('referModal').classList.add('hidden');
         }
 
-        // APPROVAL MODAL
-        function openProjectApproval(projId) {
-            const p = clientProjects.find(item => item.id === projId) || clientProjects[0];
-            document.getElementById('projModalTitle').innerText = p.title;
-            document.getElementById('projModalService').innerText = `${p.service} • Deadline: ${p.deadline}`;
-            document.getElementById('projModalMediaContainer').innerHTML = `
-                <div class="text-center p-6 space-y-2">
-                    <i class="fas fa-play-circle text-5xl text-brandYellow cursor-pointer hover:scale-110 transition"></i>
-                    <p class="text-xs text-slate-300">Click to Play 4K Draft Video Preview</p>
-                </div>
-            `;
-            document.getElementById('projectApprovalModal').classList.remove('hidden');
-        }
-        function closeProjectApprovalModal() {
-            document.getElementById('projectApprovalModal').classList.add('hidden');
-        }
-
-        function handleClientApprove() {
-            alert("अभिनंदन! तुम्ही जाहिरात APPROVE केली आहे. अंतिम हाय-रिझोल्यूशन फाइल 'माझ्या फायली' मध्ये जोडली जाईल.");
-            closeProjectApprovalModal();
-        }
-
-        function toggleRevisionBox() {
-            document.getElementById('revisionInputContainer').classList.toggle('hidden');
-        }
-
-        function handleSendRevision() {
-            const notes = document.getElementById('revisionNotesInput').value;
-            if (!notes) {
-                alert("कृपया रिव्हिजन तपशील लिहा.");
-                return;
+        function openNewPostModal() {
+            const title = prompt("कम्युनिटी पोस्टचे शीर्षक लिहा:");
+            if (title) {
+                const desc = prompt("पोस्टचा सविस्तर मजकूर:");
+                if (desc) {
+                    communityPosts.unshift({
+                        id: `post_${Date.now()}`,
+                        author: 'Ganesh Jewellers (सातारा)',
+                        authorAvatar: 'GJ',
+                        badge: 'Member',
+                        time: 'Just now',
+                        title: title,
+                        content: desc,
+                        likes: 1,
+                        commentsCount: 0
+                    });
+                    renderCommunity();
+                    alert("पोस्ट कम्युनिटीमध्ये प्रकाशित झाली!");
+                }
             }
-            alert(`रिव्हिजन KTimes प्रोडक्शन टीमला पाठवले गेले आहे: "${notes}"`);
-            closeProjectApprovalModal();
         }
 
-        // AI CHAT ENGINE
+        // AI CHAT HANDLER
         function handleSendAiMessage(e) {
             e.preventDefault();
             const input = document.getElementById('aiUserInput');
-            const q = input.value.trim();
-            if (!q) return;
-            askAiQuestion(q);
-            input.value = '';
-        }
+            const msg = input.value.trim();
+            if (!msg) return;
 
-        function askAiQuestion(question) {
-            const chat = document.getElementById('aiChatHistory');
+            const chat = document.getElementById('aiChatMessages');
             chat.innerHTML += `
-                <div class="flex gap-2.5 justify-end">
-                    <div class="bg-brandPurple text-white p-3 rounded-2xl rounded-tr-none text-slate-100 max-w-[80%]">
-                        ${question}
-                    </div>
+                <div class="bg-brandPurple text-white p-3 rounded-2xl rounded-tr-none ml-auto max-w-[85%]">
+                    ${msg}
                 </div>
             `;
+            input.value = '';
 
             setTimeout(() => {
-                let response = "तुमच्या व्यवसायासाठी KTimes Media चा 'Complete Festival Campaign' सर्वोत्तम राहील. यामध्ये १ 4K AI व्हिडिओ, १ खणखणीत ऑडिओ जिगल आणि ५ सण-उत्सव पोस्टर्स मिळतील. आपण आजच 'जाहिरात मागवा' वरून थेट ऑर्डर नोंदवू शकता!";
-                if (question.includes("Script") || question.includes("स्क्रिप्ट")) {
-                    response = "<b>Reel Script Idea:</b><br>• Scene 1: 'सण आलाय पण खरेदी कुठून करावी असा विचार करताय?' (Hook)<br>• Scene 2: 'महाराष्ट्रातील नंबर १ कलेक्शन आता तुमच्या शहरात!'<br>• Scene 3: 'आजच भेट द्या आणि मिळवा विशेष सवलत.'<br><br>👉 KTimes कडून ही Reel बनवून घेण्यासाठी खालील बटनावर क्लिक करा.";
+                let reply = "तुमच्या व्यवसायासाठी आम्ही 4K AI सिनेमॅटिक व्हिडिओ आणि ऑडिओ जिगल बनवू शकतो. आजच 'जाहिरात मागवा' बटण दाबून ऑर्डर नोंदवा!";
+                if (msg.includes("किंमत") || msg.includes("रेट") || msg.includes("बजेट") || msg.includes("price")) {
+                    reply = "KTimes Media चे पॅकेजेस ₹९९९ (बॅनर्स), ₹१,९९९ (ऑडिओ जिगल) आणि ₹२,९९९ (4K व्हिडिओ जाहिरात) पासून सुरू होतात. गणेशोत्सवासाठी कॉम्बोवर ३०% सूट आहे.";
+                } else if (msg.includes("स्क्रिप्ट") || msg.includes("script")) {
+                    reply = "स्क्रिप्ट आयडिया: 'सणासुदीच्या खरेदीचा नवा थाट! गणेशोत्सवानिमित्त सोन्या-चांदीच्या मजुरीवर ५०% भरघोस सूट... आजच भेट द्या!' - ही स्क्रिप्ट ऑडिओ/व्हिडिओसाठी उत्तम राहील.";
                 }
+
                 chat.innerHTML += `
-                    <div class="flex gap-2.5">
-                        <div class="w-7 h-7 rounded-full bg-cyan-600 text-white flex items-center justify-center shrink-0 text-xs">AI</div>
-                        <div class="bg-slate-800 p-3 rounded-2xl rounded-tl-none text-slate-200 leading-relaxed border border-slate-700 max-w-[85%]">
-                            ${response}
-                        </div>
+                    <div class="bg-[#120724] border border-[#3b1766] p-3 rounded-2xl rounded-tl-none max-w-[85%] text-slate-200">
+                        <p class="font-bold text-goldenYellow mb-1">🤖 KTimes AI Assistant:</p>
+                        ${reply}
                     </div>
                 `;
                 chat.scrollTop = chat.scrollHeight;
@@ -2043,11 +2049,20 @@
         }
 
         function openUserMenuModal() {
-            const choice = confirm("Switch to Admin CRM Mode? (Click Cancel for Staff Mode)");
-            if (choice) {
-                switchUserRole('admin');
-            } else {
-                switchUserRole('staff');
+            const pin = prompt("🔐 Staff / Admin CRM मध्ये जाण्यासाठी Security PIN (7878) टाका:");
+            if (pin === "7878") {
+                const choice = confirm("Admin CRM Dashboard उघडायचे आहे का? (Staff Mode साठी Cancel दाबा)");
+                if (choice) {
+                    currentUserRole = 'admin';
+                    updateRoleButtonsUI('admin');
+                    switchNav('admin_crm');
+                } else {
+                    currentUserRole = 'staff';
+                    updateRoleButtonsUI('staff');
+                    switchNav('staff');
+                }
+            } else if (pin !== null) {
+                alert("❌ चुकीचा Security PIN! केवळ अधिकृत ॲडमिन व स्टाफसाठी राखीव.");
             }
         }
 
