@@ -83,6 +83,7 @@ import com.example.data.MediaItem
 import com.example.ui.MediaViewModel
 import com.example.ui.components.KtimesBottomNavigationBar
 import com.example.ui.components.PortfolioItemCard
+import com.example.ui.components.ClientTestimonialsSection
 import com.example.ui.theme.AppBackground
 import com.example.ui.theme.CardBackgroundLight
 import com.example.ui.theme.CardBorderLight
@@ -443,6 +444,7 @@ fun HomeScreenContent(
     onItemClick: (MediaItem) -> Unit
 ) {
     val items by viewModel.filteredItems.collectAsStateWithLifecycle()
+    val testimonials by viewModel.testimonials.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     LazyColumn(
@@ -632,6 +634,13 @@ fun HomeScreenContent(
                     }
                 }
             }
+        }
+
+        // Client Testimonials Section (Auto-cycling satisfied business club members)
+        item {
+            ClientTestimonialsSection(
+                testimonials = testimonials
+            )
         }
 
         // Marketplace Promo Spotlight Card

@@ -114,4 +114,72 @@ object DefaultData {
             whatsappMsg = "नमस्कार Ktimes Media, मला भक्तिगीत रेकॉर्डिंगची माहिती हवी आहे."
         )
     )
+
+    val businessClubTestimonials = listOf(
+        com.example.data.models.Testimonial(
+            id = "test-1",
+            clientName = "गणेश सराफ",
+            businessName = "गणेश ज्वेलर्स अँड सन्स",
+            businessType = "सुवर्ण व रत्न व्यवसाय • कोल्हापूर",
+            rating = 5,
+            feedback = "Ktimes Media च्या ऑडिओ जाहिरातीमुळे आमच्या दिवाळी आणि गुढीपाडवा उत्सवात ग्राहकांची प्रचंड गर्दी झाली. खणखणीत आवाज, वेळेत डिलिव्हरी आणि दर्जेदार मिक्सिंग!",
+            serviceUsed = "FM रेडिओ ऑडिओ जाहिरात",
+            cityOrRegion = "कोल्हापूर / सांगली",
+            avatarInitials = "ग",
+            verifiedMember = true,
+            dateText = "ऑगस्ट २०२६"
+        ),
+        com.example.data.models.Testimonial(
+            id = "test-2",
+            clientName = "संजय देशपांडे",
+            businessName = "साई रियाल्टीज् & डेव्हलपर्स",
+            businessType = "रियल इस्टेट व कन्स्ट्रक्शन • पुणे",
+            rating = 5,
+            feedback = "आमच्या नव्या लक्झरी गृहप्रकल्पाचा 4K सिनेमॅटिक प्रोमो व्हिडिओ Ktimes ने अवघ्या २४ तासांत तयार करून दिला. सोशल मीडियावर ३ लाखांहून अधिक स्थानिक व्ह्यूज मिळाले.",
+            serviceUsed = "4K TVC व्हिडिओ प्रोमो",
+            cityOrRegion = "पुणे",
+            avatarInitials = "स",
+            verifiedMember = true,
+            dateText = "ऑगस्ट २०२६"
+        ),
+        com.example.data.models.Testimonial(
+            id = "test-3",
+            clientName = "ॲड. नितीन शिंदे",
+            businessName = "महालक्ष्मी व्यापारी असोसिएशन",
+            businessType = "व्यापारी मंडळ & राजकीय मंच • सातारा",
+            rating = 5,
+            feedback = "निवडणूक प्रचार सभा आणि महाअधिवेशनासाठी बनवलेले धडाकेबाज जिंन्गल्स आणि ३D बॅनर्स अत्यंत प्रभावी ठरले. सर्व सभासदांनी खूप कौतुक केले.",
+            serviceUsed = "निवडणूक प्रचार स्पेशल जिंन्गल",
+            cityOrRegion = "सातारा",
+            avatarInitials = "नि",
+            verifiedMember = true,
+            dateText = "जुलै २०२६"
+        ),
+        com.example.data.models.Testimonial(
+            id = "test-4",
+            clientName = "डॉ. प्रियांका जोशी",
+            businessName = "संजीवनी मल्टिस्पेशालिटी क्लिनिक",
+            businessType = "आरोग्य सेवा & वेलनेस • नाशिक",
+            rating = 5,
+            feedback = "AI व्हिडिओ न्यूज अँकर आणि व्हॉट्सॲप ऑडिओमुळे क्लिनिकमध्ये नवीन रुग्णांची नोंदणी दुप्पट झाली. दर्जेदार सादरीकरण आणि उत्तम सपोर्ट!",
+            serviceUsed = "AI व्हिडिओ अँकर & सोशल बंडल",
+            cityOrRegion = "नाशिक",
+            avatarInitials = "प्रि",
+            verifiedMember = true,
+            dateText = "ऑगस्ट २०२६"
+        ),
+        com.example.data.models.Testimonial(
+            id = "test-5",
+            clientName = "विकास पाटील",
+            businessName = "पाटील ॲग्रोटेक & सीड्स",
+            businessType = "कृषी उत्पादने व बियाणे • सोलापूर",
+            rating = 5,
+            feedback = "ग्रामीण भागातील शेतकऱ्यांपर्यंत पोहोचण्यासाठी लाउडस्पीकर ऑटो ऑडिओ कॅम्पेन सर्वोत्तम ठरले. Ktimes Media मुळे ब्रँडची विश्वासार्हता वाढली.",
+            serviceUsed = "ऑटो लाउडस्पीकर ऑडिओ",
+            cityOrRegion = "सोलापूर / धाराशिव",
+            avatarInitials = "वि",
+            verifiedMember = true,
+            dateText = "जुलै २०२६"
+        )
+    )
 }

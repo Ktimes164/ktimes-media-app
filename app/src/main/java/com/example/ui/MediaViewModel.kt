@@ -56,6 +56,8 @@ class MediaViewModel(application: Application) : AndroidViewModel(application) {
             initialValue = firestoreService.initialMockOrders
         )
 
+    val testimonials = MutableStateFlow<List<com.example.data.models.Testimonial>>(DefaultData.businessClubTestimonials)
+
     val crmFilteredOrders: StateFlow<List<AdOrder>> = combine(
         ordersList,
         crmSearchQuery,
