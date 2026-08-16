@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Ktimes Media | Audio & Ad Production Studio</title>
+  <title>Ktimes Media | Official Audio & Video Production</title>
   
-  <meta name="theme-color" content="#7e22ce">
+  <meta name="theme-color" content="#dc2626">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Ktimes">
@@ -13,81 +13,88 @@
   <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Google Fonts: Mukta & Baloo 2 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    * { font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif; -webkit-tap-highlight-color: transparent; }
+    * { 
+      font-family: 'Mukta', 'Baloo 2', sans-serif; 
+      -webkit-tap-highlight-color: transparent; 
+    }
+    .heading-font {
+      font-family: 'Baloo 2', 'Mukta', sans-serif;
+    }
     
+    /* Splash Screen Animation */
     #splash-screen {
       position: fixed; inset: 0; z-index: 9999; background: #ffffff;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       transition: opacity 0.5s ease, visibility 0.5s;
     }
-    .k-dial-purple {
-      width: 85px; height: 85px; border-radius: 50%;
-      background: radial-gradient(circle, #9333ea 0%, #6b21a8 100%);
+    .k-dial-red {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: #dc2626;
       position: relative; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 10px 25px rgba(147, 51, 234, 0.4);
+      box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
       animation: pulseDial 2s infinite ease-in-out;
     }
-    .k-dial-purple::before {
-      content: ''; position: absolute; inset: -4px; border: 2px dashed #facc15;
+    .k-dial-red::before {
+      content: ''; position: absolute; inset: -4px; border: 2px dashed #dc2626;
       border-radius: 50%; animation: spin 8s linear infinite;
     }
     @keyframes spin { 100% { transform: rotate(360deg); } }
-    @keyframes pulseDial { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    @keyframes pulseDial { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
     .hide-splash { opacity: 0; visibility: hidden; pointer-events: none; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased min-h-screen flex flex-col pb-20 md:pb-0">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col pb-20 md:pb-0">
 
   <!-- 1. SPLASH SCREEN -->
   <div id="splash-screen">
-    <div class="k-dial-purple mb-4">
-      <span class="text-yellow-300 text-4xl font-black italic">K</span>
+    <div class="k-dial-red mb-3">
+      <span class="text-white text-4xl font-bold tracking-tight">K</span>
     </div>
-    <div class="max-w-[320px] p-4 text-center">
-      <div class="text-2xl font-black text-purple-800 tracking-tight flex items-center justify-center gap-1.5">
-        <span>के टाईम्स</span>
-        <span class="text-amber-500">मिडिया</span>
+    <div class="max-w-[300px] p-2 text-center">
+      <div class="text-2xl font-bold tracking-tight">
+        <span class="text-red-600">के टाईम्स</span>
+        <span class="text-slate-900">मिडिया</span>
       </div>
-      <p class="text-xs font-bold text-slate-500 mt-1">हमेशा समय के साथ..!</p>
+      <p class="text-xs font-semibold text-slate-500 mt-0.5">हमेशा समय के साथ..!</p>
     </div>
-    <div class="mt-6 flex items-center gap-2 text-xs font-bold text-purple-700">
-      <div class="w-2 h-2 rounded-full bg-yellow-400 animate-ping"></div>
-      स्टुडिओ सिस्टीम सुरू होत आहे...
+    <div class="mt-5 flex items-center gap-2 text-xs font-semibold text-red-600">
+      <div class="w-2 h-2 rounded-full bg-red-600 animate-ping"></div>
+      लोड होत आहे...
     </div>
   </div>
 
   <!-- 2. MAIN HEADER -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between">
+      <!-- Logo -->
       <a href="#" class="flex items-center gap-2.5">
-        <div class="w-10 h-10 rounded-full bg-purple-700 text-yellow-300 flex items-center justify-center font-black text-xl shadow-md border-2 border-yellow-400">
+        <div class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xl shadow-sm">
           K
         </div>
         <div>
-          <h1 class="text-lg font-black tracking-tight text-slate-900 leading-tight">
-            Ktimes <span class="text-purple-700">Media</span>
+          <h1 class="text-lg font-bold leading-none">
+            <span class="text-red-600">Ktimes</span> <span class="text-slate-950">Media</span>
           </h1>
-          <p class="text-[9px] font-extrabold text-amber-600 tracking-wider uppercase">Audio & Ad Production</p>
+          <p class="text-[10px] font-semibold text-slate-500 tracking-wide mt-0.5">Audio & Ad Production</p>
         </div>
       </a>
 
-      <!-- Header Action Controls -->
+      <!-- Header Controls -->
       <div class="flex items-center gap-2">
-        <button id="installAppBtn" onclick="promptAppInstall()" class="hidden md:flex items-center gap-1 px-3 py-1.5 bg-yellow-400 hover:bg-yellow-500 text-purple-950 rounded-lg text-xs font-black shadow-sm transition">
-          <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i>
-          <span>Install App</span>
-        </button>
-
-        <button onclick="triggerAppUpdate()" title="१-क्लिक अपडेट" class="flex items-center gap-1 px-2.5 py-1.5 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg text-xs font-bold transition border border-purple-200">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-purple-700"></i>
+        <button onclick="triggerAppUpdate()" title="अपडेट करा" class="flex items-center gap-1 px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition border border-slate-200">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-red-600"></i>
           <span class="hidden sm:inline">Update</span>
         </button>
 
-        <button onclick="openAdminModal()" class="flex items-center gap-1 px-3 py-1.5 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-xs font-bold shadow-md shadow-purple-700/20 transition">
-          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-yellow-300"></i>
+        <button onclick="openAdminModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold shadow-sm transition">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
           <span>Admin</span>
         </button>
       </div>
@@ -95,85 +102,96 @@
   </header>
 
   <!-- 3. HERO PROMO BANNER -->
-  <section class="max-w-6xl mx-auto px-4 pt-5 pb-2 w-full">
-    <div class="bg-gradient-to-r from-purple-900 via-purple-800 to-indigo-900 rounded-2xl p-6 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden border border-purple-700">
+  <section class="max-w-6xl mx-auto px-4 pt-4 pb-2 w-full">
+    <div class="bg-gradient-to-r from-purple-900 via-purple-800 to-indigo-950 rounded-2xl p-5 md:p-6 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-5 relative overflow-hidden">
       <div class="space-y-2 text-center md:text-left z-10">
-        <span class="bg-yellow-400 text-purple-950 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow">
-          ✨ व्यावसायिक जाहिरात व व्हॉईस ओव्हर स्टुडिओ
+        <span class="bg-yellow-400 text-purple-950 text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider inline-block">
+          व्यावसायिक जाहिरात व ऑडिओ स्टुडिओ
         </span>
-        <h2 class="text-xl md:text-3xl font-black leading-tight text-white">
-          तुमच्या व्यवसायाची विक्री वाढवणारे <br class="hidden sm:inline"> दर्जेदार <span class="text-yellow-300">ऑडिओ व 4K व्हिडिओ</span> सॅम्पल्स
+        <h2 class="heading-font text-xl md:text-2xl font-bold leading-snug text-white">
+          तुमच्या व्यवसायाची विक्री वाढवणारे <br class="hidden sm:inline">
+          <span class="text-yellow-300 font-semibold">दर्जेदार ऑडिओ, व्हिडिओ व जिंगल्स सॅम्पल्स</span>
         </h2>
-        <p class="text-xs md:text-sm text-purple-200 font-medium">
-          निवडणूक प्रचार, व्यवसाय जाहिराती, कॉलर ट्यून, रील्स आणि व्यावसायिक जिंगल्स.
+        <p class="text-xs md:text-sm text-purple-200 font-normal">
+          निवडणूक प्रचार, व्यवसाय जाहिराती, कॉलर ट्यून व ब्रँडिंगसाठी एकाच ठिकाणी संपूर्ण सोल्युशन.
         </p>
       </div>
-      <div class="z-10 flex flex-col sm:flex-row gap-2.5 w-full md:w-auto">
-        <a href="https://wa.me/919422337471?text=मला%20जाहिरात%20किंवा%20ऑडिओ%20सॅम्पल%20बनवायचे%20आहे" target="_blank" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg transition">
-          <i data-lucide="message-circle" class="w-4 h-4 text-white"></i>
-          WhatsApp ऑर्डर (9422337471)
+
+      <!-- Highlighted Single CTA Block -->
+      <div class="z-10 flex flex-col sm:flex-row gap-2.5 w-full md:w-auto shrink-0">
+        <a href="https://wa.me/919422337471?text=मला%20ऑडिओ/व्हिडिओ%20सॅम्पलविषयी%20माहिती%20हवी%20आहे" target="_blank" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold text-xs md:text-sm flex items-center justify-center gap-2 shadow transition">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          WhatsApp Order
+        </a>
+        <a href="tel:9422337471" class="px-4 py-2.5 bg-yellow-400 hover:bg-yellow-500 text-purple-950 rounded-xl font-bold text-xs md:text-sm flex items-center justify-center gap-1.5 shadow transition">
+          <i data-lucide="phone-call" class="w-4 h-4 text-purple-900"></i>
+          Call: 9422337471
         </a>
       </div>
     </div>
   </section>
 
-  <!-- 4. SOCIAL HUB & COMMUNITY CHANNELS -->
+  <!-- 4. OFFICIAL SOCIAL LINKS & HUB -->
   <section class="max-w-6xl mx-auto px-4 py-2 w-full">
-    <div class="bg-white border border-purple-100 rounded-xl p-3 shadow-sm flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-2 text-xs font-black text-purple-900">
-        <i data-lucide="radio" class="w-4 h-4 text-yellow-500 animate-pulse"></i>
-        <span>Ktimes Official Hub:</span>
+    <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2 text-xs font-bold text-slate-800">
+        <i data-lucide="radio" class="w-4 h-4 text-red-600 animate-pulse"></i>
+        <span>Ktimes Official Media Links:</span>
       </div>
       <div class="flex flex-wrap items-center gap-2 text-xs">
-        <a href="https://chat.whatsapp.com/your-community-link" target="_blank" class="flex items-center gap-1 px-3 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg font-bold border border-emerald-200 transition">
+        <a href="https://chat.whatsapp.com/your-community-link" target="_blank" class="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg font-semibold border border-emerald-200 transition">
           <i data-lucide="users" class="w-3.5 h-3.5 text-emerald-600"></i> कम्युनिटी
         </a>
-        <a href="https://whatsapp.com/channel/your-channel-link" target="_blank" class="flex items-center gap-1 px-3 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg font-bold border border-emerald-200 transition">
+        <a href="https://whatsapp.com/channel/your-channel-link" target="_blank" class="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg font-semibold border border-emerald-200 transition">
           <i data-lucide="send" class="w-3.5 h-3.5 text-emerald-600"></i> चॅनेल
         </a>
-        <a href="https://www.youtube.com/@KtimesMedia" target="_blank" class="flex items-center gap-1 px-3 py-1 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg font-bold border border-red-200 transition">
+        <a href="https://www.youtube.com/@KtimesMedia" target="_blank" class="flex items-center gap-1.5 px-3 py-1 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg font-semibold border border-red-200 transition">
           <i data-lucide="youtube" class="w-3.5 h-3.5 text-red-600"></i> YouTube
         </a>
-        <a href="https://instagram.com" target="_blank" class="flex items-center gap-1 px-3 py-1 bg-pink-50 hover:bg-pink-100 text-pink-700 rounded-lg font-bold border border-pink-200 transition">
+        <a href="https://instagram.com" target="_blank" class="flex items-center gap-1.5 px-3 py-1 bg-pink-50 hover:bg-pink-100 text-pink-700 rounded-lg font-semibold border border-pink-200 transition">
           <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-600"></i> Instagram
         </a>
-        <a href="tel:9422337471" class="flex items-center gap-1 px-3 py-1 bg-yellow-100 hover:bg-yellow-200 text-purple-950 rounded-lg font-black transition">
-          <i data-lucide="phone-call" class="w-3.5 h-3.5 text-purple-800"></i> 9422337471
+        <a href="https://facebook.com" target="_blank" class="flex items-center gap-1.5 px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg font-semibold border border-blue-200 transition">
+          <i data-lucide="facebook" class="w-3.5 h-3.5 text-blue-600"></i> Facebook
         </a>
       </div>
     </div>
   </section>
 
-  <!-- 5. DYNAMIC CATEGORY TABS -->
-  <section class="max-w-6xl mx-auto px-4 py-2 w-full">
-    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="categoryTabsContainer">
-      <!-- Injected dynamically -->
+  <!-- 5. HIGHLIGHTED CATEGORY NAVIGATION (Eye-Catching) -->
+  <section class="max-w-6xl mx-auto px-4 pt-2 pb-1 w-full">
+    <div class="bg-white p-2 rounded-2xl border-2 border-red-100 shadow-sm">
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" id="categoryTabsContainer">
+        <!-- Rendered via JS -->
+      </div>
     </div>
   </section>
 
   <!-- 6. SAMPLES SHOWCASE -->
   <main class="max-w-6xl mx-auto px-4 py-3 w-full flex-grow">
-    <div id="samplesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <div id="samplesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     
     <div id="emptyState" class="hidden text-center py-16">
-      <i data-lucide="music-4" class="w-12 h-12 text-slate-300 mx-auto mb-3"></i>
-      <h3 class="text-sm font-bold text-slate-700">या कॅटेगरीमध्ये सॅम्पल उपलब्ध नाही</h3>
-      <p class="text-xs text-slate-400 mt-1">Admin लॉगिन करून नवीन ऑडिओ/व्हिडिओ सॅम्पल जोडा.</p>
+      <i data-lucide="film" class="w-12 h-12 text-slate-300 mx-auto mb-2"></i>
+      <h3 class="text-sm font-semibold text-slate-700">या कॅटेगरीमध्ये सध्या सॅम्पल उपलब्ध नाही</h3>
+      <p class="text-xs text-slate-400 mt-0.5">Admin लॉगिन करून नवीन सॅम्पल जोडा.</p>
     </div>
   </main>
 
   <!-- 7. DESKTOP FOOTER -->
-  <footer class="hidden md:block bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-600">
-    <div class="max-w-6xl mx-auto px-4 space-y-2">
-      <p class="font-extrabold text-purple-900 text-sm">के टाईम्स मिडिया — हमेशा समय के साथ..!</p>
-      <p>संपर्क: <a href="tel:9422337471" class="font-bold text-purple-700">9422337471</a> | सातारा, महाराष्ट्र</p>
+  <footer class="hidden md:block bg-white border-t border-slate-200 mt-10 py-6 text-center text-xs text-slate-600">
+    <div class="max-w-6xl mx-auto px-4 space-y-1.5">
+      <p class="font-bold text-slate-900 text-sm">
+        <span class="text-red-600">के टाईम्स</span> मिडिया — हमेशा समय के साथ..!
+      </p>
+      <p>संपर्क: <a href="tel:9422337471" class="font-bold text-red-600">9422337471</a> | सातारा, महाराष्ट्र</p>
       <p class="text-[11px] text-slate-400">© 2026 Ktimes Media. All Rights Reserved.</p>
     </div>
   </footer>
 
-  <!-- 8. MOBILE BOTTOM NAVIGATION BAR -->
-  <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2 flex items-center justify-around text-[10px] font-bold text-slate-600 shadow-lg">
-    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex flex-col items-center gap-0.5 text-purple-700">
+  <!-- 8. CLEAN MOBILE BOTTOM NAVIGATION BAR -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2 flex items-center justify-around text-[10px] font-semibold text-slate-600 shadow-lg">
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex flex-col items-center gap-0.5 text-red-600">
       <i data-lucide="home" class="w-5 h-5"></i>
       <span>होम</span>
     </button>
@@ -181,26 +199,69 @@
       <i data-lucide="message-circle" class="w-5 h-5"></i>
       <span>WhatsApp</span>
     </a>
-    <button onclick="promptAppInstall()" class="flex flex-col items-center gap-0.5 text-amber-600">
-      <i data-lucide="download" class="w-5 h-5"></i>
-      <span>Install</span>
-    </button>
-    <a href="tel:9422337471" class="flex flex-col items-center gap-0.5 text-purple-900">
-      <i data-lucide="phone" class="w-5 h-5"></i>
-      <span>कॉल</span>
+    <a href="tel:9422337471" class="flex flex-col items-center gap-0.5 text-slate-800">
+      <i data-lucide="phone-call" class="w-5 h-5"></i>
+      <span>Call Now</span>
     </a>
-    <button onclick="openAdminModal()" class="flex flex-col items-center gap-0.5 text-slate-700">
-      <i data-lucide="user-check" class="w-5 h-5"></i>
+    <button onclick="openAdminModal()" class="flex flex-col items-center gap-0.5 text-slate-600">
+      <i data-lucide="lock" class="w-5 h-5"></i>
       <span>Admin</span>
     </button>
   </div>
 
-  <!-- 9. ADMIN MODAL -->
+  <!-- 9. COLORFUL SOCIAL SHARE POPUP MODAL -->
+  <div id="shareModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b pb-2.5">
+        <h3 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+          <i data-lucide="share-2" class="w-4 h-4 text-red-600"></i> सॅम्पल सोशल मीडियावर शेअर करा
+        </h3>
+        <button onclick="closeShareModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p id="shareModalTitle" class="text-xs font-semibold text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-100 truncate"></p>
+
+      <!-- Big Colorful Social Share Icons Grid -->
+      <div class="grid grid-cols-4 gap-3 py-2">
+        <button onclick="triggerPlatformShare('whatsapp')" class="flex flex-col items-center gap-1 group">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition">
+            <i data-lucide="message-circle" class="w-6 h-6"></i>
+          </div>
+          <span class="text-[11px] font-semibold text-slate-700">WhatsApp</span>
+        </button>
+
+        <button onclick="triggerPlatformShare('facebook')" class="flex flex-col items-center gap-1 group">
+          <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition">
+            <i data-lucide="facebook" class="w-6 h-6"></i>
+          </div>
+          <span class="text-[11px] font-semibold text-slate-700">Facebook</span>
+        </button>
+
+        <button onclick="triggerPlatformShare('telegram')" class="flex flex-col items-center gap-1 group">
+          <div class="w-12 h-12 rounded-2xl bg-sky-500 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition">
+            <i data-lucide="send" class="w-6 h-6"></i>
+          </div>
+          <span class="text-[11px] font-semibold text-slate-700">Telegram</span>
+        </button>
+
+        <button onclick="triggerPlatformShare('copy')" class="flex flex-col items-center gap-1 group">
+          <div class="w-12 h-12 rounded-2xl bg-slate-700 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition">
+            <i data-lucide="copy" class="w-6 h-6"></i>
+          </div>
+          <span class="text-[11px] font-semibold text-slate-700">Copy Link</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. ADMIN MODAL (Red Theme) -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto border border-purple-200">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto border border-red-100">
       <div class="flex items-center justify-between border-b pb-3">
-        <h3 class="font-black text-purple-900 flex items-center gap-2">
-          <i data-lucide="shield" class="w-5 h-5 text-yellow-500"></i>
+        <h3 class="font-bold text-slate-900 flex items-center gap-2">
+          <i data-lucide="shield" class="w-5 h-5 text-red-600"></i>
           Ktimes Admin Dashboard
         </h3>
         <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-700">
@@ -209,59 +270,54 @@
       </div>
 
       <!-- Lock Screen -->
-      <div id="adminLockScreen" class="space-y-4 py-4">
-        <p class="text-xs text-slate-600 font-medium">सॅम्पल मॅनेज करण्यासाठी ॲडमिन पिन टाका:</p>
-        <input type="password" id="adminPinInput" placeholder="Enter PIN (Default: 7171)" class="w-full px-4 py-2 border rounded-xl text-center text-lg font-bold tracking-widest outline-none focus:border-purple-600">
-        <button onclick="verifyAdminPin()" class="w-full py-2.5 bg-purple-700 hover:bg-purple-800 text-white rounded-xl font-black text-xs transition">
+      <div id="adminLockScreen" class="space-y-3 py-3">
+        <p class="text-xs text-slate-600">सॅम्पल व्यवस्थापित करण्यासाठी ॲडमिन पिन टाका:</p>
+        <input type="password" id="adminPinInput" placeholder="Enter PIN (Default: 7171)" class="w-full px-4 py-2 border border-slate-300 rounded-xl text-center text-lg font-semibold tracking-widest outline-none focus:border-red-600">
+        <button onclick="verifyAdminPin()" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-xs transition">
           लॉगिन करा
         </button>
       </div>
 
-      <!-- Admin Actions -->
+      <!-- Admin Actions Area -->
       <div id="adminUnlockedArea" class="hidden space-y-4">
         <!-- New Category Creation -->
-        <div class="bg-purple-50 p-3 rounded-xl border border-purple-200 space-y-2">
-          <label class="text-[11px] font-black text-purple-900 uppercase">नवीन कॅटेगरी तयार करा</label>
+        <div class="bg-red-50/60 p-3 rounded-xl border border-red-100 space-y-2">
+          <label class="text-[11px] font-bold text-red-950 uppercase">नवीन कॅटेगरी जोडा</label>
           <div class="flex gap-2">
-            <input type="text" id="newCategoryInput" placeholder="उदा. कॉलर ट्यून / Reels" class="flex-1 px-3 py-1.5 border rounded-lg text-xs outline-none focus:border-purple-600">
-            <button onclick="addNewCategory()" class="px-3 py-1.5 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-xs font-bold">+ जोडा</button>
+            <input type="text" id="newCategoryInput" placeholder="उदा. कॉलर ट्यून / Reels" class="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg text-xs outline-none focus:border-red-600">
+            <button onclick="addNewCategory()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold">+ जोडा</button>
           </div>
         </div>
 
         <!-- Add Sample Form -->
         <form id="addSampleForm" onsubmit="handleSaveSample(event)" class="space-y-3">
           <div>
-            <label class="text-[11px] font-black text-slate-700 uppercase">सॅम्पल नाव / शीर्षक</label>
-            <input type="text" id="sampleTitle" required placeholder="उदा. गणेश ज्वेलर्स टीव्ही ॲड" class="w-full px-3 py-2 border rounded-lg text-xs outline-none focus:border-purple-600">
+            <label class="text-[11px] font-bold text-slate-700 uppercase">सॅम्पल शीर्षक / नाव</label>
+            <input type="text" id="sampleTitle" required placeholder="उदा. गणेश ज्वेलर्स टीव्ही जाहिरात" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs outline-none focus:border-red-600">
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="text-[11px] font-black text-slate-700 uppercase">कॅटेगरी निवडा</label>
-              <select id="sampleCategory" class="w-full px-3 py-2 border rounded-lg text-xs outline-none focus:border-purple-600"></select>
+              <label class="text-[11px] font-bold text-slate-700 uppercase">कॅटेगरी</label>
+              <select id="sampleCategory" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs outline-none focus:border-red-600"></select>
             </div>
             <div>
-              <label class="text-[11px] font-black text-slate-700 uppercase">टॅग (Badge)</label>
-              <input type="text" id="sampleTag" placeholder="उदा. 4K Video, FM Quality" class="w-full px-3 py-2 border rounded-lg text-xs outline-none focus:border-purple-600">
+              <label class="text-[11px] font-bold text-slate-700 uppercase">बॅज / टॅग</label>
+              <input type="text" id="sampleTag" placeholder="उदा. 4K, FM Quality" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs outline-none focus:border-red-600">
             </div>
           </div>
 
-          <!-- Media Source Options -->
           <div class="space-y-2">
-            <label class="text-[11px] font-black text-slate-700 uppercase">ऑडिओ / व्हिडिओ सोर्स निवडा</label>
+            <label class="text-[11px] font-bold text-slate-700 uppercase">ऑडिओ / व्हिडिओ सोर्स</label>
+            <input type="text" id="sampleMediaUrl" placeholder="YouTube Link किंवा Google Drive Audio Link" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs outline-none focus:border-red-600">
             
-            <input type="text" id="sampleMediaUrl" placeholder="YouTube Link किंवा Google Drive Audio Link" class="w-full px-3 py-2 border rounded-lg text-xs outline-none focus:border-purple-600">
-            
-            <div class="flex items-center gap-2">
-              <span class="text-[11px] text-slate-500 font-bold">किंवा मोबाईलमधील ऑडिओ फाईल:</span>
+            <div class="flex items-center gap-2 pt-1">
+              <span class="text-[11px] text-slate-500 font-semibold">किंवा मोबाईलमधील ऑडिओ:</span>
               <input type="file" id="localAudioFile" accept="audio/*" onchange="handleLocalAudio(event)" class="text-xs text-slate-500">
             </div>
-            <p class="text-[10px] text-purple-700 font-semibold">
-              * Google Drive लिंक टाकल्यास 'Anyone with link' (Viewer) परवानगी द्या.
-            </p>
           </div>
 
-          <button type="submit" class="w-full py-2.5 bg-purple-700 hover:bg-purple-800 text-yellow-300 rounded-xl font-black text-xs shadow-md transition">
+          <button type="submit" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-xs shadow transition">
             + सॅम्पल सेव्ह करा
           </button>
         </form>
@@ -270,10 +326,10 @@
 
         <!-- Backup & Restore -->
         <div class="flex gap-2">
-          <button onclick="exportDataBackup()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition flex items-center justify-center gap-1">
+          <button onclick="exportDataBackup()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center justify-center gap-1">
             <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Backup
           </button>
-          <button onclick="document.getElementById('importFileInput').click()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition flex items-center justify-center gap-1">
+          <button onclick="document.getElementById('importFileInput').click()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center justify-center gap-1">
             <i data-lucide="upload" class="w-3.5 h-3.5"></i> Restore Data
           </button>
           <input type="file" id="importFileInput" onchange="importDataBackup(event)" accept=".json" class="hidden">
@@ -282,23 +338,23 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT APP LOGIC -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
-    const DEFAULT_CATEGORIES = ['All', 'Video (व्हिडिओ)', 'Audio (व्हॉईस ओव्हर)', 'Jingle (जिंगल्स)', 'Reels / Shorts'];
+    const DEFAULT_CATEGORIES = ['All', 'व्हिडिओ (Video Ads)', 'ऑडिओ (Voice Over)', 'जिंगल्स (Jingles)', 'Reels / Shorts'];
     
     const INITIAL_SAMPLES = [
       {
         id: 's1',
         title: 'गणेश ज्वेलर्स - फेस्टिव्हल टीव्ही कमर्शियल जाहिरात',
-        category: 'Video (व्हिडिओ)',
+        category: 'व्हिडिओ (Video Ads)',
         tag: '4K Commercial',
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        date: '2026-08-15'
+        date: '2026-08-16'
       },
       {
         id: 's2',
         title: 'मल्टीस्पेशालिटी हॉस्पिटल - रेडिओ व्हॉईस ओव्हर',
-        category: 'Audio (व्हॉईस ओव्हर)',
+        category: 'ऑडिओ (Voice Over)',
         tag: 'FM Quality',
         url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
         date: '2026-08-16'
@@ -309,6 +365,7 @@
     let activeCategory = 'All';
     let isAdminLoggedIn = false;
     let localUploadedAudioBase64 = '';
+    let currentShareItem = { title: '', url: '' };
 
     function getStoredSamples() {
       const stored = localStorage.getItem('ktimes_samples_db');
@@ -320,11 +377,11 @@
       renderSamples();
     }
 
-    // Google Drive & YouTube Audio/Video Converter
+    // Media Formatter
     function formatMediaEmbed(url) {
       if (!url) return '';
 
-      // 1. YouTube Handler
+      // YouTube Handler
       if (url.includes('youtube.com') || url.includes('youtu.be')) {
         let videoId = '';
         if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split(/[?#]/)[0];
@@ -333,13 +390,13 @@
         else if (url.includes('embed/')) videoId = url.split('embed/')[1].split(/[?#]/)[0];
 
         if (videoId) {
-          return `<div class="aspect-video w-full rounded-xl overflow-hidden bg-black shadow">
+          return `<div class="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-inner">
                     <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/${videoId}?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                   </div>`;
         }
       }
 
-      // 2. Google Drive Audio Direct Converter
+      // Google Drive Audio Direct Formatter
       let audioSrc = url;
       if (url.includes('drive.google.com')) {
         const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
@@ -348,11 +405,11 @@
         }
       }
 
-      // 3. Audio Player (Web/Drive/Local)
-      return `<div class="p-3.5 bg-purple-50/70 rounded-xl border border-purple-100 flex flex-col gap-2">
-                <div class="flex items-center justify-between text-xs font-bold text-purple-900">
-                  <span class="flex items-center gap-1.5"><i data-lucide="volume-2" class="w-4 h-4 text-amber-500"></i> Studio Master Audio</span>
-                  <span class="text-[10px] bg-yellow-300 text-purple-950 px-2 py-0.5 rounded-full font-black">HD</span>
+      // Audio Player
+      return `<div class="p-3 bg-red-50/50 rounded-xl border border-red-100 flex flex-col gap-2">
+                <div class="flex items-center justify-between text-xs font-semibold text-slate-800">
+                  <span class="flex items-center gap-1.5"><i data-lucide="volume-2" class="w-4 h-4 text-red-600"></i> High Quality Audio Stream</span>
+                  <span class="text-[10px] bg-red-600 text-white px-2 py-0.5 rounded-full font-bold">HD</span>
                 </div>
                 <audio controls class="w-full h-9 rounded-lg outline-none">
                   <source src="${audioSrc}">
@@ -361,7 +418,7 @@
               </div>`;
     }
 
-    // Local Mobile Audio Selector
+    // Local Audio Selector
     function handleLocalAudio(event) {
       const file = event.target.files[0];
       if (file) {
@@ -384,10 +441,12 @@
       categories.forEach(cat => {
         const isActive = activeCategory === cat;
         const btn = document.createElement('button');
-        btn.className = `px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition ${
-          isActive ? 'bg-purple-700 text-yellow-300 shadow-md' : 'bg-white text-slate-700 hover:bg-purple-50 border border-slate-200'
+        btn.className = `px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${
+          isActive 
+            ? 'bg-red-600 text-white shadow-sm border border-red-600' 
+            : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
         }`;
-        btn.innerText = cat;
+        btn.innerHTML = `<span>${cat}</span>`;
         btn.onclick = () => { activeCategory = cat; renderCategoryTabs(); renderSamples(); };
         container.appendChild(btn);
 
@@ -428,37 +487,27 @@
         empty.classList.add('hidden');
         filtered.forEach(item => {
           const card = document.createElement('div');
-          card.className = "bg-white border border-purple-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between gap-3 relative";
+          card.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between gap-3 relative";
           card.innerHTML = `
             <div class="space-y-2.5">
               <div class="flex items-center justify-between">
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-purple-100 text-purple-900 border border-purple-200">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-red-50 text-red-700 border border-red-100">
                   ${item.tag || item.category}
                 </span>
-                <span class="text-[10px] font-bold text-slate-400">${item.date || 'Active'}</span>
+                <span class="text-[10px] font-medium text-slate-400">${item.date || 'Active'}</span>
               </div>
               <h3 class="font-bold text-slate-900 text-sm leading-snug">${item.title}</h3>
               ${formatMediaEmbed(item.url)}
             </div>
             
-            <div class="pt-3 border-t border-slate-100 space-y-2">
-              <div class="flex items-center gap-1.5">
-                <a href="https://wa.me/919422337471?text=मला%20या%20सॅम्पलसारखे%20काम%20करायचे%20आहे:%20${encodeURIComponent(item.title)}" target="_blank" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1 shadow-sm transition">
-                  <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> विचारणा करा
-                </a>
-                ${isAdminLoggedIn ? `<button onclick="deleteSample('${item.id}')" class="p-2 text-red-500 hover:bg-red-50 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
-              </div>
-
-              <!-- Multi Social Sharing Links -->
-              <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
-                <span class="font-bold">Share to:</span>
-                <div class="flex items-center gap-1.5">
-                  <button onclick="shareDirect('whatsapp', '${item.title}', '${item.url}')" class="p-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg" title="WhatsApp"><i data-lucide="message-square" class="w-3.5 h-3.5"></i></button>
-                  <button onclick="shareDirect('facebook', '${item.title}', '${item.url}')" class="p-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg" title="Facebook"><i data-lucide="facebook" class="w-3.5 h-3.5"></i></button>
-                  <button onclick="shareDirect('telegram', '${item.title}', '${item.url}')" class="p-1.5 bg-sky-50 hover:bg-sky-100 text-sky-600 rounded-lg" title="Telegram"><i data-lucide="send" class="w-3.5 h-3.5"></i></button>
-                  <button onclick="copyShareLink('${item.url}')" class="p-1.5 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg" title="Copy Link"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                </div>
-              </div>
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+              <button onclick="openShareModal('${item.title}', '${item.url}')" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition">
+                <i data-lucide="share-2" class="w-3.5 h-3.5 text-slate-500"></i> शेअर करा
+              </button>
+              <a href="https://wa.me/919422337471?text=मला%20या%20सॅम्पलसारखे%20काम%20करायचे%20आहे:%20${encodeURIComponent(item.title)}" target="_blank" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-1 shadow-sm transition">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> विचारणा
+              </a>
+              ${isAdminLoggedIn ? `<button onclick="deleteSample('${item.id}')" class="p-2 text-red-500 hover:bg-red-50 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
             </div>
           `;
           grid.appendChild(card);
@@ -467,30 +516,46 @@
       lucide.createIcons();
     }
 
-    // Direct Social Sharer
-    function shareDirect(platform, title, url) {
-      const text = `🎬 *के टाईम्स मिडिया - सॅम्पल शोकेस*\n\n📌 *शीर्षक:* ${title}\n🔗 *पाहण्यासाठी लिंक:* ${url}\n\n📞 संपर्क: 9422337471`;
-      let finalUrl = '';
-      if (platform === 'whatsapp') finalUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
-      if (platform === 'facebook') finalUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-      if (platform === 'telegram') finalUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
-      if (finalUrl) window.open(finalUrl, '_blank');
+    // Share Modal
+    function openShareModal(title, url) {
+      currentShareItem = { title, url };
+      document.getElementById('shareModalTitle').innerText = title;
+      document.getElementById('shareModal').classList.remove('hidden');
+      document.getElementById('shareModal').classList.add('flex');
+    }
+    function closeShareModal() {
+      document.getElementById('shareModal').classList.add('hidden');
+      document.getElementById('shareModal').classList.remove('flex');
     }
 
-    function copyShareLink(url) {
-      navigator.clipboard.writeText(url);
-      alert('सॅम्पल लिंक कॉपी केली गेली!');
+    function triggerPlatformShare(platform) {
+      const text = `🎬 *के टाईम्स मिडिया - सॅम्पल शोकेस*\n\n📌 *शीर्षक:* ${currentShareItem.title}\n🔗 *पाहण्यासाठी लिंक:* ${currentShareItem.url}\n\n📞 संपर्क व ऑर्डर: 9422337471`;
+      let finalUrl = '';
+      if (platform === 'whatsapp') finalUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+      if (platform === 'facebook') finalUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentShareItem.url)}`;
+      if (platform === 'telegram') finalUrl = `https://t.me/share/url?url=${encodeURIComponent(currentShareItem.url)}&text=${encodeURIComponent(text)}`;
+      
+      if (platform === 'copy') {
+        navigator.clipboard.writeText(currentShareItem.url);
+        alert('सॅम्पल लिंक कॉपी केली गेली!');
+        closeShareModal();
+        return;
+      }
+      if (finalUrl) {
+        window.open(finalUrl, '_blank');
+        closeShareModal();
+      }
     }
 
     // 1-Click Refresh
     function triggerAppUpdate() {
       const btn = event.currentTarget;
-      btn.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin text-purple-700"></i>`;
+      btn.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin text-red-600"></i>`;
       lucide.createIcons();
       setTimeout(() => window.location.reload(true), 600);
     }
 
-    // Admin Functions
+    // Admin Authentication
     function openAdminModal() {
       document.getElementById('adminModal').classList.remove('hidden');
       document.getElementById('adminModal').classList.add('flex');
@@ -517,7 +582,7 @@
         id: 's_' + Date.now(),
         title: document.getElementById('sampleTitle').value,
         category: document.getElementById('sampleCategory').value,
-        tag: document.getElementById('sampleTag').value || 'HD Production',
+        tag: document.getElementById('sampleTag').value || 'Standard HD',
         url: mediaVal,
         date: new Date().toISOString().split('T')[0]
       };
@@ -532,7 +597,7 @@
     }
 
     function deleteSample(id) {
-      if (confirm('हे सॅम्पल खरंच काढून टाकायचे आहे का?')) {
+      if (confirm('हे सॅम्पल काढून टाकायचे आहे का?')) {
         const list = getStoredSamples().filter(s => s.id !== id);
         saveStoredSamples(list);
       }
@@ -563,25 +628,7 @@
       reader.readAsText(file);
     }
 
-    // PWA Install Prompt
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const btn = document.getElementById('installAppBtn');
-      if (btn) btn.classList.remove('hidden');
-    });
-
-    function promptAppInstall() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
-      } else {
-        alert('मोबाईल ब्राऊझरमधील (Chrome/Safari) मेनूवर जाऊन "Add to Home Screen" किंवा "Install App" निवडा.');
-      }
-    }
-
-    // Init App
+    // Initialize App
     window.addEventListener('DOMContentLoaded', () => {
       renderCategoryTabs();
       renderSamples();
