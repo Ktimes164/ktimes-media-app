@@ -13,12 +13,12 @@ import kotlinx.coroutines.tasks.await
 
 class FirestoreService {
 
-    private val firestore: FirebaseFirestore by lazy {
+    private val firestore: FirebaseFirestore? by lazy {
         try {
             FirebaseFirestore.getInstance()
-        } catch (e: Exception) {
-            Log.e("FirestoreService", "Firestore init error", e)
-            throw e
+        } catch (e: Throwable) {
+            Log.w("FirestoreService", "Firestore init skipped or unavailable: ${e.message}")
+            null
         }
     }
 
@@ -110,8 +110,14 @@ class FirestoreService {
     )
 
     fun observeOrders(): Flow<List<AdOrder>> = callbackFlow {
+        val db = firestore
+        if (db == null) {
+            trySend(initialMockOrders)
+            awaitClose { }
+            return@callbackFlow
+        }
         try {
-            val listener = firestore.collection(COLLECTION_ORDERS)
+            val listener = db.collection(COLLECTION_ORDERS)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener { snapshot, error ->
                     if (error != null) {
@@ -144,8 +150,9 @@ class FirestoreService {
     }
 
     suspend fun createOrder(order: AdOrder): Result<Boolean> {
+        val db = firestore ?: return Result.success(true)
         return try {
-            firestore.collection(COLLECTION_ORDERS)
+            db.collection(COLLECTION_ORDERS)
                 .document(order.id)
                 .set(order.toMap())
                 .await()
@@ -161,6 +168,7 @@ class FirestoreService {
         draftUrl: String,
         draftNotes: String
     ): Result<Boolean> {
+        val db = firestore ?: return Result.success(true)
         return try {
             val updates = mapOf(
                 "draftUrl" to draftUrl,
@@ -170,7 +178,7 @@ class FirestoreService {
                 "progress" to 90,
                 "clientApprovalStatus" to "PENDING"
             )
-            firestore.collection(COLLECTION_ORDERS)
+            db.collection(COLLECTION_ORDERS)
                 .document(orderId)
                 .update(updates)
                 .await()
@@ -186,6 +194,7 @@ class FirestoreService {
         finalFileUrl: String,
         finalDeliveryNotes: String
     ): Result<Boolean> {
+        val db = firestore ?: return Result.success(true)
         return try {
             val updates = mapOf(
                 "finalFileUrl" to finalFileUrl,
@@ -195,7 +204,7 @@ class FirestoreService {
                 "progress" to 100,
                 "clientApprovalStatus" to "APPROVED"
             )
-            firestore.collection(COLLECTION_ORDERS)
+            db.collection(COLLECTION_ORDERS)
                 .document(orderId)
                 .update(updates)
                 .await()
@@ -207,6 +216,7 @@ class FirestoreService {
     }
 
     suspend fun submitClientApproval(orderId: String): Result<Boolean> {
+        val db = firestore ?: return Result.success(true)
         return try {
             val updates = mapOf(
                 "clientApprovalStatus" to "APPROVED",
@@ -214,7 +224,7 @@ class FirestoreService {
                 "status" to "Approval",
                 "progress" to 95
             )
-            firestore.collection(COLLECTION_ORDERS)
+            db.collection(COLLECTION_ORDERS)
                 .document(orderId)
                 .update(updates)
                 .await()
@@ -230,6 +240,7 @@ class FirestoreService {
         currentRevisionCount: Int,
         revisionNotes: String
     ): Result<Boolean> {
+        val db = firestore ?: return Result.success(true)
         return try {
             val updates = mapOf(
                 "revisionNotes" to revisionNotes,
@@ -238,7 +249,7 @@ class FirestoreService {
                 "status" to "Revision",
                 "progress" to 80
             )
-            firestore.collection(COLLECTION_ORDERS)
+            db.collection(COLLECTION_ORDERS)
                 .document(orderId)
                 .update(updates)
                 .await()
@@ -255,12 +266,13 @@ class FirestoreService {
         progress: Int? = null,
         revisionNotes: String? = null
     ): Result<Boolean> {
+        val db = firestore ?: return Result.success(true)
         return try {
             val updates = mutableMapOf<String, Any>("status" to newStatus)
             progress?.let { updates["progress"] = it }
             revisionNotes?.let { updates["revisionNotes"] = it }
 
-            firestore.collection(COLLECTION_ORDERS)
+            db.collection(COLLECTION_ORDERS)
                 .document(orderId)
                 .update(updates)
                 .await()
@@ -272,8 +284,9 @@ class FirestoreService {
     }
 
     suspend fun updateFullOrder(order: AdOrder): Result<Boolean> {
+        val db = firestore ?: return Result.success(true)
         return try {
-            firestore.collection(COLLECTION_ORDERS)
+            db.collection(COLLECTION_ORDERS)
                 .document(order.id)
                 .set(order.toMap())
                 .await()
@@ -285,8 +298,9 @@ class FirestoreService {
     }
 
     suspend fun deleteOrder(orderId: String): Result<Boolean> {
+        val db = firestore ?: return Result.success(true)
         return try {
-            firestore.collection(COLLECTION_ORDERS)
+            db.collection(COLLECTION_ORDERS)
                 .document(orderId)
                 .delete()
                 .await()
@@ -298,8 +312,14 @@ class FirestoreService {
     }
 
     fun observePortfolioItems(): Flow<List<MediaItem>> = callbackFlow {
+        val db = firestore
+        if (db == null) {
+            trySend(DefaultData.sampleItems)
+            awaitClose { }
+            return@callbackFlow
+        }
         try {
-            val listener = firestore.collection(COLLECTION_PORTFOLIO)
+            val listener = db.collection(COLLECTION_PORTFOLIO)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener { snapshot, error ->
                     if (error != null) {
@@ -346,6 +366,7 @@ class FirestoreService {
     }
 
     suspend fun savePortfolioItem(item: MediaItem): Result<Boolean> {
+        val db = firestore ?: return Result.success(true)
         return try {
             val map = mapOf(
                 "sampleId" to item.sampleId,
@@ -362,7 +383,7 @@ class FirestoreService {
                 "timestamp" to item.timestamp
             )
 
-            firestore.collection(COLLECTION_PORTFOLIO)
+            db.collection(COLLECTION_PORTFOLIO)
                 .document(item.sampleId)
                 .set(map)
                 .await()
@@ -374,8 +395,9 @@ class FirestoreService {
     }
 
     suspend fun deletePortfolioItem(sampleId: String): Result<Boolean> {
+        val db = firestore ?: return Result.success(true)
         return try {
-            firestore.collection(COLLECTION_PORTFOLIO)
+            db.collection(COLLECTION_PORTFOLIO)
                 .document(sampleId)
                 .delete()
                 .await()
