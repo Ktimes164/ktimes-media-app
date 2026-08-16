@@ -1,332 +1,465 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ktimes Media Studio - ऑडिओ, व्हिडिओ व निवडणूक प्रचार जाहिराती</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brandPurple: '#673AB7',
-                        brandPurpleDark: '#512DA8',
-                        brandPurpleLight: '#7E57C2',
-                        brandWhatsapp: '#075E54',
-                        brandWhatsappHover: '#05473f',
-                        brandOrange: '#FF5722',
-                        brandRed: '#D32F2F',
-                        brandYellow: '#FFC107'
-                    }
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Baloo 2', 'Inter', sans-serif; background-color: #ffffff !important; color: #111827 !important; }
-        .pulse-wa { animation: pulse-wa-anim 2s infinite; }
-        @keyframes pulse-wa-anim { 0% { box-shadow: 0 0 0 0 rgba(7, 94, 84, 0.7); } 70% { box-shadow: 0 0 0 14px rgba(7, 94, 84, 0); } 100% { box-shadow: 0 0 0 0 rgba(7, 94, 84, 0); } }
-        .ar-16-9 { aspect-ratio: 16 / 9; }
-        .ar-9-16 { aspect-ratio: 9 / 16; }
-        .ar-1-1 { aspect-ratio: 1 / 1; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ktimes Media | Official Audio & Video Production</title>
+  
+  <!-- PWA & Mobile Web App Meta -->
+  <meta name="theme-color" content="#dc2626">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Ktimes">
+  
+  <!-- Manifest inline with dynamic App Icon -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Ktimes%22%2C%22short_name%22%3A%22Ktimes%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23ffffff%22%2C%22theme_color%22%3A%22%23dc2626%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fapi.iconify.design%2Flucide%3Arss.svg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+
+  <!-- Tailwind CSS & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    * { font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif; -webkit-tap-highlight-color: transparent; }
+    
+    /* Splash Screen Animation */
+    #splash-screen {
+      position: fixed; inset: 0; z-index: 9999; background: #ffffff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s;
+    }
+    .k-dial {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: radial-gradient(circle, #e11d48 0%, #b91c1c 100%);
+      position: relative; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 10px 25px rgba(225, 29, 72, 0.4);
+      animation: pulseDial 2s infinite ease-in-out;
+    }
+    .k-dial::before {
+      content: ''; position: absolute; inset: -4px; border: 2px dashed #dc2626;
+      border-radius: 50%; animation: spin 8s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @keyframes pulseDial { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    .hide-splash { opacity: 0; visibility: hidden; pointer-events: none; }
+  </style>
 </head>
-<body class="bg-white text-gray-900 pb-28 min-h-screen">
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen flex flex-col selection:bg-red-500 selection:text-white">
 
-    <!-- Top Social Navigation Bar -->
-    <div class="bg-gray-100 border-b border-gray-200 py-2.5 px-4" id="topSocialSection">
-        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-gray-700 uppercase tracking-wider hidden sm:inline">सोशल मीडिया:</span>
-                <a href="https://instagram.com" target="_blank" class="bg-white p-2 rounded-full shadow-sm hover:scale-110 transition border border-gray-200 text-[#E1306C]"><i class="fab fa-instagram text-lg"></i></a>
-                <a href="https://facebook.com" target="_blank" class="bg-white p-2 rounded-full shadow-sm hover:scale-110 transition border border-gray-200 text-[#1877F2]"><i class="fab fa-facebook text-lg"></i></a>
-                <a href="https://youtube.com" target="_blank" class="bg-white p-2 rounded-full shadow-sm hover:scale-110 transition border border-gray-200 text-[#FF0000]"><i class="fab fa-youtube text-lg"></i></a>
-                <a href="https://wa.me/919422337471" target="_blank" class="bg-white p-2 rounded-full shadow-sm hover:scale-110 transition border border-gray-200 text-[#25D366]"><i class="fab fa-whatsapp text-lg"></i></a>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="bg-gradient-to-r from-purple-900 to-brandPurple text-white px-4 py-1.5 rounded-full text-xs font-extrabold border-2 border-brandYellow shadow-md flex items-center gap-2">
-                    <i class="fas fa-eye text-brandYellow animate-pulse"></i>
-                    <span class="text-gray-200 hidden xs:inline">एकूण व्हिजिटर्स:</span>
-                    <span id="globalVisitorCounter" class="text-brandYellow tracking-wide font-black">14,250</span>
-                </div>
-                <button onclick="handleAdminLoginToggle()" id="adminToggleBtn" class="bg-purple-100 hover:bg-purple-200 text-brandPurple border border-purple-300 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-                    <i class="fas fa-user-shield text-brandPurple"></i>
-                    <span id="adminBtnText">Admin Login</span>
-                </button>
-            </div>
-        </div>
+  <!-- 1. SPLASH SCREEN (Mobile Opening View) -->
+  <div id="splash-screen">
+    <div class="k-dial mb-4">
+      <span class="text-white text-4xl font-black italic tracking-tighter">K</span>
     </div>
-
-    <!-- Main Navigation Header -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-2 border-purple-100 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="showAllCatalog()">
-                <div class="w-11 h-11 rounded-full bg-brandPurpleDark flex items-center justify-center font-black text-brandYellow text-2xl shadow">K</div>
-                <div>
-                    <h1 class="text-xl font-black tracking-tight text-gray-900 flex items-center gap-2">
-                        Ktimes Media <span class="text-xs bg-brandPurple text-white font-extrabold px-2 py-0.5 rounded">STUDIO</span>
-                    </h1>
-                    <p class="text-xs text-gray-700 font-semibold">ऑडिओ, व्हिडिओ व निवडणूक प्रचार जाहिराती</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <a href="https://wa.me/919422337471?text=नमस्कार%20Ktimes%20Media,%20मला%20माहिती%20हवी%20आहे." target="_blank" class="hidden sm:flex items-center gap-2 bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-4 py-2 rounded-full font-bold text-xs shadow-md">
-                    <i class="fab fa-whatsapp text-lg"></i>
-                    <span>+91 9422337471</span>
-                </a>
-                <button id="addSampleBtn" onclick="openAdminModal()" class="hidden bg-brandPurple hover:bg-brandPurpleDark text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-md">
-                    <i class="fas fa-plus-circle text-brandYellow"></i> सॅम्पल जोडा
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Admin Status Banner -->
-    <div id="adminModeBanner" class="hidden bg-brandYellow text-black text-xs py-2 px-4 font-bold border-b border-yellow-400">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <span><i class="fas fa-unlock-alt text-brandPurpleDark"></i> ॲडमिन मोड सक्रिय (PIN: 7171)</span>
-            <button onclick="adminLogout()" class="bg-brandRed text-white px-3 py-1 rounded text-xs font-bold">Logout</button>
-        </div>
+    <div class="max-w-[320px] p-4 text-center">
+      <div class="text-2xl font-black text-red-600 tracking-tight flex items-center justify-center gap-1">
+        <span>के टाईम्स</span>
+        <span class="text-slate-800">मिडिया</span>
+      </div>
+      <p class="text-xs font-semibold text-slate-500 mt-1">हमेशा समय के साथ..!</p>
     </div>
-
-    <!-- Featured Offer Banner -->
-    <section class="max-w-7xl mx-auto px-4 pt-4 pb-2" id="featuredOfferSection">
-        <div class="rounded-2xl bg-gradient-to-r from-purple-950 via-brandPurpleDark to-purple-900 border-2 border-purple-700 p-5 md:p-6 shadow-xl text-white">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                <div class="lg:col-span-7 space-y-3">
-                    <span class="bg-brandYellow text-black text-xs font-black px-3 py-1 rounded-full uppercase shadow">विशेष सण उत्सव ऑफर २०२६ 🔥</span>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-white">निवडणूक प्रचार व व्यवसाय जाहिरातींवर <span class="text-brandYellow">३०% विशेष सूट!</span></h2>
-                    <p class="text-purple-100 text-sm">लाउडस्पीकर ऑटो ऑडिओ, एफएम रेडिओ जिगल्स, YouTube Shorts / Reels 4K प्रोमो व्हिडिओ आणि निवडणूक प्रचार गीते आता विशेष सवलत दरात उपलब्ध.</p>
-                    <div class="pt-2">
-                        <a href="https://wa.me/919422337471?text=नमस्कार%20Ktimes%20Media,%20मला%20खास%20ऑफर%20बद्दल%20माहिती%20हवी%20आहे." target="_blank" class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-5 py-2.5 rounded-xl font-bold text-sm inline-flex items-center gap-2 shadow-lg">
-                            <i class="fab fa-whatsapp text-lg text-brandYellow"></i> थेट व्हॉट्सॲपवर ऑर्डर द्या
-                        </a>
-                    </div>
-                </div>
-                <div class="lg:col-span-5">
-                    <div class="w-full ar-16-9 rounded-xl overflow-hidden bg-black border border-purple-500 shadow-2xl">
-                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" class="w-full h-full border-0" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Search & Filter Bar -->
-    <section class="max-w-7xl mx-auto px-4 py-3" id="searchFilterSection">
-        <div class="flex flex-col md:flex-row gap-3 items-center justify-between bg-gray-50 p-3.5 rounded-2xl border border-gray-200">
-            <div class="relative w-full md:w-80">
-                <i class="fas fa-search absolute left-3.5 top-3 text-gray-400 text-sm"></i>
-                <input type="text" id="searchInput" oninput="filterMedia()" placeholder="शोधा (उदा. निवडणूक, ऑडिओ)..." class="w-full bg-white border border-gray-300 rounded-xl pl-10 pr-3 py-2 text-sm focus:border-brandPurple focus:outline-none">
-            </div>
-            <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 no-scrollbar" id="categoryContainer"></div>
-        </div>
-    </section>
-
-    <!-- Shared Single Item Header -->
-    <div id="singleItemHeader" class="max-w-7xl mx-auto px-4 pt-3 pb-1 hidden">
-        <div class="bg-purple-50 border-2 border-purple-200 p-3.5 rounded-2xl flex flex-wrap items-center justify-between gap-3">
-            <span class="font-bold text-gray-800 text-sm"><i class="fas fa-check-circle text-brandPurple text-lg"></i> तुम्ही निवडलेला सॅम्पल खाली उपलब्ध आहे:</span>
-            <button onclick="showAllCatalog()" class="bg-brandPurple hover:bg-brandPurpleDark text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow"><i class="fas fa-th-large"></i> सर्व सॅम्पल्स पहा</button>
-        </div>
+    <div class="mt-6 flex items-center gap-2 text-xs font-bold text-red-600">
+      <div class="w-2 h-2 rounded-full bg-red-600 animate-ping"></div>
+      स्टुडिओ सिस्टीम लोड होत आहे...
     </div>
+  </div>
 
-    <!-- Media Grid -->
-    <main class="max-w-7xl mx-auto px-4 py-2">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg md:text-xl font-extrabold text-gray-900 flex items-center gap-2">
-                <i class="fas fa-compact-disc text-brandPurple"></i> सॅम्पल गॅलरी (Media Samples)
-            </h3>
-            <span id="resultCount" class="text-xs font-bold text-gray-700 bg-purple-50 px-3 py-1 rounded-lg border border-purple-200">0 items</span>
+  <!-- 2. MAIN HEADER -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <!-- Logo Branding -->
+      <a href="#" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-xl shadow-md shadow-red-500/20">
+          K
         </div>
-        <div id="mediaGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-    </main>
+        <div>
+          <h1 class="text-lg font-black tracking-tight text-slate-900 leading-tight">
+            Ktimes <span class="text-red-600">Media</span>
+          </h1>
+          <p class="text-[10px] font-bold text-slate-500 tracking-wider uppercase">Audio & Ad Production</p>
+        </div>
+      </a>
 
-    <!-- Floating WA -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <a href="https://wa.me/919422337471?text=नमस्कार%20Ktimes%20Media,%20मला%20माहिती%20हवी%20आहे." target="_blank" class="w-14 h-14 bg-brandWhatsapp rounded-full flex items-center justify-center text-white text-3xl shadow-2xl pulse-wa hover:scale-105 transition">
-            <i class="fab fa-whatsapp"></i>
+      <!-- Header Actions -->
+      <div class="flex items-center gap-2">
+        <button onclick="triggerAppUpdate()" title="ॲप तात्काळ रिफ्रेश / अपडेट करा" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-red-600"></i>
+          <span class="hidden sm:inline">Update App</span>
+        </button>
+
+        <button onclick="openAdminModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold shadow-md shadow-red-600/20 transition">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+          <span>Admin</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. HERO PROMO BANNER -->
+  <section class="max-w-6xl mx-auto px-4 pt-6 pb-4 w-full">
+    <div class="bg-gradient-to-r from-red-700 via-red-600 to-rose-600 rounded-2xl p-6 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+      <div class="relative z-10 space-y-2 text-center md:text-left">
+        <span class="bg-white/20 text-white text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+          🔥 व्यावसायिक जाहिरात व व्हॉईस ओव्हर
+        </span>
+        <h2 class="text-2xl md:text-3xl font-black leading-tight">
+          तुमच्या व्यवसायाची विक्री वाढवणारे <br class="hidden sm:inline"> दर्जेदार ऑडिओ व व्हिडिओ सॅम्पल्स
+        </h2>
+        <p class="text-xs md:text-sm text-red-100 max-w-xl font-medium">
+          निवडणूक प्रचार, व्यवसाय जाहिराती, कॉलर ट्यून, 4K व्हिडिओ आणि व्यावसायिक जिंगल्स.
+        </p>
+      </div>
+      <div class="relative z-10 flex gap-3">
+        <a href="https://wa.me/919922000000?text=मला%20जाहिरात%20किंवा%20ऑडिओ%20सॅम्पल%20बनवायचे%20आहे" target="_blank" class="px-5 py-2.5 bg-white text-red-700 hover:bg-slate-100 rounded-xl font-black text-xs md:text-sm flex items-center gap-2 shadow-lg transition">
+          <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i>
+          WhatsApp ऑर्डर करा
         </a>
+      </div>
     </div>
+  </section>
 
-    <!-- Video Modal -->
-    <div id="videoModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl w-full max-w-3xl overflow-hidden shadow-2xl relative">
-            <div class="p-3 bg-gray-50 border-b flex items-center justify-between">
-                <h3 id="videoModalTitle" class="text-base font-bold text-gray-900 truncate">Video Player</h3>
-                <button onclick="closeVideoModal()" class="w-8 h-8 rounded-full bg-gray-200 text-gray-700 hover:text-red-600 flex items-center justify-center"><i class="fas fa-times"></i></button>
+  <!-- 4. CATEGORY TABS -->
+  <section class="max-w-6xl mx-auto px-4 py-2 w-full">
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="categoryFilters">
+      <button onclick="filterCategory('All')" class="cat-btn active px-4 py-1.5 rounded-full text-xs font-bold bg-red-600 text-white shadow-sm transition">सर्व (All)</button>
+      <button onclick="filterCategory('Video')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">व्हिडिओ (Video Ads)</button>
+      <button onclick="filterCategory('Audio')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">व्हॉईस ओव्हर / ऑडिओ</button>
+      <button onclick="filterCategory('Jingle')" class="cat-btn px-4 py-1.5 rounded-full text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">जिंगल्स (Jingles)</button>
+    </div>
+  </section>
+
+  <!-- 5. SAMPLES GRID -->
+  <main class="max-w-6xl mx-auto px-4 py-4 w-full flex-grow">
+    <div id="samplesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Injected via JavaScript -->
+    </div>
+    
+    <div id="emptyState" class="hidden text-center py-16">
+      <i data-lucide="film" class="w-12 h-12 text-slate-300 mx-auto mb-3"></i>
+      <h3 class="text-sm font-bold text-slate-700">सध्या या प्रकारात कोणतेही सॅम्पल उपलब्ध नाही</h3>
+      <p class="text-xs text-slate-400 mt-1">Admin लॉगिन करून नवीन सॅम्पल ॲड करा.</p>
+    </div>
+  </main>
+
+  <!-- 6. FOOTER -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-6xl mx-auto px-4 space-y-2">
+      <p class="font-extrabold text-slate-800">के टाईम्स मिडिया — हमेशा समय के साथ..!</p>
+      <p>© 2026 Ktimes Media. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- 7. ADMIN MODAL -->
+  <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="font-black text-slate-900 flex items-center gap-2">
+          <i data-lucide="lock" class="w-4 h-4 text-red-600"></i>
+          Ktimes Admin Dashboard
+        </h3>
+        <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Password Lock Screen -->
+      <div id="adminLockScreen" class="space-y-4 py-4">
+        <p class="text-xs text-slate-600 font-medium">नवीन सॅम्पल जोडण्यासाठी किंवा डेटा बदलण्यासाठी ॲडमिन पिन टाका:</p>
+        <input type="password" id="adminPinInput" placeholder="Enter PIN (Default: 7171)" class="w-full px-4 py-2 border rounded-xl text-center text-lg font-bold tracking-widest outline-none focus:border-red-600">
+        <button onclick="verifyAdminPin()" class="w-full py-2.5 bg-red-600 text-white rounded-xl font-black text-xs hover:bg-red-700 transition">
+          लॉगिन करा
+        </button>
+      </div>
+
+      <!-- Admin Content (Unlocked) -->
+      <div id="adminUnlockedArea" class="hidden space-y-4">
+        <form id="addSampleForm" onsubmit="handleSaveSample(event)" class="space-y-3">
+          <div>
+            <label class="text-[11px] font-extrabold text-slate-600 uppercase">सॅम्पल नाव / शीर्षक</label>
+            <input type="text" id="sampleTitle" required placeholder="उदा. ज्वेलरी शोरूम 4K जाहिरात" class="w-full px-3 py-2 border rounded-lg text-xs outline-none focus:border-red-600">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-[11px] font-extrabold text-slate-600 uppercase">प्रकार (Category)</label>
+              <select id="sampleCategory" class="w-full px-3 py-2 border rounded-lg text-xs outline-none focus:border-red-600">
+                <option value="Video">Video (व्हिडिओ)</option>
+                <option value="Audio">Audio (व्हॉईस ओव्हर)</option>
+                <option value="Jingle">Jingle (जिंगल)</option>
+              </select>
             </div>
-            <div class="p-3 bg-black flex items-center justify-center max-h-[60vh] overflow-hidden">
-                <div id="videoEmbedContainer" class="w-full"></div>
+            <div>
+              <label class="text-[11px] font-extrabold text-slate-600 uppercase">टॅग (उदा. 4K, Voiceover)</label>
+              <input type="text" id="sampleTag" placeholder="उदा. FM Quality, 4K" class="w-full px-3 py-2 border rounded-lg text-xs outline-none focus:border-red-600">
             </div>
-            <div class="p-4 bg-white flex flex-col sm:flex-row items-center justify-between gap-3 border-t">
-                <div>
-                    <p id="videoModalDesc" class="text-xs text-gray-700">सॅम्पल व्हिडिओ...</p>
-                    <span id="videoModalPrice" class="text-sm font-extrabold text-brandPurple">₹२,९९९ पासून</span>
-                </div>
-                <a id="videoModalWaBtn" href="#" target="_blank" class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-5 py-2 rounded-xl font-bold text-xs flex items-center gap-2 shadow">
-                    <i class="fab fa-whatsapp text-base text-brandYellow"></i> व्हॉट्सॲपवर ऑर्डर द्या
-                </a>
-            </div>
+          </div>
+
+          <div>
+            <label class="text-[11px] font-extrabold text-slate-600 uppercase">YouTube Link किंवा Audio URL</label>
+            <input type="url" id="sampleMediaUrl" required placeholder="https://youtu.be/... किंवा https://.../audio.mp3" class="w-full px-3 py-2 border rounded-lg text-xs outline-none focus:border-red-600">
+            <p class="text-[10px] text-slate-500 mt-1 font-medium">
+              * YouTube व्हिडिओ लिंक थेट टाका. ऑडिओसाठी Google Drive / Direct MP3 लिंक टाका.
+            </p>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 bg-red-600 text-white rounded-xl font-bold text-xs hover:bg-red-700 shadow-md transition">
+            + सॅम्पल सेव्ह करा
+          </button>
+        </form>
+
+        <hr class="border-slate-200">
+
+        <!-- Backup / Cloud Storage Tools -->
+        <div class="space-y-2">
+          <label class="text-[11px] font-extrabold text-slate-600 uppercase">डेटा बॅकअप व रिस्टोअर (कायमस्वरूपी साठवण)</label>
+          <div class="flex gap-2">
+            <button onclick="exportDataBackup()" class="flex-1 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition flex items-center justify-center gap-1">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Backup
+            </button>
+            <button onclick="document.getElementById('importFileInput').click()" class="flex-1 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition flex items-center justify-center gap-1">
+              <i data-lucide="upload" class="w-3.5 h-3.5"></i> Restore Data
+            </button>
+            <input type="file" id="importFileInput" onchange="importDataBackup(event)" accept=".json" class="hidden">
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <audio id="globalAudio"></audio>
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // 1. DEFAULT SAMPLE DATA
+    const INITIAL_SAMPLES = [
+      {
+        id: 's1',
+        title: 'गणेश ज्वेलर्स - फेस्टिव्हल टीव्ही कमर्शियल',
+        category: 'Video',
+        tag: '4K Commercial',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        date: '2026-08-10'
+      },
+      {
+        id: 's2',
+        title: 'मल्टीस्पेशालिटी हॉस्पिटल - रेडिओ व्हॉईस ओव्हर',
+        category: 'Audio',
+        tag: 'FM Quality',
+        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+        date: '2026-08-12'
+      },
+      {
+        id: 's3',
+        title: 'शुभमंगल मंगल कार्यालय - सिग्नेचर जिंगल',
+        category: 'Jingle',
+        tag: 'Signature Audio',
+        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+        date: '2026-08-14'
+      }
+    ];
 
-    <script>
-        const WHATSAPP_NUMBER = "919422337471";
-        const ADMIN_PIN = "7171";
-        let isAdminMode = false;
+    // 2. PERSISTENT STORAGE SYNC
+    function getStoredSamples() {
+      const stored = localStorage.getItem('ktimes_samples_db');
+      return stored ? JSON.parse(stored) : INITIAL_SAMPLES;
+    }
 
-        const categories = ["All", "ऑडिओ जाहिराती", "व्हिडिओ जाहिराती", "ग्राफिक्स डिझाइन", "निवडणूक स्पेशल", "मिक्स गाणी"];
+    function saveStoredSamples(data) {
+      localStorage.setItem('ktimes_samples_db', JSON.stringify(data));
+      renderSamples();
+    }
 
-        const defaultItems = [
-            { id: 1, sampleId: "KTM-ELE-2026", title: "निवडणूक प्रचार ऑडिओ २०२६ - विजय रथ", category: "निवडणूक स्पेशल", mediaType: "AUDIO", aspectRatio: "16:9", mediaUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", thumbnailUrl: "https://picsum.photos/seed/ktm_elec/600/400", description: "लाउडस्पीकर ऑटो व वाहनांसाठी खणखणीत आवाजात राजकीय प्रचार ऑडिओ रेकॉर्डिंग.", priceOrEstimate: "₹२,४९९ पासून", views: 1420 },
-            { id: 2, sampleId: "KTM-YT-SHORT", title: "निवडणूक प्रचार Reels & Shorts (Vertical 9:16)", category: "निवडणूक स्पेशल", mediaType: "VIDEO", aspectRatio: "9:16", mediaUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", thumbnailUrl: "https://picsum.photos/seed/ktm_short/600/800", description: "मोबाईल स्क्रीनसाठी खास Vertical 9:16 फॉरमॅट मधील व्हॉईसओव्हर व्हिडिओ जाहिरात.", priceOrEstimate: "₹२,९९९ पासून", views: 2890 },
-            { id: 3, sampleId: "KTM-VID-PROMO", title: "केटाईम्स मीडिया एजन्सी प्रोमो (4K Commercial)", category: "व्हिडिओ जाहिराती", mediaType: "VIDEO", aspectRatio: "16:9", mediaUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", thumbnailUrl: "https://picsum.photos/seed/ktm_agency/600/400", description: "4K प्रोमो व्हिडिओ. मोशन ग्राफिक्स आणि स्टुडिओ व्हॉईसओव्हरसह व्यवसायाची जाहिरात.", priceOrEstimate: "₹४,९९९ पासून", views: 3150 },
-            { id: 4, sampleId: "KTM-AUD-101", title: "ज्वेलरी स्टोअर सण उत्सव एफएम जाहिरात", category: "ऑडिओ जाहिराती", mediaType: "AUDIO", aspectRatio: "16:9", mediaUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", thumbnailUrl: "https://picsum.photos/seed/ktm_gold/600/400", description: "सणासुदीच्या प्रसंगासाठी खास एफएम रेडिओ दर्जाची ऑडिओ जाहिरात.", priceOrEstimate: "₹१,९९९ पासून", views: 980 }
-        ];
+    let activeFilter = 'All';
 
-        let mediaItems = [...defaultItems];
-        let currentCategory = "All";
-        const globalAudio = document.getElementById("globalAudio");
-
-        function getYouTubeEmbed(url) {
-            if (!url) return "";
-            const shorts = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
-            if (shorts && shorts[1]) return `https://www.youtube.com/embed/${shorts[1]}?autoplay=1&rel=0`;
-            const reg = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(reg);
-            return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}?autoplay=1&rel=0` : url;
+    // 3. YOUTUBE / MEDIA URL FORMATTER (100% Fix for Embed Errors)
+    function formatMediaEmbed(url, type) {
+      if (type === 'Video' || url.includes('youtube.com') || url.includes('youtu.be')) {
+        let videoId = '';
+        if (url.includes('youtu.be/')) {
+          videoId = url.split('youtu.be/')[1].split(/[?#]/)[0];
+        } else if (url.includes('watch?v=')) {
+          videoId = url.split('watch?v=')[1].split(/[&#]/)[0];
+        } else if (url.includes('shorts/')) {
+          videoId = url.split('shorts/')[1].split(/[?#]/)[0];
+        } else if (url.includes('embed/')) {
+          videoId = url.split('embed/')[1].split(/[?#]/)[0];
         }
-
-        function triggerShareItem(id) {
-            const item = mediaItems.find(i => i.id == id);
-            if (!item) return;
-            const directUrl = `${window.location.origin}${window.location.pathname}?sample=${encodeURIComponent(item.sampleId)}`;
-            const text = `*${item.title}*\n${item.description}\n\nसॅम्पल पाहण्यासाठी लिंक:\n${directUrl}`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        
+        if (videoId) {
+          return `<div class="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-inner">
+                    <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/${videoId}?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  </div>`;
         }
-
-        function showAllCatalog() {
-            window.history.pushState({}, document.title, window.location.pathname);
-            document.getElementById("featuredOfferSection").classList.remove("hidden");
-            document.getElementById("searchFilterSection").classList.remove("hidden");
-            document.getElementById("singleItemHeader").classList.add("hidden");
-            renderGrid(mediaItems);
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            loadCategories();
-            const urlParams = new URLSearchParams(window.location.search);
-            const sharedSampleId = urlParams.get('sample');
-
-            if (sharedSampleId) {
-                document.getElementById("featuredOfferSection").classList.add("hidden");
-                document.getElementById("searchFilterSection").classList.add("hidden");
-                document.getElementById("singleItemHeader").classList.remove("hidden");
-                const matched = mediaItems.find(i => i.sampleId.toLowerCase() === sharedSampleId.toLowerCase());
-                if (matched) {
-                    renderGrid([matched]);
-                    if (matched.mediaType === 'VIDEO') setTimeout(() => openVideoModal(matched.id), 300);
-                } else renderGrid(mediaItems);
-            } else {
-                renderGrid(mediaItems);
-            }
-        });
-
-        function handleAdminLoginToggle() {
-            if (isAdminMode) {
-                isAdminMode = false;
-                document.getElementById("adminBtnText").innerText = "Admin Login";
-                document.getElementById("adminModeBanner").classList.add("hidden");
-                document.getElementById("addSampleBtn").classList.add("hidden");
-            } else {
-                const pin = prompt("🔐 Ktimes Media सुरक्षित ॲडमिन पिन टाका:");
-                if (pin === ADMIN_PIN) {
-                    isAdminMode = true;
-                    document.getElementById("adminBtnText").innerText = "Admin Logout";
-                    document.getElementById("adminModeBanner").classList.remove("hidden");
-                    document.getElementById("addSampleBtn").classList.remove("hidden");
-                    alert("✅ ॲडमिन मोड सक्रिय!");
-                } else if (pin !== null) alert("❌ चुकीचा पिन!");
-            }
-        }
-
-        function loadCategories() {
-            const container = document.getElementById("categoryContainer");
-            container.innerHTML = categories.map(cat => `
-                <button onclick="selectCat('${cat}')" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap ${cat === currentCategory ? 'bg-brandPurple text-white shadow' : 'bg-gray-200 text-gray-800'}">${cat}</button>
-            `).join("");
-        }
-
-        function selectCat(cat) { currentCategory = cat; loadCategories(); filterMedia(); }
-
-        function filterMedia() {
-            const q = document.getElementById("searchInput").value.toLowerCase();
-            const filtered = mediaItems.filter(i => (currentCategory === "All" || i.category === currentCategory) && (i.title.toLowerCase().includes(q) || i.sampleId.toLowerCase().includes(q)));
-            renderGrid(filtered);
-        }
-
-        function renderGrid(items) {
-            const grid = document.getElementById("mediaGrid");
-            document.getElementById("resultCount").innerText = `${items.length} items`;
-            grid.innerHTML = items.map(item => `
-                <div class="bg-white rounded-2xl overflow-hidden border-2 border-gray-200 hover:border-brandPurple hover:shadow-xl transition flex flex-col">
-                    <div class="relative ${item.aspectRatio === '9:16' ? 'ar-9-16' : 'ar-16-9'} bg-black overflow-hidden group">
-                        <img src="${item.thumbnailUrl}" class="w-full h-full object-cover">
-                        <span class="absolute top-2 left-2 bg-black/80 text-brandYellow text-[10px] font-black px-2 py-0.5 rounded border border-brandYellow/40">${item.sampleId}</span>
-                        <span class="absolute top-2 right-2 bg-brandPurple text-white text-[10px] font-bold px-2 py-0.5 rounded">${item.category}</span>
-                        ${item.mediaType === 'VIDEO' ? `
-                            <button onclick="openVideoModal('${item.id}')" class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center">
-                                <div class="w-12 h-12 rounded-full bg-brandRed text-white flex items-center justify-center text-xl shadow mb-1"><i class="fas fa-play"></i></div>
-                                <span class="text-[11px] font-bold text-white bg-black/60 px-2 py-0.5 rounded">पहा</span>
-                            </button>
-                        ` : `
-                            <button onclick="playAudio('${item.mediaUrl}')" class="absolute inset-0 bg-black/30 flex items-center justify-center">
-                                <div class="w-12 h-12 rounded-full bg-brandPurple text-white flex items-center justify-center text-xl shadow border-2 border-brandYellow"><i class="fas fa-play"></i></div>
-                            </button>
-                        `}
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col justify-between space-y-2">
-                        <div>
-                            <h4 class="font-extrabold text-gray-900 text-base leading-tight">${item.title}</h4>
-                            <p class="text-xs text-gray-600 mt-1 line-clamp-2">${item.description}</p>
-                        </div>
-                        <div class="pt-2 border-t flex items-center justify-between">
-                            <span class="text-sm font-black text-brandPurple">${item.priceOrEstimate}</span>
-                            <div class="flex items-center gap-1.5">
-                                <button onclick="triggerShareItem('${item.id}')" class="bg-gray-100 hover:bg-purple-100 text-brandPurple p-2 rounded-xl text-xs font-bold border"><i class="fas fa-share-alt"></i></button>
-                                <a href="https://wa.me/${WHATSAPP_NUMBER}?text=नमस्कार%20Ktimes%20Media,%20मला%20'${encodeURIComponent(item.title)}'%20याची%20माहिती%20हवी%20आहे." target="_blank" class="bg-brandWhatsapp hover:bg-brandWhatsappHover text-white px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 shadow"><i class="fab fa-whatsapp"></i> ऑर्डर</a>
-                            </div>
-                        </div>
-                    </div>
+      }
+      
+      // Audio Player for MP3 / Web Links
+      return `<div class="p-4 bg-red-50/50 rounded-xl border border-red-100 flex flex-col justify-center gap-2">
+                <div class="flex items-center gap-2 text-xs font-bold text-red-600">
+                  <i data-lucide="music" class="w-4 h-4"></i> High Quality Audio Stream
                 </div>
-            `).join('');
-        }
+                <audio controls class="w-full h-10 outline-none rounded-lg">
+                  <source src="${url}" type="audio/mpeg">
+                  Your browser does not support audio player.
+                </audio>
+              </div>`;
+    }
 
-        function playAudio(url) { globalAudio.src = url; globalAudio.play(); }
+    // 4. RENDER SAMPLES TO GRID
+    function renderSamples() {
+      const grid = document.getElementById('samplesGrid');
+      const empty = document.getElementById('emptyState');
+      const samples = getStoredSamples();
 
-        function openVideoModal(id) {
-            const item = mediaItems.find(i => i.id == id);
-            if (!item) return;
-            document.getElementById("videoModalTitle").innerText = item.title;
-            document.getElementById("videoModalDesc").innerText = item.description;
-            document.getElementById("videoModalPrice").innerText = item.priceOrEstimate;
-            document.getElementById("videoModalWaBtn").href = `https://wa.me/${WHATSAPP_NUMBER}?text=नमस्कार%20Ktimes%20Media,%20मला%20'${encodeURIComponent(item.title)}'%20हा%20व्हिडिओ%20हवा%20आहे.`;
-            document.getElementById("videoEmbedContainer").innerHTML = `<iframe src="${getYouTubeEmbed(item.mediaUrl)}" class="w-full ${item.aspectRatio === '9:16' ? 'ar-9-16' : 'ar-16-9'} rounded-lg" allowfullscreen></iframe>`;
-            document.getElementById("videoModal").classList.remove("hidden");
-        }
+      const filtered = activeFilter === 'All' 
+        ? samples 
+        : samples.filter(s => s.category.toLowerCase() === activeFilter.toLowerCase());
 
-        function closeVideoModal() {
-            document.getElementById("videoEmbedContainer").innerHTML = "";
-            document.getElementById("videoModal").classList.add("hidden");
+      grid.innerHTML = '';
+      if (filtered.length === 0) {
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+        filtered.forEach(item => {
+          const card = document.createElement('div');
+          card.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between gap-3";
+          card.innerHTML = `
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-red-100 text-red-700">
+                  ${item.tag || item.category}
+                </span>
+                <span class="text-[10px] font-semibold text-slate-400">${item.date || 'Active'}</span>
+              </div>
+              <h3 class="font-bold text-slate-900 text-sm leading-snug">${item.title}</h3>
+              ${formatMediaEmbed(item.url, item.category)}
+            </div>
+            
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+              <button onclick="shareSingleSample('${item.title}', '${item.url}')" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition">
+                <i data-lucide="share-2" class="w-3.5 h-3.5 text-slate-500"></i> सॅम्पल पाठवा
+              </button>
+              <a href="https://wa.me/919922000000?text=मला%20या%20सॅम्पलसारखे%20काम%20करायचे%20आहे:%20${encodeURIComponent(item.title)}" target="_blank" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1 transition">
+                <i data-lucide="message-square" class="w-3.5 h-3.5"></i> विचारणा करा
+              </a>
+              ${isAdminLoggedIn ? `<button onclick="deleteSample('${item.id}')" class="p-2 text-red-500 hover:bg-red-50 rounded-xl" title="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+      lucide.createIcons();
+    }
+
+    // 5. FILTER CATEGORY TABS
+    function filterCategory(cat) {
+      activeFilter = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.className = "cat-btn px-4 py-1.5 rounded-full text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition";
+      });
+      event.target.className = "cat-btn active px-4 py-1.5 rounded-full text-xs font-bold bg-red-600 text-white shadow-sm transition";
+      renderSamples();
+    }
+
+    // 6. SINGLE SAMPLE SHARE TO WHATSAPP
+    function shareSingleSample(title, url) {
+      const text = `🎬 *के टाईम्स मिडिया - सॅम्पल शोकेस*\n\n📌 *शीर्षक:* ${title}\n🔗 *पाहण्यासाठी लिंक:* ${url}\n\n📞 व्यावसायिक जाहिराती व व्हॉईस ओव्हरसाठी संपर्क करा.`;
+      const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+      window.open(shareUrl, '_blank');
+    }
+
+    // 7. 1-CLICK APP UPDATE FUNCTION
+    function triggerAppUpdate() {
+      const btn = event.currentTarget;
+      btn.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin text-red-600"></i> Updating...`;
+      lucide.createIcons();
+      
+      setTimeout(() => {
+        window.location.reload(true);
+      }, 600);
+    }
+
+    // 8. ADMIN ACTIONS & AUTH
+    let isAdminLoggedIn = false;
+    function openAdminModal() {
+      document.getElementById('adminModal').classList.remove('hidden');
+      document.getElementById('adminModal').classList.add('flex');
+    }
+    function closeAdminModal() {
+      document.getElementById('adminModal').classList.add('hidden');
+      document.getElementById('adminModal').classList.remove('flex');
+    }
+    function verifyAdminPin() {
+      const pin = document.getElementById('adminPinInput').value;
+      if (pin === '7171') {
+        isAdminLoggedIn = true;
+        document.getElementById('adminLockScreen').classList.add('hidden');
+        document.getElementById('adminUnlockedArea').classList.remove('hidden');
+        renderSamples();
+      } else {
+        alert('अवैध ॲडमिन पिन!');
+      }
+    }
+
+    function handleSaveSample(e) {
+      e.preventDefault();
+      const newSample = {
+        id: 's_' + Date.now(),
+        title: document.getElementById('sampleTitle').value,
+        category: document.getElementById('sampleCategory').value,
+        tag: document.getElementById('sampleTag').value || 'Standard',
+        url: document.getElementById('sampleMediaUrl').value,
+        date: new Date().toISOString().split('T')[0]
+      };
+      
+      const list = getStoredSamples();
+      list.unshift(newSample);
+      saveStoredSamples(list);
+      
+      document.getElementById('addSampleForm').reset();
+      alert('सॅम्पल यशस्वीरीत्या जोडले गेले!');
+    }
+
+    function deleteSample(id) {
+      if (confirm('हे सॅम्पल खरंच डिलीट करायचे आहे का?')) {
+        const list = getStoredSamples().filter(s => s.id !== id);
+        saveStoredSamples(list);
+      }
+    }
+
+    // 9. EXPORT & RESTORE DATA BACKUPS
+    function exportDataBackup() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(getStoredSamples(), null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "ktimes_media_samples_backup.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importDataBackup(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          const importedData = JSON.parse(event.target.result);
+          if (Array.isArray(importedData)) {
+            saveStoredSamples(importedData);
+            alert('सर्व सॅम्पल डेटा यशस्वीरीत्या रिस्टोअर झाला!');
+          }
+        } catch (err) {
+          alert('फाईल फॉरमॅट चुकीचा आहे!');
         }
-    </script>
+      };
+      reader.readAsText(file);
+    }
+
+    // 10. SPLASH SCREEN AUTO HIDE
+    window.addEventListener('DOMContentLoaded', () => {
+      renderSamples();
+      setTimeout(() => {
+        document.getElementById('splash-screen').classList.add('hide-splash');
+      }, 1500);
+    });
+  </script>
 </body>
 </html>
