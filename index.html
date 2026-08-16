@@ -2,85 +2,40 @@
 <html lang="mr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ktimes Media | Professional Studio</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Ktimes Media</title>
   <style>
-    * { font-family: 'Mukta', sans-serif; }
-    .baloo-k { font-family: 'Baloo 2', sans-serif; }
-    #splash-screen { position: fixed; inset: 0; z-index: 9999; background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .ktimes-dial { width: 100px; height: 100px; border-radius: 50%; background: #dc2626; display: flex; align-items: center; justify-content: center; border: 4px solid #fff; box-shadow: 0 10px 20px rgba(220,38,38,0.3); }
-    .animate-hide { animation: fadeOut 0.5s forwards; }
-    @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+    body { margin: 0; padding: 0; font-family: sans-serif; }
+    
+    /* Splash Screen - ३ सेकंदांत आपोआप गायब होईल */
+    #splash {
+      position: fixed; inset: 0; z-index: 9999;
+      background: white; display: flex; align-items: center; justify-content: center;
+      animation: hideSplash 1s ease 2s forwards;
+    }
+    .k-dial { 
+      width: 100px; height: 100px; background: #dc2626; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 50px; font-weight: bold; border: 4px solid white;
+    }
+    @keyframes hideSplash { to { opacity: 0; visibility: hidden; } }
   </style>
 </head>
-<body class="bg-slate-50 min-h-screen pb-24">
+<body>
 
   <!-- Splash -->
-  <div id="splash-screen"><div class="ktimes-dial"><span class="baloo-k text-white text-6xl italic">K</span></div></div>
-
-  <!-- Content (Initial Hidden) -->
-  <div id="main-content" class="opacity-0 transition-opacity duration-500">
-    <header class="bg-white border-b sticky top-0 z-40">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2"><div class="ktimes-dial w-9 h-9"><span class="baloo-k text-white text-xl italic">K</span></div>
-            <h1 class="font-bold text-lg">Ktimes <span class="text-red-600">Media</span></h1></div>
-            <button onclick="openAdminModal()" class="px-3 py-1 bg-red-600 text-white rounded-lg text-xs font-bold">Admin</button>
-        </div>
-        <div class="px-4 py-2 flex justify-center gap-4 bg-slate-50 border-t" id="socialIconsBar"></div>
-    </header>
-
-    <main class="max-w-4xl mx-auto px-4 py-4 space-y-4" id="samplesGrid"></main>
+  <div id="splash">
+    <div class="k-dial">K</div>
   </div>
 
-  <!-- Footer Nav -->
-  <div class="md:hidden fixed bottom-0 w-full bg-white border-t p-2 flex justify-around z-50">
-    <button onclick="window.scrollTo(0,0)" class="text-xs font-bold flex flex-col items-center"><i data-lucide="home" class="w-5 h-5 text-red-600"></i> होम</button>
-    <a href="tel:9422337471" class="text-xs font-bold flex flex-col items-center"><i data-lucide="phone" class="w-5 h-5 text-emerald-600"></i> कॉल</a>
+  <!-- Main Content -->
+  <div style="padding: 20px;">
+    <h1>Ktimes Media</h1>
+    <p>जर तुम्हाला हे दिसत असेल, तर ॲप आता व्यवस्थित काम करत आहे!</p>
   </div>
 
   <script>
-    // Robust Data Loading
-    function loadData() {
-        try {
-            const samples = JSON.parse(localStorage.getItem('ktimes_samples_db') || '[]');
-            const grid = document.getElementById('samplesGrid');
-            if(samples.length === 0) grid.innerHTML = "<p class='text-center p-10'>नो डेटा</p>";
-            else {
-                grid.innerHTML = samples.map(s => `
-                    <div class="bg-white p-4 rounded-xl border shadow-sm">
-                        <h3 class="font-bold text-sm">${s.title}</h3>
-                        <div class="flex gap-4 mt-2 text-xs font-bold">
-                            <span class="text-blue-600">👁️ ${s.views || 0}</span>
-                            <span class="text-rose-600">❤️ ${s.likes || 0}</span>
-                        </div>
-                    </div>
-                `).join('');
-            }
-            document.getElementById('socialIconsBar').innerHTML = `
-                <a href="#"><img src="https://cdn-icons-png.flaticon.com/64/3670/3670051.png" class="w-7 h-7"></a>
-                <a href="#"><img src="https://cdn-icons-png.flaticon.com/64/1384/1384060.png" class="w-7 h-7"></a>
-            `;
-            lucide.createIcons();
-            document.getElementById('splash-screen').classList.add('animate-hide');
-            document.getElementById('main-content').classList.remove('opacity-0');
-        } catch(e) {
-            console.error(e);
-            document.getElementById('splash-screen').classList.add('animate-hide');
-            document.getElementById('main-content').classList.remove('opacity-0');
-        }
-    }
-
-    function openAdminModal() { alert('Admin Login Required'); }
-    
-    window.onload = loadData;
-    // Safety fallback: hide splash even if JS crashes
-    setTimeout(() => {
-        document.getElementById('splash-screen').classList.add('animate-hide');
-        document.getElementById('main-content').classList.remove('opacity-0');
-    }, 3000);
+    // एकदा वेबसाईट लोड झाली की हे आपोआप चालणार
+    console.log("App Loaded Successfully");
   </script>
 </body>
 </html>
