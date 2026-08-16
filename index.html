@@ -2,49 +2,45 @@
 <html lang="mr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Ktimes Media | Official Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ktimes Media | Professional Audio & Ad Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { font-family: 'Mukta', sans-serif; }
-    .baloo-k { font-family: 'Baloo 2', sans-serif; }
-    #splash-screen { position: fixed; inset: 0; z-index: 9999; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.4s ease; }
-    .ktimes-dial { width: 90px; height: 90px; border-radius: 50%; background: #dc2626; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(220, 38, 38, 0.3); border: 4px solid #ffffff; }
-    .hide-splash { opacity: 0; visibility: hidden; pointer-events: none; }
+    .baloo-k { font-family: 'Baloo 2', sans-serif; font-weight: 900; }
+    .ktimes-dial { background: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid #fff; }
+    #splash-screen { position: fixed; inset: 0; z-index: 9999; background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   </style>
 </head>
-<body class="bg-slate-50 min-h-screen pb-24">
+<body class="bg-slate-50 pb-24 md:pb-6">
 
-  <!-- SPLASH -->
-  <div id="splash-screen">
-    <div class="ktimes-dial ring-4 ring-red-100"><span class="baloo-k text-white text-6xl font-black italic">K</span></div>
-    <p class="mt-4 font-bold text-red-600">Loading...</p>
-  </div>
+  <!-- Splash -->
+  <div id="splash-screen"><div class="ktimes-dial w-24 h-24 ring-4 ring-red-100"><span class="baloo-k text-white text-6xl italic">K</span></div></div>
 
-  <!-- HEADER -->
+  <!-- Header -->
   <header class="bg-white border-b sticky top-0 z-40">
     <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-2"><div class="ktimes-dial w-9 h-9"><span class="baloo-k text-white text-xl font-black">K</span></div>
+      <div class="flex items-center gap-2"><div class="ktimes-dial w-9 h-9"><span class="baloo-k text-white text-xl italic">K</span></div>
       <h1 class="font-bold text-lg">Ktimes <span class="text-red-600">Media</span></h1></div>
       <button onclick="openAdminModal()" class="px-3 py-1 bg-red-600 text-white rounded-lg text-xs font-bold">Admin</button>
     </div>
     <!-- Social Bar -->
-    <div class="px-4 py-2 flex justify-center gap-4 overflow-x-auto" id="socialIconsBar"></div>
+    <div class="px-4 py-2 flex items-center justify-center gap-4 bg-slate-50 border-t" id="socialIconsBar"></div>
   </header>
 
-  <!-- BANNER -->
+  <!-- Banner -->
   <section class="max-w-4xl mx-auto px-4 pt-4" id="offerBannerSection"></section>
 
-  <!-- CATEGORIES -->
+  <!-- Categories -->
   <section class="max-w-4xl mx-auto px-4 py-3"><div class="flex gap-2 overflow-x-auto" id="categoryTabsContainer"></div></section>
 
-  <!-- SAMPLES -->
-  <main class="max-w-4xl mx-auto px-4" id="samplesGrid"></main>
+  <!-- Samples -->
+  <main class="max-w-4xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-4" id="samplesGrid"></main>
 
-  <!-- MOBILE NAV -->
-  <div class="md:hidden fixed bottom-0 w-full bg-white border-t p-2 flex justify-around z-50">
+  <!-- Mobile Nav -->
+  <div class="md:hidden fixed bottom-0 w-full bg-white border-t p-2 flex justify-around z-50 shadow-lg">
     <button onclick="filterCategoryBySlug('Audio')" class="flex flex-col items-center text-xs font-bold"><i data-lucide="mic" class="w-5 h-5 text-red-600"></i> ऑडिओ</button>
     <button onclick="filterCategoryBySlug('Video')" class="flex flex-col items-center text-xs font-bold"><i data-lucide="video" class="w-5 h-5 text-purple-600"></i> व्हिडिओ</button>
     <button onclick="window.scrollTo(0,0)" class="flex flex-col items-center text-xs font-bold"><div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center"><i data-lucide="home" class="w-4 h-4"></i></div></button>
@@ -52,9 +48,9 @@
     <a href="tel:9422337471" class="flex flex-col items-center text-xs font-bold"><i data-lucide="phone" class="w-5 h-5 text-emerald-600"></i> कॉल</a>
   </div>
 
-  <!-- ADMIN MODAL -->
+  <!-- Admin Modal -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl w-full max-w-sm p-4 max-h-[80vh] overflow-y-auto">
+    <div class="bg-white rounded-2xl w-full max-w-sm p-5 max-h-[80vh] overflow-y-auto">
         <h2 class="font-bold mb-4">Admin Panel</h2>
         <input type="password" id="adminPinInput" placeholder="PIN" class="w-full p-2 border mb-2">
         <button onclick="verifyAdminPin()" class="w-full bg-red-600 text-white p-2 rounded">Login</button>
@@ -67,27 +63,30 @@
   </div>
 
   <script>
-    let samples = JSON.parse(localStorage.getItem('ktimes_samples_db')) || [{id:'s1', title:'Sample', category:'Video', url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ', views:100, likes:10}];
+    let samples = JSON.parse(localStorage.getItem('ktimes_samples_db')) || [{id:'s1', title:'गणेश ज्वेलर्स', category:'Video', url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ', views:1420, likes:184}];
     let socialLinks = JSON.parse(localStorage.getItem('ktimes_socials_db')) || {wa:'https://wa.me/9422337471', fb:'#', yt:'#'};
 
     function renderSocialIconsBar() {
       document.getElementById('socialIconsBar').innerHTML = `
-        <a href="${socialLinks.wa}"><img src="https://cdn-icons-png.flaticon.com/64/3670/3670051.png" class="w-8 h-8"></a>
-        <a href="${socialLinks.fb}"><img src="https://cdn-icons-png.flaticon.com/64/1384/1384053.png" class="w-8 h-8"></a>
-        <a href="${socialLinks.yt}"><img src="https://cdn-icons-png.flaticon.com/64/1384/1384060.png" class="w-8 h-8"></a>
+        <div class="text-[10px] font-bold border-r pr-2">📍 सातारा</div>
+        <a href="${socialLinks.wa}"><img src="https://cdn-icons-png.flaticon.com/64/3670/3670051.png" class="w-7 h-7"></a>
+        <a href="${socialLinks.fb}"><img src="https://cdn-icons-png.flaticon.com/64/1384/1384053.png" class="w-7 h-7"></a>
+        <a href="${socialLinks.yt}"><img src="https://cdn-icons-png.flaticon.com/64/1384/1384060.png" class="w-7 h-7"></a>
       `;
     }
 
     function renderSamples() {
-      const grid = document.getElementById('samplesGrid');
-      grid.innerHTML = samples.map(item => `
-        <div class="bg-white p-3 rounded-xl border shadow-sm">
-           <h3 class="font-bold text-sm">${item.title}</h3>
-           <div class="mt-2 text-xs flex justify-between text-slate-500">
-             <span>👁️ ${item.views}</span> <span>❤️ ${item.likes}</span>
+      document.getElementById('samplesGrid').innerHTML = samples.map(s => `
+        <div class="bg-white p-4 rounded-xl border shadow-sm">
+           <h3 class="font-bold text-sm mb-2">${s.title}</h3>
+           <div class="aspect-video bg-black rounded-lg mb-3"></div>
+           <div class="flex justify-between text-xs font-bold">
+             <span class="text-blue-600">👁️ ${s.views}</span>
+             <span class="text-rose-600">❤️ ${s.likes}</span>
            </div>
         </div>
       `).join('');
+      lucide.createIcons();
     }
 
     function verifyAdminPin() {
@@ -96,10 +95,18 @@
       } else { alert('Wrong PIN'); }
     }
 
+    function handleSaveSample() {
+      const title = document.getElementById('sampleTitle').value;
+      samples.unshift({id:'s'+Date.now(), title:title, views:0, likes:0});
+      localStorage.setItem('ktimes_samples_db', JSON.stringify(samples));
+      renderSamples();
+    }
+
     window.onload = () => {
       renderSocialIconsBar();
       renderSamples();
       setTimeout(() => document.getElementById('splash-screen').classList.add('hide-splash'), 1000);
+      lucide.createIcons();
     };
   </script>
 </body>
