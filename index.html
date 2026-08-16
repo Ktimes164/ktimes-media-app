@@ -7,8 +7,15 @@
   <title>Ktimes Media | Official Audio & Video Production</title>
   <meta name="description" content="के टाईम्स मिडिया - व्यावसायिक ऑडिओ, 4K व्हिडिओ जाहिराती, व्हॉईस ओव्हर आणि जिंगल्स स्टुडिओ. हमेशा समय के साथ..!">
   
-  <!-- Open Graph & WhatsApp Link Preview -->
+  <!-- PWA & Install Support -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Ktimes">
+
+  <!-- Open Graph & Social Preview -->
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ktimes-media-app.vercel.app/">
   <meta property="og:title" content="Ktimes Media | हमेशा समय के साथ..!">
   <meta property="og:description" content="तुमच्या व्यवसायाची विक्री वाढवणारे दर्जेदार ऑडिओ, 4K व्हिडिओ व जिंगल्स सॅम्पल्स. संपर्क: 9422337471">
   <meta property="og:image" content="https://raw.githubusercontent.com/Ktimes164/ktimes-media-app/main/assets/ktimes-logo.jpg">
@@ -16,8 +23,6 @@
   <meta property="og:image:height" content="630">
 
   <meta name="theme-color" content="#dc2626">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Ktimes">
 
   <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -46,13 +51,12 @@
       box-shadow: 0 8px 20px rgba(220, 38, 38, 0.35);
       border: 3px solid #ffffff;
     }
-    
     .heart-btn:active { transform: scale(1.3); }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col pb-24 md:pb-8">
 
-  <!-- 1. SPLASH SCREEN (Baloo 2 Bold K) -->
+  <!-- 1. SPLASH SCREEN -->
   <div id="splash-screen">
     <div class="ktimes-dial w-24 h-24 mb-3 ring-4 ring-red-100 animate-pulse">
       <span class="baloo-k text-white text-6xl font-black italic select-none">K</span>
@@ -63,10 +67,10 @@
     </div>
   </div>
 
-  <!-- 2. HEADER -->
+  <!-- 2. MAIN HEADER -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-2.5">
+    <div class="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2">
         <div class="ktimes-dial w-10 h-10 shadow-sm shrink-0">
           <span class="baloo-k text-white text-2xl font-black italic select-none">K</span>
         </div>
@@ -78,8 +82,13 @@
         </div>
       </a>
 
-      <!-- Controls -->
+      <!-- Controls & Install Button -->
       <div class="flex items-center gap-2">
+        <button id="pwaInstallBtn" onclick="installKtimesApp()" class="hidden px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition items-center gap-1">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i>
+          <span>ॲप इन्स्टॉल</span>
+        </button>
+
         <button onclick="triggerAppUpdate()" title="रिफ्रेश करा" class="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition border border-slate-200">
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-red-600"></i>
         </button>
@@ -91,31 +100,25 @@
       </div>
     </div>
 
-    <!-- 3. SOCIAL ICONS + LOCATION BAR -->
+    <!-- 3. SOCIAL ICONS + LOCATION -->
     <div class="border-t border-slate-100 bg-slate-50/90 px-4 py-1.5">
-      <div class="max-w-6xl mx-auto flex items-center justify-between gap-2 overflow-x-auto scrollbar-none" id="socialIconsBar">
-        <!-- Rendered via JS -->
-      </div>
+      <div class="max-w-6xl mx-auto flex items-center justify-between gap-2 overflow-x-auto scrollbar-none" id="socialIconsBar"></div>
     </div>
   </header>
 
-  <!-- 4. FESTIVAL OFFER BANNER WITH BALOO DATES & LIVE COUNTDOWN -->
-  <section class="max-w-6xl mx-auto px-4 pt-3 pb-1 w-full" id="offerBannerSection">
-    <!-- Rendered via JS -->
-  </section>
+  <!-- 4. FESTIVAL OFFER BANNER -->
+  <section class="max-w-6xl mx-auto px-4 pt-3 pb-1 w-full" id="offerBannerSection"></section>
 
   <!-- 5. HIGHLIGHTED CATEGORY BAR -->
   <section class="max-w-6xl mx-auto px-4 pt-2 pb-1 w-full">
     <div class="bg-white p-2 rounded-2xl border-2 border-red-500/20 shadow-sm">
-      <div class="flex items-center justify-between gap-1.5 overflow-x-auto pb-0.5 scrollbar-none" id="categoryTabsContainer">
-        <!-- Rendered via JS -->
-      </div>
+      <div class="flex items-center justify-between gap-1.5 overflow-x-auto pb-0.5 scrollbar-none" id="categoryTabsContainer"></div>
     </div>
   </section>
 
-  <!-- 6. SAMPLES SHOWCASE (Fully Styled Cards) -->
+  <!-- 6. SAMPLES SHOWCASE (Equal Height Grid) -->
   <main class="max-w-6xl mx-auto px-4 py-3 w-full flex-grow">
-    <div id="samplesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    <div id="samplesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch"></div>
     
     <div id="emptyState" class="hidden text-center py-16">
       <i data-lucide="film" class="w-12 h-12 text-slate-300 mx-auto mb-2"></i>
@@ -187,7 +190,7 @@
         </button>
       </div>
 
-      <!-- Admin Content Area -->
+      <!-- Admin Content -->
       <div id="adminUnlockedArea" class="hidden space-y-4">
         <div class="bg-red-50/50 p-2.5 rounded-xl border border-red-100 flex items-center justify-between gap-2">
           <div>
@@ -209,7 +212,7 @@
               <input type="text" id="offerDateText" placeholder="उदा. १५ ऑगस्ट ते ३१ ऑगस्ट २०२६" class="w-full px-3 py-1.5 border rounded-lg">
             </div>
             <div>
-              <label class="text-[10px] font-bold text-slate-600">टायमरसाठी शेवटची तारीख व वेळ:</label>
+              <label class="text-[10px] font-bold text-slate-600">शेवटची तारीख व वेळ (टायमर):</label>
               <input type="datetime-local" id="offerEndTime" class="w-full px-3 py-1.5 border rounded-lg">
             </div>
           </div>
@@ -220,7 +223,7 @@
               <input type="number" id="offerBannerViews" placeholder="उदा. 3480" class="w-full px-3 py-1.5 border rounded-lg font-bold">
             </div>
             <div>
-              <label class="text-[10px] font-bold text-slate-600">किंवा बॅनर फोटो (1200x400):</label>
+              <label class="text-[10px] font-bold text-slate-600">बॅनर फोटो (1200x400):</label>
               <input type="file" id="offerBannerFile" accept="image/*" onchange="handleOfferBannerUpload(event)" class="text-[10px]">
             </div>
           </div>
@@ -340,6 +343,7 @@
     let localUploadedAudioBase64 = '';
     let uploadedOfferBannerBase64 = '';
     let countdownInterval = null;
+    let deferredPrompt;
 
     function getStoredSamples() {
       const stored = localStorage.getItem('ktimes_samples_db');
@@ -395,7 +399,7 @@
       lucide.createIcons();
     }
 
-    // 2. RENDER FESTIVAL OFFER BANNER WITH BALOO TEXT & LIVE COUNTDOWN
+    // 2. RENDER FESTIVAL OFFER BANNER
     function updateCountdownTimer() {
       const targetTime = new Date(offerSettings.endTime || "2026-08-31T23:59:59").getTime();
       const now = new Date().getTime();
@@ -451,14 +455,12 @@
                 <h2 class="heading-font text-lg md:text-xl font-bold leading-snug text-white">${offerSettings.title}</h2>
                 <p class="text-xs text-purple-200">${offerSettings.sub}</p>
                 
-                <!-- Baloo Date Range Display -->
                 <div class="pt-1 flex items-center gap-1.5 text-xs text-amber-300 baloo-k font-bold">
                   <i data-lucide="calendar" class="w-3.5 h-3.5 text-yellow-400"></i>
                   <span>कालावधी: ${offerSettings.dateText || '१५ ऑगस्ट ते ३१ ऑगस्ट २०२६'}</span>
                 </div>
               </div>
 
-              <!-- Top-Right / Mobile Actions with Countdown -->
               <div class="flex flex-col items-start md:items-end gap-1.5 shrink-0">
                 <a href="https://wa.me/919422337471?text=मी%20फेस्टिव्हल%20ऑफर%20विषयी%20चौकशी%20करत%20आहे" target="_blank" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs flex items-center gap-1.5 shadow">
                   <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> ऑफर बुक करा
@@ -487,7 +489,7 @@
       countdownInterval = setInterval(updateCountdownTimer, 1000);
     }
 
-    // 3. RENDER CATEGORY TABS
+    // 3. RENDER CATEGORIES
     function renderCategoryTabs() {
       const container = document.getElementById('categoryTabsContainer');
       const select = document.getElementById('sampleCategory');
@@ -658,7 +660,7 @@
       saveStoredSamples(list);
     }
 
-    // 8. ALL-IN-ONE SOCIAL SHARER
+    // 8. ALL-IN-ONE SHARER
     function shareEverywhere(title, url) {
       const shareData = {
         title: `Ktimes Media - ${title}`,
@@ -674,7 +676,7 @@
       }
     }
 
-    // 9. ADMIN ACTIONS & AUTH
+    // 9. ADMIN ACTIONS
     function openAdminModal() {
       document.getElementById('adminModal').classList.remove('hidden');
       document.getElementById('adminModal').classList.add('flex');
@@ -731,7 +733,7 @@
       };
       localStorage.setItem('ktimes_socials_db', JSON.stringify(socialLinks));
       renderSocialIconsBar();
-      alert('सर्व सोशल मीडिया लिंक्स सेव्ह झाल्या!');
+      alert('सोशल मीडिया लिंक्स सेव्ह झाल्या!');
     }
 
     function handleOfferBannerUpload(event) {
@@ -803,6 +805,29 @@
 
     function triggerAppUpdate() {
       window.location.reload(true);
+    }
+
+    // PWA Install Handling
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('pwaInstallBtn');
+      if (installBtn) {
+        installBtn.classList.remove('hidden');
+        installBtn.classList.add('flex');
+      }
+    });
+
+    function installKtimesApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            document.getElementById('pwaInstallBtn').classList.add('hidden');
+          }
+          deferredPrompt = null;
+        });
+      }
     }
 
     function exportDataBackup() {
