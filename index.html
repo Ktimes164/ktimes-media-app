@@ -3,129 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Ktimes Media | Audio & Ad Production</title>
-  
-  <meta name="theme-color" content="#dc2626">
-  <!-- SEO Meta -->
-  <meta property="og:image" content="https://raw.githubusercontent.com/Ktimes164/ktimes-media-app/main/assets/ktimes-logo.jpg">
-  
+  <title>Ktimes Media | Official Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800;900&family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Mukta', 'Baloo 2', sans-serif; -webkit-tap-highlight-color: transparent; }
-    .ktimes-dial { background: #dc2626; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(220, 38, 38, 0.3); border: 3px solid #ffffff; border-radius: 50%; }
+    * { font-family: 'Mukta', sans-serif; }
+    .baloo-k { font-family: 'Baloo 2', sans-serif; }
+    #splash-screen { position: fixed; inset: 0; z-index: 9999; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.4s ease; }
+    .ktimes-dial { width: 90px; height: 90px; border-radius: 50%; background: #dc2626; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(220, 38, 38, 0.3); border: 4px solid #ffffff; }
     .hide-splash { opacity: 0; visibility: hidden; pointer-events: none; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col pb-24 md:pb-6">
+<body class="bg-slate-50 min-h-screen pb-24">
 
   <!-- SPLASH -->
-  <div id="splash-screen" class="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center transition-opacity duration-500">
-    <div class="ktimes-dial w-24 h-24 mb-4 ring-4 ring-red-100">
-      <span class="text-white text-6xl font-black italic tracking-tighter" style="font-family: Impact, sans-serif;">K</span>
-    </div>
+  <div id="splash-screen">
+    <div class="ktimes-dial ring-4 ring-red-100"><span class="baloo-k text-white text-6xl font-black italic">K</span></div>
+    <p class="mt-4 font-bold text-red-600">Loading...</p>
   </div>
 
-  <!-- HEADER & SOCIAL PANEL -->
-  <header class="sticky top-0 z-40 bg-white border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="ktimes-dial w-9 h-9 shadow-sm shrink-0"><span class="text-white text-xl font-black" style="font-family: Impact, sans-serif;">K</span></div>
-        <h1 class="text-base font-bold text-slate-900 leading-tight">Ktimes <span class="text-red-600">Media</span></h1>
-      </div>
-      <button onclick="openAdminModal()" class="px-3 py-1 bg-red-600 text-white rounded-lg text-xs font-bold shadow-sm">Admin</button>
+  <!-- HEADER -->
+  <header class="bg-white border-b sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2"><div class="ktimes-dial w-9 h-9"><span class="baloo-k text-white text-xl font-black">K</span></div>
+      <h1 class="font-bold text-lg">Ktimes <span class="text-red-600">Media</span></h1></div>
+      <button onclick="openAdminModal()" class="px-3 py-1 bg-red-600 text-white rounded-lg text-xs font-bold">Admin</button>
     </div>
-    
-    <!-- Social & Location Bar -->
-    <div class="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-center gap-4 overflow-x-auto scrollbar-none" id="socialIconsBar">
-        <!-- Location Tag -->
-        <div class="flex items-center gap-1 text-[10px] font-bold text-slate-600 shrink-0 pr-2 border-r border-slate-300">
-            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-red-600"></i> सातारा
-        </div>
-        <!-- Rendered Icons via JS -->
-    </div>
+    <!-- Social Bar -->
+    <div class="px-4 py-2 flex justify-center gap-4 overflow-x-auto" id="socialIconsBar"></div>
   </header>
 
-  <!-- FESTIVAL BANNER (Fully Responsive) -->
-  <section class="max-w-6xl mx-auto px-4 pt-4" id="offerBannerSection">
-    <!-- Injected JS -->
-  </section>
+  <!-- BANNER -->
+  <section class="max-w-4xl mx-auto px-4 pt-4" id="offerBannerSection"></section>
 
-  <!-- CATEGORY BAR -->
-  <section class="max-w-6xl mx-auto px-4 pt-2">
-    <div class="bg-white p-2 rounded-2xl border-2 border-red-500/20 shadow-sm">
-        <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" id="categoryTabsContainer"></div>
-    </div>
-  </section>
+  <!-- CATEGORIES -->
+  <section class="max-w-4xl mx-auto px-4 py-3"><div class="flex gap-2 overflow-x-auto" id="categoryTabsContainer"></div></section>
 
   <!-- SAMPLES -->
-  <main class="max-w-6xl mx-auto px-4 py-3 flex-grow">
-    <div id="samplesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-  </main>
+  <main class="max-w-4xl mx-auto px-4" id="samplesGrid"></main>
 
-  <!-- MOBILE NAVIGATION -->
-  <div class="md:hidden fixed bottom-0 w-full bg-white border-t p-2 flex justify-around text-[10px] font-bold text-slate-600 z-50">
-    <button onclick="filterCategoryBySlug('Audio')" class="flex flex-col items-center"><i data-lucide="mic" class="w-5 h-5 text-red-600"></i> ऑडिओ</button>
-    <button onclick="filterCategoryBySlug('Video')" class="flex flex-col items-center"><i data-lucide="video" class="w-5 h-5 text-purple-600"></i> व्हिडिओ</button>
-    <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="flex flex-col items-center"><div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center"><i data-lucide="home" class="w-4 h-4"></i></div></button>
-    <button onclick="filterCategoryBySlug('Jingle')" class="flex flex-col items-center"><i data-lucide="sparkles" class="w-5 h-5 text-amber-500"></i> जिंगल्स</button>
-    <a href="tel:9422337471" class="flex flex-col items-center"><i data-lucide="phone-call" class="w-5 h-5 text-emerald-600"></i> कॉल</a>
+  <!-- MOBILE NAV -->
+  <div class="md:hidden fixed bottom-0 w-full bg-white border-t p-2 flex justify-around z-50">
+    <button onclick="filterCategoryBySlug('Audio')" class="flex flex-col items-center text-xs font-bold"><i data-lucide="mic" class="w-5 h-5 text-red-600"></i> ऑडिओ</button>
+    <button onclick="filterCategoryBySlug('Video')" class="flex flex-col items-center text-xs font-bold"><i data-lucide="video" class="w-5 h-5 text-purple-600"></i> व्हिडिओ</button>
+    <button onclick="window.scrollTo(0,0)" class="flex flex-col items-center text-xs font-bold"><div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center"><i data-lucide="home" class="w-4 h-4"></i></div></button>
+    <button onclick="filterCategoryBySlug('Jingle')" class="flex flex-col items-center text-xs font-bold"><i data-lucide="sparkles" class="w-5 h-5 text-amber-500"></i> जिंगल्स</button>
+    <a href="tel:9422337471" class="flex flex-col items-center text-xs font-bold"><i data-lucide="phone" class="w-5 h-5 text-emerald-600"></i> कॉल</a>
   </div>
 
   <!-- ADMIN MODAL -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4">
-    <!-- Admin Content... -->
+    <div class="bg-white rounded-2xl w-full max-w-sm p-4 max-h-[80vh] overflow-y-auto">
+        <h2 class="font-bold mb-4">Admin Panel</h2>
+        <input type="password" id="adminPinInput" placeholder="PIN" class="w-full p-2 border mb-2">
+        <button onclick="verifyAdminPin()" class="w-full bg-red-600 text-white p-2 rounded">Login</button>
+        <div id="adminUnlockedArea" class="hidden mt-4 space-y-2">
+            <input type="text" id="sampleTitle" placeholder="Title" class="w-full p-2 border">
+            <input type="text" id="sampleMediaUrl" placeholder="URL" class="w-full p-2 border">
+            <button onclick="handleSaveSample()" class="w-full bg-green-600 text-white p-2">Save Sample</button>
+        </div>
+    </div>
   </div>
 
   <script>
-    // SOCIAL ICONS RENDER
+    let samples = JSON.parse(localStorage.getItem('ktimes_samples_db')) || [{id:'s1', title:'Sample', category:'Video', url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ', views:100, likes:10}];
+    let socialLinks = JSON.parse(localStorage.getItem('ktimes_socials_db')) || {wa:'https://wa.me/9422337471', fb:'#', yt:'#'};
+
     function renderSocialIconsBar() {
-      const bar = document.getElementById('socialIconsBar');
-      bar.innerHTML = `
-        <a href="${socialLinks.wa_comm}" class="shrink-0"><img src="https://cdn-icons-png.flaticon.com/64/3670/3670051.png" class="w-7 h-7"></a>
-        <a href="${socialLinks.wa_chan}" class="shrink-0"><img src="https://cdn-icons-png.flaticon.com/64/3670/3670051.png" class="w-7 h-7 grayscale"></a>
-        <a href="${socialLinks.yt}" class="shrink-0"><img src="https://cdn-icons-png.flaticon.com/64/1384/1384060.png" class="w-7 h-7"></a>
-        <a href="${socialLinks.insta}" class="shrink-0"><img src="https://cdn-icons-png.flaticon.com/64/1384/1384063.png" class="w-7 h-7"></a>
-        <a href="${socialLinks.fb}" class="shrink-0"><img src="https://cdn-icons-png.flaticon.com/64/1384/1384053.png" class="w-7 h-7"></a>
-        <a href="${socialLinks.linkedin}" class="shrink-0"><img src="https://cdn-icons-png.flaticon.com/64/1384/1384088.png" class="w-7 h-7"></a>
+      document.getElementById('socialIconsBar').innerHTML = `
+        <a href="${socialLinks.wa}"><img src="https://cdn-icons-png.flaticon.com/64/3670/3670051.png" class="w-8 h-8"></a>
+        <a href="${socialLinks.fb}"><img src="https://cdn-icons-png.flaticon.com/64/1384/1384053.png" class="w-8 h-8"></a>
+        <a href="${socialLinks.yt}"><img src="https://cdn-icons-png.flaticon.com/64/1384/1384060.png" class="w-8 h-8"></a>
       `;
     }
 
-    // FESTIVAL OFFER RENDER (Responsive Layout)
-    function renderOfferBanner() {
-      const banner = document.getElementById('offerBannerSection');
-      banner.innerHTML = `
-        <div class="relative bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-950 rounded-2xl p-4 md:p-6 text-white shadow-lg border border-purple-800 flex flex-col gap-3">
-          <!-- Text Title -->
-          <div class="space-y-1">
-             <h2 class="text-lg md:text-2xl font-bold">${offerSettings.title}</h2>
-             <p class="text-xs text-purple-200">${offerSettings.sub}</p>
-          </div>
-          
-          <!-- Actions & Views Row -->
-          <div class="flex items-center justify-between gap-4 pt-2">
-            <a href="https://wa.me/919422337471" class="px-4 py-2 bg-emerald-600 text-white text-[11px] font-bold rounded-xl shadow flex items-center gap-1">
-              <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> ऑफर बुक करा
-            </a>
-            <div class="flex items-center gap-1.5 text-[10px] font-bold bg-purple-900/50 px-2 py-1 rounded-lg">
-                <i data-lucide="eye" class="w-3.5 h-3.5 text-yellow-400"></i> ${offerSettings.views || 0}
-            </div>
-          </div>
+    function renderSamples() {
+      const grid = document.getElementById('samplesGrid');
+      grid.innerHTML = samples.map(item => `
+        <div class="bg-white p-3 rounded-xl border shadow-sm">
+           <h3 class="font-bold text-sm">${item.title}</h3>
+           <div class="mt-2 text-xs flex justify-between text-slate-500">
+             <span>👁️ ${item.views}</span> <span>❤️ ${item.likes}</span>
+           </div>
         </div>
-      `;
-      lucide.createIcons();
+      `).join('');
     }
 
-    // [Previous JS logic applies: renderSamples, etc.]
-    window.addEventListener('DOMContentLoaded', () => {
+    function verifyAdminPin() {
+      if(document.getElementById('adminPinInput').value === '7171') {
+        document.getElementById('adminUnlockedArea').classList.remove('hidden');
+      } else { alert('Wrong PIN'); }
+    }
+
+    window.onload = () => {
       renderSocialIconsBar();
-      renderOfferBanner();
-      renderCategoryTabs();
       renderSamples();
-      setTimeout(() => document.getElementById('splash-screen').classList.add('hide-splash'), 1200);
-    });
+      setTimeout(() => document.getElementById('splash-screen').classList.add('hide-splash'), 1000);
+    };
   </script>
 </body>
 </html>
