@@ -21,53 +21,46 @@
     <div class="max-w-4xl mx-auto px-4 py-2 flex items-center justify-between">
       <div class="flex items-center gap-2"><div class="ktimes-dial w-9 h-9"><span class="baloo-k text-xl italic">K</span></div>
       <h1 class="font-bold text-lg">Ktimes <span class="text-red-600">Media</span></h1></div>
-      <!-- Install Button -->
-      <button id="pwaInstallBtn" onclick="installKtimesApp()" class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-[10px] font-bold shadow hidden">⬇️ इन्स्टॉल</button>
+      <button id="pwaInstallBtn" onclick="installKtimesApp()" class="hidden bg-emerald-600 text-white px-3 py-1 rounded-lg text-[10px] font-bold shadow">⬇️ इन्स्टॉल</button>
       <button onclick="openAdminModal()" class="px-3 py-1 bg-slate-800 text-white rounded-lg text-xs font-bold">Admin</button>
     </div>
   </header>
 
-  <!-- Banner with BIG TIMER -->
+  <!-- Banner -->
   <section class="max-w-4xl mx-auto px-4 pt-4">
-    <div id="offerBannerSection" class="bg-purple-900 p-5 rounded-2xl text-white shadow-lg border-b-4 border-purple-700">
+    <div class="bg-purple-900 p-5 rounded-2xl text-white shadow-lg border-b-4 border-purple-700">
         <h2 class="font-bold text-lg" id="bannerTitle">फेस्टिव्हल ऑफर - ३०% सूट!</h2>
-        <div id="liveCountdownTimer" class="text-3xl font-black baloo-k text-yellow-300 py-3 text-center tracking-wider">--d --h --m --s</div>
+        <div id="liveCountdownTimer" class="text-3xl font-black baloo-k text-yellow-300 py-3 text-center tracking-wider">--d --h --m</div>
         <div class="flex justify-center"><a href="tel:9422337471" class="bg-yellow-400 text-black px-8 py-2 rounded-xl font-black text-sm">आत्ताच कॉल करा</a></div>
     </div>
   </section>
 
+  <!-- Samples Grid -->
   <main class="max-w-4xl mx-auto px-4 py-4 grid grid-cols-1 md:grid-cols-2 gap-4" id="samplesGrid"></main>
 
   <!-- Admin Modal -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4">
     <div class="bg-white rounded-2xl w-full max-w-sm p-5">
-        <input type="password" id="adminPinInput" placeholder="PIN" class="w-full p-2 border mb-2 text-center text-lg">
+        <h2 class="font-bold mb-4">ॲडमिन लॉगिन</h2>
+        <input type="password" id="adminPinInput" placeholder="PIN" class="w-full p-2 border mb-2 text-center text-lg tracking-widest">
         <button onclick="verifyAdminPin()" class="w-full bg-red-600 text-white p-2 rounded">Login</button>
         <div id="adminUnlockedArea" class="hidden mt-4 space-y-2">
             <input type="text" id="sampleTitle" placeholder="Title" class="w-full p-2 border">
-            <input type="text" id="sampleMediaUrl" placeholder="URL" class="w-full p-2 border">
-            <input type="datetime-local" id="offerEndTime" class="w-full p-2 border">
-            <button onclick="handleSaveData()" class="w-full bg-green-600 text-white p-2">Save All</button>
+            <input type="text" id="sampleUrl" placeholder="YouTube Video ID (उदा. dQw4w9WgXcQ)" class="w-full p-2 border">
+            <button onclick="handleSave()" class="w-full bg-green-600 text-white p-2">Save Sample</button>
         </div>
     </div>
   </div>
 
   <script>
-    let samples = JSON.parse(localStorage.getItem('ktimes_samples_db')) || [{id:'s1', title:'गणेश ज्वेलर्स', views:1420, likes:184}];
+    let samples = JSON.parse(localStorage.getItem('ktimes_samples_db')) || [{id:'s1', title:'गणेश ज्वेलर्स', vid:'dQw4w9WgXcQ', views:1420, likes:184}];
     let offer = JSON.parse(localStorage.getItem('ktimes_offer')) || {end: '2026-09-01T23:59:59'};
-    let deferredPrompt;
-
-    function updateTimer() {
-        const diff = new Date(offer.end).getTime() - new Date().getTime();
-        const d = Math.floor(diff / 86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
-        document.getElementById('liveCountdownTimer').innerText = `${d}d ${h}h ${m}m`;
-    }
 
     function renderSamples() {
       document.getElementById('samplesGrid').innerHTML = samples.map(s => `
         <div class="bg-white p-4 rounded-xl border shadow-sm">
            <h3 class="font-bold text-sm mb-2">${s.title}</h3>
-           <div class="aspect-video bg-slate-100 rounded-lg flex items-center justify-center">🎥 व्हिडिओ</div>
+           <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/${s.vid}"></iframe>
            <div class="flex justify-between mt-3 text-xs font-bold text-slate-500">
              <span>👁️ ${s.views}</span> <span>❤️ ${s.likes}</span>
            </div>
@@ -75,21 +68,26 @@
       `).join('');
     }
 
-    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('pwaInstallBtn').classList.remove('hidden'); });
-    function installKtimesApp() { deferredPrompt.prompt(); }
+    function handleSave() {
+        samples.unshift({id:'s'+Date.now(), title:document.getElementById('sampleTitle').value, vid:document.getElementById('sampleUrl').value, views:0, likes:0});
+        localStorage.setItem('ktimes_samples_db', JSON.stringify(samples));
+        renderSamples();
+        alert('Saved!');
+    }
 
     function verifyAdminPin() {
       if(document.getElementById('adminPinInput').value === '7171') document.getElementById('adminUnlockedArea').classList.remove('hidden');
       else alert('Wrong PIN');
     }
 
-    function handleSaveData() {
-        offer.end = document.getElementById('offerEndTime').value;
-        localStorage.setItem('ktimes_offer', JSON.stringify(offer));
-        alert('Saved!');
-    }
-
-    window.onload = () => { renderSamples(); setInterval(updateTimer, 60000); updateTimer(); };
+    window.onload = () => { renderSamples(); setInterval(() => {
+        const diff = new Date(offer.end).getTime() - new Date().getTime();
+        const d = Math.floor(diff / 86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000);
+        document.getElementById('liveCountdownTimer').innerText = `${d}d ${h}h ${m}m`;
+    }, 60000); };
+    
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); document.getElementById('pwaInstallBtn').classList.remove('hidden'); });
+    function installKtimesApp() { alert('Install via Browser Menu (3 dots) -> Add to Home Screen'); }
   </script>
 </body>
 </html>
