@@ -78,7 +78,7 @@
         </div>
       </a>
 
-      <!-- Header Controls: Install Button beside Admin -->
+      <!-- Header Controls -->
       <div class="flex items-center gap-2">
         <button id="pwaInstallBtn" onclick="installKtimesApp()" class="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition animate-bounce">
           <i data-lucide="download" class="w-3.5 h-3.5"></i>
@@ -102,7 +102,7 @@
     </div>
   </header>
 
-  <!-- 4. FESTIVAL OFFER BANNER (Custom Color / Image Support) -->
+  <!-- 4. FESTIVAL OFFER BANNER -->
   <section class="max-w-6xl mx-auto px-4 pt-3 pb-1 w-full" id="offerBannerSection"></section>
 
   <!-- 5. ALL 7 CATEGORIES BAR -->
@@ -112,7 +112,7 @@
     </div>
   </section>
 
-  <!-- 6. SAMPLES SHOWCASE -->
+  <!-- 6. SAMPLES SHOWCASE (Equal Height) -->
   <main class="max-w-6xl mx-auto px-4 py-3 w-full flex-grow">
     <div id="samplesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch"></div>
     
@@ -162,8 +162,6 @@
   <!-- 9. RED ADMIN MODAL -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden border border-red-200 max-h-[92vh] flex flex-col">
-      
-      <!-- Admin Header -->
       <div class="bg-red-700 text-white p-4 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-2">
           <div class="ktimes-dial w-7 h-7 shadow-sm">
@@ -182,7 +180,7 @@
           <div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-2">
             <i data-lucide="lock" class="w-6 h-6"></i>
           </div>
-          <p class="text-xs text-slate-600 font-medium">ॲडमिन कंट्रोलसाठी पिन प्रविष्ट करा:</p>
+          <p class="text-xs text-slate-600 font-medium">ॲडमिन कंट्रोलसाठी गोपनीय पिन प्रविष्ट करा:</p>
           <input type="password" id="adminPinInput" placeholder="••••" maxlength="8" class="w-48 mx-auto px-4 py-2 border-2 border-slate-300 rounded-xl text-center text-xl font-bold tracking-widest outline-none focus:border-red-600 block">
           <button onclick="verifyAdminPin()" class="w-full py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-xl font-bold text-xs transition shadow-md">
             लॉगिन करा
@@ -229,7 +227,7 @@
 
             <div class="flex gap-2 pt-1">
               <button onclick="saveOfferSettings()" class="flex-1 py-2 bg-purple-800 hover:bg-purple-900 text-white font-bold rounded-lg">ऑफर सेव्ह करा</button>
-              <button onclick="removeOfferBannerImg()" class="py-2 px-3 bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold rounded-lg">इमेज काढा (Use Color)</button>
+              <button onclick="removeOfferBannerImg()" class="py-2 px-3 bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold rounded-lg">इमेज काढा</button>
             </div>
           </div>
 
@@ -261,12 +259,7 @@
               <input type="number" id="sampleInitialLikes" placeholder="सुरुवातीचे लाईक्स" class="w-full px-3 py-1.5 border rounded-lg">
             </div>
 
-            <input type="text" id="sampleUrl" placeholder="YouTube Video Link किंवा Google Drive Audio Link" class="w-full px-3 py-2 border rounded-lg">
-
-            <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-200">
-              <span class="text-[11px] text-slate-600 font-semibold">किंवा मोबाईल ऑडिओ:</span>
-              <input type="file" id="localAudioFile" accept="audio/*" onchange="handleLocalAudio(event)" class="text-xs text-slate-500">
-            </div>
+            <input type="text" id="sampleUrl" placeholder="YouTube Video Link किंवा Audio URL" class="w-full px-3 py-2 border rounded-lg">
 
             <button type="submit" class="w-full py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-xl font-bold shadow transition">
               + सॅम्पल पब्लिश करा
@@ -292,7 +285,8 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    const DEFAULT_SOCIALS = {
+    // 1. HARDCODED MASTER DEFAULTS (सर्वांसाठी समान दिसतील)
+    const MASTER_SOCIALS = {
       wa_comm: "https://chat.whatsapp.com/your-community-link",
       wa_chan: "https://whatsapp.com/channel/your-channel-link",
       yt: "https://www.youtube.com/@KtimesMedia",
@@ -302,7 +296,7 @@
       x: "https://x.com"
     };
 
-    const DEFAULT_OFFER = {
+    const MASTER_OFFER = {
       title: "फेस्टिव्हल ऑफर - ३०% सूट!",
       sub: "आमच्या सर्व ऑडिओ, 4K व्हिडिओ जाहिराती आणि जिंगल्सवर खास सवलत.",
       dateText: "१५ ऑगस्ट ते ३१ ऑगस्ट २०२६",
@@ -322,12 +316,12 @@
       'Reels / Shorts'
     ];
 
-    const INITIAL_SAMPLES = [
+    const MASTER_SAMPLES = [
       {
         id: 's1',
-        title: 'गणेश ज्वेलर्स - फेस्टिव्हल टीव्ही कमर्शियल जाहिरात',
+        title: 'Ktimes Media | Advertising Agency Showreel',
         category: 'व्हिडिओ जाहिराती (Video Ads)',
-        tag: '4K Commercial',
+        tag: 'HD Production',
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         views: 1840,
         likes: 215,
@@ -335,23 +329,32 @@
       },
       {
         id: 's2',
+        title: 'गणेश ज्वेलर्स - फेस्टिव्हल टीव्ही कमर्शियल जाहिरात',
+        category: 'व्हिडिओ जाहिराती (Video Ads)',
+        tag: '4K Commercial',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        views: 1420,
+        likes: 184,
+        date: '2026-08-16'
+      },
+      {
+        id: 's3',
         title: 'मल्टीस्पेशालिटी हॉस्पिटल - रेडिओ व्हॉईस ओव्हर',
         category: 'ऑडिओ / व्हॉईस ओव्हर (Voice Over)',
         tag: 'FM Quality',
         url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-        views: 1220,
-        likes: 148,
+        views: 890,
+        likes: 96,
         date: '2026-08-16'
       }
     ];
 
     let currentPin = localStorage.getItem('ktimes_admin_pin') || '7171';
-    let socialLinks = JSON.parse(localStorage.getItem('ktimes_socials_db')) || DEFAULT_SOCIALS;
-    let offerSettings = JSON.parse(localStorage.getItem('ktimes_offer_db')) || DEFAULT_OFFER;
+    let socialLinks = JSON.parse(localStorage.getItem('ktimes_socials_db')) || MASTER_SOCIALS;
+    let offerSettings = JSON.parse(localStorage.getItem('ktimes_offer_db')) || MASTER_OFFER;
     let userLikedList = JSON.parse(localStorage.getItem('ktimes_user_likes')) || [];
     let activeCategory = 'All';
     let isAdminLoggedIn = false;
-    let localAudioBase64 = '';
     let uploadedOfferBannerBase64 = '';
     let deferredPrompt = null;
 
@@ -363,7 +366,7 @@
           if (Array.isArray(parsed) && parsed.length > 0) return parsed;
         } catch (e) {}
       }
-      return INITIAL_SAMPLES;
+      return MASTER_SAMPLES;
     }
 
     function saveStoredSamples(data) {
@@ -371,7 +374,7 @@
       renderSamples();
     }
 
-    // 1. RENDER SOCIAL BAR + LOCATION (साखरवाडी (फलटण))
+    // 1. RENDER SOCIAL BAR + LOCATION
     function renderSocialIconsBar() {
       const bar = document.getElementById('socialIconsBar');
       bar.innerHTML = `
@@ -499,11 +502,11 @@
       }
     }
 
-    // 4. SMART MEDIA EMBED (Videos + Google Drive / Direct Audio)
+    // 4. SMART EMBED (Universal Auto-Detection)
     function formatMediaEmbed(url) {
       if (!url) return '';
       
-      // YouTube
+      // YouTube Embed
       if (url.includes('youtube.com') || url.includes('youtu.be')) {
         let videoId = '';
         if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split(/[?#]/)[0];
@@ -521,7 +524,7 @@
         }
       }
 
-      // Audio (Google Drive or Direct URL / Base64)
+      // Audio Embed
       let audioSrc = url;
       if (url.includes('drive.google.com')) {
         const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
@@ -749,27 +752,14 @@
       alert('सर्व सोशल मीडिया लिंक्स सेव्ह झाल्या!');
     }
 
-    function handleLocalAudio(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          localAudioBase64 = e.target.result;
-          document.getElementById('sampleUrl').value = 'Mobile Audio File (' + file.name + ')';
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-
     function handleSaveSample(e) {
       e.preventDefault();
-      const mediaVal = localAudioBase64 || document.getElementById('sampleUrl').value;
       const newSample = {
         id: 's_' + Date.now(),
         title: document.getElementById('sampleTitle').value,
         category: document.getElementById('sampleCategory').value,
         tag: document.getElementById('sampleTag').value || 'HD Production',
-        url: mediaVal,
+        url: document.getElementById('sampleUrl').value,
         views: parseInt(document.getElementById('sampleInitialViews').value) || 1200,
         likes: parseInt(document.getElementById('sampleInitialLikes').value) || 95,
         date: new Date().toISOString().split('T')[0]
@@ -779,7 +769,6 @@
       list.unshift(newSample);
       saveStoredSamples(list);
       
-      localAudioBase64 = '';
       alert('सॅम्पल पब्लिश झाले!');
       closeAdminModal();
     }
@@ -795,7 +784,7 @@
       window.location.reload(true);
     }
 
-    // 7. PWA INSTALL LOGIC (Always Works)
+    // 7. PWA INSTALL LOGIC
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
