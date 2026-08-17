@@ -3,660 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  
-  <title>Ktimes Media | Official Audio & Video Production</title>
-  <meta name="description" content="के टाईम्स मिडिया - व्यावसायिक ऑडिओ, 4K व्हिडिओ जाहिराती, व्हॉईस ओव्हर आणि जिंगल्स स्टुडिओ. हमेशा समय के साथ..!">
-  
-  <!-- PWA & Mobile Support -->
+  <title>Ktimes Media | Official App</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Ktimes">
-  <meta name="theme-color" content="#dc2626">
-
-  <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Google Fonts: Baloo 2 & Mukta -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800;900&family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Mukta:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Mukta', 'Baloo 2', sans-serif; -webkit-tap-highlight-color: transparent; }
-    .heading-font, .baloo-k { font-family: 'Baloo 2', sans-serif; }
-    
-    .ktimes-dial {
-      border-radius: 50%; background: #dc2626;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
-      border: 3px solid #ffffff;
-    }
+    * { font-family: 'Mukta', sans-serif; }
+    .baloo-k { font-family: 'Baloo 2', sans-serif; }
+    #splash-screen { position: fixed; inset: 0; z-index: 9999; background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col pb-24 md:pb-8">
+<body class="bg-slate-50 pb-24">
 
-  <!-- 1. MAIN HEADER -->
-  <header class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-2">
-        <div class="ktimes-dial w-10 h-10 shadow-sm shrink-0">
-          <span class="baloo-k text-white text-2xl font-black italic select-none">K</span>
-        </div>
-        <div>
-          <h1 class="text-lg font-bold leading-none">
-            <span class="text-red-600">Ktimes</span> <span class="text-slate-950">Media</span>
-          </h1>
-          <p class="text-[9px] font-semibold text-slate-500 tracking-wide mt-0.5">Audio & Ad Production Studio</p>
-        </div>
-      </a>
+  <!-- Splash Screen -->
+  <div id="splash-screen"><div class="text-6xl animate-bounce">🎬</div><p class="font-bold mt-2">Ktimes Media Loading...</p></div>
 
-      <!-- Header Controls -->
-      <div class="flex items-center gap-2">
-        <button id="pwaInstallBtn" onclick="installKtimesApp()" class="hidden px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm items-center gap-1">
-          <i data-lucide="download" class="w-3.5 h-3.5"></i>
-          <span>इन्स्टॉल ॲप</span>
-        </button>
-
-        <button onclick="triggerAppUpdate()" title="रिफ्रेश करा" class="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition border border-slate-200">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-red-600"></i>
-        </button>
-
-        <button onclick="openAdminModal()" class="flex items-center gap-1 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold shadow-sm transition">
-          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-          <span>Admin</span>
-        </button>
+  <!-- Header -->
+  <header class="bg-white border-b sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-4 py-2 flex items-center justify-between">
+      <div class="flex items-center gap-2"><div class="w-9 h-9 bg-red-600 rounded-full flex items-center justify-center text-white font-black italic">K</div>
+      <h1 class="font-bold text-lg">Ktimes <span class="text-red-600">Media</span></h1></div>
+      <div class="flex gap-2">
+        <button id="pwaInstallBtn" onclick="installKtimesApp()" class="hidden bg-emerald-600 text-white px-3 py-1 rounded-lg text-[10px] font-bold shadow animate-pulse">⬇️ इन्स्टॉल</button>
+        <button onclick="openAdminModal()" class="px-3 py-1 bg-red-700 text-white rounded-lg text-xs font-bold">Admin</button>
       </div>
-    </div>
-
-    <!-- 2. SOCIAL ICONS + LOCATION BAR -->
-    <div class="border-t border-slate-100 bg-slate-50/90 px-4 py-1.5">
-      <div class="max-w-6xl mx-auto flex items-center justify-between gap-2 overflow-x-auto scrollbar-none" id="socialIconsBar"></div>
     </div>
   </header>
 
-  <!-- 3. FESTIVAL OFFER BANNER (Clean & Bold Red Style) -->
-  <section class="max-w-6xl mx-auto px-4 pt-3 pb-1 w-full" id="offerBannerSection">
-    <div class="bg-gradient-to-r from-red-700 via-red-600 to-red-800 rounded-2xl p-5 md:p-6 text-white shadow-lg border border-red-500 space-y-3">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
-        <div class="space-y-1">
-          <span class="bg-yellow-400 text-red-950 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block">✨ चालू ऑफर</span>
-          <h2 class="baloo-k text-xl md:text-2xl font-bold leading-snug text-white" id="bannerTitleDisplay">फेस्टिव्हल ऑफर - ३०% सूट!</h2>
-          <p class="text-xs md:text-sm text-red-100" id="bannerSubDisplay">आमच्या सर्व ऑडिओ, 4K व्हिडिओ जाहिराती आणि जिंगल्सवर खास सवलत.</p>
-          <div class="text-xs text-yellow-300 baloo-k font-bold pt-1" id="bannerDateRangeDisplay">कालावधी: १५ ऑगस्ट ते ३१ ऑगस्ट २०२६</div>
-        </div>
-
-        <div class="flex items-center gap-2 shrink-0">
-          <a href="https://wa.me/919422337471?text=मी%20फेस्टिव्हल%20ऑफर%20विषयी%20चौकशी%20करत%20आहे" target="_blank" class="px-5 py-2.5 bg-white text-red-700 hover:bg-yellow-300 hover:text-black rounded-xl font-black text-xs md:text-sm flex items-center gap-1.5 shadow transition">
-            <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i> ऑफर बुक करा
-          </a>
-        </div>
-      </div>
-
-      <div class="flex items-center justify-between pt-2 border-t border-red-500/80 text-xs font-semibold">
-        <a href="tel:9422337471" class="text-white hover:text-yellow-300 flex items-center gap-1">
-          <i data-lucide="phone-call" class="w-3.5 h-3.5 text-yellow-300"></i> थेट संपर्क: 9422337471
-        </a>
-        <div class="text-red-100 bg-red-900/60 px-3 py-1 rounded-lg border border-red-600 flex items-center gap-1">
-          <i data-lucide="eye" class="w-3.5 h-3.5 text-yellow-400"></i>
-          <span><strong id="bannerViewsDisplay">3480</strong> व्हिजिटर्स</span>
-        </div>
-      </div>
+  <!-- Banner (Color & Content Customizable) -->
+  <section class="max-w-4xl mx-auto px-4 pt-4">
+    <div id="offerBanner" class="p-6 rounded-2xl text-white shadow-lg text-center" style="background-color: #7e22ce;">
+        <h2 class="baloo-k text-2xl font-black mb-2" id="bannerTitle">फेस्टिव्हल ऑफर - ३०% सूट!</h2>
+        <p class="text-sm font-semibold opacity-90 mb-4" id="bannerSub">आमच्या सर्व जाहिरातींवर खास सवलत.</p>
+        <a href="tel:9422337471" class="inline-block bg-white text-black px-6 py-2 rounded-xl font-black text-sm">आत्ताच कॉल करा</a>
     </div>
   </section>
 
-  <!-- 4. ALL 7 CATEGORIES BAR -->
-  <section class="max-w-6xl mx-auto px-4 pt-2 pb-1 w-full">
-    <div class="bg-white p-2 rounded-2xl border-2 border-red-500/20 shadow-sm">
-      <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none" id="categoryTabsContainer"></div>
-    </div>
-  </section>
+  <main class="max-w-4xl mx-auto px-4 py-4 grid grid-cols-1 md:grid-cols-2 gap-4" id="samplesGrid"></main>
 
-  <!-- 5. SAMPLES SHOWCASE (Equal Height Grid) -->
-  <main class="max-w-6xl mx-auto px-4 py-3 w-full flex-grow">
-    <div id="samplesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch"></div>
-    
-    <div id="emptyState" class="hidden text-center py-16">
-      <i data-lucide="film" class="w-12 h-12 text-slate-300 mx-auto mb-2"></i>
-      <h3 class="text-sm font-semibold text-slate-700">या कॅटेगरीमध्ये सध्या सॅम्पल उपलब्ध नाही</h3>
-      <p class="text-xs text-slate-400 mt-0.5">Admin पॅनलमधून नवीन सॅम्पल जोडा.</p>
-    </div>
-  </main>
-
-  <!-- 6. DESKTOP FOOTER -->
-  <footer class="hidden md:block bg-white border-t border-slate-200 mt-10 py-6 text-center text-xs text-slate-600">
-    <div class="max-w-6xl mx-auto px-4 space-y-1.5">
-      <p class="font-bold text-slate-900 text-sm">
-        <span class="text-red-600">के टाईम्स</span> मिडिया — हमेशा समय के साथ..!
-      </p>
-      <p>📍 सातारा, महाराष्ट्र | थेट संपर्क: <a href="tel:9422337471" class="font-bold text-red-600">9422337471</a></p>
-    </div>
-  </footer>
-
-  <!-- 7. 5-BUTTON MOBILE BOTTOM NAV -->
-  <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 flex items-center justify-around text-[10px] font-semibold text-slate-600 shadow-lg">
-    <button onclick="filterCategoryBySlug('ऑडिओ')" class="flex flex-col items-center gap-0.5 text-slate-700">
-      <i data-lucide="mic" class="w-5 h-5 text-red-600"></i>
-      <span>ऑडिओ</span>
-    </button>
-    <button onclick="filterCategoryBySlug('व्हिडिओ')" class="flex flex-col items-center gap-0.5 text-slate-700">
-      <i data-lucide="video" class="w-5 h-5 text-purple-600"></i>
-      <span>व्हिडिओ</span>
-    </button>
-    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex flex-col items-center gap-0.5 text-red-600 font-bold scale-110">
-      <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center shadow-md">
-        <i data-lucide="home" class="w-4 h-4"></i>
-      </div>
-      <span>होम</span>
-    </button>
-    <button onclick="filterCategoryBySlug('जिंगल्स')" class="flex flex-col items-center gap-0.5 text-slate-700">
-      <i data-lucide="sparkles" class="w-5 h-5 text-amber-500"></i>
-      <span>जिंगल्स</span>
-    </button>
-    <a href="tel:9422337471" class="flex flex-col items-center gap-0.5 text-emerald-600">
-      <i data-lucide="phone-call" class="w-5 h-5"></i>
-      <span>कॉल करा</span>
-    </a>
-  </div>
-
-  <!-- 8. RED ADMIN MODAL -->
-  <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden border border-red-200 max-h-[92vh] flex flex-col">
-      <!-- Admin Red Header -->
-      <div class="bg-red-700 text-white p-4 flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-2">
-          <div class="ktimes-dial w-7 h-7 shadow-sm">
-            <span class="baloo-k text-white text-sm font-black italic">K</span>
-          </div>
-          <h3 class="font-bold text-base">Ktimes Admin Dashboard</h3>
+  <!-- Admin Modal -->
+  <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto p-5">
+        <h2 class="font-bold mb-4 border-b pb-2">ॲडमिन सेटिंग्स</h2>
+        <input type="password" id="adminPin" placeholder="PIN" class="w-full p-2 border mb-2 text-center text-lg">
+        <button onclick="verifyAdminPin()" class="w-full bg-red-700 text-white p-2 rounded">Login</button>
+        <div id="adminControls" class="hidden mt-4 space-y-3">
+            <input type="text" id="a_title" placeholder="Banner Title" class="w-full p-2 border">
+            <input type="color" id="a_color" class="w-full h-10">
+            <input type="file" id="a_image" class="w-full p-2 text-xs">
+            <hr>
+            <input type="text" id="s_title" placeholder="Sample Title" class="w-full p-2 border">
+            <input type="text" id="s_url" placeholder="Video Link/ID" class="w-full p-2 border">
+            <input type="file" id="a_audio" class="w-full p-2 text-xs">
+            <button onclick="saveAdminData()" class="w-full bg-green-600 text-white p-2">Save All Changes</button>
         </div>
-        <button onclick="closeAdminModal()" class="text-white hover:text-red-200">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <div class="p-5 overflow-y-auto space-y-4">
-        <!-- Secret PIN Screen -->
-        <div id="adminLockScreen" class="space-y-3 py-4 text-center">
-          <div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-2">
-            <i data-lucide="lock" class="w-6 h-6"></i>
-          </div>
-          <p class="text-xs text-slate-600 font-medium">ॲडमिन कंट्रोलसाठी गोपनीय पिन प्रविष्ट करा:</p>
-          <input type="password" id="adminPinInput" placeholder="••••" maxlength="8" class="w-48 mx-auto px-4 py-2 border-2 border-slate-300 rounded-xl text-center text-xl font-bold tracking-widest outline-none focus:border-red-600 block">
-          <button onclick="verifyAdminPin()" class="w-full py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-xl font-bold text-xs transition shadow-md">
-            लॉगिन करा
-          </button>
-        </div>
-
-        <!-- Admin Content Area -->
-        <div id="adminUnlockedArea" class="hidden space-y-4 text-xs">
-          <div class="bg-red-50 p-2.5 rounded-xl border border-red-100 flex items-center justify-between gap-2">
-            <div>
-              <span class="font-bold text-slate-800 block">ॲडमिन पिन बदला</span>
-              <span class="text-[10px] text-slate-500">स्वतःचा नवीन पासवर्ड सेट करा</span>
-            </div>
-            <button onclick="changeAdminPinPrompt()" class="px-3 py-1 bg-red-700 hover:bg-red-800 text-white font-bold rounded-lg">पिन बदला</button>
-          </div>
-
-          <!-- Festival Offer Settings -->
-          <div class="bg-red-50/60 p-3.5 rounded-xl border border-red-200 space-y-2">
-            <label class="font-bold text-red-950 uppercase block">फेस्टिव्हल ऑफर व कालावधी सेट करा</label>
-            <input type="text" id="offerBannerTitle" placeholder="ऑफर शीर्षक (उदा. गणेशोत्सव महा-ऑफर)" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="text" id="offerBannerSub" placeholder="ऑफर तपशील (उदा. जाहिरात व व्हॉईस ओव्हरवर ३०% सूट)" class="w-full px-3 py-1.5 border rounded-lg">
-            
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="text-[10px] font-bold text-slate-600">ऑफर कालावधी मजकूर:</label>
-                <input type="text" id="offerDateText" placeholder="उदा. १५ ऑगस्ट ते ३१ ऑगस्ट २०२६" class="w-full px-3 py-1.5 border rounded-lg">
-              </div>
-              <div>
-                <label class="text-[10px] font-bold text-slate-600">व्हिजिटर्स व्ह्यूज संख्या:</label>
-                <input type="number" id="offerBannerViews" placeholder="उदा. 3480" class="w-full px-3 py-1.5 border rounded-lg font-bold">
-              </div>
-            </div>
-            <button onclick="saveOfferSettings()" class="w-full py-1.5 bg-red-700 hover:bg-red-800 text-white font-bold rounded-lg mt-1">ऑफर सेव्ह करा</button>
-          </div>
-
-          <!-- Social Links Settings -->
-          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
-            <label class="font-bold text-slate-800 uppercase block">सोशल मीडिया लिंक्स सेट करा</label>
-            <input type="url" id="link_wa_comm" placeholder="WhatsApp कम्युनिटी लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_wa_chan" placeholder="WhatsApp चॅनेल लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_yt" placeholder="YouTube चॅनेल लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_insta" placeholder="Instagram प्रोफाइल लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_fb" placeholder="Facebook पेज लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_linkedin" placeholder="LinkedIn प्रोफाइल लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_x" placeholder="X (Twitter) प्रोफाइल लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <button onclick="saveSocialLinks()" class="w-full py-1.5 bg-slate-800 hover:bg-black text-white font-bold rounded-lg">सर्व लिंक्स सेव्ह करा</button>
-          </div>
-
-          <!-- Add Sample Form -->
-          <form onsubmit="handleSaveSample(event)" class="space-y-3 pt-1 border-t">
-            <label class="font-bold text-slate-800 uppercase block">नवीन सॅम्पल जोडा</label>
-            <input type="text" id="sampleTitle" required placeholder="सॅम्पल नाव" class="w-full px-3 py-2 border rounded-lg outline-none focus:border-red-600">
-
-            <div class="grid grid-cols-2 gap-2">
-              <select id="sampleCategory" class="w-full px-3 py-2 border rounded-lg outline-none focus:border-red-600"></select>
-              <input type="text" id="sampleTag" placeholder="टॅग (उदा. 4K, FM, HD)" class="w-full px-3 py-2 border rounded-lg">
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <input type="number" id="sampleInitialViews" placeholder="सुरुवातीचे व्ह्यूज" class="w-full px-3 py-1.5 border rounded-lg">
-              <input type="number" id="sampleInitialLikes" placeholder="सुरुवातीचे लाईक्स" class="w-full px-3 py-1.5 border rounded-lg">
-            </div>
-
-            <input type="text" id="sampleUrl" placeholder="YouTube Video Link किंवा Audio URL" class="w-full px-3 py-2 border rounded-lg">
-
-            <button type="submit" class="w-full py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-xl font-bold shadow transition">
-              + सॅम्पल पब्लिश करा
-            </button>
-          </form>
-        </div>
-      </div>
     </div>
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
   <script>
-    const DEFAULT_SOCIALS = {
-      wa_comm: "https://chat.whatsapp.com/your-community-link",
-      wa_chan: "https://whatsapp.com/channel/your-channel-link",
-      yt: "https://www.youtube.com/@KtimesMedia",
-      insta: "https://instagram.com",
-      fb: "https://facebook.com",
-      linkedin: "https://linkedin.com",
-      x: "https://x.com"
-    };
+    let samples = JSON.parse(localStorage.getItem('ktimes_samples_db')) || [{id:'s1', title:'गणेश ज्वेलर्स', vid:'dQw4w9WgXcQ', type:'video'}];
+    let banner = JSON.parse(localStorage.getItem('ktimes_banner')) || {title:'फेस्टिव्हल ऑफर', sub:'३०% सूट', color:'#7e22ce'};
 
-    const DEFAULT_OFFER = {
-      title: "फेस्टिव्हल ऑफर - ३०% सूट!",
-      sub: "आमच्या सर्व ऑडिओ, 4K व्हिडिओ जाहिराती आणि जिंगल्सवर खास सवलत.",
-      dateText: "१५ ऑगस्ट ते ३१ ऑगस्ट २०२६",
-      views: 3480
-    };
-
-    const ALL_CATEGORIES = [
-      'All',
-      'व्हिडिओ जाहिराती (Video Ads)',
-      'ऑडिओ / व्हॉईस ओव्हर (Voice Over)',
-      'जिंगल्स (Jingles)',
-      'डॉक्युमेंट्री (Documentary)',
-      'लोगो डिझाईन (Logo Design)',
-      'मिक्स गाणी (Song Mixing)',
-      'Reels / Shorts'
-    ];
-
-    const INITIAL_SAMPLES = [
-      {
-        id: 's1',
-        title: 'गणेश ज्वेलर्स - फेस्टिव्हल टीव्ही कमर्शियल जाहिरात',
-        category: 'व्हिडिओ जाहिराती (Video Ads)',
-        tag: '4K Commercial',
-        url: 'dQw4w9WgXcQ',
-        views: 1840,
-        likes: 215,
-        date: '2026-08-16'
-      },
-      {
-        id: 's2',
-        title: 'मल्टीस्पेशालिटी हॉस्पिटल - रेडिओ व्हॉईस ओव्हर',
-        category: 'ऑडिओ / व्हॉईस ओव्हर (Voice Over)',
-        tag: 'FM Quality',
-        url: 'dQw4w9WgXcQ',
-        views: 1220,
-        likes: 148,
-        date: '2026-08-16'
-      }
-    ];
-
-    let currentPin = localStorage.getItem('ktimes_admin_pin') || '7171';
-    let socialLinks = JSON.parse(localStorage.getItem('ktimes_socials_db')) || DEFAULT_SOCIALS;
-    let offerSettings = JSON.parse(localStorage.getItem('ktimes_offer_db')) || DEFAULT_OFFER;
-    let userLikedList = JSON.parse(localStorage.getItem('ktimes_user_likes')) || [];
-    let activeCategory = 'All';
-    let isAdminLoggedIn = false;
-    let deferredPrompt;
-
-    function getStoredSamples() {
-      const stored = localStorage.getItem('ktimes_samples_db');
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-        } catch (e) {}
-      }
-      return INITIAL_SAMPLES;
-    }
-
-    function saveStoredSamples(data) {
-      localStorage.setItem('ktimes_samples_db', JSON.stringify(data));
-      renderSamples();
-    }
-
-    function getYouTubeId(url) {
-      if (!url) return 'dQw4w9WgXcQ';
-      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-      const match = url.match(regExp);
-      return (match && match[2].length === 11) ? match[2] : url;
-    }
-
-    // 1. RENDER SOCIAL BAR + LOCATION
-    function renderSocialIconsBar() {
-      const bar = document.getElementById('socialIconsBar');
-      bar.innerHTML = `
-        <div class="flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-white px-2 py-1 rounded-lg border border-slate-200 shadow-sm shrink-0">
-          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-red-600"></i>
-          <span>सातारा</span>
-        </div>
-
-        <a href="${socialLinks.wa_comm}" target="_blank" class="flex items-center gap-1 px-2.5 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-700 transition shrink-0">
-          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
-          कम्युनिटी
-        </a>
-        
-        <div class="flex items-center gap-1.5 shrink-0">
-          <a href="${socialLinks.wa_chan}" target="_blank" title="WhatsApp Channel" class="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center shadow-sm hover:scale-110 transition">
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.82.49 3.53 1.35 5L2 22l5.12-1.33c1.43.82 3.09 1.33 4.88 1.33 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-          </a>
-          <a href="${socialLinks.yt}" target="_blank" title="YouTube" class="w-7 h-7 rounded-lg bg-[#FF0000] text-white flex items-center justify-center shadow-sm hover:scale-110 transition">
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-          </a>
-          <a href="${socialLinks.insta}" target="_blank" title="Instagram" class="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shadow-sm hover:scale-110 transition">
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          </a>
-          <a href="${socialLinks.fb}" target="_blank" title="Facebook" class="w-7 h-7 rounded-lg bg-[#1877F2] text-white flex items-center justify-center shadow-sm hover:scale-110 transition">
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          </a>
-          <a href="${socialLinks.linkedin}" target="_blank" title="LinkedIn" class="w-7 h-7 rounded-lg bg-[#0A66C2] text-white flex items-center justify-center shadow-sm hover:scale-110 transition">
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-          </a>
-          <a href="${socialLinks.x}" target="_blank" title="X (Twitter)" class="w-7 h-7 rounded-lg bg-black text-white flex items-center justify-center shadow-sm hover:scale-110 transition">
-            <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-        </div>
-      `;
-      lucide.createIcons();
-    }
-
-    // 2. RENDER CATEGORY TABS
-    function renderCategoryTabs() {
-      const container = document.getElementById('categoryTabsContainer');
-      const select = document.getElementById('sampleCategory');
-      container.innerHTML = '';
-      select.innerHTML = '';
-
-      ALL_CATEGORIES.forEach(cat => {
-        const isActive = activeCategory === cat;
-        const btn = document.createElement('button');
-        btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition flex items-center gap-1 ${
-          isActive 
-            ? 'bg-red-700 text-white shadow-md border border-red-700' 
-            : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
-        }`;
-        btn.innerText = cat;
-        btn.onclick = () => { activeCategory = cat; renderCategoryTabs(); renderSamples(); };
-        container.appendChild(btn);
-
-        if (cat !== 'All') {
-          const opt = document.createElement('option');
-          opt.value = cat;
-          opt.innerText = cat;
-          select.appendChild(opt);
-        }
-      });
-    }
-
-    function filterCategoryBySlug(slug) {
-      const found = ALL_CATEGORIES.find(c => c.includes(slug));
-      if (found) {
-        activeCategory = found;
-        renderCategoryTabs();
-        renderSamples();
-        window.scrollTo({top: 220, behavior: 'smooth'});
-      }
-    }
-
-    // 3. RENDER SAMPLES SHOWCASE
     function renderSamples() {
-      const grid = document.getElementById('samplesGrid');
-      const empty = document.getElementById('emptyState');
-      const samples = getStoredSamples();
-
-      const filtered = activeCategory === 'All' 
-        ? samples 
-        : samples.filter(s => s.category && s.category.includes(activeCategory));
-
-      grid.innerHTML = '';
-      if (!filtered || filtered.length === 0) {
-        empty.classList.remove('hidden');
-      } else {
-        empty.classList.add('hidden');
-        filtered.forEach(item => {
-          const vid = getYouTubeId(item.url);
-          const isLiked = userLikedList.includes(item.id);
-          const card = document.createElement('div');
-          card.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between gap-3 relative";
-          card.innerHTML = `
-            <div class="space-y-2.5">
-              <div class="flex items-center justify-between">
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-red-50 text-red-700 border border-red-100">
-                  ${item.tag || item.category || 'HD Production'}
-                </span>
-                <span class="text-[10px] font-medium text-slate-400">${item.date || 'Active'}</span>
-              </div>
-              <h3 class="font-bold text-slate-900 text-sm leading-snug">${item.title}</h3>
-              
-              <div class="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-inner">
-                <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/${vid}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-              </div>
-
-              <!-- Views & Likes Bar -->
-              <div class="flex items-center justify-between pt-1 text-xs font-bold">
-                <div class="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-700">
-                  <i data-lucide="eye" class="w-3.5 h-3.5 text-indigo-600"></i>
-                  <span>${item.views || 450} व्ह्यूज</span>
-                  ${isAdminLoggedIn ? `<button onclick="editSampleViews('${item.id}')" class="ml-1 text-indigo-400 hover:text-indigo-900"><i data-lucide="pencil" class="w-3 h-3"></i></button>` : ''}
-                </div>
-
-                <button onclick="toggleLike('${item.id}')" class="flex items-center gap-1.5 px-3 py-1 rounded-lg border transition ${
-                  isLiked 
-                    ? 'bg-rose-50 border-rose-200 text-rose-600 shadow-sm' 
-                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-rose-50 hover:text-rose-600'
-                }">
-                  <i data-lucide="heart" class="w-3.5 h-3.5 ${isLiked ? 'fill-rose-600 text-rose-600' : 'text-slate-400'}"></i>
-                  <span>${item.likes || 42}</span>
-                </button>
-              </div>
-            </div>
-            
-            <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
-              <button onclick="shareEverywhere('${item.title}', '${item.url}')" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition">
-                <i data-lucide="share-2" class="w-3.5 h-3.5 text-red-600"></i> सोशल शेअर
-              </button>
-              
-              <a href="https://wa.me/919422337471?text=मला%20या%20सॅम्पलसारखे%20काम%20करायचे%20आहे:%20${encodeURIComponent(item.title)}" target="_blank" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-1 shadow-sm transition">
-                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> विचारणा
-              </a>
-              ${isAdminLoggedIn ? `<button onclick="deleteSample('${item.id}')" class="p-2 text-red-500 hover:bg-red-50 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-      }
-      lucide.createIcons();
+      document.getElementById('samplesGrid').innerHTML = samples.map(s => `
+        <div class="bg-white p-4 rounded-xl border shadow-sm">
+           <h3 class="font-bold text-sm mb-2">${s.title}</h3>
+           ${s.type === 'video' ? `<iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/${s.vid}"></iframe>` : `<audio controls class="w-full"><source src="${s.vid}"></audio>`}
+        </div>
+      `).join('');
     }
 
-    function editSampleViews(id) {
-      const list = getStoredSamples();
-      const item = list.find(s => s.id === id);
-      if (!item) return;
-      const newV = prompt(`"${item.title}" चे व्ह्यूज अपडेट करा:`, item.views || 0);
-      if (newV !== null && !isNaN(newV) && newV.trim() !== "") {
-        item.views = parseInt(newV);
-        saveStoredSamples(list);
-      }
-    }
-
-    function toggleLike(id) {
-      const list = getStoredSamples();
-      const item = list.find(s => s.id === id);
-      if (!item) return;
-
-      if (userLikedList.includes(id)) {
-        userLikedList = userLikedList.filter(x => x !== id);
-        item.likes = Math.max(0, (item.likes || 1) - 1);
-      } else {
-        userLikedList.push(id);
-        item.likes = (item.likes || 0) + 1;
-      }
-
-      localStorage.setItem('ktimes_user_likes', JSON.stringify(userLikedList));
-      saveStoredSamples(list);
-    }
-
-    function shareEverywhere(title, url) {
-      const shareData = {
-        title: `Ktimes Media - ${title}`,
-        text: `🎬 *के टाईम्स मिडिया - सॅम्पल शोकेस*\n\n📌 *शीर्षक:* ${title}\n📞 व्यावसायिक ऑडिओ/व्हिडिओसाठी संपर्क: 9422337471\n`,
-        url: window.location.href
-      };
-
-      if (navigator.share) {
-        navigator.share(shareData).catch(() => {});
-      } else {
-        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareData.text + ' ' + shareData.url)}`;
-        window.open(waUrl, '_blank');
-      }
-    }
-
-    // 4. ADMIN ACTIONS
-    function openAdminModal() {
-      document.getElementById('adminModal').classList.remove('hidden');
-      document.getElementById('adminModal').classList.add('flex');
-    }
-    
-    function closeAdminModal() {
-      document.getElementById('adminModal').classList.add('hidden');
-      document.getElementById('adminModal').classList.remove('flex');
+    function saveAdminData() {
+        banner.title = document.getElementById('a_title').value;
+        banner.color = document.getElementById('a_color').value;
+        localStorage.setItem('ktimes_banner', JSON.stringify(banner));
+        
+        // Samples logic
+        samples.unshift({id:'s'+Date.now(), title:document.getElementById('s_title').value, vid:document.getElementById('s_url').value, type:'video'});
+        localStorage.setItem('ktimes_samples_db', JSON.stringify(samples));
+        
+        location.reload();
     }
 
     function verifyAdminPin() {
-      const entered = document.getElementById('adminPinInput').value;
-      if (entered === currentPin) {
-        isAdminLoggedIn = true;
-        document.getElementById('adminLockScreen').classList.add('hidden');
-        document.getElementById('adminUnlockedArea').classList.remove('hidden');
-        
-        document.getElementById('link_wa_comm').value = socialLinks.wa_comm || '';
-        document.getElementById('link_wa_chan').value = socialLinks.wa_chan || '';
-        document.getElementById('link_yt').value = socialLinks.yt || '';
-        document.getElementById('link_insta').value = socialLinks.insta || '';
-        document.getElementById('link_fb').value = socialLinks.fb || '';
-        document.getElementById('link_linkedin').value = socialLinks.linkedin || '';
-        document.getElementById('link_x').value = socialLinks.x || '';
-        document.getElementById('offerBannerTitle').value = offerSettings.title || '';
-        document.getElementById('offerBannerSub').value = offerSettings.sub || '';
-        document.getElementById('offerDateText').value = offerSettings.dateText || '';
-        document.getElementById('offerBannerViews').value = offerSettings.views || 3480;
-        
+        if(document.getElementById('adminPin').value === '7171') document.getElementById('adminControls').classList.remove('hidden');
+        else alert('Wrong PIN');
+    }
+
+    // PWA Logic
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('pwaInstallBtn').classList.remove('hidden'); });
+    function installKtimesApp() { if(deferredPrompt) deferredPrompt.prompt(); }
+
+    window.onload = () => {
+        document.getElementById('offerBanner').style.backgroundColor = banner.color;
+        document.getElementById('bannerTitle').innerText = banner.title;
         renderSamples();
-      } else {
-        alert('चुकीचा ॲडमिन पिन!');
-      }
-    }
-
-    function changeAdminPinPrompt() {
-      const newP = prompt('नवीन ॲडमिन पिन टाका (४ ते ८ अंकी):');
-      if (newP && newP.trim().length >= 4) {
-        currentPin = newP.trim();
-        localStorage.setItem('ktimes_admin_pin', currentPin);
-        alert('नवीन ॲडमिन पिन सेव्ह झाला!');
-      }
-    }
-
-    function saveSocialLinks() {
-      socialLinks = {
-        wa_comm: document.getElementById('link_wa_comm').value,
-        wa_chan: document.getElementById('link_wa_chan').value,
-        yt: document.getElementById('link_yt').value,
-        insta: document.getElementById('link_insta').value,
-        fb: document.getElementById('link_fb').value,
-        linkedin: document.getElementById('link_linkedin').value,
-        x: document.getElementById('link_x').value
-      };
-      localStorage.setItem('ktimes_socials_db', JSON.stringify(socialLinks));
-      renderSocialIconsBar();
-      alert('सर्व सोशल मीडिया लिंक्स सेव्ह झाल्या!');
-    }
-
-    function saveOfferSettings() {
-      offerSettings.title = document.getElementById('offerBannerTitle').value;
-      offerSettings.sub = document.getElementById('offerBannerSub').value;
-      offerSettings.dateText = document.getElementById('offerDateText').value;
-      offerSettings.views = parseInt(document.getElementById('offerBannerViews').value) || 3480;
-      
-      localStorage.setItem('ktimes_offer_db', JSON.stringify(offerSettings));
-      document.getElementById('bannerTitleDisplay').innerText = offerSettings.title;
-      document.getElementById('bannerSubDisplay').innerText = offerSettings.sub;
-      document.getElementById('bannerDateRangeDisplay').innerText = "कालावधी: " + offerSettings.dateText;
-      document.getElementById('bannerViewsDisplay').innerText = offerSettings.views;
-      alert('ऑफर तपशील सेव्ह झाले!');
-    }
-
-    function handleSaveSample(e) {
-      e.preventDefault();
-      const newSample = {
-        id: 's_' + Date.now(),
-        title: document.getElementById('sampleTitle').value,
-        category: document.getElementById('sampleCategory').value,
-        tag: document.getElementById('sampleTag').value || 'HD Production',
-        url: document.getElementById('sampleUrl').value,
-        views: parseInt(document.getElementById('sampleInitialViews').value) || 1200,
-        likes: parseInt(document.getElementById('sampleInitialLikes').value) || 95,
-        date: new Date().toISOString().split('T')[0]
-      };
-      
-      const list = getStoredSamples();
-      list.unshift(newSample);
-      saveStoredSamples(list);
-      
-      alert('सॅम्पल पब्लिश झाले!');
-      closeAdminModal();
-    }
-
-    function deleteSample(id) {
-      if (confirm('हे सॅम्पल डिलीट करायचे आहे का?')) {
-        const list = getStoredSamples().filter(s => s.id !== id);
-        saveStoredSamples(list);
-      }
-    }
-
-    function triggerAppUpdate() {
-      window.location.reload(true);
-    }
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const installBtn = document.getElementById('pwaInstallBtn');
-      if (installBtn) {
-        installBtn.classList.remove('hidden');
-        installBtn.classList.add('flex');
-      }
-    });
-
-    function installKtimesApp() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-      }
-    }
-
-    // INIT
-    window.addEventListener('DOMContentLoaded', () => {
-      renderSocialIconsBar();
-      renderCategoryTabs();
-      renderSamples();
-    });
+        setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 1000);
+    };
+    function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); document.getElementById('adminModal').classList.add('flex'); }
   </script>
 </body>
 </html>
