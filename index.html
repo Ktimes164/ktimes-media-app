@@ -9,8 +9,11 @@
   
   <!-- PWA & Mobile Install Support -->
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Ktimes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#dc2626">
 
   <!-- Open Graph & Social Preview -->
@@ -18,7 +21,7 @@
   <meta property="og:url" content="https://ktimes-media-app.vercel.app/">
   <meta property="og:title" content="Ktimes Media | हमेशा समय के साथ..!">
   <meta property="og:description" content="व्यावसायिक ऑडिओ, 4K व्हिडिओ जाहिराती व जिंगल्स स्टुडिओ. साखरवाडी (फलटण). संपर्क: 9422337471">
-  <meta property="og:image" content="https://raw.githubusercontent.com/Ktimes164/ktimes-media-app/main/assets/ktimes-logo.jpg">
+  <meta property="og:image" content="https://ktimes-media-app.vercel.app/icons/icon-512.png">
 
   <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -322,7 +325,7 @@
         title: 'Ktimes Media | Advertising Agency Showreel',
         category: 'व्हिडिओ जाहिराती (Video Ads)',
         tag: 'HD Production',
-        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        url: '',
         views: 1840,
         likes: 215,
         date: '2026-08-16'
@@ -332,7 +335,7 @@
         title: 'गणेश ज्वेलर्स - फेस्टिव्हल टीव्ही कमर्शियल जाहिरात',
         category: 'व्हिडिओ जाहिराती (Video Ads)',
         tag: '4K Commercial',
-        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        url: '',
         views: 1420,
         likes: 184,
         date: '2026-08-16'
@@ -841,6 +844,13 @@
       renderCategoryTabs();
       renderSamples();
     });
+
+    // 9. SERVICE WORKER REGISTER (ऑफलाईन सपोर्ट + खरा Install/APK प्रॉम्प्ट यासाठी आवश्यक)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').catch(() => {});
+      });
+    }
   </script>
 </body>
 </html>
