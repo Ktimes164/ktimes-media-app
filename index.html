@@ -26,6 +26,10 @@
   <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Firebase (शेअर्ड डेटाबेस — Admin ने ॲड केलेलं सर्वांना दिसण्यासाठी) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
   
   <!-- Google Fonts: Baloo 2 & Mukta -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -288,6 +292,35 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
+    // ============================================================
+    // FIREBASE SETUP — इथे तुमच्या स्वतःच्या Firebase प्रोजेक्टचे
+    // config values पेस्ट करा (खाली दिलेल्या मार्गदर्शनाप्रमाणे).
+    // जोपर्यंत हे भरत नाही तोपर्यंत ॲप जुन्याप्रमाणे (फक्त याच
+    // ब्राऊझरमध्ये) चालत राहील — काहीही तुटणार नाही.
+    // ============================================================
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    let db = null;
+    let firebaseReady = false;
+    try {
+      if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        firebaseReady = true;
+      }
+    } catch (e) {
+      console.warn("Firebase सुरू होऊ शकलं नाही, स्थानिक (local) मोडवर सुरू आहे:", e);
+    }
+
+    const CLOUD_DOC = () => db.collection('ktimes').doc('appData');
+
     // 1. HARDCODED MASTER DEFAULTS (सर्वांसाठी समान दिसतील)
     const MASTER_SOCIALS = {
       wa_comm: "https://chat.whatsapp.com/your-community-link",
@@ -356,25 +389,56 @@
     let socialLinks = JSON.parse(localStorage.getItem('ktimes_socials_db')) || MASTER_SOCIALS;
     let offerSettings = JSON.parse(localStorage.getItem('ktimes_offer_db')) || MASTER_OFFER;
     let userLikedList = JSON.parse(localStorage.getItem('ktimes_user_likes')) || [];
+    let cachedSamples = JSON.parse(localStorage.getItem('ktimes_samples_db')) || MASTER_SAMPLES;
     let activeCategory = 'All';
     let isAdminLoggedIn = false;
     let uploadedOfferBannerBase64 = '';
     let deferredPrompt = null;
 
+    // ---- शेअर्ड डेटा (सर्व वापरकर्त्यांना सारखाच दिसतो) ----
+    // Firebase असेल तर तिथून; नसेल/नेट नसेल तर या डिव्हाईसवरील शेवटच्या कॉपीवरून (localStorage), तेही नसेल तर डिफॉल्ट सॅम्पलवरून.
     function getStoredSamples() {
-      const stored = localStorage.getItem('ktimes_samples_db');
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-        } catch (e) {}
+      return cachedSamples && cachedSamples.length ? cachedSamples : MASTER_SAMPLES;
+    }
+
+    // सर्व डिव्हाईसना बदल दिसावा म्हणून Firestore ला एकच डॉक्युमेंट पाठवतो/मिळवतो
+    async function pushCloudData() {
+      const payload = { samples: cachedSamples, socials: socialLinks, offer: offerSettings, updatedAt: Date.now() };
+      localStorage.setItem('ktimes_samples_db', JSON.stringify(cachedSamples));
+      localStorage.setItem('ktimes_socials_db', JSON.stringify(socialLinks));
+      localStorage.setItem('ktimes_offer_db', JSON.stringify(offerSettings));
+      if (firebaseReady) {
+        try { await CLOUD_DOC().set(payload, { merge: true }); }
+        catch (e) { console.warn('Cloud save अयशस्वी, फक्त local सेव्ह झालं:', e); }
       }
-      return MASTER_SAMPLES;
     }
 
     function saveStoredSamples(data) {
-      localStorage.setItem('ktimes_samples_db', JSON.stringify(data));
+      cachedSamples = data;
+      pushCloudData();
       renderSamples();
+    }
+
+    // पेज उघडताच / व दुसऱ्या ॲडमिनने बदल केल्यास लगेच अपडेट मिळावा म्हणून लाईव्ह ऐकतो
+    function subscribeCloudData() {
+      if (!firebaseReady) return;
+      CLOUD_DOC().onSnapshot((doc) => {
+        if (doc.exists) {
+          const data = doc.data();
+          if (Array.isArray(data.samples) && data.samples.length) cachedSamples = data.samples;
+          if (data.socials) socialLinks = data.socials;
+          if (data.offer) offerSettings = data.offer;
+          localStorage.setItem('ktimes_samples_db', JSON.stringify(cachedSamples));
+          localStorage.setItem('ktimes_socials_db', JSON.stringify(socialLinks));
+          localStorage.setItem('ktimes_offer_db', JSON.stringify(offerSettings));
+          renderSocialIconsBar();
+          renderOfferBanner();
+          renderSamples();
+        } else {
+          // Firestore मध्ये अजून काहीच नाही → पहिल्यांदा डिफॉल्ट डेटा पाठवा
+          pushCloudData();
+        }
+      }, (err) => console.warn('Cloud listen अयशस्वी:', err));
     }
 
     // 1. RENDER SOCIAL BAR + LOCATION
@@ -727,15 +791,15 @@
         offerSettings.bannerImg = uploadedOfferBannerBase64;
       }
       
-      localStorage.setItem('ktimes_offer_db', JSON.stringify(offerSettings));
+      pushCloudData();
       renderOfferBanner();
-      alert('ऑफर तपशील सेव्ह झाले!');
+      alert('ऑफर तपशील सेव्ह झाले!' + (firebaseReady ? ' (सर्वांना दिसेल)' : ' (लक्ष द्या: Firebase सेट केलेलं नाही, फक्त याच फोनवर दिसेल)'));
     }
 
     function removeOfferBannerImg() {
       offerSettings.bannerImg = "";
       uploadedOfferBannerBase64 = "";
-      localStorage.setItem('ktimes_offer_db', JSON.stringify(offerSettings));
+      pushCloudData();
       renderOfferBanner();
       alert('इमेज काढून कलर मोड सुरू केला!');
     }
@@ -750,9 +814,9 @@
         linkedin: document.getElementById('link_linkedin').value,
         x: document.getElementById('link_x').value
       };
-      localStorage.setItem('ktimes_socials_db', JSON.stringify(socialLinks));
+      pushCloudData();
       renderSocialIconsBar();
-      alert('सर्व सोशल मीडिया लिंक्स सेव्ह झाल्या!');
+      alert('सर्व सोशल मीडिया लिंक्स सेव्ह झाल्या!' + (firebaseReady ? ' (सर्वांना दिसेल)' : ' (लक्ष द्या: Firebase सेट केलेलं नाही, फक्त याच फोनवर दिसेल)'));
     }
 
     function handleSaveSample(e) {
@@ -843,6 +907,7 @@
       renderOfferBanner();
       renderCategoryTabs();
       renderSamples();
+      subscribeCloudData(); // Firebase असेल तर शेअर्ड डेटा घेऊन आपोआप अपडेट दाखवेल
     });
 
     // 9. SERVICE WORKER REGISTER (ऑफलाईन सपोर्ट + खरा Install/APK प्रॉम्प्ट यासाठी आवश्यक)
