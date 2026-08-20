@@ -191,7 +191,7 @@
         <!-- Admin Content Area -->
         <div id="adminUnlockedArea" class="hidden space-y-4 text-xs">
           
-          <!-- Category Management Section with Re-ordering (Move Up / Down) -->
+          <!-- Category Management Section -->
           <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 space-y-2.5">
             <div class="flex items-center justify-between">
               <label class="font-bold text-amber-950 uppercase block">कॅटेगरी मॅनेजमेंट व क्रम (Reorder)</label>
@@ -320,16 +320,21 @@
       bannerImg: ""
     };
 
-    // मूळ कॅटेगरीज यादी (इथे तुम्ही थेट बदलही करू शकता)
+    // तुमची अचूक आणि अद्ययावत १३ कॅटेगरीजची यादी
     const DEFAULT_CATEGORIES = [
-      'All',
-      'व्हिडिओ जाहिराती (Video Ads)',
-      'ऑडिओ / व्हॉईस ओव्हर (Voice Over)',
-      'जिंगल्स (Jingles)',
-      'डॉक्युमेंट्री (Documentary)',
-      'लोगो डिझाईन (Logo Design)',
-      'मिक्स गाणी (Song Mixing)',
-      'Reels / Shorts'
+      "All",
+      "Ai व्हिडिओ Ad",
+      "जिंगल्स (Jingles)",
+      "व्हिडिओ जाहिराती (Video Ads)",
+      "ऑडिओ / व्हॉईस ओव्हर (Voice Over)",
+      "Reels / Shorts",
+      "Anchoring निवेदन & Events",
+      "इलेक्शन प्रचार आणि गाणी",
+      "फेस्टिवल व्हिडिओ",
+      "वाढदिवस गाणी",
+      "मिक्स गाणी (Song Mixing)",
+      "लोगो डिझाईन (Logo Design)",
+      "डॉक्युमेंट्री (Documentary)"
     ];
 
     const MASTER_SAMPLES = [
@@ -366,7 +371,7 @@
     ];
 
     let currentPin = localStorage.getItem('ktimes_admin_pin') || '7171';
-    let categories = JSON.parse(localStorage.getItem('ktimes_categories_db')) || DEFAULT_CATEGORIES;
+    let categories = DEFAULT_CATEGORIES;
     let socialLinks = JSON.parse(localStorage.getItem('ktimes_socials_db')) || MASTER_SOCIALS;
     let offerSettings = JSON.parse(localStorage.getItem('ktimes_offer_db')) || MASTER_OFFER;
     let userLikedList = JSON.parse(localStorage.getItem('ktimes_user_likes')) || [];
@@ -534,12 +539,12 @@
       localStorage.setItem('ktimes_categories_db', JSON.stringify(categories));
       input.value = '';
       renderCategoryTabs();
-      alert('नवीन कॅटेगरी जोडली! सर्वांना दिसण्यासाठी वरील "GitHub कोड कॉपी करा" वापरा.');
+      alert('नवीन कॅटेगरी जोडली! सर्वांना दिसण्यासाठी "GitHub कोड कॉपी करा" वापरा.');
     }
 
     function moveCategory(index, direction) {
       const targetIndex = index + direction;
-      if (targetIndex < 1 || targetIndex >= categories.length) return; // 'All' ला हलवू नये
+      if (targetIndex < 1 || targetIndex >= categories.length) return;
       const temp = categories[index];
       categories[index] = categories[targetIndex];
       categories[targetIndex] = temp;
@@ -559,7 +564,7 @@
     function copyCategoriesForGitHub() {
       const codeStr = JSON.stringify(categories, null, 2);
       navigator.clipboard.writeText(codeStr).then(() => {
-        alert('कॅटेगरीजचा कोड कॉपी झाला! हा कोड GitHub मध्ये DEFAULT_CATEGORIES = [...] च्या जागी पेस्ट करून Commit करा.');
+        alert('कॅटेगरीजचा कोड कॉपी झाला!');
       });
     }
 
@@ -840,9 +845,9 @@
       }
     }
 
-    // रिफ्रेश बटण: ब्राऊझर कॅश क्लिअर करून नवीन अपडेट्स लोड करतो
+    // रिफ्रेश बटण
     function triggerAppUpdate() {
-      localStorage.removeItem('ktimes_categories_db'); // जुना कॅटेगरी कॅश क्लिअर करतो
+      localStorage.removeItem('ktimes_categories_db');
       window.location.reload(true);
     }
 
