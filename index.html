@@ -632,8 +632,7 @@
       }
     }
 
-    // 4. SMART EMBED (YouTube, Direct Images & Google Drive/Direct Audio)
-    function formatMediaEmbed(url) {
+   function formatMediaEmbed(url) {
       if (!url) return '';
       
       // 1. YouTube Video
@@ -644,40 +643,49 @@
         else if (url.includes('shorts/')) videoId = url.split('shorts/')[1].split(/[?#]/)[0];
         else if (url.includes('embed/')) videoId = url.split('embed/')[1].split(/[?#]/)[0];
 
-        if (videoId) {
-          return `
-            <div class="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-inner">
-              <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <a href="https://youtube.com/watch?v=${videoId}" target="_blank" class="block text-[11px] text-red-600 font-bold hover:underline">YouTube वर उघडा ↗</a>
-          `;
-        }
+        return `
+          <div class="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-inner">
+            <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <a href="https://youtube.com/watch?v=${videoId}" target="_blank" class="block text-[11px] text-red-600 font-bold hover:underline">YouTube वर उघडा ↗</a>
+        `;
       }
 
-      // 2. Direct Image (Logo / Poster / Photo)
-      if (url.match(/\.(jpeg|jpg|gif|png|webp|svg)($|\?)/i) || url.includes('postimg.cc') || url.includes('i.ibb.co')) {
+      // 2. Instagram Embed
+      if (url.includes('instagram.com')) {
+        let cleanUrl = url.split('?')[0];
         return `
-          <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center p-2">
-            <img src="${url}" alt="Logo Preview" class="max-h-full max-w-full object-contain rounded-lg shadow-sm">
+          <div class="w-full rounded-xl overflow-hidden bg-slate-100 border border-slate-200 p-2">
+            <p class="text-[10px] font-bold text-slate-500 mb-1 uppercase">Instagram Post</p>
+            <a href="${url}" target="_blank" class="block w-full text-center py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold rounded-lg shadow">Instagram वर पहा ↗</a>
           </div>
         `;
       }
 
-      // 3. Audio (Google Drive or Direct Audio URL)
+      // 3. Facebook Embed
+      if (url.includes('facebook.com')) {
+        return `
+          <div class="w-full rounded-xl overflow-hidden bg-blue-50 border border-blue-100 p-4 text-center">
+            <p class="text-xs font-bold text-blue-900 mb-2">Facebook पोस्ट</p>
+            <a href="${url}" target="_blank" class="block w-full py-2 bg-[#1877F2] text-white text-xs font-bold rounded-lg shadow">Facebook वर पहा ↗</a>
+          </div>
+        `;
+      }
+
+      // 4. Images (Logo / Poster)
+      if (url.match(/\.(jpeg|jpg|gif|png|webp|svg)($|\?)/i) || url.includes('postimg.cc') || url.includes('i.ibb.co')) {
+        return `<img src="${url}" class="w-full rounded-xl shadow-sm border border-slate-100" alt="Sample Image">`;
+      }
+
+      // 5. Audio
       let audioSrc = url;
       if (url.includes('drive.google.com')) {
         const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-        if (fileIdMatch && fileIdMatch[1]) {
-          audioSrc = `https://docs.google.com/uc?export=download&id=${fileIdMatch[1]}`;
-        }
+        if (fileIdMatch && fileIdMatch[1]) audioSrc = `https://docs.google.com/uc?export=download&id=${fileIdMatch[1]}`;
       }
 
       return `
         <div class="p-3 bg-red-50/50 rounded-xl border border-red-100 flex flex-col gap-2">
-          <div class="flex items-center justify-between text-xs font-semibold text-slate-800">
-            <span class="flex items-center gap-1.5"><i data-lucide="volume-2" class="w-4 h-4 text-red-600"></i> Studio Master Audio</span>
-            <span class="text-[10px] bg-red-600 text-white px-2 py-0.5 rounded-full font-bold">HD</span>
-          </div>
           <audio controls class="w-full h-9 rounded-lg outline-none">
             <source src="${audioSrc}">
           </audio>
