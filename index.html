@@ -160,7 +160,65 @@
     </a>
   </div>
 
-  <!-- 9. RED ADMIN MODAL -->
+  <!-- 9. UNIVERSAL PC / DESKTOP SHARE POPUP MODAL -->
+  <div id="shareModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full shadow-2xl p-5 border border-slate-200 space-y-4">
+      <div class="flex items-center justify-between border-b pb-2">
+        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+          <i data-lucide="share-2" class="w-4 h-4 text-red-600"></i>
+          <span>सोशल मीडियावर शेअर करा</span>
+        </h3>
+        <button onclick="closeShareModal()" class="text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p id="shareModalTitle" class="text-xs text-slate-600 font-medium line-clamp-2 bg-slate-50 p-2 rounded-lg border border-slate-100"></p>
+
+      <div class="grid grid-cols-4 gap-2.5 py-1">
+        <!-- WhatsApp -->
+        <a id="shareWaBtn" href="#" target="_blank" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition">
+          <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-sm">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
+          </div>
+          <span class="text-[10px] font-bold">WhatsApp</span>
+        </a>
+
+        <!-- Facebook -->
+        <a id="shareFbBtn" href="#" target="_blank" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 transition">
+          <div class="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-sm">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </div>
+          <span class="text-[10px] font-bold">Facebook</span>
+        </a>
+
+        <!-- X (Twitter) -->
+        <a id="shareXBtn" href="#" target="_blank" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 transition">
+          <div class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shadow-sm">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </div>
+          <span class="text-[10px] font-bold">X (Twitter)</span>
+        </a>
+
+        <!-- LinkedIn -->
+        <a id="shareInBtn" href="#" target="_blank" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-700 transition">
+          <div class="w-8 h-8 rounded-full bg-[#0A66C2] text-white flex items-center justify-center shadow-sm">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </div>
+          <span class="text-[10px] font-bold">LinkedIn</span>
+        </a>
+      </div>
+
+      <div class="pt-2 border-t flex items-center gap-2">
+        <input type="text" id="shareUrlInput" readonly class="flex-1 px-2.5 py-1.5 bg-slate-50 border rounded-lg text-[11px] text-slate-600 outline-none select-all">
+        <button onclick="copyShareUrl()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-lg flex items-center gap-1 shadow-sm shrink-0">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i> कॉपी करा
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. RED ADMIN MODAL -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden border border-red-200 max-h-[92vh] flex flex-col">
       <div class="bg-red-700 text-white p-4 flex items-center justify-between shrink-0">
@@ -176,7 +234,6 @@
       </div>
 
       <div class="p-5 overflow-y-auto space-y-4">
-        <!-- Secret PIN Screen -->
         <div id="adminLockScreen" class="space-y-3 py-4 text-center">
           <div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-2">
             <i data-lucide="lock" class="w-6 h-6"></i>
@@ -188,10 +245,8 @@
           </button>
         </div>
 
-        <!-- Admin Content Area -->
         <div id="adminUnlockedArea" class="hidden space-y-4 text-xs">
-          
-          <!-- Category Management Section -->
+          <!-- Category Management -->
           <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 space-y-2.5">
             <div class="flex items-center justify-between">
               <label class="font-bold text-amber-950 uppercase block">कॅटेगरी मॅनेजमेंट व क्रम (Reorder)</label>
@@ -320,7 +375,6 @@
       bannerImg: ""
     };
 
-    // तुमची अचूक आणि अद्ययावत १३ कॅटेगरीजची यादी
     const DEFAULT_CATEGORIES = [
       "All",
       "Ai व्हिडिओ Ad",
@@ -578,10 +632,11 @@
       }
     }
 
-    // 4. SMART EMBED
+    // 4. SMART EMBED (YouTube, Direct Images & Google Drive/Direct Audio)
     function formatMediaEmbed(url) {
       if (!url) return '';
       
+      // 1. YouTube Video
       if (url.includes('youtube.com') || url.includes('youtu.be')) {
         let videoId = '';
         if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split(/[?#]/)[0];
@@ -599,6 +654,16 @@
         }
       }
 
+      // 2. Direct Image (Logo / Poster / Photo)
+      if (url.match(/\.(jpeg|jpg|gif|png|webp|svg)($|\?)/i) || url.includes('postimg.cc') || url.includes('i.ibb.co')) {
+        return `
+          <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center p-2">
+            <img src="${url}" alt="Logo Preview" class="max-h-full max-w-full object-contain rounded-lg shadow-sm">
+          </div>
+        `;
+      }
+
+      // 3. Audio (Google Drive or Direct Audio URL)
       let audioSrc = url;
       if (url.includes('drive.google.com')) {
         const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
@@ -670,7 +735,7 @@
             </div>
             
             <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
-              <button onclick="shareEverywhere('${item.title}', '${item.url}')" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition">
+              <button onclick="openSmartShare('${item.title.replace(/'/g, "\\'")}', '${item.url.replace(/'/g, "\\'")}')" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition">
                 <i data-lucide="share-2" class="w-3.5 h-3.5 text-red-600"></i> सोशल शेअर
               </button>
               
@@ -714,22 +779,63 @@
       saveStoredSamples(list);
     }
 
-    function shareEverywhere(title, url) {
-      const shareData = {
-        title: `Ktimes Media - ${title}`,
-        text: `🎬 *के टाईम्स मिडिया - सॅम्पल*\n\n📌 *शीर्षक:* ${title}\n📍 साखरवाडी (फलटण)\n📞 संपर्क: 9422337471\n`,
-        url: window.location.href
-      };
+    // 6. SMART UNIVERSAL SHARE (MOBILE + PC COMPATIBLE)
+    function openSmartShare(title, mediaUrl) {
+      const shareUrl = window.location.href;
+      const shareText = `🎬 के टाईम्स मिडिया - ${title}\n📍 साखरवाडी (फलटण)\n📞 9422337471`;
 
-      if (navigator.share) {
-        navigator.share(shareData).catch(() => {});
+      // जर मोबाईल असेल आणि navigator.share चालत असेल
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      if (isMobile && navigator.share) {
+        navigator.share({
+          title: `Ktimes Media - ${title}`,
+          text: `${shareText}\n`,
+          url: shareUrl
+        }).catch(() => {
+          showShareModal(title, shareText, shareUrl);
+        });
       } else {
-        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareData.text + ' ' + shareData.url)}`;
-        window.open(waUrl, '_blank');
+        // PC / Laptop किंवा अनसपोर्टेड ब्राऊझरसाठी थेट कस्टम पॉपअप उघडणे
+        showShareModal(title, shareText, shareUrl);
       }
     }
 
-    // 6. ADMIN AUTH & CONTROLS
+    function showShareModal(title, text, url) {
+      document.getElementById('shareModalTitle').innerText = title;
+      document.getElementById('shareUrlInput').value = url;
+
+      // WhatsApp Web / App
+      document.getElementById('shareWaBtn').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + '\n' + url)}`;
+      
+      // Facebook
+      document.getElementById('shareFbBtn').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+      
+      // X (Twitter)
+      document.getElementById('shareXBtn').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+      
+      // LinkedIn
+      document.getElementById('shareInBtn').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+
+      document.getElementById('shareModal').classList.remove('hidden');
+      document.getElementById('shareModal').classList.add('flex');
+    }
+
+    function closeShareModal() {
+      document.getElementById('shareModal').classList.add('hidden');
+      document.getElementById('shareModal').classList.remove('flex');
+    }
+
+    function copyShareUrl() {
+      const copyInput = document.getElementById('shareUrlInput');
+      copyInput.select();
+      navigator.clipboard.writeText(copyInput.value).then(() => {
+        alert('लिंक कॉपी झाली!');
+        closeShareModal();
+      });
+    }
+
+    // 7. ADMIN AUTH & CONTROLS
     function openAdminModal() {
       document.getElementById('adminModal').classList.remove('hidden');
       document.getElementById('adminModal').classList.add('flex');
@@ -845,13 +951,12 @@
       }
     }
 
-    // रिफ्रेश बटण
     function triggerAppUpdate() {
       localStorage.removeItem('ktimes_categories_db');
       window.location.reload(true);
     }
 
-    // 7. PWA INSTALL LOGIC
+    // 8. PWA INSTALL LOGIC
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -868,7 +973,7 @@
       }
     }
 
-    // 8. BACKUP & RESTORE
+    // 9. BACKUP & RESTORE
     function exportDataBackup() {
       const backup = {
         samples: getStoredSamples(),
