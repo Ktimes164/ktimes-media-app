@@ -391,7 +391,7 @@
       "डॉक्युमेंट्री (Documentary)"
     ];
 
-    // कायमस्वरूपी मास्टर सॅम्पल्स (इन्स्टाग्राम व इतर लिंक्ससह)
+    // कायमस्वरूपी मास्टर सॅम्पल्स यादी
     const MASTER_SAMPLES = [
       {
         id: 's_insta_1',
@@ -445,12 +445,22 @@
     let uploadedOfferBannerBase64 = '';
     let deferredPrompt = null;
 
+    // नेहमी मास्टर सॅम्पल्स थेट लोड करणे
     function getStoredSamples() {
       const stored = localStorage.getItem('ktimes_samples_db');
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            // नवीन मास्टर सॅम्पल्स आणि लोकल सॅम्पल्स एकत्र करणे
+            const combined = [...MASTER_SAMPLES];
+            parsed.forEach(p => {
+              if (!combined.some(c => c.id === p.id)) {
+                combined.push(p);
+              }
+            });
+            return combined;
+          }
         } catch (e) {}
       }
       return MASTER_SAMPLES;
@@ -603,7 +613,7 @@
       localStorage.setItem('ktimes_categories_db', JSON.stringify(categories));
       input.value = '';
       renderCategoryTabs();
-      alert('नवीन कॅटेगरी जोडली! सर्वांना दिसण्यासाठी "GitHub कोड कॉपी करा" वापरा.');
+      alert('नवीन कॅटेगरी जोडली!');
     }
 
     function moveCategory(index, direction) {
@@ -729,7 +739,7 @@
 
       const filtered = activeCategory === 'All' 
         ? samples 
-        : samples.filter(s => s.category && s.category.includes(activeCategory));
+        : samples.filter(s => s.category && s.category.trim() === activeCategory.trim());
 
       grid.innerHTML = '';
       if (!filtered || filtered.length === 0) {
@@ -977,6 +987,7 @@
       }
     }
 
+    // रिफ्रेश बटण दाबल्यावर कॅश क्लिअर होऊन थेट मास्टर सॅम्पल्स लोड होतात
     function triggerAppUpdate() {
       localStorage.removeItem('ktimes_samples_db');
       localStorage.removeItem('ktimes_categories_db');
