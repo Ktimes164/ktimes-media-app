@@ -391,7 +391,18 @@
       "डॉक्युमेंट्री (Documentary)"
     ];
 
+    // कायमस्वरूपी मास्टर सॅम्पल्स (इन्स्टाग्राम व इतर लिंक्ससह)
     const MASTER_SAMPLES = [
+      {
+        id: 's_insta_1',
+        title: 'FM रेडिओ टाईप जिंगल बनवा',
+        category: 'Reels / Shorts',
+        tag: 'HD Production',
+        url: 'https://www.instagram.com',
+        views: 1200,
+        likes: 95,
+        date: '2026-08-21'
+      },
       {
         id: 's1',
         title: 'Ktimes Media | Advertising Agency Showreel',
@@ -421,16 +432,6 @@
         views: 890,
         likes: 96,
         date: '2026-08-16'
-      }
-      {
-        id: 's_insta_1',
-        title: 'FM रेडिओ टाईप जिंगल बनवा',
-        category: 'Reels / Shorts',
-        tag: 'HD Production',
-        url: 'https://www.instagram.com/p/DZe3_JIxLf2/?hl=en',
-        views: 1200,
-        likes: 95,
-        date: '2026-08-21'
       }
     ];
 
@@ -977,6 +978,7 @@
     }
 
     function triggerAppUpdate() {
+      localStorage.removeItem('ktimes_samples_db');
       localStorage.removeItem('ktimes_categories_db');
       window.location.reload(true);
     }
