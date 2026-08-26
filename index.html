@@ -1,1369 +1,503 @@
-<!DOCTYPE html>
-<html lang="mr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  
-  <title>Ktimes Media | Official Audio & Video Production</title>
-  <meta name="description" content="के टाईम्स मिडिया - व्यावसायिक ऑडिओ, 4K व्हिडिओ जाहिराती, व्हॉईस ओव्हर आणि जिंगल्स स्टुडिओ. हमेशा समय के साथ..!">
-  
-  <!-- PWA & Mobile Install Support -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Ktimes">
-  <meta name="theme-color" content="#dc2626">
-
-  <!-- Open Graph & Social Preview -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ktimes-media-app.vercel.app/">
-  <meta property="og:title" content="Ktimes Media | हमेशा समय के साथ..!">
-  <meta property="og:description" content="व्यावसायिक ऑडिओ, 4K व्हिडिओ जाहिराती व जिंगल्स स्टुडिओ. साखरवाडी (फलटण). संपर्क: 9422337471">
-  <meta property="og:image" content="https://i.postimg.cc/1RvXL4Wc/pha-sa-ta-va-hala-ophara-30-da-sa-ka-u-ta-(1).png">
-
-  <!-- Tailwind CSS & Lucide Icons -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Google Fonts: Baloo 2 & Mukta -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800;900&family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    * { font-family: 'Mukta', 'Baloo 2', sans-serif; -webkit-tap-highlight-color: transparent; }
-    .heading-font, .baloo-k { font-family: 'Baloo 2', sans-serif; }
-    
-    #splash-screen {
-      position: fixed; inset: 0; z-index: 9999; background: #ffffff;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      animation: dismissSplash 0.5s ease 1.2s forwards;
-      pointer-events: none;
-    }
-    @keyframes dismissSplash { to { opacity: 0; visibility: hidden; } }
-    
-    .ktimes-dial {
-      border-radius: 50%; background: #dc2626;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
-      border: 3px solid #ffffff;
-    }
-    .heart-btn:active { transform: scale(1.3); }
-  </style>
-</head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col pb-24 md:pb-8">
-
-  <!-- 1. SPLASH SCREEN -->
-  <div id="splash-screen">
-    <div class="ktimes-dial w-24 h-24 mb-3 ring-4 ring-red-100 animate-pulse">
-      <span class="baloo-k text-white text-6xl font-black italic select-none">K</span>
-    </div>
-    <div class="text-2xl font-bold tracking-tight text-center">
-      <span class="text-red-600">के टाईम्स</span> <span class="text-slate-900">मिडिया</span>
-      <p class="text-xs font-semibold text-slate-500 mt-0.5">हमेशा समय के साथ..!</p>
-    </div>
-  </div>
-
-  <!-- 2. MAIN HEADER -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-2">
-        <div class="ktimes-dial w-10 h-10 shadow-sm shrink-0">
-          <span class="baloo-k text-white text-2xl font-black italic select-none">K</span>
-        </div>
-        <div>
-          <h1 class="text-lg font-bold leading-none">
-            <span class="text-red-600">Ktimes</span> <span class="text-slate-950">Media</span>
-          </h1>
-          <p class="text-[9px] font-semibold text-slate-500 tracking-wide mt-0.5">Audio & Video Production Studio</p>
-        </div>
-      </a>
-
-      <!-- Header Controls -->
-      <div class="flex items-center gap-2">
-        <button id="pwaInstallBtn" onclick="installKtimesApp()" class="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition animate-bounce">
-          <i data-lucide="download" class="w-3.5 h-3.5"></i>
-          <span>इन्स्टॉल</span>
-        </button>
-
-        <button onclick="triggerAppUpdate()" title="रिफ्रेश करा आणि नवीन डेटा मिळवा" class="flex items-center gap-1 p-1.5 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition border border-slate-200">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-red-600"></i>
-          <span class="hidden sm:inline text-[11px]">रिफ्रेश</span>
-        </button>
-
-        <button onclick="openAdminModal()" class="flex items-center gap-1 px-3 py-1.5 bg-red-700 hover:bg-red-800 text-white rounded-lg text-xs font-semibold shadow-sm transition">
-          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-          <span>Admin</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- 3. SOCIAL ICONS + LOCATION BAR -->
-    <div class="border-t border-slate-100 bg-slate-50/90 px-4 py-1.5">
-      <div class="max-w-6xl mx-auto flex items-center justify-between gap-2 overflow-x-auto scrollbar-none" id="socialIconsBar"></div>
-    </div>
-  </header>
-
-  <!-- 4. FESTIVAL OFFER BANNER -->
-  <section class="max-w-6xl mx-auto px-4 pt-3 pb-1 w-full" id="offerBannerSection"></section>
-
-  <!-- 5. CATEGORIES BAR -->
-  <section class="max-w-6xl mx-auto px-4 pt-2 pb-1 w-full">
-    <div class="bg-white p-2 rounded-2xl border-2 border-red-500/20 shadow-sm">
-      <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none" id="categoryTabsContainer"></div>
-    </div>
-  </section>
-
-  <!-- 6. SAMPLES SHOWCASE -->
-  <main class="max-w-6xl mx-auto px-4 py-3 w-full flex-grow">
-    <div id="samplesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch"></div>
-    
-    <div id="emptyState" class="hidden text-center py-16">
-      <i data-lucide="film" class="w-12 h-12 text-slate-300 mx-auto mb-2"></i>
-      <h3 class="text-sm font-semibold text-slate-700">या कॅटेगरीमध्ये सध्या सॅम्पल उपलब्ध नाही</h3>
-      <p class="text-xs text-slate-400 mt-0.5">Admin पॅनलमधून किंवा GitHub वरून नवीन सॅम्पल जोडा.</p>
-    </div>
-  </main>
-
-  <!-- 7. DESKTOP FOOTER -->
-  <footer class="hidden md:block bg-white border-t border-slate-200 mt-10 py-6 text-center text-xs text-slate-600">
-    <div class="max-w-6xl mx-auto px-4 space-y-1.5">
-      <p class="font-bold text-slate-900 text-sm">
-        <span class="text-red-600">के टाईम्स</span> मिडिया — हमेशा समय के साथ..!
-      </p>
-      <p>📍 साखरवाडी (फलटण), सातारा | थेट संपर्क: <a href="tel:9422337471" class="font-bold text-red-600">9422337471</a></p>
-    </div>
-  </footer>
-
-  <!-- 8. 5-BUTTON MOBILE BOTTOM NAV -->
-  <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 flex items-center justify-around text-[10px] font-semibold text-slate-600 shadow-lg">
-    <button onclick="filterCategoryBySlug('ऑडिओ')" class="flex flex-col items-center gap-0.5 text-slate-700">
-      <i data-lucide="mic" class="w-5 h-5 text-red-600"></i>
-      <span>ऑडिओ</span>
-    </button>
-    <button onclick="filterCategoryBySlug('व्हिडिओ')" class="flex flex-col items-center gap-0.5 text-slate-700">
-      <i data-lucide="video" class="w-5 h-5 text-purple-600"></i>
-      <span>व्हिडिओ</span>
-    </button>
-    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex flex-col items-center gap-0.5 text-red-600 font-bold scale-110">
-      <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center shadow-md">
-        <i data-lucide="home" class="w-4 h-4"></i>
-      </div>
-      <span>होम</span>
-    </button>
-    <button onclick="filterCategoryBySlug('जिंगल्स')" class="flex flex-col items-center gap-0.5 text-slate-700">
-      <i data-lucide="sparkles" class="w-5 h-5 text-amber-500"></i>
-      <span>जिंगल्स</span>
-    </button>
-    <a href="tel:9422337471" class="flex flex-col items-center gap-0.5 text-emerald-600">
-      <i data-lucide="phone-call" class="w-5 h-5"></i>
-      <span>कॉल करा</span>
-    </a>
-  </div>
-
-  <!-- 9. UNIVERSAL PC / DESKTOP SHARE POPUP MODAL -->
-  <div id="shareModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-sm w-full shadow-2xl p-5 border border-slate-200 space-y-4">
-      <div class="flex items-center justify-between border-b pb-2">
-        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
-          <i data-lucide="share-2" class="w-4 h-4 text-red-600"></i>
-          <span>सोशल मीडियावर शेअर करा</span>
-        </h3>
-        <button onclick="closeShareModal()" class="text-slate-400 hover:text-slate-700">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <p id="shareModalTitle" class="text-xs text-slate-600 font-medium line-clamp-2 bg-slate-50 p-2 rounded-lg border border-slate-100"></p>
-
-      <div class="grid grid-cols-4 gap-2.5 py-1">
-        <!-- WhatsApp -->
-        <a id="shareWaBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition">
-          <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-sm">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
-          </div>
-          <span class="text-[10px] font-bold">WhatsApp</span>
-        </a>
-
-        <!-- Facebook -->
-        <a id="shareFbBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 transition">
-          <div class="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-sm">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          </div>
-          <span class="text-[10px] font-bold">Facebook</span>
-        </a>
-
-        <!-- X (Twitter) -->
-        <a id="shareXBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 transition">
-          <div class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shadow-sm">
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </div>
-          <span class="text-[10px] font-bold">X (Twitter)</span>
-        </a>
-
-        <!-- LinkedIn -->
-        <a id="shareInBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-700 transition">
-          <div class="w-8 h-8 rounded-full bg-[#0A66C2] text-white flex items-center justify-center shadow-sm">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-          </div>
-          <span class="text-[10px] font-bold">LinkedIn</span>
-        </a>
-      </div>
-
-      <div class="pt-2 border-t flex items-center gap-2">
-        <input type="text" id="shareUrlInput" readonly class="flex-1 px-2.5 py-1.5 bg-slate-50 border rounded-lg text-[11px] text-slate-600 outline-none select-all">
-        <button onclick="copyShareUrl()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-lg flex items-center gap-1 shadow-sm shrink-0">
-          <i data-lucide="copy" class="w-3.5 h-3.5"></i> कॉपी करा
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 10. RED ADMIN MODAL -->
-  <div id="adminModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden border border-red-200 max-h-[92vh] flex flex-col">
-      <div class="bg-red-700 text-white p-4 flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-2">
-          <div class="ktimes-dial w-7 h-7 shadow-sm">
-            <span class="baloo-k text-white text-sm font-black italic">K</span>
-          </div>
-          <h3 class="font-bold text-base">Ktimes Admin Dashboard</h3>
-        </div>
-        <button onclick="closeAdminModal()" class="text-white hover:text-red-200">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <div class="p-5 overflow-y-auto space-y-4">
-        <div id="adminLockScreen" class="space-y-3 py-4 text-center">
-          <div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-2">
-            <i data-lucide="lock" class="w-6 h-6"></i>
-          </div>
-          <p class="text-xs text-slate-600 font-medium">ॲडमिन कंट्रोलसाठी पिन प्रविष्ट करा:</p>
-          <input type="password" id="adminPinInput" placeholder="••••" maxlength="8" class="w-48 mx-auto px-4 py-2 border-2 border-slate-300 rounded-xl text-center text-xl font-bold tracking-widest outline-none focus:border-red-600 block">
-          <button onclick="verifyAdminPin()" class="w-full py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-xl font-bold text-xs transition shadow-md">
-            लॉगिन करा
-          </button>
-        </div>
-
-        <div id="adminUnlockedArea" class="hidden space-y-4 text-xs">
-          <!-- Category Management -->
-          <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 space-y-2.5">
-            <div class="flex items-center justify-between">
-              <label class="font-bold text-amber-950 uppercase block">कॅटेगरी मॅनेजमेंट व क्रम (Reorder)</label>
-              <button onclick="copyCategoriesForGitHub()" class="px-2 py-1 bg-slate-800 text-white text-[10px] font-bold rounded flex items-center gap-1 hover:bg-black">
-                <i data-lucide="copy" class="w-3.5 h-3.5"></i> GitHub कोड कॉपी करा
-              </button>
-            </div>
-            
-            <div class="flex gap-2">
-              <input type="text" id="newCategoryInput" placeholder="नवीन कॅटेगरी नाव लिहा" class="flex-1 px-3 py-1.5 border rounded-lg">
-              <button onclick="addNewCategory()" class="px-3.5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg shadow-sm">
-                + जोडा
-              </button>
-            </div>
-
-            <div class="space-y-1.5 pt-1">
-              <span class="text-[11px] font-bold text-slate-700 block">कॅटेगरी यादी (क्रम बदलण्यासाठी ⬆️ / ⬇️ दाबा):</span>
-              <div id="adminCategoryList" class="space-y-1 max-h-48 overflow-y-auto pr-1"></div>
-            </div>
-          </div>
-
-          <!-- Festival Offer Settings -->
-          <div class="bg-purple-50/70 p-3.5 rounded-xl border border-purple-200 space-y-2">
-            <label class="font-bold text-purple-950 uppercase block">फेस्टिव्हल ऑफर, कलर व इमेज सेट करा</label>
-            <input type="text" id="offerBannerTitle" placeholder="ऑफर शीर्षक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="text" id="offerBannerSub" placeholder="ऑफर तपशील" class="w-full px-3 py-1.5 border rounded-lg">
-            
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="text-[10px] font-bold text-slate-600">ऑफर कालावधी मजकूर:</label>
-                <input type="text" id="offerDateText" placeholder="उदा. १५ ऑगस्ट ते ३१ ऑगस्ट" class="w-full px-3 py-1.5 border rounded-lg">
-              </div>
-              <div>
-                <label class="text-[10px] font-bold text-slate-600">बॅकग्राउंड कलर निवडा:</label>
-                <input type="color" id="offerBgColor" class="w-full h-8 p-0.5 border rounded-lg cursor-pointer">
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2 pt-1">
-              <div>
-                <label class="text-[10px] font-bold text-slate-600">व्हिजिटर्स संख्या:</label>
-                <input type="number" id="offerBannerViews" placeholder="उदा. 3480" class="w-full px-3 py-1.5 border rounded-lg font-bold">
-              </div>
-              <div>
-                <label class="text-[10px] font-bold text-slate-600">किंवा ऑफर बॅनर डायरेक्ट इमेज लिंक:</label>
-                <input type="text" id="offerBannerImgUrl" placeholder="https://i.postimg.cc/..." class="w-full px-3 py-1.5 border rounded-lg">
-              </div>
-            </div>
-
-            <div class="flex gap-2 pt-1">
-              <button onclick="saveOfferSettings()" class="flex-1 py-2 bg-purple-800 hover:bg-purple-900 text-white font-bold rounded-lg">ऑफर सेव्ह करा</button>
-              <button onclick="removeOfferBannerImg()" class="py-2 px-3 bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold rounded-lg">इमेज काढा</button>
-            </div>
-          </div>
-
-          <!-- Social Links Settings -->
-          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
-            <label class="font-bold text-slate-800 uppercase block">सोशल मीडिया लिंक्स सेट करा</label>
-            <input type="url" id="link_wa_comm" placeholder="WhatsApp कम्युनिटी लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_wa_chan" placeholder="WhatsApp लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_yt" placeholder="YouTube चॅनेल लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_insta" placeholder="Instagram प्रोफाइल लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_fb" placeholder="Facebook पेज लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_linkedin" placeholder="LinkedIn प्रोफाइल लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <input type="url" id="link_x" placeholder="X (Twitter) प्रोफाइल लिंक" class="w-full px-3 py-1.5 border rounded-lg">
-            <button onclick="saveSocialLinks()" class="w-full py-1.5 bg-slate-800 hover:bg-black text-white font-bold rounded-lg">सर्व लिंक्स सेव्ह करा</button>
-          </div>
-
-          <!-- Add Sample Form -->
-          <form onsubmit="handleSaveSample(event)" class="space-y-3 pt-1 border-t">
-            <label class="font-bold text-slate-800 uppercase block">नवीन सॅम्पल जोडा</label>
-            <input type="text" id="sampleTitle" required placeholder="सॅम्पल नाव" class="w-full px-3 py-2 border rounded-lg outline-none focus:border-red-600">
-
-            <div class="grid grid-cols-2 gap-2">
-              <select id="sampleCategory" class="w-full px-3 py-2 border rounded-lg outline-none focus:border-red-600"></select>
-              <input type="text" id="sampleTag" placeholder="टॅग (उदा. 4K, FM, HD)" class="w-full px-3 py-2 border rounded-lg">
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <input type="number" id="sampleInitialViews" placeholder="सुरुवातीचे व्ह्यूज" class="w-full px-3 py-1.5 border rounded-lg">
-              <input type="number" id="sampleInitialLikes" placeholder="सुरुवातीचे लाईक्स" class="w-full px-3 py-1.5 border rounded-lg">
-            </div>
-
-            <input type="text" id="sampleUrl" placeholder="YouTube, Instagram, Facebook किंवा Audio Link" class="w-full px-3 py-2 border rounded-lg">
-
-            <button type="submit" class="w-full py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-xl font-bold shadow transition">
-              + सॅम्पल पब्लिश करा
-            </button>
-          </form>
-
-          <hr class="border-slate-200">
-
-          <div class="flex gap-2">
-            <button onclick="exportDataBackup()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center justify-center gap-1">
-              <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Backup
-            </button>
-            <button onclick="document.getElementById('importFileInput').click()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center justify-center gap-1">
-              <i data-lucide="upload" class="w-3.5 h-3.5"></i> Restore Data
-            </button>
-            <input type="file" id="importFileInput" onchange="importDataBackup(event)" accept=".json" class="hidden">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- JAVASCRIPT LOGIC -->
-  <script>
-    // १. मुख्य सोशल मीडिया लिंक्स
-    const MASTER_SOCIALS = {
-      wa_comm: "https://whatsapp.com/channel/0029VbBHwQeJUM2bMZhppY1D",
-      wa_chan: "https://wa.me/919422337471",
-      yt: "https://youtube.com/@ktimesofficial4262?si=CpTXJhcvtCxn23uI",
-      insta: "https://www.instagram.com/ktimes_media_?igsi=dzdhcnB3bm5mZzE3",
-      fb: "https://www.facebook.com/share/19f2cEgqQU/",
-      linkedin: "https://www.linkedin.com/in/sudhirnemane-ktimesmedia?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-      x: "https://x.com/NemaneKtimes"
-    };
-
-    // २. मुख्य फेस्टिव्हल ऑफर आणि बॅनर इमेज लिंक
-    const MASTER_OFFER = {
-      title: "फेस्टिव्हल ऑफर - ३०% सूट!",
-      sub: "आमच्या सर्व ऑडिओ, 4K व्हिडिओ जाहिराती आणि जिंगल्सवर खास सवलत.",
-      dateText: "१५ ऑगस्ट ते ३१ ऑगस्ट २०२६",
-      bgColor: "#581c87",
-      views: 3480,
-      bannerImg: "https://i.postimg.cc/1RvXL4Wc/pha-sa-ta-va-hala-ophara-30-da-sa-ka-u-ta-(1).png"
-    };
-
-    // ३. मुख्य १३ कॅटेगरीज
-    const DEFAULT_CATEGORIES = [
-      "All",
-      "Ai व्हिडिओ Ad",
-      "जिंगल्स (Jingles)",
-      "व्हिडिओ जाहिराती (Video Ads)",
-      "ऑडिओ / व्हॉईस ओव्हर (Voice Over)",
-      "Reels / Shorts",
-      "Anchoring निवेदन & Events",
-      "इलेक्शन प्रचार आणि गाणी",
-      "फेस्टिवल व्हिडिओ",
-      "वाढदिवस गाणी",
-      "मिक्स गाणी (Song Mixing)",
-      "लोगो डिझाईन (Logo Design)",
-      "डॉक्युमेंट्री (Documentary)"
-    ];
-
-    // ४. मुख्य मास्टर सॅम्पल्स यादी (OM Traders चा व्हिडिओ डिलीट केला आहे)
-    const MASTER_SAMPLES = [
-      // --- Ai व्हिडिओ Ad ---
-      {
-        id: 'ai_main_top',
-        title: 'Ktimes Media Video | Sudhir Nemane | Advertising | Recording | Digital',
-        category: 'Ai व्हिडिओ Ad',
-        tag: 'Official Video',
-        url: 'https://www.youtube.com/shorts/gnfGpl_8P_Q',
-        views: 3850,
-        likes: 450,
-        date: '2026-08-26'
-      },
-      {
-        id: 'ai_1',
-        title: 'Mahi Fashion Chatrpati Sambhajinagar | Special TVC | Marathi AI Video Advertisement | KTimes Media',
-        category: 'Ai व्हिडिओ Ad',
-        tag: 'AI Video Ad',
-        url: 'https://www.youtube.com/watch?v=fWZ-zcp9DuQ',
-        views: 1450,
-        likes: 120,
-        date: '2026-08-26'
-      },
-      {
-        id: 'ai_3',
-        title: 'Mandira Mansoon Sale ad | Special TVC | Marathi AI Video Advertisement | KTimes Media',
-        category: 'Ai व्हिडिओ Ad',
-        tag: 'AI Video Ad',
-        url: 'https://www.youtube.com/watch?v=c4-EaJo8aYs',
-        views: 1180,
-        likes: 85,
-        date: '2026-08-26'
-      },
-      {
-        id: 'ai_4',
-        title: 'Ivizyme Drip Product Ai Video | Special TVC | Marathi AI Video Advertisement | KTimes Media',
-        category: 'Ai व्हिडिओ Ad',
-        tag: 'AI Video Ad',
-        url: 'https://www.youtube.com/watch?v=vRGYy3XwxyM',
-        views: 1540,
-        likes: 142,
-        date: '2026-08-26'
-      },
-      {
-        id: 'ai_5',
-        title: 'Deepak Saadi, Panvel | Special TVC | Marathi AI Video Advertisement | KTimes Media',
-        category: 'Ai व्हिडिओ Ad',
-        tag: 'AI Video Ad',
-        url: 'https://www.youtube.com/watch?v=4ANvEIcHzcU',
-        views: 1680,
-        likes: 156,
-        date: '2026-08-26'
-      },
-      {
-        id: 'ai_6',
-        title: 'Abhijeet Collection. Akol Nipani | Special TVC | Marathi AI Video Advertisement | KTimes Media',
-        category: 'Ai व्हिडिओ Ad',
-        tag: 'AI Video Ad',
-        url: 'https://www.youtube.com/watch?v=4wd25PTrSs0',
-        views: 1290,
-        likes: 110,
-        date: '2026-08-26'
-      },
-
-      // --- जिंगल्स (Jingles) ---
-      {
-        id: 'jin_1',
-        title: 'Ktimes Media | FM Radio Style Ad | Special TVC | Marathi AI Video Advertisement',
-        category: 'जिंगल्स (Jingles)',
-        tag: 'FM Jingle',
-        url: 'https://www.youtube.com/watch?v=d5BQiFBFBbI',
-        views: 2150,
-        likes: 240,
-        date: '2026-08-26'
-      },
-      {
-        id: 'jin_2',
-        title: 'गाडी घ्यायची? 🚗 आधी ही Jingle ऐका! | Borawke Hero Automobiles | FM Radio Style Jingle',
-        category: 'जिंगल्स (Jingles)',
-        tag: 'Radio Jingle',
-        url: 'https://www.youtube.com/watch?v=Tgxhyt53Zys',
-        views: 1980,
-        likes: 210,
-        date: '2026-08-26'
-      },
-      {
-        id: 'jin_3',
-        title: 'Disha Computers ची दमदार Jingle! 💻🔥 | Computer Course Advertisement | KTimes Media',
-        category: 'जिंगल्स (Jingles)',
-        tag: 'Studio Jingle',
-        url: 'https://www.youtube.com/watch?v=8nnaz-fZ0kY',
-        views: 1650,
-        likes: 175,
-        date: '2026-08-26'
-      },
-      {
-        id: 'jin_4',
-        title: 'तुमच्या शेती औषधांच्या Brand साठी अशी Jingle बनवा! 🔥 | Marathi Agri Advertisement | KTimes Media',
-        category: 'जिंगल्स (Jingles)',
-        tag: 'Agri Jingle',
-        url: 'https://www.youtube.com/watch?v=VutNpZIBHgc',
-        views: 1420,
-        likes: 130,
-        date: '2026-08-26'
-      },
-      {
-        id: 'jin_5',
-        title: 'कपड्यांच्या दुकानासाठी Jingle अशी हवी 🔥 | Factory Outlet Saswad | Male + Female Voice | KTimes Media',
-        category: 'जिंगल्स (Jingles)',
-        tag: 'Dual Voice',
-        url: 'https://www.youtube.com/watch?v=sbKkREOfmS8',
-        views: 1890,
-        likes: 195,
-        date: '2026-08-26'
-      },
-
-      // --- लोगो डिझाईन (Logo Design) ---
-      {
-        id: 'logo_1',
-        title: 'Shivtej Ganesh Mandal Sakharwadi, Logo | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
-        category: 'लोगो डिझाईन (Logo Design)',
-        tag: '3D Logo',
-        url: 'https://www.youtube.com/watch?v=IfTa_GSqRbs',
-        views: 1250,
-        likes: 115,
-        date: '2026-08-26'
-      },
-      {
-        id: 'logo_2',
-        title: 'Vim Bar Logo | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
-        category: 'लोगो डिझाईन (Logo Design)',
-        tag: 'Cinematic 3D',
-        url: 'https://www.youtube.com/watch?v=Eg8NW-3EMEQ',
-        views: 1100,
-        likes: 90,
-        date: '2026-08-26'
-      },
-      {
-        id: 'logo_3',
-        title: 'jai Hanuman Tarun Mandal 02 Logo | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
-        category: 'लोगो डिझाईन (Logo Design)',
-        tag: 'Mandal Logo',
-        url: 'https://www.youtube.com/watch?v=CCdplv6JpkY',
-        views: 980,
-        likes: 85,
-        date: '2026-08-26'
-      },
-      {
-        id: 'logo_4',
-        title: 'Shreyash Jewellers,Pandharpur Logo | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
-        category: 'लोगो डिझाईन (Logo Design)',
-        tag: 'Jewellers Logo',
-        url: 'https://www.youtube.com/watch?v=UkWrx0zvVrc',
-        views: 1450,
-        likes: 135,
-        date: '2026-08-26'
-      },
-      {
-        id: 'logo_5',
-        title: 'स्वर्णमयी Paithani & Jewellers,Kalyan | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
-        category: 'लोगो डिझाईन (Logo Design)',
-        tag: 'Gold Logo',
-        url: 'https://www.youtube.com/watch?v=sxB-v5vB6MQ',
-        views: 1380,
-        likes: 125,
-        date: '2026-08-26'
-      },
-      {
-        id: 'logo_6',
-        title: 'Create Cinematic Intro Of This | Ktimes Media',
-        category: 'लोगो डिझाईन (Logo Design)',
-        tag: 'Logo Intro',
-        url: 'https://www.youtube.com/watch?v=4b9rGdmKTrE',
-        views: 1050,
-        likes: 92,
-        date: '2026-08-26'
-      },
-      {
-        id: 'logo_7',
-        title: 'KTimes Media broadcast Logo | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
-        category: 'लोगो डिझाईन (Logo Design)',
-        tag: 'Broadcast 3D',
-        url: 'https://www.youtube.com/watch?v=ik8cAjSSY04',
-        views: 2200,
-        likes: 260,
-        date: '2026-08-26'
-      },
-      {
-        id: 'logo_img_1',
-        title: 'Ktimes Studio Creative Branding Showcase 01',
-        category: 'लोगो डिझाईन (Logo Design)',
-        tag: 'HD Graphic',
-        url: 'https://i.postimg.cc/kMKsMvmr/IMG-20220218-WA0146.jpg',
-        views: 870,
-        likes: 74,
-        date: '2026-08-26'
-      },
-      {
-        id: 'logo_img_2',
-        title: 'AI Concept Logo Creation & Vector Art 02',
-        category: 'लोगो डिझाईन (Logo Design)',
-        tag: 'AI Concept',
-        url: 'https://i.postimg.cc/VN2dqrJY/Chat-GPT-Image-Aug-26-2026-09-19-59-AM.png',
-        views: 920,
-        likes: 80,
-        date: '2026-08-26'
-      },
-      {
-        id: 'logo_img_3',
-        title: 'Premium Corporate Identity & Typography 03',
-        category: 'लोगो डिझाईन (Logo Design)',
-        tag: 'Vector Logo',
-        url: 'https://i.postimg.cc/Wp8D7dmV/Untitled-3.png',
-        views: 810,
-        likes: 68,
-        date: '2026-08-26'
-      },
-      {
-        id: 'logo_img_4',
-        title: 'Commercial Business Logo Design Portfolio 04',
-        category: 'लोगो डिझाईन (Logo Design)',
-        tag: 'Identity Pack',
-        url: 'https://i.postimg.cc/d3Y3fbmP/02-54-20-PM.jpg',
-        views: 890,
-        likes: 78,
-        date: '2026-08-26'
-      },
-
-      // --- व्हिडिओ जाहिराती (Video Ads) ---
-      {
-        id: 'v_ad_1',
-        title: 'New Aryan Mobile | Deccan Chauk Phaltan | Vivo X 70 Series 5G Booking start now | Ktimes Media',
-        category: 'व्हिडिओ जाहिराती (Video Ads)',
-        tag: 'TV Commercial',
-        url: 'https://www.youtube.com/watch?v=loR-ygqALnY',
-        views: 2400,
-        likes: 210,
-        date: '2026-08-26'
-      },
-      {
-        id: 'v_ad_2',
-        title: 'Hotel Krushnai | Someshwarnagar | Solaskar Sir | Ktimes Media |Sudhir Nemane |Yogesh Yadav',
-        category: 'व्हिडिओ जाहिराती (Video Ads)',
-        tag: 'HD Promo',
-        url: 'https://www.youtube.com/watch?v=Jm2BT-F4izk',
-        views: 1950,
-        likes: 180,
-        date: '2026-08-26'
-      },
-
-      // --- ऑडिओ / व्हॉईस ओव्हर (Voice Over) ---
-      {
-        id: 'vo_1',
-        title: 'Ktimes Jingles,Maharashtra | Special TVC | Marathi AI Video Advertisement | KTimes Media',
-        category: 'ऑडिओ / व्हॉईस ओव्हर (Voice Over)',
-        tag: 'Voice Over',
-        url: 'https://www.youtube.com/watch?v=saXEnGBKg6w',
-        views: 1720,
-        likes: 165,
-        date: '2026-08-26'
-      },
-
-      // --- Reels / Shorts ---
-      {
-        id: 'sh_1',
-        title: 'Sanvi Vadapav Miniature Ad | Marathi AI Video Advertisement | KTimes Media',
-        category: 'Reels / Shorts',
-        tag: 'Miniature Ad',
-        url: 'https://www.youtube.com/watch?v=E8QblWt3dl8',
-        views: 3100,
-        likes: 380,
-        date: '2026-08-26'
-      },
-      {
-        id: 'sh_2',
-        title: 'Aarambh Gold Finance,Phaltan | Special TVC | Marathi AI Video Advertisement | KTimes Media',
-        category: 'Reels / Shorts',
-        tag: 'Gold Ad',
-        url: 'https://www.youtube.com/watch?v=6xfMdS4Vozk',
-        views: 2850,
-        likes: 310,
-        date: '2026-08-26'
-      },
-      {
-        id: 'sh_3',
-        title: 'Aarambh Gold Finance,Phaltan| Motu Patlu Video | Marathi AI Video Advertisement | KTimes Media',
-        category: 'Reels / Shorts',
-        tag: 'Animation 3D',
-        url: 'https://www.youtube.com/watch?v=1V-uKV4zhN8',
-        views: 3400,
-        likes: 420,
-        date: '2026-08-26'
-      },
-      {
-        id: 'sh_4',
-        title: 'Ktimes Energy Drink 3D ad | Marathi AI Video Advertisement | KTimes Media',
-        category: 'Reels / Shorts',
-        tag: '3D Promo',
-        url: 'https://www.youtube.com/watch?v=dU0V7csxGRo',
-        views: 2200,
-        likes: 245,
-        date: '2026-08-26'
-      },
-      {
-        id: 'sh_5',
-        title: 'Ktimes Energy Drink 3D ad 02 | Marathi AI Video Advertisement | KTimes Media',
-        category: 'Reels / Shorts',
-        tag: '3D VFX',
-        url: 'https://www.youtube.com/watch?v=utrMgSFmofQ',
-        views: 2050,
-        likes: 215,
-        date: '2026-08-26'
-      },
-
-      // --- फेस्टिवल व्हिडिओ ---
-      {
-        id: 'fest_1',
-        title: 'Swarnmayi Paithani,Panvel | Marathi Rakshabandhan Festival AI Video Advertisement | KTimes Media',
-        category: 'फेस्टिवल व्हिडिओ',
-        tag: 'Rakhi Special',
-        url: 'https://www.youtube.com/watch?v=bERsNsoJMjQ',
-        views: 2600,
-        likes: 290,
-        date: '2026-08-26'
-      },
-      {
-        id: 'fest_2',
-        title: 'Shreyash Jewellers,Pandharpur| Marathi Shivjayanti Festival AI Video Advertisement | KTimes Media',
-        category: 'फेस्टिवल व्हिडिओ',
-        tag: 'Shivjayanti',
-        url: 'https://www.youtube.com/watch?v=_zKcZJtv6R0',
-        views: 3100,
-        likes: 360,
-        date: '2026-08-26'
-      },
-      {
-        id: 'fest_3',
-        title: 'Shivshakti Jewelers,Atpadi,Sangali | Marathi Navratri Festival AI Video Advertisement | KTimes Media',
-        category: 'फेस्टिवल व्हिडिओ',
-        tag: 'Navratri Ad',
-        url: 'https://www.youtube.com/watch?v=ilPFtUv5zLQ',
-        views: 2450,
-        likes: 275,
-        date: '2026-08-26'
-      },
-      {
-        id: 'fest_4',
-        title: 'Mahalaxmi Jewllers,Kalyan West | Marathi Festival AI Video Advertisement | KTimes Media',
-        category: 'फेस्टिवल व्हिडिओ',
-        tag: 'Festival TVC',
-        url: 'https://www.youtube.com/watch?v=TauLIqsuExY',
-        views: 2100,
-        likes: 230,
-        date: '2026-08-26'
-      },
-      {
-        id: 'fest_5',
-        title: 'PM Jewellers,Atpadi | Marathi Rakshabandhan Festival AI Video Advertisement | KTimes Media',
-        category: 'फेस्टिवल व्हिडिओ',
-        tag: 'Festival Promo',
-        url: 'https://www.youtube.com/watch?v=iRCziZJZpV4',
-        views: 2350,
-        likes: 260,
-        date: '2026-08-26'
-      },
-
-      // --- वाढदिवस गाणी ---
-      {
-        id: 'bday_1',
-        title: 'Ktimes Birthday Special Song | Special Wishes | Ktimes Media',
-        category: 'वाढदिवस गाणी',
-        tag: 'Birthday Special',
-        url: 'https://www.youtube.com/shorts/h6zFCqx_9rE',
-        views: 2780,
-        likes: 310,
-        date: '2026-08-26'
-      }
-    ];
-
-    let currentPin = localStorage.getItem('ktimes_admin_pin') || '7171';
-    let categories = DEFAULT_CATEGORIES;
-    let socialLinks = MASTER_SOCIALS;
-    let offerSettings = MASTER_OFFER;
-    let userLikedList = JSON.parse(localStorage.getItem('ktimes_user_likes')) || [];
-    let activeCategory = 'All';
-    let isAdminLoggedIn = false;
-    let deferredPrompt = null;
-
-    function getStoredSamples() {
-      const stored = localStorage.getItem('ktimes_samples_db');
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            const combined = [...MASTER_SAMPLES];
-            parsed.forEach(p => {
-              if (!combined.some(c => c.id === p.id) && p.id !== 'ai_2') {
-                combined.push(p);
-              }
-            });
-            return combined;
-          }
-        } catch (e) {}
-      }
-      return MASTER_SAMPLES;
-    }
-
-    function saveStoredSamples(data) {
-      localStorage.setItem('ktimes_samples_db', JSON.stringify(data));
-      renderSamples();
-    }
-
-    function renderSocialIconsBar() {
-      const bar = document.getElementById('socialIconsBar');
-      bar.innerHTML = `
-        <div class="flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-white px-2 py-1 rounded-lg border border-slate-200 shadow-sm shrink-0">
-          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-red-600"></i>
-          <span>साखरवाडी (फलटण)</span>
-        </div>
-
-        <a href="${socialLinks.wa_comm}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 px-2.5 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-700 transition shrink-0">
-          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
-          कम्युनिटी
-        </a>
-        
-        <div class="flex items-center gap-1.5 shrink-0">
-          <a href="${socialLinks.wa_chan}" target="_blank" rel="noopener noreferrer" title="WhatsApp Chat" class="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.82.49 3.53 1.35 5L2 22l5.12-1.33c1.43.82 3.09 1.33 4.88 1.33 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg></a>
-          <a href="${socialLinks.yt}" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-7 h-7 rounded-lg bg-[#FF0000] text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-          <a href="${socialLinks.insta}" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-          <a href="${socialLinks.fb}" target="_blank" rel="noopener noreferrer" title="Facebook" class="w-7 h-7 rounded-lg bg-[#1877F2] text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-          <a href="${socialLinks.linkedin}" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="w-7 h-7 rounded-lg bg-[#0A66C2] text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
-          <a href="${socialLinks.x}" target="_blank" rel="noopener noreferrer" title="X (Twitter)" class="w-7 h-7 rounded-lg bg-black text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-        </div>
-      `;
-      lucide.createIcons();
-    }
-
-    function renderOfferBanner() {
-      const banner = document.getElementById('offerBannerSection');
-      if (offerSettings.bannerImg && offerSettings.bannerImg.trim() !== "") {
-        banner.innerHTML = `
-          <div class="relative rounded-2xl overflow-hidden shadow-md border border-slate-200 bg-white">
-            <img src="${offerSettings.bannerImg}" alt="Offer Banner" class="w-full h-auto object-cover max-h-[340px]">
-            <div class="p-3 bg-white flex items-center justify-between border-t border-slate-100">
-              <a href="https://wa.me/919422337471?text=मी%20ऑफर%20बॅनर%20पाहिला%20आहे" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl shadow flex items-center gap-1.5">
-                <i data-lucide="message-circle" class="w-4 h-4"></i> ऑफर बुक करा
-              </a>
-              <div class="flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg">
-                <i data-lucide="eye" class="w-3.5 h-3.5 text-red-600"></i>
-                <span>${offerSettings.views || 3480} व्हिजिटर्स</span>
-              </div>
-            </div>
-          </div>
-        `;
-      } else {
-        const bgCol = offerSettings.bgColor || "#581c87";
-        banner.innerHTML = `
-          <div class="rounded-2xl p-5 md:p-6 text-white shadow-lg border border-white/20 space-y-3" style="background-color: ${bgCol};">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
-              <div class="space-y-1">
-                <span class="bg-yellow-400 text-purple-950 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block">✨ चालू ऑफर</span>
-                <h2 class="baloo-k text-xl md:text-2xl font-bold leading-snug text-white">${offerSettings.title}</h2>
-                <p class="text-xs md:text-sm text-purple-100">${offerSettings.sub}</p>
-                <div class="text-xs text-yellow-300 baloo-k font-bold pt-1">कालावधी: ${offerSettings.dateText}</div>
-              </div>
-
-              <div class="flex items-center gap-2 shrink-0">
-                <a href="https://wa.me/919422337471?text=मी%20फेस्टिव्हल%20ऑफर%20विषयी%20चौकशी%20करत%20आहे" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 bg-white text-slate-900 hover:bg-yellow-300 rounded-xl font-black text-xs md:text-sm flex items-center gap-1.5 shadow transition">
-                  <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i> ऑफर बुक करा
-                </a>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between pt-2 border-t border-white/20 text-xs font-semibold">
-              <a href="tel:9422337471" class="text-white hover:text-yellow-300 flex items-center gap-1">
-                <i data-lucide="phone-call" class="w-3.5 h-3.5 text-yellow-300"></i> थेट संपर्क: 9422337471
-              </a>
-              <div class="text-white bg-black/30 px-3 py-1 rounded-lg border border-white/10 flex items-center gap-1">
-                <i data-lucide="eye" class="w-3.5 h-3.5 text-yellow-400"></i>
-                <span><strong>${offerSettings.views || 3480}</strong> व्हिजिटर्स</span>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-      lucide.createIcons();
-    }
-
-    function renderCategoryTabs() {
-      const container = document.getElementById('categoryTabsContainer');
-      const select = document.getElementById('sampleCategory');
-      const adminList = document.getElementById('adminCategoryList');
-      
-      container.innerHTML = '';
-      select.innerHTML = '';
-      if (adminList) adminList.innerHTML = '';
-
-      categories.forEach((cat, index) => {
-        const isActive = activeCategory === cat;
-        const btn = document.createElement('button');
-        btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition flex items-center gap-1 ${
-          isActive 
-            ? 'bg-red-700 text-white shadow-md border border-red-700' 
-            : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
-        }`;
-        btn.innerText = cat;
-        btn.onclick = () => { activeCategory = cat; renderCategoryTabs(); renderSamples(); };
-        container.appendChild(btn);
-
-        if (cat !== 'All') {
-          const opt = document.createElement('option');
-          opt.value = cat;
-          opt.innerText = cat;
-          select.appendChild(opt);
-
-          if (adminList) {
-            const itemRow = document.createElement('div');
-            itemRow.className = 'flex items-center justify-between bg-white border border-amber-200 px-2.5 py-1.5 rounded-lg text-slate-800 text-xs shadow-sm';
-            itemRow.innerHTML = `
-              <span class="font-semibold">${cat}</span>
-              <div class="flex items-center gap-1">
-                <button onclick="moveCategory(${index}, -1)" ${index === 1 ? 'disabled class="opacity-30"' : 'class="p-1 hover:bg-slate-100 rounded text-slate-700"'} title="वर घ्या">
-                  <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i>
-                </button>
-                <button onclick="moveCategory(${index}, 1)" ${index === categories.length - 1 ? 'disabled class="opacity-30"' : 'class="p-1 hover:bg-slate-100 rounded text-slate-700"'} title="खाली घ्या">
-                  <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
-                </button>
-                <button onclick="deleteCategory(${index})" class="p-1 text-red-500 hover:bg-red-50 rounded ml-1" title="डिलीट करा">
-                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                </button>
-              </div>
-            `;
-            adminList.appendChild(itemRow);
-          }
-        }
-      });
-      lucide.createIcons();
-    }
-
-    function addNewCategory() {
-      const input = document.getElementById('newCategoryInput');
-      const val = input.value.trim();
-      if (!val) {
-        alert('कृपया कॅटेगरीचे नाव प्रविष्ट करा!');
-        return;
-      }
-      if (categories.includes(val)) {
-        alert('ही कॅटेगरी आधीच उपलब्ध आहे!');
-        return;
-      }
-      categories.push(val);
-      localStorage.setItem('ktimes_categories_db', JSON.stringify(categories));
-      input.value = '';
-      renderCategoryTabs();
-      alert('नवीन कॅटेगरी जोडली!');
-    }
-
-    function moveCategory(index, direction) {
-      const targetIndex = index + direction;
-      if (targetIndex < 1 || targetIndex >= categories.length) return;
-      const temp = categories[index];
-      categories[index] = categories[targetIndex];
-      categories[targetIndex] = temp;
-      localStorage.setItem('ktimes_categories_db', JSON.stringify(categories));
-      renderCategoryTabs();
-    }
-
-    function deleteCategory(index) {
-      if (confirm(`'${categories[index]}' ही कॅटेगरी डिलीट करायची आहे का?`)) {
-        categories.splice(index, 1);
-        localStorage.setItem('ktimes_categories_db', JSON.stringify(categories));
-        renderCategoryTabs();
-        renderSamples();
-      }
-    }
-
-    function copyCategoriesForGitHub() {
-      const codeStr = JSON.stringify(categories, null, 2);
-      navigator.clipboard.writeText(codeStr).then(() => {
-        alert('कॅटेगरीजचा कोड कॉपी झाला!');
-      });
-    }
-
-    function filterCategoryBySlug(slug) {
-      const found = categories.find(c => c.includes(slug));
-      if (found) {
-        activeCategory = found;
-        renderCategoryTabs();
-        renderSamples();
-        window.scrollTo({top: 220, behavior: 'smooth'});
-      }
-    }
-
-    function formatMediaEmbed(url) {
-      if (!url) return '';
-      
-      if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        let videoId = '';
-        if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split(/[?#&]/)[0];
-        else if (url.includes('watch?v=')) videoId = url.split('watch?v=')[1].split(/[&#]/)[0];
-        else if (url.includes('shorts/')) videoId = url.split('shorts/')[1].split(/[?#&]/)[0];
-        else if (url.includes('embed/')) videoId = url.split('embed/')[1].split(/[?#&]/)[0];
-
-        if (videoId) {
-          return `
-            <div class="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-inner">
-              <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <a href="https://youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer" class="block text-[11px] text-red-600 font-bold hover:underline">YouTube वर उघडा ↗</a>
-          `;
-        }
-      }
-
-      if (url.includes('instagram.com')) {
-        return `
-          <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-900 border border-slate-800 flex flex-col items-center justify-center p-4 text-center">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center mb-2 shadow-md">
-              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            </div>
-            <span class="text-xs font-bold text-white mb-2">Instagram Reel / Post</span>
-            <a href="${url}" target="_blank" rel="noopener noreferrer" class="px-4 py-1.5 bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 hover:opacity-90 text-white text-xs font-bold rounded-lg shadow">Instagram वर पहा ↗</a>
-          </div>
-        `;
-      }
-
-      if (url.includes('facebook.com') || url.includes('fb.watch')) {
-        return `
-          <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-900 border border-slate-800 flex flex-col items-center justify-center p-4 text-center">
-            <div class="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center mb-2 shadow-md">
-              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            </div>
-            <span class="text-xs font-bold text-white mb-2">Facebook Video / Post</span>
-            <a href="${url}" target="_blank" rel="noopener noreferrer" class="px-4 py-1.5 bg-[#1877F2] hover:bg-blue-700 text-white text-xs font-bold rounded-lg shadow">Facebook वर पहा ↗</a>
-          </div>
-        `;
-      }
-
-      if (url.match(/\.(jpeg|jpg|gif|png|webp|svg)($|\?)/i) || url.includes('postimg.cc') || url.includes('i.ibb.co')) {
-        return `
-          <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center p-2">
-            <img src="${url}" alt="Sample Preview" class="max-h-full max-w-full object-contain rounded-lg shadow-sm">
-          </div>
-        `;
-      }
-
-      let audioSrc = url;
-      if (url.includes('drive.google.com')) {
-        const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-        if (fileIdMatch && fileIdMatch[1]) {
-          audioSrc = `https://docs.google.com/uc?export=download&id=${fileIdMatch[1]}`;
-        }
-      }
-
-      return `
-        <div class="p-3 bg-red-50/50 rounded-xl border border-red-100 flex flex-col gap-2">
-          <div class="flex items-center justify-between text-xs font-semibold text-slate-800">
-            <span class="flex items-center gap-1.5"><i data-lucide="volume-2" class="w-4 h-4 text-red-600"></i> Studio Master Audio</span>
-            <span class="text-[10px] bg-red-600 text-white px-2 py-0.5 rounded-full font-bold">HD</span>
-          </div>
-          <audio controls class="w-full h-9 rounded-lg outline-none">
-            <source src="${audioSrc}">
-          </audio>
-        </div>
-      `;
-    }
-
-    function renderSamples() {
-      const grid = document.getElementById('samplesGrid');
-      const empty = document.getElementById('emptyState');
-      const samples = getStoredSamples();
-
-      const filtered = activeCategory === 'All' 
-        ? samples 
-        : samples.filter(s => s.category && s.category.trim() === activeCategory.trim());
-
-      grid.innerHTML = '';
-      if (!filtered || filtered.length === 0) {
-        empty.classList.remove('hidden');
-      } else {
-        empty.classList.add('hidden');
-        filtered.forEach(item => {
-          const isLiked = userLikedList.includes(item.id);
-          const card = document.createElement('div');
-          card.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between gap-3 relative";
-          card.innerHTML = `
-            <div class="space-y-2.5">
-              <div class="flex items-center justify-between">
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-red-50 text-red-700 border border-red-100">
-                  ${item.tag || item.category || 'HD Production'}
-                </span>
-                <span class="text-[10px] font-medium text-slate-400">${item.date || 'Active'}</span>
-              </div>
-              <h3 class="font-bold text-slate-900 text-sm leading-snug">${item.title}</h3>
-              
-              ${formatMediaEmbed(item.url)}
-
-              <div class="flex items-center justify-between pt-1 text-xs font-bold">
-                <div class="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-700">
-                  <i data-lucide="eye" class="w-3.5 h-3.5 text-indigo-600"></i>
-                  <span>${item.views || 450} व्ह्यूज</span>
-                  ${isAdminLoggedIn ? `<button onclick="editSampleViews('${item.id}')" class="ml-1 text-indigo-400 hover:text-indigo-900"><i data-lucide="pencil" class="w-3 h-3"></i></button>` : ''}
-                </div>
-
-                <button onclick="toggleLike('${item.id}')" class="heart-btn flex items-center gap-1.5 px-3 py-1 rounded-lg border transition ${
-                  isLiked 
-                    ? 'bg-rose-50 border-rose-200 text-rose-600 shadow-sm' 
-                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-rose-50 hover:text-rose-600'
-                }">
-                  <i data-lucide="heart" class="w-3.5 h-3.5 ${isLiked ? 'fill-rose-600 text-rose-600' : 'text-slate-400'}"></i>
-                  <span>${item.likes || 42}</span>
-                </button>
-              </div>
-            </div>
-            
-            <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
-              <button onclick="openSmartShare('${item.title.replace(/'/g, "\\'")}', '${item.url.replace(/'/g, "\\'")}')" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition">
-                <i data-lucide="share-2" class="w-3.5 h-3.5 text-red-600"></i> सोशल शेअर
-              </button>
-              
-              <a href="https://wa.me/919422337471?text=मला%20या%20सॅम्पलसारखे%20काम%20करायचे%20आहे:%20${encodeURIComponent(item.title)}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-1 shadow-sm transition">
-                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> विचारणा
-              </a>
-              ${isAdminLoggedIn ? `<button onclick="deleteSample('${item.id}')" class="p-2 text-red-500 hover:bg-red-50 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-      }
-      lucide.createIcons();
-    }
-
-    function editSampleViews(id) {
-      const list = getStoredSamples();
-      const item = list.find(s => s.id === id);
-      if (!item) return;
-      const newV = prompt(`"${item.title}" चे व्ह्यूज अपडेट करा:`, item.views || 0);
-      if (newV !== null && !isNaN(newV) && newV.trim() !== "") {
-        item.views = parseInt(newV);
-        saveStoredSamples(list);
-      }
-    }
-
-    function toggleLike(id) {
-      const list = getStoredSamples();
-      const item = list.find(s => s.id === id);
-      if (!item) return;
-
-      if (userLikedList.includes(id)) {
-        userLikedList = userLikedList.filter(x => x !== id);
-        item.likes = Math.max(0, (item.likes || 1) - 1);
-      } else {
-        userLikedList.push(id);
-        item.likes = (item.likes || 0) + 1;
-      }
-
-      localStorage.setItem('ktimes_user_likes', JSON.stringify(userLikedList));
-      saveStoredSamples(list);
-    }
-
-    function openSmartShare(title, mediaUrl) {
-      const shareUrl = window.location.href;
-      const shareText = `🎬 के टाईम्स मिडिया - ${title}\n📍 साखरवाडी (फलटण)\n📞 9422337471`;
-      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-      if (isMobile && navigator.share) {
-        navigator.share({
-          title: `Ktimes Media - ${title}`,
-          text: `${shareText}\n`,
-          url: shareUrl
-        }).catch(() => {
-          showShareModal(title, shareText, shareUrl);
-        });
-      } else {
-        showShareModal(title, shareText, shareUrl);
-      }
-    }
-
-    function showShareModal(title, text, url) {
-      document.getElementById('shareModalTitle').innerText = title;
-      document.getElementById('shareUrlInput').value = url;
-
-      document.getElementById('shareWaBtn').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + '\n' + url)}`;
-      document.getElementById('shareFbBtn').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-      document.getElementById('shareXBtn').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
-      document.getElementById('shareInBtn').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
-
-      document.getElementById('shareModal').classList.remove('hidden');
-      document.getElementById('shareModal').classList.add('flex');
-    }
-
-    function closeShareModal() {
-      document.getElementById('shareModal').classList.add('hidden');
-      document.getElementById('shareModal').classList.remove('flex');
-    }
-
-    function copyShareUrl() {
-      const copyInput = document.getElementById('shareUrlInput');
-      copyInput.select();
-      navigator.clipboard.writeText(copyInput.value).then(() => {
-        alert('लिंक कॉपी झाली!');
-        closeShareModal();
-      });
-    }
-
-    function openAdminModal() {
-      document.getElementById('adminModal').classList.remove('hidden');
-      document.getElementById('adminModal').classList.add('flex');
-    }
-    
-    function closeAdminModal() {
-      document.getElementById('adminModal').classList.add('hidden');
-      document.getElementById('adminModal').classList.remove('flex');
-    }
-
-    function verifyAdminPin() {
-      const entered = document.getElementById('adminPinInput').value;
-      if (entered === currentPin) {
-        isAdminLoggedIn = true;
-        document.getElementById('adminLockScreen').classList.add('hidden');
-        document.getElementById('adminUnlockedArea').classList.remove('hidden');
-        
-        document.getElementById('link_wa_comm').value = socialLinks.wa_comm || '';
-        document.getElementById('link_wa_chan').value = socialLinks.wa_chan || '';
-        document.getElementById('link_yt').value = socialLinks.yt || '';
-        document.getElementById('link_insta').value = socialLinks.insta || '';
-        document.getElementById('link_fb').value = socialLinks.fb || '';
-        document.getElementById('link_linkedin').value = socialLinks.linkedin || '';
-        document.getElementById('link_x').value = socialLinks.x || '';
-        
-        document.getElementById('offerBannerTitle').value = offerSettings.title || '';
-        document.getElementById('offerBannerSub').value = offerSettings.sub || '';
-        document.getElementById('offerDateText').value = offerSettings.dateText || '';
-        document.getElementById('offerBgColor').value = offerSettings.bgColor || '#581c87';
-        document.getElementById('offerBannerViews').value = offerSettings.views || 3480;
-        document.getElementById('offerBannerImgUrl').value = offerSettings.bannerImg || '';
-        
-        renderCategoryTabs();
-        renderSamples();
-      } else {
-        alert('चुकीचा ॲडमिन पिन!');
-      }
-    }
-
-    function saveOfferSettings() {
-      offerSettings.title = document.getElementById('offerBannerTitle').value;
-      offerSettings.sub = document.getElementById('offerBannerSub').value;
-      offerSettings.dateText = document.getElementById('offerDateText').value;
-      offerSettings.bgColor = document.getElementById('offerBgColor').value;
-      offerSettings.views = parseInt(document.getElementById('offerBannerViews').value) || 3480;
-      offerSettings.bannerImg = document.getElementById('offerBannerImgUrl').value;
-      
-      localStorage.setItem('ktimes_offer_db', JSON.stringify(offerSettings));
-      renderOfferBanner();
-      alert('ऑफर तपशील सेव्ह झाले!');
-    }
-
-    function removeOfferBannerImg() {
-      offerSettings.bannerImg = "";
-      document.getElementById('offerBannerImgUrl').value = "";
-      localStorage.setItem('ktimes_offer_db', JSON.stringify(offerSettings));
-      renderOfferBanner();
-      alert('इमेज काढून कलर मोड सुरू केला!');
-    }
-
-    function saveSocialLinks() {
-      socialLinks = {
-        wa_comm: document.getElementById('link_wa_comm').value,
-        wa_chan: document.getElementById('link_wa_chan').value,
-        yt: document.getElementById('link_yt').value,
-        insta: document.getElementById('link_insta').value,
-        fb: document.getElementById('link_fb').value,
-        linkedin: document.getElementById('link_linkedin').value,
-        x: document.getElementById('link_x').value
-      };
-      localStorage.setItem('ktimes_socials_db', JSON.stringify(socialLinks));
-      renderSocialIconsBar();
-      alert('सर्व सोशल मीडिया लिंक्स सेव्ह झाल्या!');
-    }
-
-    function handleSaveSample(e) {
-      e.preventDefault();
-      const newSample = {
-        id: 's_' + Date.now(),
-        title: document.getElementById('sampleTitle').value,
-        category: document.getElementById('sampleCategory').value,
-        tag: document.getElementById('sampleTag').value || 'HD Production',
-        url: document.getElementById('sampleUrl').value,
-        views: parseInt(document.getElementById('sampleInitialViews').value) || 1200,
-        likes: parseInt(document.getElementById('sampleInitialLikes').value) || 95,
-        date: new Date().toISOString().split('T')[0]
-      };
-      
-      const list = getStoredSamples();
-      list.unshift(newSample);
-      saveStoredSamples(list);
-      
-      alert('सॅम्पल पब्लिश झाले!');
-      closeAdminModal();
-    }
-
-    function deleteSample(id) {
-      if (confirm('हे सॅम्पल डिलीट करायचे आहे का?')) {
-        const list = getStoredSamples().filter(s => s.id !== id);
-        saveStoredSamples(list);
-      }
-    }
-
-    function triggerAppUpdate() {
-      localStorage.removeItem('ktimes_samples_db');
-      localStorage.removeItem('ktimes_categories_db');
-      localStorage.removeItem('ktimes_socials_db');
-      localStorage.removeItem('ktimes_offer_db');
-      window.location.reload(true);
-    }
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-    });
-
-    function installKtimesApp() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(() => {
-          deferredPrompt = null;
-        });
-      } else {
-        alert("मोबाईल/PC वर ॲप इन्स्टॉल करण्यासाठी:\n१. ब्राऊझरच्या ३ ठिपक्यांवर (मेनू) क्लिक करा.\n२. 'Install App' किंवा 'Add to Home screen' निवडा.");
-      }
-    }
-
-    function exportDataBackup() {
-      const backup = {
-        samples: getStoredSamples(),
-        socials: socialLinks,
-        offer: offerSettings,
-        categories: categories,
-        pin: currentPin
-      };
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup, null, 2));
-      const a = document.createElement('a');
-      a.href = dataStr;
-      a.download = "ktimes_media_backup.json";
-      a.click();
-    }
-
-    function importDataBackup(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        try {
-          const imported = JSON.parse(event.target.result);
-          if (imported.samples) localStorage.setItem('ktimes_samples_db', JSON.stringify(imported.samples));
-          if (imported.socials) localStorage.setItem('ktimes_socials_db', JSON.stringify(imported.socials));
-          if (imported.offer) localStorage.setItem('ktimes_offer_db', JSON.stringify(imported.offer));
-          if (imported.categories) localStorage.setItem('ktimes_categories_db', JSON.stringify(imported.categories));
-          if (imported.pin) localStorage.setItem('ktimes_admin_pin', imported.pin);
-          alert('डेटा यशस्वीरित्या रिस्टोअर झाला!');
-          location.reload();
-        } catch (err) { alert('चुकीची बॅकअप फाईल!'); }
-      };
-      reader.readAsText(file);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      renderSocialIconsBar();
-      renderOfferBanner();
-      renderCategoryTabs();
-      renderSamples();
-    });
-  </script>
-</body>
-</html>
+ACT AS A SENIOR FULL-STACK DEVELOPER, UI/UX DESIGNER,
+MARATHI UX WRITER, CONVERSION OPTIMIZATION EXPERT
+AND PRODUCT ENGINEER.
+
+PROJECT:
+KTimes Media – Professional Marathi Advertising & Media App
+
+LIVE APP:
+https://ktimes-media-app.vercel.app
+
+IMPORTANT:
+This is an EXISTING WORKING APPLICATION.
+
+DO NOT redesign the application from scratch.
+
+DO NOT change the existing:
+- Logo
+- Brand identity
+- Main layout
+- Existing colour palette
+- Existing navigation structure
+- Existing cards unless required
+- Existing animation style
+- Existing Admin functionality
+- Existing sample management
+- Existing Festival Offer structure
+
+The goal is:
+"KEEP THE EXISTING DESIGN AND MAKE IT MORE PROFESSIONAL."
+
+==================================================
+1. LANGUAGE REQUIREMENT
+==================================================
+
+The majority of KTimes Media customers are Marathi-speaking
+customers from Maharashtra.
+
+Therefore the entire customer-facing interface must use
+natural, conversational Marathi.
+
+Do NOT use unnecessarily formal Marathi.
+
+Use commonly spoken Marathi with accepted English words
+where Marathi customers normally use them.
+
+Examples:
+
+"Contact" -> "संपर्क"
+"Contact Us" -> "आमच्याशी संपर्क करा"
+"Review" -> "ग्राहकांचे अभिप्राय"
+"Feedback" -> "आपला अनुभव सांगा"
+"Sample" -> "कामाचे नमुने"
+"Category" -> "विभाग"
+"Share" -> "शेअर करा"
+"View More" -> "आणखी पहा"
+"Call Now" -> "आत्ताच कॉल करा"
+"WhatsApp" -> "WhatsApp"
+"Social Media" -> "सोशल मीडिया"
+"Offer" -> "ऑफर"
+"Login" -> "लॉगिन"
+"Admin" -> "ॲडमिन"
+
+IMPORTANT:
+Do NOT translate WhatsApp, Instagram, Facebook,
+YouTube, TVC, FM, AI etc. into unnatural Marathi.
+
+Use Marathi + commonly spoken English naturally.
+
+==================================================
+2. EXISTING DESIGN PRESERVATION
+==================================================
+
+First inspect the complete existing codebase.
+
+Before changing anything:
+
+- identify framework
+- identify components
+- identify styling system
+- identify state management
+- identify data storage
+- identify existing Admin system
+- identify all routes
+- identify reusable components
+
+Then modify the EXISTING code.
+
+Do NOT create a completely new application.
+
+Preserve current visual identity.
+
+==================================================
+3. ADD PROFESSIONAL HERO SECTION
+==================================================
+
+Keep the current branding.
+
+Improve the hero area with:
+
+के टाईम्स मिडिया
+
+"हमेशा समय के साथ..!"
+
+Supporting text:
+
+"ऑडिओ • व्हिडिओ • ग्राफिक डिझाईन • डिजिटल जाहिरात"
+
+Primary CTA:
+
+"WhatsApp वर संपर्क करा"
+
+Secondary CTA:
+
+"आत्ताच कॉल करा"
+
+WhatsApp CTA must open WhatsApp with a
+pre-filled professional enquiry message.
+
+==================================================
+4. ADD SERVICES SECTION
+==================================================
+
+Create a clean professional service section.
+
+Services:
+
+- FM Radio Style Jingle
+- Audio Advertisement
+- Video Advertisement
+- Voice Over
+- Graphic Design
+- Social Media Promotion
+- Festival Advertising
+- TVC / Promotional Video
+- Digital Marketing
+
+Use existing card design language.
+
+Do NOT introduce a completely different UI style.
+
+==================================================
+5. ADD CUSTOMER REVIEWS SECTION
+==================================================
+
+THIS IS REQUIRED.
+
+Section heading:
+
+"ग्राहकांचे अभिप्राय ❤️"
+
+Display review cards.
+
+Each card:
+
+- Star rating
+- Customer name
+- Business / village
+- Review text
+
+Add:
+
+"आपला अनुभव सांगा"
+
+Review submission form:
+
+- नाव
+- व्यवसाय / गाव
+- Rating 1–5
+- अभिप्राय
+
+CTA:
+
+"अभिप्राय पाठवा"
+
+Initially reviews can use the existing application
+data/storage architecture.
+
+Do NOT introduce a paid database unless absolutely necessary.
+
+Admin must be able to:
+
+- Approve review
+- Hide review
+- Delete review
+- Mark Featured Review
+
+Only APPROVED reviews should appear publicly.
+
+==================================================
+6. WHY KTIMES MEDIA SECTION
+==================================================
+
+Add:
+
+"का निवडावे KTimes Media?"
+
+Points:
+
+- प्रोफेशनल Voice Over
+- आकर्षक जाहिरात लेखन
+- AI + Studio Production
+- स्थानिक ग्राहकांच्या भाषेची जाण
+- Audio + Video + Graphic एकाच ठिकाणी
+- व्यवसाय वाढीवर लक्ष
+
+Keep it visually consistent with the existing app.
+
+==================================================
+7. TRUST SECTION
+==================================================
+
+Create a compact trust section.
+
+Use ONLY REAL NUMBERS IF AVAILABLE.
+
+NEVER invent fake customer counts,
+fake reviews or fake statistics.
+
+==================================================
+8. FESTIVAL OFFER IMPROVEMENT
+==================================================
+
+Keep the existing Festival Offer functionality.
+
+Improve CTA:
+
+"WhatsApp वर माहिती घ्या"
+
+Display:
+
+- Offer title
+- Offer details
+- Offer period
+- Offer image
+- CTA
+
+Keep existing admin controls.
+
+==================================================
+9. FLOATING WHATSAPP BUTTON
+==================================================
+
+Add a mobile-friendly floating WhatsApp button.
+
+Position:
+bottom-right.
+
+Pre-filled message:
+
+"नमस्कार KTimes Media,
+मला जाहिरातीबद्दल माहिती हवी आहे."
+
+Use the existing KTimes Media WhatsApp number.
+
+DO NOT expose sensitive configuration in frontend code.
+
+==================================================
+10. EXISTING SAMPLE SECTION
+==================================================
+
+Keep the existing sample system.
+
+Improve labels:
+
+"कामाचे नमुने"
+
+Categories:
+
+ऑडिओ
+व्हिडिओ
+जिंगल
+बॅनर
+TVC
+
+Keep existing Admin sample publishing functionality.
+
+==================================================
+11. ADMIN PANEL
+==================================================
+
+DO NOT remove current Admin features.
+
+Keep:
+
+- Category management
+- Reordering
+- Festival Offer management
+- Social links
+- Sample publishing
+- Backup
+- Restore
+
+Add:
+
+REVIEW MANAGEMENT
+
+Fields:
+
+- Customer Name
+- Business
+- Village
+- Rating
+- Review
+- Status
+- Featured
+
+Actions:
+
+Approve
+Hide
+Delete
+Feature
+
+==================================================
+12. MOBILE-FIRST DESIGN
+==================================================
+
+KTimes Media customers will primarily access the app
+from Android mobile phones.
+
+Therefore:
+
+- mobile-first
+- large tap targets
+- readable Marathi fonts
+- fast loading
+- sticky CTA
+- WhatsApp-first conversion
+- no unnecessary animations
+- no horizontal overflow
+
+Test:
+
+360px
+390px
+412px
+768px
+1024px
+1440px
+
+==================================================
+13. PERFORMANCE
+==================================================
+
+Optimize:
+
+- images
+- lazy loading
+- unnecessary JavaScript
+- external resources
+- fonts
+- videos
+
+Do not break existing functionality.
+
+==================================================
+14. SEO
+==================================================
+
+Add professional metadata:
+
+Title:
+
+"KTimes Media | ऑडिओ, व्हिडिओ आणि डिजिटल जाहिरात"
+
+Description:
+
+"के टाईम्स मिडिया — ऑडिओ जाहिरात, FM जिंगल,
+व्हिडिओ जाहिरात, Voice Over, Graphic Design आणि
+Digital Marketing साठी तुमचा विश्वासू मीडिया पार्टनर."
+
+Add:
+
+Open Graph metadata
+Twitter/X metadata
+favicon
+canonical URL
+
+==================================================
+15. ACCESSIBILITY
+==================================================
+
+Add:
+
+- proper button labels
+- alt text
+- keyboard accessibility
+- readable contrast
+- semantic HTML
+- aria labels where required
+
+==================================================
+16. SECURITY
+==================================================
+
+Review the existing Admin authentication.
+
+Do NOT store sensitive admin credentials
+in publicly accessible frontend code.
+
+Do NOT expose API keys.
+
+Use environment variables for secrets.
+
+Add basic security headers where compatible.
+
+==================================================
+17. ERROR HANDLING
+==================================================
+
+Add user-friendly Marathi messages.
+
+Example:
+
+"काहीतरी अडचण आली आहे.
+कृपया पुन्हा प्रयत्न करा."
+
+Never expose technical stack traces to customers.
+
+==================================================
+18. DATA SAFETY
+==================================================
+
+Before modifying existing data architecture:
+
+- preserve existing data
+- preserve existing categories
+- preserve existing samples
+- preserve existing offers
+- preserve existing social links
+
+Do not overwrite existing production data.
+
+==================================================
+19. CONVERSION PSYCHOLOGY
+==================================================
+
+The application is not just a portfolio.
+
+It is a LEAD GENERATION APP.
+
+Every major section should naturally guide the customer toward:
+
+WhatsApp
+Call
+Enquiry
+
+Do not overdo CTA buttons.
+
+Use clear hierarchy.
+
+Primary conversion:
+WhatsApp enquiry
+
+Secondary conversion:
+Phone call
+
+==================================================
+20. FINAL QUALITY CHECK
+==================================================
+
+Before completing:
+
+1. Build the project.
+2. Check for compilation errors.
+3. Check console errors.
+4. Check mobile responsiveness.
+5. Check all existing buttons.
+6. Check Admin login.
+7. Check sample publishing.
+8. Check Festival Offer.
+9. Check social links.
+10. Check WhatsApp.
+11. Check phone call.
+12. Check Review submission.
+13. Check Review approval.
+14. Check Review visibility.
+15. Check backup/restore.
+16. Check SEO metadata.
+
+MOST IMPORTANT:
+
+DO NOT redesign the app.
+
+DO NOT change the existing visual identity unnecessarily.
+
+DO NOT remove existing functionality.
+
+MAKE MINIMUM SAFE CHANGES.
+
+Preserve the current application and upgrade it
+into a polished, professional Marathi-first
+KTimes Media client application.
+
+At the end provide:
+
+A. Files changed
+B. What was added
+C. What was preserved
+D. Any environment variables required
+E. Any database/storage migration required
+F. Deployment instructions
+G. Final QA checklist
