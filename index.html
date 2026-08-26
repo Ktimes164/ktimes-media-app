@@ -251,7 +251,7 @@
             <div class="flex items-center justify-between">
               <label class="font-bold text-amber-950 uppercase block">कॅटेगरी मॅनेजमेंट व क्रम (Reorder)</label>
               <button onclick="copyCategoriesForGitHub()" class="px-2 py-1 bg-slate-800 text-white text-[10px] font-bold rounded flex items-center gap-1 hover:bg-black">
-                <i data-lucide="copy" class="w-3 h-3"></i> GitHub कोड कॉपी करा
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i> GitHub कोड कॉपी करा
               </button>
             </div>
             
@@ -355,7 +355,7 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // १. मुख्य सोशल मीडिया लिंक्स (१००% परिपूर्ण व थेट उघडणाऱ्या लिंक्स)
+    // १. मुख्य सोशल मीडिया लिंक्स
     const MASTER_SOCIALS = {
       wa_comm: "https://whatsapp.com/channel/0029VbBHwQeJUM2bMZhppY1D",
       wa_chan: "https://wa.me/919422337471",
@@ -393,7 +393,7 @@
       "डॉक्युमेंट्री (Documentary)"
     ];
 
-    // ४. मुख्य मास्टर सॅम्पल्स यादी (सुधीर नेमने यांचा व्हिडिओ सर्वात वर सेट केला आहे)
+    // ४. मुख्य मास्टर सॅम्पल्स यादी (OM Traders चा व्हिडिओ डिलीट केला आहे)
     const MASTER_SAMPLES = [
       // --- Ai व्हिडिओ Ad ---
       {
@@ -414,16 +414,6 @@
         url: 'https://www.youtube.com/watch?v=fWZ-zcp9DuQ',
         views: 1450,
         likes: 120,
-        date: '2026-08-26'
-      },
-      {
-        id: 'ai_2',
-        title: 'OM Tredars Bags,Sakharwadi | Special TVC | Marathi AI Video Advertisement | KTimes Media',
-        category: 'Ai व्हिडिओ Ad',
-        tag: 'AI Video Ad',
-        url: 'https://www.youtube.com/watch?v=cb6LNh1kKeQ',
-        views: 1320,
-        likes: 98,
         date: '2026-08-26'
       },
       {
@@ -799,7 +789,7 @@
           if (Array.isArray(parsed) && parsed.length > 0) {
             const combined = [...MASTER_SAMPLES];
             parsed.forEach(p => {
-              if (!combined.some(c => c.id === p.id)) {
+              if (!combined.some(c => c.id === p.id) && p.id !== 'ai_2') {
                 combined.push(p);
               }
             });
@@ -815,7 +805,6 @@
       renderSamples();
     }
 
-    // सोशल मीडिया बार (WhatsApp व इतर लिंक्स सर्व डिव्हाइसेसवर सुरळीत उघडण्यासाठी)
     function renderSocialIconsBar() {
       const bar = document.getElementById('socialIconsBar');
       bar.innerHTML = `
@@ -997,11 +986,9 @@
       }
     }
 
-    // ४. SMART EMBED
     function formatMediaEmbed(url) {
       if (!url) return '';
       
-      // 1. YouTube Video (Regular, Shorts, Embeds, Playlists)
       if (url.includes('youtube.com') || url.includes('youtu.be')) {
         let videoId = '';
         if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split(/[?#&]/)[0];
@@ -1019,7 +1006,6 @@
         }
       }
 
-      // 2. Instagram Post
       if (url.includes('instagram.com')) {
         return `
           <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-900 border border-slate-800 flex flex-col items-center justify-center p-4 text-center">
@@ -1032,7 +1018,6 @@
         `;
       }
 
-      // 3. Facebook Post
       if (url.includes('facebook.com') || url.includes('fb.watch')) {
         return `
           <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-900 border border-slate-800 flex flex-col items-center justify-center p-4 text-center">
@@ -1045,7 +1030,6 @@
         `;
       }
 
-      // 4. Direct Image (Logo / Graphic / Postimage)
       if (url.match(/\.(jpeg|jpg|gif|png|webp|svg)($|\?)/i) || url.includes('postimg.cc') || url.includes('i.ibb.co')) {
         return `
           <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center p-2">
@@ -1054,7 +1038,6 @@
         `;
       }
 
-      // 5. Audio (Google Drive or Direct URL)
       let audioSrc = url;
       if (url.includes('drive.google.com')) {
         const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
@@ -1076,7 +1059,6 @@
       `;
     }
 
-    // ५. RENDER SHOWCASE SAMPLES
     function renderSamples() {
       const grid = document.getElementById('samplesGrid');
       const empty = document.getElementById('emptyState');
@@ -1170,7 +1152,6 @@
       saveStoredSamples(list);
     }
 
-    // ६. SMART UNIVERSAL SHARE
     function openSmartShare(title, mediaUrl) {
       const shareUrl = window.location.href;
       const shareText = `🎬 के टाईम्स मिडिया - ${title}\n📍 साखरवाडी (फलटण)\n📞 9422337471`;
@@ -1216,7 +1197,6 @@
       });
     }
 
-    // ७. ADMIN AUTH & CONTROLS
     function openAdminModal() {
       document.getElementById('adminModal').classList.remove('hidden');
       document.getElementById('adminModal').classList.add('flex');
@@ -1320,7 +1300,6 @@
       }
     }
 
-    // रिफ्रेश बटण: जुना लोकल कॅश साफ करून GitHub चा मास्टर डेटा लोड करतो
     function triggerAppUpdate() {
       localStorage.removeItem('ktimes_samples_db');
       localStorage.removeItem('ktimes_categories_db');
@@ -1329,7 +1308,6 @@
       window.location.reload(true);
     }
 
-    // ८. PWA INSTALL LOGIC
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -1346,7 +1324,6 @@
       }
     }
 
-    // ९. BACKUP & RESTORE
     function exportDataBackup() {
       const backup = {
         samples: getStoredSamples(),
@@ -1381,7 +1358,6 @@
       reader.readAsText(file);
     }
 
-    // INIT
     window.addEventListener('DOMContentLoaded', () => {
       renderSocialIconsBar();
       renderOfferBanner();
