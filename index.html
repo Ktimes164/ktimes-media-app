@@ -7,20 +7,24 @@
   <title>Ktimes Media | Official Audio & Video Production</title>
   <meta name="description" content="के टाईम्स मिडिया - व्यावसायिक ऑडिओ, 4K व्हिडिओ जाहिराती, व्हॉईस ओव्हर आणि जिंगल्स स्टुडिओ. हमेशा समय के साथ..!">
   
+  <!-- PWA & Mobile Install Support -->
   <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Ktimes">
   <meta name="theme-color" content="#dc2626">
 
+  <!-- Open Graph & Social Preview -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ktimes-media-app.vercel.app/">
   <meta property="og:title" content="Ktimes Media | हमेशा समय के साथ..!">
   <meta property="og:description" content="व्यावसायिक ऑडिओ, 4K व्हिडिओ जाहिराती व जिंगल्स स्टुडिओ. साखरवाडी (फलटण). संपर्क: 9422337471">
-  <meta property="og:image" content="https://raw.githubusercontent.com/Ktimes164/ktimes-media-app/main/assets/ktimes-logo.jpg">
+  <meta property="og:image" content="https://i.postimg.cc/1RvXL4Wc/pha-sa-ta-va-hala-ophara-30-da-sa-ka-u-ta-(1).png">
 
+  <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   
+  <!-- Google Fonts: Baloo 2 & Mukta -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800;900&family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -74,6 +78,7 @@
         </div>
       </a>
 
+      <!-- Header Controls -->
       <div class="flex items-center gap-2">
         <button id="pwaInstallBtn" onclick="installKtimesApp()" class="flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition animate-bounce">
           <i data-lucide="download" class="w-3.5 h-3.5"></i>
@@ -171,6 +176,7 @@
       <p id="shareModalTitle" class="text-xs text-slate-600 font-medium line-clamp-2 bg-slate-50 p-2 rounded-lg border border-slate-100"></p>
 
       <div class="grid grid-cols-4 gap-2.5 py-1">
+        <!-- WhatsApp -->
         <a id="shareWaBtn" href="#" target="_blank" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition">
           <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-sm">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
@@ -178,6 +184,7 @@
           <span class="text-[10px] font-bold">WhatsApp</span>
         </a>
 
+        <!-- Facebook -->
         <a id="shareFbBtn" href="#" target="_blank" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 transition">
           <div class="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-sm">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -185,6 +192,7 @@
           <span class="text-[10px] font-bold">Facebook</span>
         </a>
 
+        <!-- X (Twitter) -->
         <a id="shareXBtn" href="#" target="_blank" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 transition">
           <div class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shadow-sm">
             <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -192,6 +200,7 @@
           <span class="text-[10px] font-bold">X (Twitter)</span>
         </a>
 
+        <!-- LinkedIn -->
         <a id="shareInBtn" href="#" target="_blank" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-700 transition">
           <div class="w-8 h-8 rounded-full bg-[#0A66C2] text-white flex items-center justify-center shadow-sm">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
@@ -242,7 +251,7 @@
             <div class="flex items-center justify-between">
               <label class="font-bold text-amber-950 uppercase block">कॅटेगरी मॅनेजमेंट व क्रम (Reorder)</label>
               <button onclick="copyCategoriesForGitHub()" class="px-2 py-1 bg-slate-800 text-white text-[10px] font-bold rounded flex items-center gap-1 hover:bg-black">
-                <i data-lucide="copy" class="w-3.5 h-3.5"></i> GitHub कोड कॉपी करा
+                <i data-lucide="copy" class="w-3 h-3"></i> GitHub कोड कॉपी करा
               </button>
             </div>
             
@@ -346,15 +355,15 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // १. मुख्य सोशल मीडिया लिंक्स (थेट इथे बदलू शकता)
+    // १. मुख्य सोशल मीडिया लिंक्स
     const MASTER_SOCIALS = {
-      wa_comm: "https://chat.whatsapp.com/your-community-link",
-      wa_chan: "https://whatsapp.com/channel/your-channel-link",
-      yt: "https://www.youtube.com/@KtimesMedia",
-      insta: "https://instagram.com",
-      fb: "https://facebook.com",
-      linkedin: "https://linkedin.com",
-      x: "https://x.com"
+      wa_comm: "https://whatsapp.com/channel/0029VbBHwQeJUM2bMZhppY1D",
+      wa_chan: "https://wa.me/919422337471",
+      yt: "https://youtube.com/@ktimesofficial4262?si=CpTXJhcvtCxn23uI",
+      insta: "https://www.instagram.com/ktimes_media_?igsi=dzdhcnB3bm5mZzE3",
+      fb: "https://www.facebook.com/share/19f2cEgqQU/",
+      linkedin: "https://www.linkedin.com/in/sudhirnemane-ktimesmedia?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+      x: "https://x.com/NemaneKtimes"
     };
 
     // २. मुख्य फेस्टिव्हल ऑफर आणि बॅनर इमेज लिंक
@@ -364,7 +373,7 @@
       dateText: "१५ ऑगस्ट ते ३१ ऑगस्ट २०२६",
       bgColor: "#581c87",
       views: 3480,
-      bannerImg: "https://i.postimg.cc/1RvXL4Wc/pha-sa-ta-va-hala-ophara-30-da-sa-ka-u-ta-(1).png" // <--- तुमची पोस्टइमेजेस लिंक इथे ठेवा
+      bannerImg: "https://i.postimg.cc/1RvXL4Wc/pha-sa-ta-va-hala-ophara-30-da-sa-ka-u-ta-(1).png"
     };
 
     // ३. मुख्य १३ कॅटेगरीज
@@ -384,47 +393,382 @@
       "डॉक्युमेंट्री (Documentary)"
     ];
 
-    // ४. मुख्य मास्टर सॅम्पल्स यादी
+    // ४. मुख्य मास्टर सॅम्पल्स यादी (सर्व ३०+ लिंक्ससह)
     const MASTER_SAMPLES = [
+      // --- Ai व्हिडिओ Ad ---
       {
-        id: 's_insta_1',
-        title: 'FM रेडिओ टाईप जिंगल बनवा',
-        category: 'Reels / Shorts',
-        tag: 'HD Production',
-        url: 'https://www.instagram.com',
-        views: 1200,
-        likes: 95,
-        date: '2026-08-21'
+        id: 'ai_1',
+        title: 'Mahi Fashion Chatrpati Sambhajinagar | Special TVC | Marathi AI Video Advertisement | KTimes Media',
+        category: 'Ai व्हिडिओ Ad',
+        tag: 'AI Video Ad',
+        url: 'https://www.youtube.com/watch?v=fWZ-zcp9DuQ',
+        views: 1450,
+        likes: 120,
+        date: '2026-08-26'
       },
       {
-        id: 's1',
-        title: 'Ktimes Media | Advertising Agency Showreel',
-        category: 'व्हिडिओ जाहिराती (Video Ads)',
-        tag: 'HD Production',
-        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        views: 1840,
-        likes: 215,
-        date: '2026-08-16'
+        id: 'ai_2',
+        title: 'OM Tredars Bags,Sakharwadi | Special TVC | Marathi AI Video Advertisement | KTimes Media',
+        category: 'Ai व्हिडिओ Ad',
+        tag: 'AI Video Ad',
+        url: 'https://www.youtube.com/watch?v=cb6LNh1kKeQ',
+        views: 1320,
+        likes: 98,
+        date: '2026-08-26'
       },
       {
-        id: 's2',
-        title: 'गणेश ज्वेलर्स - फेस्टिव्हल टीव्ही कमर्शियल जाहिरात',
-        category: 'व्हिडिओ जाहिराती (Video Ads)',
-        tag: '4K Commercial',
-        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        id: 'ai_3',
+        title: 'Mandira Mansoon Sale ad | Special TVC | Marathi AI Video Advertisement | KTimes Media',
+        category: 'Ai व्हिडिओ Ad',
+        tag: 'AI Video Ad',
+        url: 'https://www.youtube.com/watch?v=c4-EaJo8aYs',
+        views: 1180,
+        likes: 85,
+        date: '2026-08-26'
+      },
+      {
+        id: 'ai_4',
+        title: 'Ivizyme Drip Product Ai Video | Special TVC | Marathi AI Video Advertisement | KTimes Media',
+        category: 'Ai व्हिडिओ Ad',
+        tag: 'AI Video Ad',
+        url: 'https://www.youtube.com/watch?v=vRGYy3XwxyM',
+        views: 1540,
+        likes: 142,
+        date: '2026-08-26'
+      },
+      {
+        id: 'ai_5',
+        title: 'Deepak Saadi, Panvel | Special TVC | Marathi AI Video Advertisement | KTimes Media',
+        category: 'Ai व्हिडिओ Ad',
+        tag: 'AI Video Ad',
+        url: 'https://www.youtube.com/watch?v=4ANvEIcHzcU',
+        views: 1680,
+        likes: 156,
+        date: '2026-08-26'
+      },
+      {
+        id: 'ai_6',
+        title: 'Abhijeet Collection. Akol Nipani | Special TVC | Marathi AI Video Advertisement | KTimes Media',
+        category: 'Ai व्हिडिओ Ad',
+        tag: 'AI Video Ad',
+        url: 'https://www.youtube.com/watch?v=4wd25PTrSs0',
+        views: 1290,
+        likes: 110,
+        date: '2026-08-26'
+      },
+
+      // --- जिंगल्स (Jingles) ---
+      {
+        id: 'jin_1',
+        title: 'Ktimes Media | FM Radio Style Ad | Special TVC | Marathi AI Video Advertisement',
+        category: 'जिंगल्स (Jingles)',
+        tag: 'FM Jingle',
+        url: 'https://www.youtube.com/watch?v=d5BQiFBFBbI',
+        views: 2150,
+        likes: 240,
+        date: '2026-08-26'
+      },
+      {
+        id: 'jin_2',
+        title: 'गाडी घ्यायची? 🚗 आधी ही Jingle ऐका! | Borawke Hero Automobiles | FM Radio Style Jingle',
+        category: 'जिंगल्स (Jingles)',
+        tag: 'Radio Jingle',
+        url: 'https://www.youtube.com/watch?v=Tgxhyt53Zys',
+        views: 1980,
+        likes: 210,
+        date: '2026-08-26'
+      },
+      {
+        id: 'jin_3',
+        title: 'Disha Computers ची दमदार Jingle! 💻🔥 | Computer Course Advertisement | KTimes Media',
+        category: 'जिंगल्स (Jingles)',
+        tag: 'Studio Jingle',
+        url: 'https://www.youtube.com/watch?v=8nnaz-fZ0kY',
+        views: 1650,
+        likes: 175,
+        date: '2026-08-26'
+      },
+      {
+        id: 'jin_4',
+        title: 'तुमच्या शेती औषधांच्या Brand साठी अशी Jingle बनवा! 🔥 | Marathi Agri Advertisement | KTimes Media',
+        category: 'जिंगल्स (Jingles)',
+        tag: 'Agri Jingle',
+        url: 'https://www.youtube.com/watch?v=VutNpZIBHgc',
         views: 1420,
-        likes: 184,
-        date: '2026-08-16'
+        likes: 130,
+        date: '2026-08-26'
       },
       {
-        id: 's3',
-        title: 'मल्टीस्पेशालिटी हॉस्पिटल - रेडिओ व्हॉईस ओव्हर',
-        category: 'ऑडिओ / व्हॉईस ओव्हर (Voice Over)',
-        tag: 'FM Quality',
-        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+        id: 'jin_5',
+        title: 'कपड्यांच्या दुकानासाठी Jingle अशी हवी 🔥 | Factory Outlet Saswad | Male + Female Voice | KTimes Media',
+        category: 'जिंगल्स (Jingles)',
+        tag: 'Dual Voice',
+        url: 'https://www.youtube.com/watch?v=sbKkREOfmS8',
+        views: 1890,
+        likes: 195,
+        date: '2026-08-26'
+      },
+
+      // --- लोगो डिझाईन (Logo Design) ---
+      {
+        id: 'logo_1',
+        title: 'Shivtej Ganesh Mandal Sakharwadi, Logo | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
+        category: 'लोगो डिझाईन (Logo Design)',
+        tag: '3D Logo',
+        url: 'https://www.youtube.com/watch?v=IfTa_GSqRbs',
+        views: 1250,
+        likes: 115,
+        date: '2026-08-26'
+      },
+      {
+        id: 'logo_2',
+        title: 'Vim Bar Logo | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
+        category: 'लोगो डिझाईन (Logo Design)',
+        tag: 'Cinematic 3D',
+        url: 'https://www.youtube.com/watch?v=Eg8NW-3EMEQ',
+        views: 1100,
+        likes: 90,
+        date: '2026-08-26'
+      },
+      {
+        id: 'logo_3',
+        title: 'jai Hanuman Tarun Mandal 02 Logo | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
+        category: 'लोगो डिझाईन (Logo Design)',
+        tag: 'Mandal Logo',
+        url: 'https://www.youtube.com/watch?v=CCdplv6JpkY',
+        views: 980,
+        likes: 85,
+        date: '2026-08-26'
+      },
+      {
+        id: 'logo_4',
+        title: 'Shreyash Jewellers,Pandharpur Logo | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
+        category: 'लोगो डिझाईन (Logo Design)',
+        tag: 'Jewellers Logo',
+        url: 'https://www.youtube.com/watch?v=UkWrx0zvVrc',
+        views: 1450,
+        likes: 135,
+        date: '2026-08-26'
+      },
+      {
+        id: 'logo_5',
+        title: 'स्वर्णमयी Paithani & Jewellers,Kalyan | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
+        category: 'लोगो डिझाईन (Logo Design)',
+        tag: 'Gold Logo',
+        url: 'https://www.youtube.com/watch?v=sxB-v5vB6MQ',
+        views: 1380,
+        likes: 125,
+        date: '2026-08-26'
+      },
+      {
+        id: 'logo_6',
+        title: 'Create Cinematic Intro Of This | Ktimes Media',
+        category: 'लोगो डिझाईन (Logo Design)',
+        tag: 'Logo Intro',
+        url: 'https://www.youtube.com/watch?v=4b9rGdmKTrE',
+        views: 1050,
+        likes: 92,
+        date: '2026-08-26'
+      },
+      {
+        id: 'logo_7',
+        title: 'KTimes Media broadcast Logo | Ktimes Cinematic 3D logo | Ai Video | Ktimes Media',
+        category: 'लोगो डिझाईन (Logo Design)',
+        tag: 'Broadcast 3D',
+        url: 'https://www.youtube.com/watch?v=ik8cAjSSY04',
+        views: 2200,
+        likes: 260,
+        date: '2026-08-26'
+      },
+      {
+        id: 'logo_img_1',
+        title: 'Ktimes Studio Creative Branding Showcase 01',
+        category: 'लोगो डिझाईन (Logo Design)',
+        tag: 'HD Graphic',
+        url: 'https://i.postimg.cc/kMKsMvmr/IMG-20220218-WA0146.jpg',
+        views: 870,
+        likes: 74,
+        date: '2026-08-26'
+      },
+      {
+        id: 'logo_img_2',
+        title: 'AI Concept Logo Creation & Vector Art 02',
+        category: 'लोगो डिझाईन (Logo Design)',
+        tag: 'AI Concept',
+        url: 'https://i.postimg.cc/VN2dqrJY/Chat-GPT-Image-Aug-26-2026-09-19-59-AM.png',
+        views: 920,
+        likes: 80,
+        date: '2026-08-26'
+      },
+      {
+        id: 'logo_img_3',
+        title: 'Premium Corporate Identity & Typography 03',
+        category: 'लोगो डिझाईन (Logo Design)',
+        tag: 'Vector Logo',
+        url: 'https://i.postimg.cc/Wp8D7dmV/Untitled-3.png',
+        views: 810,
+        likes: 68,
+        date: '2026-08-26'
+      },
+      {
+        id: 'logo_img_4',
+        title: 'Commercial Business Logo Design Portfolio 04',
+        category: 'लोगो डिझाईन (Logo Design)',
+        tag: 'Identity Pack',
+        url: 'https://i.postimg.cc/d3Y3fbmP/02-54-20-PM.jpg',
         views: 890,
-        likes: 96,
-        date: '2026-08-16'
+        likes: 78,
+        date: '2026-08-26'
+      },
+
+      // --- व्हिडिओ जाहिराती (Video Ads) ---
+      {
+        id: 'v_ad_1',
+        title: 'New Aryan Mobile | Deccan Chauk Phaltan | Vivo X 70 Series 5G Booking start now | Ktimes Media',
+        category: 'व्हिडिओ जाहिराती (Video Ads)',
+        tag: 'TV Commercial',
+        url: 'https://www.youtube.com/watch?v=loR-ygqALnY',
+        views: 2400,
+        likes: 210,
+        date: '2026-08-26'
+      },
+      {
+        id: 'v_ad_2',
+        title: 'Hotel Krushnai | Someshwarnagar | Solaskar Sir | Ktimes Media |Sudhir Nemane |Yogesh Yadav',
+        category: 'व्हिडिओ जाहिराती (Video Ads)',
+        tag: 'HD Promo',
+        url: 'https://www.youtube.com/watch?v=Jm2BT-F4izk',
+        views: 1950,
+        likes: 180,
+        date: '2026-08-26'
+      },
+
+      // --- ऑडिओ / व्हॉईस ओव्हर (Voice Over) ---
+      {
+        id: 'vo_1',
+        title: 'Ktimes Jingles,Maharashtra | Special TVC | Marathi AI Video Advertisement | KTimes Media',
+        category: 'ऑडिओ / व्हॉईस ओव्हर (Voice Over)',
+        tag: 'Voice Over',
+        url: 'https://www.youtube.com/watch?v=saXEnGBKg6w',
+        views: 1720,
+        likes: 165,
+        date: '2026-08-26'
+      },
+
+      // --- Reels / Shorts ---
+      {
+        id: 'sh_1',
+        title: 'Sanvi Vadapav Miniature Ad | Marathi AI Video Advertisement | KTimes Media',
+        category: 'Reels / Shorts',
+        tag: 'Miniature Ad',
+        url: 'https://www.youtube.com/watch?v=E8QblWt3dl8',
+        views: 3100,
+        likes: 380,
+        date: '2026-08-26'
+      },
+      {
+        id: 'sh_2',
+        title: 'Aarambh Gold Finance,Phaltan | Special TVC | Marathi AI Video Advertisement | KTimes Media',
+        category: 'Reels / Shorts',
+        tag: 'Gold Ad',
+        url: 'https://www.youtube.com/watch?v=6xfMdS4Vozk',
+        views: 2850,
+        likes: 310,
+        date: '2026-08-26'
+      },
+      {
+        id: 'sh_3',
+        title: 'Aarambh Gold Finance,Phaltan| Motu Patlu Video | Marathi AI Video Advertisement | KTimes Media',
+        category: 'Reels / Shorts',
+        tag: 'Animation 3D',
+        url: 'https://www.youtube.com/watch?v=1V-uKV4zhN8',
+        views: 3400,
+        likes: 420,
+        date: '2026-08-26'
+      },
+      {
+        id: 'sh_4',
+        title: 'Ktimes Energy Drink 3D ad | Marathi AI Video Advertisement | KTimes Media',
+        category: 'Reels / Shorts',
+        tag: '3D Promo',
+        url: 'https://www.youtube.com/watch?v=dU0V7csxGRo',
+        views: 2200,
+        likes: 245,
+        date: '2026-08-26'
+      },
+      {
+        id: 'sh_5',
+        title: 'Ktimes Energy Drink 3D ad 02 | Marathi AI Video Advertisement | KTimes Media',
+        category: 'Reels / Shorts',
+        tag: '3D VFX',
+        url: 'https://www.youtube.com/watch?v=utrMgSFmofQ',
+        views: 2050,
+        likes: 215,
+        date: '2026-08-26'
+      },
+
+      // --- फेस्टिवल व्हिडिओ ---
+      {
+        id: 'fest_1',
+        title: 'Swarnmayi Paithani,Panvel | Marathi Rakshabandhan Festival AI Video Advertisement | KTimes Media',
+        category: 'फेस्टिवल व्हिडिओ',
+        tag: 'Rakhi Special',
+        url: 'https://www.youtube.com/watch?v=bERsNsoJMjQ',
+        views: 2600,
+        likes: 290,
+        date: '2026-08-26'
+      },
+      {
+        id: 'fest_2',
+        title: 'Shreyash Jewellers,Pandharpur| Marathi Shivjayanti Festival AI Video Advertisement | KTimes Media',
+        category: 'फेस्टिवल व्हिडिओ',
+        tag: 'Shivjayanti',
+        url: 'https://www.youtube.com/watch?v=_zKcZJtv6R0',
+        views: 3100,
+        likes: 360,
+        date: '2026-08-26'
+      },
+      {
+        id: 'fest_3',
+        title: 'Shivshakti Jewelers,Atpadi,Sangali | Marathi Navratri Festival AI Video Advertisement | KTimes Media',
+        category: 'फेस्टिवल व्हिडिओ',
+        tag: 'Navratri Ad',
+        url: 'https://www.youtube.com/watch?v=ilPFtUv5zLQ',
+        views: 2450,
+        likes: 275,
+        date: '2026-08-26'
+      },
+      {
+        id: 'fest_4',
+        title: 'Mahalaxmi Jewllers,Kalyan West | Marathi Festival AI Video Advertisement | KTimes Media',
+        category: 'फेस्टिवल व्हिडिओ',
+        tag: 'Festival TVC',
+        url: 'https://www.youtube.com/watch?v=TauLIqsuExY',
+        views: 2100,
+        likes: 230,
+        date: '2026-08-26'
+      },
+      {
+        id: 'fest_5',
+        title: 'PM Jewellers,Atpadi | Marathi Rakshabandhan Festival AI Video Advertisement | KTimes Media',
+        category: 'फेस्टिवल व्हिडिओ',
+        tag: 'Festival Promo',
+        url: 'https://www.youtube.com/watch?v=iRCziZJZpV4',
+        views: 2350,
+        likes: 260,
+        date: '2026-08-26'
+      },
+
+      // --- वाढदिवस गाणी ---
+      {
+        id: 'bday_1',
+        title: 'Ktimes Birthday Special Song | Special Wishes | Ktimes Media',
+        category: 'वाढदिवस गाणी',
+        tag: 'Birthday Special',
+        url: 'https://www.youtube.com/shorts/h6zFCqx_9rE',
+        views: 2780,
+        likes: 310,
+        date: '2026-08-26'
       }
     ];
 
@@ -475,12 +819,12 @@
         </a>
         
         <div class="flex items-center gap-1.5 shrink-0">
-          <a href="${socialLinks.wa_chan}" target="_blank" title="WhatsApp Channel" class="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.82.49 3.53 1.35 5L2 22l5.12-1.33c1.43.82 3.09 1.33 4.88 1.33 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg></a>
+          <a href="${socialLinks.wa_chan}" target="_blank" title="WhatsApp Chat" class="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.82.49 3.53 1.35 5L2 22l5.12-1.33c1.43.82 3.09 1.33 4.88 1.33 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg></a>
           <a href="${socialLinks.yt}" target="_blank" title="YouTube" class="w-7 h-7 rounded-lg bg-[#FF0000] text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
           <a href="${socialLinks.insta}" target="_blank" title="Instagram" class="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
           <a href="${socialLinks.fb}" target="_blank" title="Facebook" class="w-7 h-7 rounded-lg bg-[#1877F2] text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
           <a href="${socialLinks.linkedin}" target="_blank" title="LinkedIn" class="w-7 h-7 rounded-lg bg-[#0A66C2] text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
-          <a href="${socialLinks.x}" target="_blank" title="X (Twitter)" class="w-7 h-7 rounded-lg bg-black text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="${socialLinks.x}" target="_blank" title="X (Twitter)" class="w-7 h-7 rounded-lg bg-black text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
         </div>
       `;
       lucide.createIcons();
@@ -490,9 +834,9 @@
       const banner = document.getElementById('offerBannerSection');
       if (offerSettings.bannerImg && offerSettings.bannerImg.trim() !== "") {
         banner.innerHTML = `
-          <div class="relative rounded-2xl overflow-hidden shadow-md border border-slate-200">
-            <img src="${offerSettings.bannerImg}" alt="Offer Banner" class="w-full h-auto object-cover max-h-[320px]">
-            <div class="p-3 bg-white flex items-center justify-between border-t">
+          <div class="relative rounded-2xl overflow-hidden shadow-md border border-slate-200 bg-white">
+            <img src="${offerSettings.bannerImg}" alt="Offer Banner" class="w-full h-auto object-cover max-h-[340px]">
+            <div class="p-3 bg-white flex items-center justify-between border-t border-slate-100">
               <a href="https://wa.me/919422337471?text=मी%20ऑफर%20बॅनर%20पाहिला%20आहे" target="_blank" class="px-4 py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl shadow flex items-center gap-1.5">
                 <i data-lucide="message-circle" class="w-4 h-4"></i> ऑफर बुक करा
               </a>
@@ -642,15 +986,17 @@
       }
     }
 
+    // ४. SMART EMBED
     function formatMediaEmbed(url) {
       if (!url) return '';
       
+      // 1. YouTube Video (Regular, Shorts, Embeds, Playlists)
       if (url.includes('youtube.com') || url.includes('youtu.be')) {
         let videoId = '';
-        if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split(/[?#]/)[0];
+        if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split(/[?#&]/)[0];
         else if (url.includes('watch?v=')) videoId = url.split('watch?v=')[1].split(/[&#]/)[0];
-        else if (url.includes('shorts/')) videoId = url.split('shorts/')[1].split(/[?#]/)[0];
-        else if (url.includes('embed/')) videoId = url.split('embed/')[1].split(/[?#]/)[0];
+        else if (url.includes('shorts/')) videoId = url.split('shorts/')[1].split(/[?#&]/)[0];
+        else if (url.includes('embed/')) videoId = url.split('embed/')[1].split(/[?#&]/)[0];
 
         if (videoId) {
           return `
@@ -662,6 +1008,7 @@
         }
       }
 
+      // 2. Instagram Post
       if (url.includes('instagram.com')) {
         return `
           <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-900 border border-slate-800 flex flex-col items-center justify-center p-4 text-center">
@@ -674,6 +1021,7 @@
         `;
       }
 
+      // 3. Facebook Post
       if (url.includes('facebook.com') || url.includes('fb.watch')) {
         return `
           <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-900 border border-slate-800 flex flex-col items-center justify-center p-4 text-center">
@@ -686,6 +1034,7 @@
         `;
       }
 
+      // 4. Direct Image (Logo / Graphic / Postimage)
       if (url.match(/\.(jpeg|jpg|gif|png|webp|svg)($|\?)/i) || url.includes('postimg.cc') || url.includes('i.ibb.co')) {
         return `
           <div class="w-full aspect-video rounded-xl overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center p-2">
@@ -694,6 +1043,7 @@
         `;
       }
 
+      // 5. Audio (Google Drive or Direct URL)
       let audioSrc = url;
       if (url.includes('drive.google.com')) {
         const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
@@ -715,6 +1065,7 @@
       `;
     }
 
+    // ५. RENDER SHOWCASE SAMPLES
     function renderSamples() {
       const grid = document.getElementById('samplesGrid');
       const empty = document.getElementById('emptyState');
@@ -808,6 +1159,7 @@
       saveStoredSamples(list);
     }
 
+    // ६. SMART UNIVERSAL SHARE
     function openSmartShare(title, mediaUrl) {
       const shareUrl = window.location.href;
       const shareText = `🎬 के टाईम्स मिडिया - ${title}\n📍 साखरवाडी (फलटण)\n📞 9422337471`;
@@ -853,6 +1205,7 @@
       });
     }
 
+    // ७. ADMIN AUTH & CONTROLS
     function openAdminModal() {
       document.getElementById('adminModal').classList.remove('hidden');
       document.getElementById('adminModal').classList.add('flex');
@@ -956,7 +1309,7 @@
       }
     }
 
-    // रिफ्रेश बटण: ब्राऊझरचा जुना कॅश पूर्ण क्लिअर करून GitHub चा नवा डेटा लोड करतो
+    // रिफ्रेश बटण: जुना लोकल कॅश साफ करून GitHub चा मास्टर डेटा लोड करतो
     function triggerAppUpdate() {
       localStorage.removeItem('ktimes_samples_db');
       localStorage.removeItem('ktimes_categories_db');
@@ -965,6 +1318,7 @@
       window.location.reload(true);
     }
 
+    // ८. PWA INSTALL LOGIC
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -981,6 +1335,7 @@
       }
     }
 
+    // ९. BACKUP & RESTORE
     function exportDataBackup() {
       const backup = {
         samples: getStoredSamples(),
@@ -1015,6 +1370,7 @@
       reader.readAsText(file);
     }
 
+    // INIT
     window.addEventListener('DOMContentLoaded', () => {
       renderSocialIconsBar();
       renderOfferBanner();
