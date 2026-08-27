@@ -12,6 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="Ktimes">
   <meta name="theme-color" content="#dc2626">
 
+  <!-- Professional Open Graph Default Previews -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ktimes-media-app.vercel.app/">
   <meta property="og:title" content="Ktimes Media | हमेशा समय के साथ..!">
@@ -119,7 +120,7 @@
     </div>
   </main>
 
-  <!-- 7. CLIENT TESTIMONIALS / REVIEWS SECTION -->
+  <!-- 7. CLIENT TESTIMONIALS -->
   <section class="max-w-6xl mx-auto px-4 py-6 w-full">
     <div class="bg-gradient-to-r from-slate-900 to-red-950 rounded-2xl p-6 text-white shadow-xl space-y-4">
       <div class="text-center space-y-1">
@@ -130,19 +131,19 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
         <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/10 space-y-2">
-          <div class="flex items-center gap-1 text-yellow-400">★★★★★</div>
-          <p class="text-xs text-slate-200">"के टाईम्स मिडियाने आमच्या ज्वेलरी शॉपसाठी केलेली फेस्टिव्हल टीव्ही जाहिरात खूपच भारी झाली. ग्राहकांचा प्रतिसाद वाढला!"</p>
+          <div class="text-yellow-400">★★★★★</div>
+          <p class="text-xs text-slate-200">"के टाईम्स मिडियाने आमच्या ज्वेलरी शॉपसाठी केलेली फेस्टिव्हल टीव्ही जाहिरात खूपच भारी झाली."</p>
           <div class="text-[11px] font-bold text-red-400">— गणेश ज्वेलर्स, फलटण</div>
         </div>
 
         <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/10 space-y-2">
-          <div class="flex items-center gap-1 text-yellow-400">★★★★★</div>
-          <p class="text-xs text-slate-200">"रेडिओ स्टाईल जिंगल आणि व्हॉईस ओव्हरचा दर्जा एकदम प्रोफेशनल आहे. सुधीरजींचा आवाज आणि काम अप्रतिम!"</p>
+          <div class="text-yellow-400">★★★★★</div>
+          <p class="text-xs text-slate-200">"रेडिओ स्टाईल जिंगल आणि व्हॉईस ओव्हरचा दर्जा एकदम प्रोफेशनल आहे. सुधीरजींचे काम अप्रतिम!"</p>
           <div class="text-[11px] font-bold text-red-400">— रोहन शेळके, ऑटोमोबाईल डिस्ट्रीब्यूटर</div>
         </div>
 
         <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/10 space-y-2">
-          <div class="flex items-center gap-1 text-yellow-400">★★★★★</div>
+          <div class="text-yellow-400">★★★★★</div>
           <p class="text-xs text-slate-200">"सिनेमॅटिक 3D लोगो आणि AI व्हिडिओ जाहिरातींमुळे आमच्या ब्रँडची बाजारपेठेत वेगळी ओळख निर्माण झाली."</p>
           <div class="text-[11px] font-bold text-red-400">— स्वराज पैठणी, सातारा</div>
         </div>
@@ -150,7 +151,7 @@
     </div>
   </section>
 
-  <!-- 8. 5-BUTTON MOBILE BOTTOM NAV -->
+  <!-- 8. MOBILE BOTTOM NAV -->
   <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5 flex items-center justify-around text-[10px] font-semibold text-slate-600 shadow-lg">
     <button onclick="filterCategoryBySlug('ऑडिओ')" class="flex flex-col items-center gap-0.5 text-slate-700">
       <i data-lucide="mic" class="w-5 h-5 text-red-600"></i>
@@ -176,13 +177,13 @@
     </a>
   </div>
 
-  <!-- 9. SHARE MODAL -->
+  <!-- 9. PROFESSIONAL SHARE MODAL -->
   <div id="shareModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-sm w-full shadow-2xl p-5 border border-slate-200 space-y-4">
       <div class="flex items-center justify-between border-b pb-2">
         <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
           <i data-lucide="share-2" class="w-4 h-4 text-red-600"></i>
-          <span>मित्रांना पाठवा (Share)</span>
+          <span>ही पोस्ट शेअर करा</span>
         </h3>
         <button onclick="closeShareModal()" class="text-slate-400 hover:text-slate-700">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -191,41 +192,19 @@
 
       <p id="shareModalTitle" class="text-xs text-slate-600 font-medium line-clamp-2 bg-slate-50 p-2 rounded-lg border border-slate-100"></p>
 
-      <div class="grid grid-cols-4 gap-2.5 py-1">
-        <a id="shareWaBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition">
-          <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-sm">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
-          </div>
-          <span class="text-[10px] font-bold">WhatsApp</span>
+      <div class="grid grid-cols-2 gap-2.5 py-1">
+        <a id="shareWaBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 p-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs shadow transition">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
+          WhatsApp वर पाठवा
         </a>
 
-        <a id="shareFbBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 transition">
-          <div class="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-sm">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          </div>
-          <span class="text-[10px] font-bold">Facebook</span>
-        </a>
-
-        <a id="shareXBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 transition">
-          <div class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shadow-sm">
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </div>
-          <span class="text-[10px] font-bold">X</span>
-        </a>
-
-        <a id="shareInBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center gap-1 p-2 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-700 transition">
-          <div class="w-8 h-8 rounded-full bg-[#0A66C2] text-white flex items-center justify-center shadow-sm">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-          </div>
-          <span class="text-[10px] font-bold">LinkedIn</span>
-        </a>
+        <button onclick="copyShareTextAndUrl()" class="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-800 hover:bg-black text-white font-bold text-xs shadow transition">
+          <i data-lucide="copy" class="w-4 h-4"></i> महिती कॉपी करा
+        </button>
       </div>
 
       <div class="pt-2 border-t flex items-center gap-2">
         <input type="text" id="shareUrlInput" readonly class="flex-1 px-2.5 py-1.5 bg-slate-50 border rounded-lg text-[11px] text-slate-600 outline-none select-all">
-        <button onclick="copyShareUrl()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-lg flex items-center gap-1 shadow-sm shrink-0">
-          <i data-lucide="copy" class="w-3.5 h-3.5"></i> कॉपी करा
-        </button>
       </div>
     </div>
   </div>
@@ -267,7 +246,6 @@
             <div id="adminCategoryList" class="space-y-1 max-h-48 overflow-y-auto pr-1"></div>
           </div>
 
-          <!-- Festival Offer Settings -->
           <div class="bg-purple-50/70 p-3.5 rounded-xl border border-purple-200 space-y-2">
             <label class="font-bold text-purple-950 uppercase block">फेस्टिव्हल ऑफर बॅनर</label>
             <input type="text" id="offerBannerTitle" placeholder="ऑफर शीर्षक" class="w-full px-3 py-1.5 border rounded-lg">
@@ -276,7 +254,6 @@
             <button onclick="saveOfferSettings()" class="w-full py-2 bg-purple-800 hover:bg-purple-900 text-white font-bold rounded-lg">ऑफर सेव्ह करा</button>
           </div>
 
-          <!-- Social Links -->
           <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
             <label class="font-bold text-slate-800 uppercase block">सोशल मीडिया लिंक्स</label>
             <input type="url" id="link_wa_comm" placeholder="WhatsApp कम्युनिटी लिंक" class="w-full px-3 py-1.5 border rounded-lg">
@@ -287,7 +264,6 @@
             <button onclick="saveSocialLinks()" class="w-full py-1.5 bg-slate-800 hover:bg-black text-white font-bold rounded-lg">सर्व लिंक्स सेव्ह करा</button>
           </div>
 
-          <!-- Add Sample -->
           <form onsubmit="handleSaveSample(event)" class="space-y-3 pt-1 border-t">
             <label class="font-bold text-slate-800 uppercase block">नवीन सॅम्पल जोडा</label>
             <input type="text" id="sampleTitle" required placeholder="सॅम्पल नाव" class="w-full px-3 py-2 border rounded-lg outline-none focus:border-red-600">
@@ -707,7 +683,6 @@
     let userLikedList = JSON.parse(localStorage.getItem('ktimes_user_likes')) || [];
     let activeCategory = 'All';
     let isAdminLoggedIn = false;
-    let deferredPrompt = null;
 
     function getStoredSamples() {
       const stored = localStorage.getItem('ktimes_samples_db');
@@ -717,9 +692,7 @@
           if (Array.isArray(parsed) && parsed.length > 0) {
             const combined = [...MASTER_SAMPLES];
             parsed.forEach(p => {
-              if (!combined.some(c => c.id === p.id) && p.id !== 'ai_2') {
-                combined.push(p);
-              }
+              if (!combined.some(c => c.id === p.id) && p.id !== 'ai_2') combined.push(p);
             });
             return combined;
           }
@@ -740,12 +713,10 @@
           <i data-lucide="map-pin" class="w-3.5 h-3.5 text-red-600"></i>
           <span>साखरवाडी (फलटण)</span>
         </div>
-
         <a href="${socialLinks.wa_comm}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 px-2.5 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-700 transition shrink-0">
           <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
           कम्युनिटी
         </a>
-        
         <div class="flex items-center gap-1.5 shrink-0">
           <a href="${socialLinks.wa_chan}" target="_blank" rel="noopener noreferrer" title="WhatsApp Chat" class="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.82.49 3.53 1.35 5L2 22l5.12-1.33c1.43.82 3.09 1.33 4.88 1.33 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg></a>
           <a href="${socialLinks.yt}" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-7 h-7 rounded-lg bg-[#FF0000] text-white flex items-center justify-center shadow-sm hover:scale-110 transition"><svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
@@ -774,9 +745,8 @@
           </div>
         `;
       } else {
-        const bgCol = offerSettings.bgColor || "#581c87";
         banner.innerHTML = `
-          <div class="rounded-2xl p-5 md:p-6 text-white shadow-lg border border-white/20 space-y-3" style="background-color: ${bgCol};">
+          <div class="rounded-2xl p-5 md:p-6 text-white shadow-lg border border-white/20 space-y-3" style="background-color: #581c87;">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div class="space-y-1">
                 <span class="bg-yellow-400 text-purple-950 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block">✨ चालू ऑफर</span>
@@ -806,9 +776,7 @@
         const isActive = activeCategory === cat;
         const btn = document.createElement('button');
         btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition flex items-center gap-1 ${
-          isActive 
-            ? 'bg-red-700 text-white shadow-md border border-red-700' 
-            : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
+          isActive ? 'bg-red-700 text-white shadow-md border border-red-700' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
         }`;
         btn.innerText = cat;
         btn.onclick = () => { activeCategory = cat; renderCategoryTabs(); renderSamples(); };
@@ -825,9 +793,7 @@
             itemRow.className = 'flex items-center justify-between bg-white border border-amber-200 px-2.5 py-1.5 rounded-lg text-slate-800 text-xs shadow-sm';
             itemRow.innerHTML = `
               <span class="font-semibold">${cat}</span>
-              <button onclick="deleteCategory(${index})" class="p-1 text-red-500 hover:bg-red-50 rounded" title="डिलीट करा">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-              </button>
+              <button onclick="deleteCategory(${index})" class="p-1 text-red-500 hover:bg-red-50 rounded" title="डिलीट करा"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
             `;
             adminList.appendChild(itemRow);
           }
@@ -965,18 +931,17 @@
       saveStoredSamples(list);
     }
 
+    // PROFESSIONAL INDIVIDUAL POST SHARE
     function openSmartShare(title, mediaUrl) {
-      const shareUrl = window.location.href;
-      const shareText = `🎬 के टाईम्स मिडिया - ${title}\n📍 साखरवाडी (फलटण)\n📞 9422337471`;
-      if (navigator.share) {
-        navigator.share({ title: `Ktimes Media - ${title}`, text: shareText, url: shareUrl }).catch(() => {});
-      } else {
-        document.getElementById('shareModalTitle').innerText = title;
-        document.getElementById('shareUrlInput').value = shareUrl;
-        document.getElementById('shareWaBtn').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`;
-        document.getElementById('shareModal').classList.remove('hidden');
-        document.getElementById('shareModal').classList.add('flex');
-      }
+      const bannerImg = MASTER_OFFER.bannerImg || "https://i.postimg.cc/1RvXL4Wc/pha-sa-ta-va-hala-ophara-30-da-sa-ka-u-ta-(1).png";
+      const shareText = `🎬 *के टाईम्स मिडिया - व्यावसायिक प्रॉडक्शन*\n\n📌 *विषय:* ${title}\n🔗 *सॅम्पल लिंक:* ${mediaUrl}\n\n✨ *विशेष फेस्टिव्हल ऑफर:* ३०% सूट!\n🖼️ *बॅनर पहा:* ${bannerImg}\n\n📍 *पत्ता:* साखरवाडी (फलटण), सातारा\n📞 *थेट संपर्क:* 9422337471`;
+
+      document.getElementById('shareModalTitle').innerText = title;
+      document.getElementById('shareUrlInput').value = mediaUrl;
+      document.getElementById('shareWaBtn').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+
+      document.getElementById('shareModal').classList.remove('hidden');
+      document.getElementById('shareModal').classList.add('flex');
     }
 
     function closeShareModal() {
@@ -984,11 +949,14 @@
       document.getElementById('shareModal').classList.remove('flex');
     }
 
-    function copyShareUrl() {
-      const input = document.getElementById('shareUrlInput');
-      input.select();
-      navigator.clipboard.writeText(input.value).then(() => {
-        alert('लिंक कॉपी झाली!');
+    function copyShareTextAndUrl() {
+      const title = document.getElementById('shareModalTitle').innerText;
+      const url = document.getElementById('shareUrlInput').value;
+      const bannerImg = MASTER_OFFER.bannerImg;
+      const fullText = `🎬 के टाईम्स मिडिया\n📌 ${title}\n🔗 ${url}\n✨ फेस्टिव्हल ऑफर ३०% सूट!\n🖼️ ${bannerImg}\n📞 9422337471`;
+      
+      navigator.clipboard.writeText(fullText).then(() => {
+        alert('पोस्टची संपूर्ण माहिती कॉपी झाली!');
         closeShareModal();
       });
     }
@@ -1053,13 +1021,6 @@
       saveStoredSamples(list);
       alert('सॅम्पल पब्लिश झाले!');
       closeAdminModal();
-    }
-
-    function deleteSample(id) {
-      if (confirm('डिलीट करायचे आहे का?')) {
-        const list = getStoredSamples().filter(s => s.id !== id);
-        saveStoredSamples(list);
-      }
     }
 
     function triggerAppUpdate() {
